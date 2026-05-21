@@ -32,9 +32,8 @@ export function HighlightExplainer({ containerRef }: { containerRef: React.RefOb
       if (selectedText.length < 3) return;
 
       const range = sel.getRangeAt(0);
-      if (!container.contains(range.commonAncestorContainer)) return;
+      if (!container || !container.contains(range.commonAncestorContainer)) return;
 
-      // Walk up to find a data-explain wrapper containing the selection
       let node: Node | null = range.commonAncestorContainer;
       let explanation: string | null = null;
       while (node && node !== container) {
