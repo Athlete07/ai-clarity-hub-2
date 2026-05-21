@@ -68,7 +68,7 @@ export const Route = createFileRoute("/playbook/$slug")({
 });
 
 function ConceptPage() {
-  const { concept } = Route.useLoaderData();
+  const { concept } = Route.useLoaderData() as { concept: NonNullable<ReturnType<typeof conceptBySlug>> };
   const { progress, markDone, markInProgress } = useProgress();
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
