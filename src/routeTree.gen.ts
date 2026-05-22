@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PlaybookRouteImport } from './routes/playbook'
 import { Route as GlossaryRouteImport } from './routes/glossary'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaybookIndexRouteImport } from './routes/playbook.index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
 
+const PlaybookRoute = PlaybookRouteImport.update({
+  id: '/playbook',
+  path: '/playbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlossaryRoute = GlossaryRouteImport.update({
   id: '/glossary',
   path: '/glossary',
@@ -31,9 +37,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlaybookIndexRoute = PlaybookIndexRouteImport.update({
-  id: '/playbook/',
-  path: '/playbook/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlaybookRoute,
 } as any)
 const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   id: '/$slug',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/glossary': typeof GlossaryRoute
+  '/playbook': typeof PlaybookRouteWithChildren
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/playbook/': typeof PlaybookIndexRoute
 }
@@ -60,12 +67,19 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/glossary': typeof GlossaryRoute
+  '/playbook': typeof PlaybookRouteWithChildren
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/playbook/': typeof PlaybookIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/glossary' | '/playbook/$slug' | '/playbook/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/glossary'
+    | '/playbook'
+    | '/playbook/$slug'
+    | '/playbook/'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/about' | '/glossary' | '/playbook/$slug' | '/playbook'
   id:
@@ -73,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/glossary'
+    | '/playbook'
     | '/playbook/$slug'
     | '/playbook/'
   fileRoutesById: FileRoutesById
@@ -81,11 +96,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   GlossaryRoute: typeof GlossaryRoute
-  PlaybookIndexRoute: typeof PlaybookIndexRoute
+  PlaybookRoute: typeof PlaybookRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/playbook': {
+      id: '/playbook'
+      path: '/playbook'
+      fullPath: '/playbook'
+      preLoaderRoute: typeof PlaybookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/glossary': {
       id: '/glossary'
       path: '/glossary'
@@ -109,10 +131,10 @@ declare module '@tanstack/react-router' {
     }
     '/playbook/': {
       id: '/playbook/'
-      path: '/playbook'
+      path: '/'
       fullPath: '/playbook/'
       preLoaderRoute: typeof PlaybookIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlaybookRoute
     }
     '/playbook/$slug': {
       id: '/playbook/$slug'
@@ -124,11 +146,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface PlaybookRouteChildren {
+  PlaybookSlugRoute: typeof PlaybookSlugRoute
+  PlaybookIndexRoute: typeof PlaybookIndexRoute
+}
+
+const PlaybookRouteChildren: PlaybookRouteChildren = {
+  PlaybookSlugRoute: PlaybookSlugRoute,
+  PlaybookIndexRoute: PlaybookIndexRoute,
+}
+
+const PlaybookRouteWithChildren = PlaybookRoute._addFileChildren(
+  PlaybookRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   GlossaryRoute: GlossaryRoute,
-  PlaybookIndexRoute: PlaybookIndexRoute,
+  PlaybookRoute: PlaybookRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
