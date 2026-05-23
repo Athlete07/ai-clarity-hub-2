@@ -899,6 +899,296 @@ export const concepts: Concept[] = [
       },
     ],
   },
+  {
+    slug: "ai-vs-ml-vs-deep-learning",
+    number: 8,
+    shortTitle: "AI vs ML vs Deep Learning",
+    title: "AI vs ML vs Deep Learning",
+    readingMinutes: 8,
+    summary:
+      "The hierarchy you'll explain 100 times in your career. AI, machine learning, and deep learning get used interchangeably — but they're three nested ideas, and confusing them is the fastest way to lose credibility in a technical conversation.",
+    keyTakeaway:
+      "AI is the goal, ML is one way to get there (learning from data), and deep learning is one specific kind of ML (using big neural networks). Every deep learning system is ML; every ML system is AI; the reverse is not true.",
+    pmCallout:
+      "As a PM: when a vendor says 'AI-powered', your first job is to figure out which layer of this hierarchy they actually mean. 'AI' could be a hand-written if-statement. 'ML' means there's a trained model. 'Deep learning' means there's a large neural network. The honest answer changes how you scope, price, and trust the thing.",
+    body: [
+      {
+        kind: "h",
+        number: "1.1",
+        title: "What is Artificial Intelligence",
+        subtitle: "More than robots — why every software decision is now an AI decision",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Artificial intelligence is the broadest term in the stack. It just means: a computer system doing something we'd normally call 'smart' if a human did it. ",
+          ),
+          x(
+            "That includes recognising faces, translating languages, recommending a movie, scheduling a meeting, beating a grandmaster at chess, or finishing your sentence in an email.",
+            "There's no single technique that defines AI. The label is about the behaviour — appearing intelligent — not about how it's built underneath.",
+          ),
+          s(
+            " It does not have to involve learning, neural networks, or anything modern. A chess program from the 1990s that searched millions of moves with hand-coded heuristics was AI. A spam filter from 2024 trained on billions of emails is also AI.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "The reason this matters for product work: 'AI' has become the default adjective for any software touched by intelligence-shaped behaviour, even when nothing has actually changed under the hood. ",
+          ),
+          x(
+            "An if-statement that says 'if cart total > $100, show free shipping banner' is technically a decision a computer is making — vendors have shipped that as 'AI-powered personalisation'.",
+            "When the term is this loose, it stops being a technical description and becomes a marketing wrapper. Your job as a PM is to ask what's inside the wrapper.",
+          ),
+          s(
+            " Treat 'AI' as a category, not an answer. Whenever you hear it, your next question should be: what kind?",
+          ),
+        ],
+      },
+      {
+        kind: "h",
+        number: "1.2",
+        title: "What is Machine Learning",
+        subtitle: "When systems learn from data instead of following rules",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Machine learning is a specific approach to building AI: instead of a programmer writing the rules, you give the system examples and let it figure out the rules itself. ",
+          ),
+          x(
+            "You hand it 100,000 emails labelled spam or not-spam. A learning algorithm adjusts a model until it gets most of those labels right. Now you can feed it a new email and it will guess whether it's spam.",
+            "The 'learning' here is statistical pattern-fitting. The model isn't reasoning about email — it's finding which features (words, sender, time of day) correlate with the label you gave it.",
+          ),
+          s(
+            " That's the whole shift. Rules-based AI: humans write the logic. Machine learning: humans curate the data and labels, and the logic is derived from them.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s("Most things that genuinely deserve the AI label today are some flavour of ML. "),
+          x(
+            "Fraud detection, demand forecasting, recommendation engines, churn prediction, search ranking, ad targeting — all ML.",
+            "These are all systems that would be impossibly brittle if you tried to hand-write them. The patterns are too subtle and shift too often.",
+          ),
+          s(
+            " The practical consequence: shipping ML is closer to running an experiment than shipping a feature. You'll be talking about training sets, evaluation metrics, retraining cadence, and drift — not about logic you can read line by line.",
+          ),
+        ],
+      },
+      {
+        kind: "h",
+        number: "1.3",
+        title: "What is Deep Learning",
+        subtitle: "Why neural networks changed everything",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Deep learning is a specific kind of machine learning that uses very large neural networks — many layers stacked on top of each other, with millions or billions of weighted connections between them. ",
+          ),
+          x(
+            "Earlier ML methods (decision trees, logistic regression, support vector machines) needed humans to hand-engineer the useful features first. Deep learning learns the features itself, directly from raw inputs like pixels, audio waveforms, or characters.",
+            "That feature-learning step is the breakthrough. It's why a deep network can take a raw photo and end up recognising faces, without anyone telling it what an eye or a nose looks like.",
+          ),
+          s(
+            " It's what makes modern image recognition, voice transcription, translation, and ChatGPT-style language models possible. They are all deep learning systems.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          x(
+            "Deep learning is also what made AI suddenly feel different around 2012 and again around 2022.",
+            "2012: a deep network called AlexNet crushed the ImageNet competition and computer vision changed overnight. 2022: ChatGPT launched and language models went mainstream. Both moments are deep learning moments.",
+          ),
+          s(
+            " The trade-off: deep learning needs vast amounts of data and compute, and the resulting models are essentially uninterpretable. You get state-of-the-art performance and you lose the ability to explain individual decisions.",
+          ),
+        ],
+      },
+      {
+        kind: "h",
+        number: "1.4",
+        title: "The nested hierarchy explained",
+        subtitle: "How AI, ML and DL relate — and why conflating them costs you credibility",
+      },
+      {
+        kind: "p",
+        parts: [
+          s("The cleanest way to hold these in your head is as three nested circles. "),
+          x(
+            "AI is the outer circle: any system that behaves intelligently. Machine learning sits inside it: systems that learn from data. Deep learning sits inside ML: the subset of ML that uses large neural networks.",
+            "Every deep learning system is also ML and also AI. Every ML system is also AI. But plenty of AI is not ML (rule-based systems), and plenty of ML is not deep learning (classical statistical models).",
+          ),
+          s(
+            " So when someone says 'we use AI', they could mean almost anything. When they say 'we use ML', they're committing to data-driven learning. When they say 'deep learning' or 'we trained a neural network', they're being specific about architecture.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          x(
+            "Conflating the three is the single most common mistake non-technical leaders make.",
+            "Treating 'AI' and 'deep learning' as synonyms makes you sound like you've read the headlines but not the work. Engineering teams notice instantly.",
+          ),
+          s(
+            " The fix is small but pays off forever: use the most specific accurate term. If you mean a trained model, say ML. If you mean a neural network, say deep learning. If you genuinely mean the broad category, say AI — and be ready to say what kind.",
+          ),
+        ],
+      },
+      {
+        kind: "h",
+        number: "1.5",
+        title: "Rule-based systems vs learned systems",
+        subtitle: "The question that exposes fake AI in vendor pitches",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "A rule-based system is software where every behaviour was written down by a human. ",
+          ),
+          x(
+            "If income > $50k AND credit_score > 700 → approve loan. If keyword in subject_line → flag email. If user has not logged in for 14 days → send re-engagement email.",
+            "These systems are completely transparent. You can read the rules. You can audit them. They behave the same way every time given the same input.",
+          ),
+          s(
+            " A learned system has no explicit rules. It has a trained model — a pile of weights — that maps inputs to outputs. The 'rules' are implicit and statistical, and they can shift every time the model is retrained.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          x(
+            "Both can be valuable. Rule-based systems are cheaper, faster, easier to audit, and behave predictably under regulation.",
+            "For anything safety-critical, legally sensitive, or trivially patterned (postcode lookups, tax brackets, business rules), rules are often the right answer — and calling them AI is just dressing them up.",
+          ),
+          s(
+            " Learned systems are where you go when the pattern is too complex, too subtle, or too dynamic for a human to write down. The honest test is: 'could you, in principle, have written this as a list of if-statements?' If yes, it's a rule-based system wearing an AI badge.",
+          ),
+        ],
+      },
+      {
+        kind: "h",
+        number: "1.6",
+        title: "PM decision lens: spotting real AI vs marketing AI",
+        subtitle: "The 3 questions to ask before trusting any 'AI-powered' claim",
+      },
+      {
+        kind: "p",
+        parts: [
+          s("In every vendor demo, every internal pitch, every roadmap line that says 'AI-powered', ask these three questions in order. "),
+          x(
+            "Question 1: 'Is there a trained model, or are these hand-written rules?' If there's no model, it's not ML. It might still be useful — but stop calling it AI in internal docs, because it will mislead every conversation that follows.",
+            "If the answer is vague ('it's our proprietary intelligence layer'), assume rules until proven otherwise.",
+          ),
+          s(
+            " ",
+          ),
+          x(
+            "Question 2: 'What was it trained on, and how is performance measured?' A real ML system has a training dataset and an evaluation metric. If the vendor can't tell you accuracy, precision, recall, or any quantitative quality measure, the model either doesn't exist or hasn't been evaluated.",
+            "'It just works really well' is not an evaluation metric. Push until you get a number with a denominator.",
+          ),
+          s(
+            " ",
+          ),
+          x(
+            "Question 3: 'What happens when it's wrong, and how do you retrain?' Every ML system is wrong sometimes. A mature one has a feedback loop: errors get captured, labelled, and folded back into the next training run. If there's no answer here, the model is frozen — and quietly getting worse as the world changes around it.",
+            "A frozen model in a shifting domain is a slow-motion outage. The retraining story is as important as the launch story.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "These three questions cost you nothing to ask and they immediately separate serious AI work from marketing veneer. ",
+          ),
+          x(
+            "They also tell your team something important: that you're going to scope, ship, and measure AI features differently from regular features — because the underlying technology actually is different.",
+            "That credibility compounds. The PMs who get listened to on AI strategy are the ones who can tell, in a 20-minute meeting, whether a pitch is real.",
+          ),
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: "1.1 — A thermostat is AI, technically",
+        body: "A smart thermostat that decides when to turn the heating on is doing decision-making a human used to do. By the loosest definition, that's AI. But under the hood it might be three if-statements about temperature thresholds. The label 'AI' is true and almost useless — it doesn't tell you anything about how it works or how it will behave when the situation changes. This is exactly why 'AI-powered' on a product page tells you nothing on its own.",
+      },
+      {
+        title: "1.2 — Netflix recommendations vs a 'staff picks' shelf",
+        body: "A 'staff picks' shelf is a human-curated list — no learning, just editorial. Netflix's homepage recommendations are an ML system trained on what hundreds of millions of viewers actually watched next. Both are recommendation features. Only one is machine learning. The difference shows up in scale, personalisation, and the fact that nobody at Netflix can tell you exactly why you got the row you got.",
+      },
+      {
+        title: "1.3 — Why ChatGPT couldn't have existed in 2010",
+        body: "Language models existed in 2010. They were small, brittle, and produced word salad past a sentence or two. What changed wasn't the idea — it was deep learning at scale: bigger neural networks, more layers, more data, more compute, and the transformer architecture in 2017. ChatGPT is what happens when you push deep learning into the hundreds-of-billions-of-parameters range. The 'deep' is doing the work.",
+      },
+      {
+        title: "1.4 — The Venn diagram conversation",
+        body: "Imagine a vendor says 'our platform uses cutting-edge AI and deep learning'. Translated: they have a deep learning model somewhere. That's a real claim — deep learning is the smallest, most specific circle. Now imagine they say 'our platform uses AI'. Translated: could be a neural network, could be a regex. You learned nothing. Asking 'is it ML or rule-based?' moves the conversation from marketing to engineering in one sentence.",
+      },
+      {
+        title: "1.5 — The 'AI scheduling assistant' that was a calendar",
+        body: "A real product launched as an 'AI scheduling assistant' that turned out to be a rules engine: it picked the earliest 30-minute slot both calendars had free, with a preference for mornings. That's a useful feature. It is not AI in any meaningful sense — there's no model, no training, no learning. Calling it AI made the roadmap promises ('it'll learn your preferences over time!') impossible to keep, because nothing was learning.",
+      },
+    ],
+    quiz: [
+      {
+        q: "A vendor says their product is 'AI-powered'. Under the hood it's a set of hand-written if-statements about user behaviour. Which is the most accurate description?",
+        options: [
+          "It's machine learning, because the rules involve user data",
+          "It's deep learning, because it makes decisions automatically",
+          "It's a rule-based system that may be called AI loosely, but it isn't ML or deep learning",
+          "It's not software at all",
+        ],
+        correct: 2,
+        correctFeedback:
+          "Right. Rule-based logic can be marketed as AI, but without a trained model there's no machine learning happening.",
+        wrongFeedback:
+          "Re-read section 1.5 — the question is whether anything is being learned from data, or whether a human wrote the rules directly.",
+      },
+      {
+        q: "Which statement correctly describes the relationship between AI, ML, and deep learning?",
+        options: [
+          "They're three names for the same thing",
+          "Deep learning is a kind of ML, which is one approach to AI",
+          "AI is a kind of ML, which is a kind of deep learning",
+          "ML and deep learning are separate fields with no overlap",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Exactly. Nested circles: deep learning ⊂ machine learning ⊂ artificial intelligence.",
+        wrongFeedback:
+          "Re-read section 1.4 — think of three nested circles, with deep learning as the smallest one.",
+      },
+      {
+        q: "You're evaluating an 'AI-powered' vendor. Which question best exposes whether real ML is involved?",
+        options: [
+          "'How fast does it run?'",
+          "'Is it built on Python?'",
+          "'What was it trained on, and how do you measure when it's wrong?'",
+          "'Does it use the cloud?'",
+        ],
+        correct: 2,
+        correctFeedback:
+          "Right. Real ML systems have training data and evaluation metrics. If the vendor can't speak to either, the model probably doesn't exist.",
+        wrongFeedback:
+          "Re-read section 1.6 — the three diagnostic questions are about model, training data, and evaluation.",
+      },
+    ],
+  },
 ];
 
 export const conceptBySlug = (slug: string): Concept | undefined =>
