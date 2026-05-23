@@ -258,6 +258,21 @@ function ConceptPage() {
 }
 
 function BodyParagraph({ block }: { block: ConceptBodyBlock }) {
+  if (block.kind === "h") {
+    return (
+      <div className="hairline-t mt-8 pt-6">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-purple">
+          Section {block.number}
+        </p>
+        <h2 className="mt-1 text-[19px] font-medium leading-snug text-foreground">
+          {block.title}
+        </h2>
+        {block.subtitle && (
+          <p className="mt-1 text-[14px] italic text-muted-foreground">{block.subtitle}</p>
+        )}
+      </div>
+    );
+  }
   return (
     <p>
       {block.parts.map((part, i) => {
