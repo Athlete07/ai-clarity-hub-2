@@ -174,7 +174,7 @@ function ConceptPage() {
 
             <div className="mt-7 space-y-5 text-[15px] leading-[1.8] text-foreground">
               {concept.body.map((block, i) => (
-                <BodyParagraph key={i} block={block} />
+                <BodyBlock key={i} block={block} />
               ))}
             </div>
 
@@ -260,7 +260,7 @@ function ConceptPage() {
   );
 }
 
-function BodyParagraph({ block }: { block: ConceptBodyBlock }) {
+function BodyBlock({ block }: { block: ConceptBodyBlock }) {
   if (block.kind === "h") {
     return (
       <div className="hairline-t mt-10 pt-6">
@@ -272,6 +272,16 @@ function BodyParagraph({ block }: { block: ConceptBodyBlock }) {
         </h2>
         {block.subtitle && (
           <p className="mt-1 text-[14px] italic text-muted-foreground">{block.subtitle}</p>
+        )}
+      </div>
+    );
+  }
+  if (block.kind === "h3") {
+    return (
+      <div className="mb-2 mt-10 first:mt-2">
+        <h3 className="text-[18px] font-medium leading-snug text-foreground">{block.title}</h3>
+        {block.subtitle && (
+          <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{block.subtitle}</p>
         )}
       </div>
     );

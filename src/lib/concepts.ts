@@ -2,6 +2,7 @@ export type ExplainSpan = { text: string; explain: string };
 export type ConceptBodyBlock =
   | { kind: "p"; parts: (string | ExplainSpan)[] }
   | { kind: "h"; number: string; title: string; subtitle?: string }
+  | { kind: "h3"; title: string; subtitle?: string }
   | { kind: "take"; text: string }
   | { kind: "why"; text: string }
   | { kind: "ex"; title: string; body: string }
@@ -34,6 +35,334 @@ const s = (text: string): string => text;
 const x = (text: string, explain: string): ExplainSpan => ({ text, explain });
 
 export const concepts: Concept[] = [
+  {
+    slug: "pm-how-models-learn",
+    number: 2,
+    shortTitle: "How Models Learn",
+    title:
+      "Concept 2: How Models Learn (Parameters, loss functions, and gradient descent — demystified)",
+    readingMinutes: 9,
+    summary:
+      "If 'Machine Learning' is the paradigm of learning from examples, how exactly does that math work? At its core, an ML model is a complex mathematical equation with millions or billions of adjustable knobs called parameters. Training a model means systematically turning those knobs until the model's predictions stop being wrong. The measurement of 'how wrong it is' is the loss function, and the method for turning the knobs in the right direction is gradient descent.",
+    keyTakeaway:
+      "Models learn through a repetitive loop of predicting, measuring the error (loss), and adjusting their internal math (parameters) to reduce that error. Training is simply error-minimization at scale.",
+    pmCallout:
+      "As a PM, understanding the 'Loss Function' is your superpower. The Loss Function is the mathematical translation of your product goal. If you tell the model to minimize 'clicks to purchase', it will optimize for that, even if it means recommending sensationalist junk. You don't write the gradient descent code, but you must own the definition of the Loss Function.",
+    body: [
+      {
+        kind: "p",
+        parts: [
+          s(
+            "When an engineer says they are 'building a model', they are essentially setting up a giant mathematical equation. This equation takes an input (like an image or a spreadsheet row) and produces an output (like 'is a hotdog' or 'will churn'). ",
+          ),
+          x(
+            "Inside this equation are adjustable numbers called parameters or weights.",
+            "Imagine a massive soundboard with billions of volume sliders. Each slider changes how the input flows through the equation. Before training begins, these sliders are set to random positions, meaning the model's initial predictions are total garbage.",
+          ),
+          s(
+            " The 'intelligence' of the model is stored entirely in the final positions of these sliders. When you hear about GPT-4 having a trillion parameters, it just means the equation has a trillion adjustable sliders.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "If the model starts with random parameters, how does it get smarter? It needs a way to know exactly how wrong its current predictions are. This is the job of the Loss Function. ",
+          ),
+          x(
+            "The Loss Function compares the model's prediction to the actual correct answer (the label), and outputs a single number: the 'Loss'.",
+            "If the model predicts a user will churn with 99% confidence, and the user actually stays, the Loss is huge. If the model predicts 10% churn and they stay, the Loss is small.",
+          ),
+          s(
+            " This is where product management intersects with deep math. The model blindly tries to drive the Loss number to zero. If you define your Loss Function to penalize false positives and false negatives equally, the model will treat them equally—even if a false positive costs your business $10 and a false negative costs $10,000. You must align the math with your business reality.",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Now the model knows it is wrong. How does it know which of its billions of parameters to adjust, and in what direction? ",
+          ),
+          x(
+            "It uses calculus to perform a process called Gradient Descent. The algorithm calculates the 'gradient' (the slope) of the error with respect to every single parameter.",
+            "Think of the model as a blindfolded hiker trying to find the bottom of a valley. They feel the ground with their feet to figure out which way is downhill, take a step in that direction, and repeat. Each 'step' is a tiny adjustment to the parameters.",
+          ),
+          s(
+            " This is why training takes massive amounts of compute and GPUs. For every piece of training data, the model predicts, calculates the loss, and computes the slope for billions of parameters to take one tiny step downhill. It repeats this millions of times until it reaches the bottom of the valley (minimum error).",
+          ),
+        ],
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "The training process (gradient descent) is incredibly expensive and slow. But once the model hits the bottom of the valley, training is over. The parameters are locked in place. ",
+          ),
+          x(
+            "Using the locked model to make new predictions in the real world is called 'Inference'.",
+            "During inference, there is no backpropagation, no gradient descent, and no learning. The data just flows through the fixed equation. This is why using ChatGPT (inference) takes seconds, but building ChatGPT (training) took months and millions of dollars.",
+          ),
+          s(
+            " As a PM, remember that models in production do not 'learn' on the fly from user interactions unless you explicitly design a feedback loop that saves that data for a future re-training run.",
+          ),
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: "The 'Clickbait' Loss Function Problem",
+        body: "Scenario: A PM at a video platform wants a recommendation model to show users videos they like. They tell the data science team to optimize for 'watch time'.\n\nResult: The Loss Function penalizes the model when a user stops watching. The model quickly learns through gradient descent that conspiracy theories and outrage content maximize watch time. The model successfully minimized its loss, but destroyed the product experience. The PM should have defined the Loss Function to include user satisfaction metrics.",
+      },
+      {
+        title: "Gradient Descent in House Pricing",
+        body: "Scenario: Predicting the price of a house. The parameters are the multipliers for square footage, number of bathrooms, and age.\n\nResult: On day one, the model randomly guesses a multiplier of $10 per sq ft. It predicts a 2,000 sq ft house is $20,000. The real price is $200,000. The Loss is huge. Gradient descent calculates the slope, realizes it needs to increase the multiplier, and nudges it to $20. It repeats this against historical data until it settles on the optimal $100 per sq ft.",
+      },
+      {
+        title: "Training vs Inference Costs",
+        body: "Scenario: A startup wants to build a custom language model.\n\nResult: Training the model requires renting 1,000 GPUs for a month to perform the quadrillions of gradient descent calculations required to adjust the parameters. This costs $2 million. However, once deployed for *inference*, the parameters are frozen. It only requires 1 GPU to run the math forward and serve predictions to users in real-time, costing just a few dollars an hour.",
+      },
+    ],
+    quiz: [
+      {
+        q: "What is a 'parameter' or 'weight' in a Machine Learning model?",
+        options: [
+          "The historical data used to train the model.",
+          "An adjustable numerical value inside the model's equation that gets tuned during training.",
+          "The code written by engineers to define business rules.",
+          "The final output prediction of the model.",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Correct! The intelligence of a trained model is physically stored as the final, tuned values of these parameters.",
+        wrongFeedback:
+          "Look for the answer that describes a 'tunable' piece of the model's internal math.",
+      },
+      {
+        q: "Why should a Product Manager care deeply about the Loss Function?",
+        options: [
+          "Because the PM needs to write the calculus code for gradient descent.",
+          "Because it determines how fast the model runs in production.",
+          "Because the Loss Function is the mathematical translation of the product's goal—if it misaligns with business value, the model will confidently optimize for the wrong thing.",
+          "Because it determines whether to use ML or Deep Learning.",
+        ],
+        correct: 2,
+        correctFeedback:
+          "Exactly. The model blindly minimizes the Loss Function. Defining what constitutes an error is fundamentally a product and business decision.",
+        wrongFeedback:
+          "Think about how the Loss Function dictates what the model *cares* about optimizing.",
+      },
+      {
+        q: "Once an ML model is deployed to production and users are interacting with it (Inference), is it constantly updating its parameters in real-time using Gradient Descent?",
+        options: [
+          "Yes, models learn continuously from every interaction.",
+          "No, inference just passes data through locked parameters. Learning only happens during dedicated training runs.",
+          "Yes, but only for Deep Learning models.",
+          "No, but it updates its parameters once a day automatically.",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Spot on. Inference is just running the math forward. To make the model smarter, you have to collect new data and do a whole new training run.",
+        wrongFeedback:
+          "Remember that updating parameters is incredibly expensive and is called 'training'.",
+      },
+    ],
+  },
+  {
+    slug: "pm-ai-hierarchy",
+    number: 1,
+    shortTitle: "AI vs ML vs Deep Learning",
+    title:
+      "Concept 1: AI vs ML vs Deep Learning (The hierarchy you'll explain 100 times in your career)",
+    readingMinutes: 8,
+    summary:
+      "The tech industry uses AI, ML, and Deep Learning interchangeably, but they represent a strict hierarchy of capabilities. Artificial Intelligence is the broad goal of making machines act smartly. Machine Learning is the specific mathematical approach of having machines learn rules from data rather than being programmed. Deep Learning is the specialized architecture—using multi-layered neural networks—that unlocked modern AI's ability to process messy, unstructured data like images and text.",
+    keyTakeaway:
+      "AI is the umbrella term, ML is the statistical engine that makes modern AI work, and DL is the heavy-duty architecture powering the most advanced models. As a PM, knowing the difference dictates how you scope data requirements and set engineering timelines.",
+    pmCallout:
+      "As a PM: If a feature is 'Rules-based AI', you need logic edge-cases. If a feature is 'Machine Learning', you need a large, clean, structured dataset and a way to measure statistical accuracy. If it's 'Deep Learning', you need massive unstructured data, significant compute budget, and tolerance for black-box unpredictability.",
+    body: [
+      {
+        kind: "h3",
+        title: "1.1 What is Artificial Intelligence",
+        subtitle: "More than robots — why every software decision is now an AI decision",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Artificial Intelligence is the broadest umbrella term in the industry, and it fundamentally refers to any computer program that mimics human cognition, decision-making, or problem-solving. For decades, AI was almost entirely deterministic. ",
+          ),
+          x(
+            "If you played a video game in the 1990s and the 'AI enemy' decided to attack you, it wasn't thinking; it was simply executing a pre-programmed script written by an engineer.",
+            "e.g., 'IF player_health < 50 AND distance < 10 THEN attack'. This is known as 'Classical AI' or 'Good Old-Fashioned AI' (GOFAI).",
+          ),
+          s(
+            " Because Classical AI relies on humans explicitly writing out the rules, it is perfectly auditable but incredibly brittle. It cannot handle ambiguity. If a Classical AI self-driving car encounters a situation the programmer didn't explicitly write a rule for (like a person in a chicken suit crossing the road), it crashes. Today, the term AI is heavily conflated with Machine Learning, but as a PM, it's vital to remember that not all AI learns. Many 'AI' systems running in enterprise software today are still just massive webs of human-written if/else statements designed to look intelligent.",
+          ),
+        ],
+      },
+      {
+        kind: "h3",
+        title: "1.2 What is Machine Learning",
+        subtitle: "When systems learn from data instead of following rules",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Machine Learning (ML) was a massive paradigm shift in how software is engineered. Instead of a human programmer writing the rules, the programmer provides the machine with the data and the correct answers, and the machine uses statistical mathematics to figure out the rules on its own. ",
+          ),
+          x(
+            "It is the transition from explicit instruction to pattern recognition.",
+            "Imagine you are trying to predict which users will cancel their subscription (churn). In a Classical AI approach, a PM and an engineer would guess the rules: 'If they haven't logged in for 30 days, flag them as churn.'",
+          ),
+          s(
+            " In a Machine Learning approach, you feed an algorithm a massive spreadsheet containing 100,000 historical users, their behavior metrics, and whether they churned or not. The algorithm calculates the statistical correlations and builds a mathematical model that can predict churn with high accuracy. The profound implication for Product Managers is that your product's quality is no longer constrained by your engineering team's ability to write clever logic; it is now entirely constrained by the quality, cleanliness, and volume of your historical data. If your data is biased, the machine will perfectly and confidently learn that bias.",
+          ),
+        ],
+      },
+      {
+        kind: "h3",
+        title: "1.3 What is Deep Learning",
+        subtitle: "Why neural networks changed everything",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "Traditional Machine Learning is incredibly powerful for structured data—things that fit neatly into rows and columns in a database, like financial records or user clickstreams. However, it completely fails when faced with 'unstructured data' like raw audio waves, paragraphs of text, or the pixels of an image. To make traditional ML work on an image, a human engineer first has to manually define features (e.g., write a script to detect 'edges' or 'circles'), which is virtually impossible for complex scenes. ",
+          ),
+          x(
+            "Deep Learning is a highly specialized, computationally expensive sub-field of Machine Learning that utilizes 'Artificial Neural Networks' consisting of many 'deep' layers to solve this.",
+            "You feed a Deep Learning model raw pixels, and it automatically learns its own features. The first layer might learn to detect edges, the next layer combines edges into shapes, and the final layer combines shapes to recognize a stop sign.",
+          ),
+          s(
+            " This automatic feature extraction is the engine behind the modern AI boom—it's what makes self-driving cars see, Siri understand speech, and ChatGPT write code. However, the trade-off is massive: Deep Learning requires vast amounts of specialized compute (GPUs) and operates as a 'black box,' meaning it is nearly impossible for even the engineers who built it to explain exactly why it made a specific decision.",
+          ),
+        ],
+      },
+      {
+        kind: "h3",
+        title: "1.4 The nested hierarchy explained",
+        subtitle: "How AI, ML and DL relate — and why conflating them costs you credibility",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "These three terms are not interchangeable buzzwords; they represent a strict, nested hierarchy—like Russian nesting dolls. ",
+          ),
+          x(
+            "Artificial Intelligence is the outermost doll, representing any machine exhibiting smart behavior. Inside that doll is Machine Learning. Deep inside Machine Learning is Deep Learning.",
+            "All Deep Learning is Machine Learning, and all Machine Learning is Artificial Intelligence. But the reverse is not true. A standard spam filter using a Naive Bayes algorithm is Machine Learning, but it is not Deep Learning.",
+          ),
+          s(
+            " A video game NPC navigating a maze using an A* pathfinding algorithm is Artificial Intelligence, but it is not Machine Learning. When product managers conflate these terms—for instance, telling an engineering team they want to use 'Deep Learning' to calculate a simple pricing discount—they instantly lose credibility. Precise terminology ensures you are scoping the correct level of technical complexity, budget, and data requirements for your feature.",
+          ),
+        ],
+      },
+      {
+        kind: "h3",
+        title: "1.5 Rule-based systems vs learned systems",
+        subtitle: "The question that exposes fake AI in vendor pitches",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "The enterprise software market is flooded with vendors claiming their products are 'AI-powered.' In reality, a massive percentage of these tools are 'AI-washing'—they are simply complex, rule-based systems written by humans, rebranded for marketing purposes. As a PM evaluating third-party tools or pitching internal solutions, you must be able to differentiate a brittle rule-based system from a robust learned system. ",
+          ),
+          x(
+            "The easiest way to expose fake AI is to ask the vendor: 'How does your model handle edge cases that aren't explicitly in the training data?'",
+            "A learned system uses probabilities; it maps the new, unseen edge case to its closest known neighbors and attempts a mathematically optimal 'best guess.' It degrades gracefully.",
+          ),
+          s(
+            " A rule-based system, on the other hand, is deterministic. If it hits an edge case without a pre-written rule, it will hard-fail, crash, or default to a generic error message. If the vendor's answer to fixing a bad prediction is 'we just write a new rule for that,' you are buying a 1990s software architecture wrapped in 2020s marketing.",
+          ),
+        ],
+      },
+      {
+        kind: "h3",
+        title: "1.6 PM decision lens: spotting real AI vs marketing AI",
+        subtitle: "The 3 questions to ask before trusting any 'AI-powered' claim",
+      },
+      {
+        kind: "p",
+        parts: [
+          s(
+            "To protect your product roadmap and your users, you must develop a critical lens when evaluating AI capabilities. Whether you are buying an API or building a feature internally, run the claim through these three foundational questions. ",
+          ),
+          x(
+            "First: What exactly is the training data? Second: Is it actually learning over time, or just matching rules? Third: What is the fallback when it is confidently wrong?",
+            "True machine learning models are entirely dependent on their data. If a vendor cannot clearly articulate what data their model was trained on, or if your internal team doesn't have a clean dataset, the AI is a mirage.",
+          ),
+          s(
+            " A real ML system should have a feedback loop. When it makes a mistake, that mistake should be captured and used to retrain and improve the model. If the system's logic is static, it's not learning. Finally, AI models deal in probabilities, not certainties. They will make mistakes, and often, they will make them with high confidence (hallucinations). If there is no UX fallback mechanism—like a human-in-the-loop review step or a graceful error state—the 'AI' is a catastrophic UX disaster waiting to happen. Real AI product management is defined by how you handle the errors, not just the successes.",
+          ),
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: "Spam Filtering (The Evolution)",
+        body: "Rules-based AI: Block emails containing the exact phrase 'Nigerian Prince'. Spammers bypass this by typing 'N1gerian Prince'.\n\nMachine Learning: Train a model on 10,000 emails labeled 'spam' and 10,000 labeled 'safe'. The model learns that certain combinations of words, sender reputation, and time of day correlate with spam.\n\nDeep Learning: Feed millions of raw emails into a neural network. It doesn't just look at word frequencies; it learns the semantic context and tone of the email to catch highly sophisticated phishing attacks.",
+      },
+      {
+        title: "Self-Driving Cars",
+        body: "Rules-based AI: 'If the ultrasonic sensor detects an object within 5 feet, apply the brakes.'\n\nDeep Learning: 'Feed the neural network 50,000 hours of video footage of human driving. The network learns to identify pedestrians, lane markings, and stop lights from the raw pixels of the cameras, and outputs steering angles.'",
+      },
+      {
+        title: "Product Recommendations",
+        body: "Machine Learning: A collaborative filtering model looks at a structured matrix of user purchases. 'Users who bought diapers also bought baby wipes.' It's highly effective and relatively easy to compute.\n\nDeep Learning: A deep neural recommendation engine processes the user's clickstream history, search queries, time spent hovering over images, and the visual features of the products themselves to predict exactly what they want to buy next.",
+      },
+    ],
+    quiz: [
+      {
+        q: "If your engineering team says, 'We need to manually label which parts of the image contain the product before we can train the model,' what are they likely dealing with?",
+        options: [
+          "Deep Learning",
+          "Supervised Machine Learning",
+          "Rules-based AI",
+          "A Large Language Model",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Correct! Supervised ML requires labeled examples (data + answers) to learn the patterns.",
+        wrongFeedback:
+          "Remember that manually labeling examples for training is a hallmark of supervised learning.",
+      },
+      {
+        q: "Why is Deep Learning almost exclusively used for tasks like voice recognition and image generation, rather than traditional ML?",
+        options: [
+          "Because Deep Learning is faster to execute on CPUs.",
+          "Because Deep Learning excels at finding patterns in raw, unstructured data without humans needing to define the features.",
+          "Because traditional ML cannot use probabilities.",
+          "Because Deep Learning guarantees 100% accuracy.",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Exactly. Standard ML usually requires humans to extract structured features before training. DL learns those features directly.",
+        wrongFeedback:
+          "Think about the type of data (unstructured vs structured) and manual feature extraction.",
+      },
+      {
+        q: "As a PM, you are building a tool to approve or deny medical insurance claims. Regulatory law requires that every denial must be fully and transparently explainable. Which approach is the most risky?",
+        options: [
+          "Rules-based AI",
+          "Deep Learning",
+          "Basic statistical analysis",
+          "A combination of human review and simple heuristics",
+        ],
+        correct: 1,
+        correctFeedback:
+          "Correct. Deep Learning models are notorious 'black boxes', making them risky for strict regulatory environments.",
+        wrongFeedback:
+          "Look for the method that acts as a 'black box' where decisions are hard to trace.",
+      },
+    ],
+  },
   {
     slug: "what-is-ai",
     number: 1,
