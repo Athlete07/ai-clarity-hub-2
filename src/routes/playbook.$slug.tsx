@@ -12,8 +12,16 @@ import {
   prevConcept,
   type ConceptBodyBlock,
 } from "@/lib/concepts";
-import { useProgress } from "@/lib/storage";
-import { Clock, Hand, Menu, X, Check } from "lucide-react";
+import { useProgress, useReadMode, type ReadMode } from "@/lib/storage";
+import { Clock, Hand, Menu, X, Check, ChevronDown, BookOpen, Zap } from "lucide-react";
+
+// Approx 220 words per minute; word counts derived from block kind.
+function blockWords(b: ConceptBodyBlock): number {
+  if (b.kind === "p") return b.parts.reduce((n, p) => n + (typeof p === "string" ? p : p.text).split(/\s+/).length, 0);
+  if (b.kind === "take" || b.kind === "why" || b.kind === "trans") return b.text.split(/\s+/).length;
+  if (b.kind === "ex") return b.title.split(/\s+/).length + b.body.split(/\s+/).length;
+  return 0;
+}
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
