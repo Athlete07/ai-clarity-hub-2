@@ -4,6 +4,8 @@ const PROGRESS_KEY = "factorbeam:progress";
 const GLOSSARY_KEY = "factorbeam:glossary";
 const STREAK_KEY = "factorbeam:streak";
 const READ_MODE_KEY = "factorbeam:readMode";
+const SECTIONS_VIEWED_KEY = "factorbeam:sectionsViewed";
+const SAVED_DEPTH_KEY = "factorbeam:savedDepth";
 
 export type ReadMode = "deep" | "skim";
 
@@ -150,4 +152,57 @@ export function useStreak(): number {
   }, []);
 
   return count;
+}
+
+// Sections viewed: { [slug]: string[] of section numbers like "1.2" }
+export function useSectionsViewed(slug: string) {
+  const [viewed, setViewed] = useState<string[]>([]);
+  useEffect(() => {
+    const all = readJson<Record<string, string[]>>(SECTIONS_VIEWED_KEY, {});
+    setViewed(all[slug] || []);
+    const onChange = () => {
+      const a = readJson<Record<string, string[]>>(SECTIONS_VIEWED_KEY, {});
+      setViewed(a[slug] || []);
+    };
+    window.addEventListener("factorbeam:storage", onChange);
+    return () => window.removeEventListener("factorbeam:storage", onChange);
+  }, [slug]);
+  const markViewed = useCallback(
+    (sectionNum: string) => {
+      const all = readJson<Record<string, string[]>>(SECTIONS_VIEWED_KEY, {});
+      const list = all[slug] || [];
+      if (list.includes(sectionNum)) return;
+      all[slug] = [...list, sectionNum];
+      writeJson(SECTIONS_VIEWED_KEY, all);
+    },
+    [slug],
+  );
+  return { viewed, markViewed };
+}
+
+// Saved depth folds: { slug, sectionNum, title }[]
+export type SavedDepth = { slug: string; sectionNum: string; title: string; savedAt: number };
+export function useSavedDepth() {
+  const [items, setItems] = useState<SavedDepth[]>([]);
+  useEffect(() => {
+    setItems(readJson<SavedDepth[]>(SAVED_DEPTH_KEY, []));
+    const onChange = () => setItems(readJson<SavedDepth[]>(SAVED_DEPTH_KEY, []));
+    window.addEventListener("factorbeam:storage", onChange);
+    return () => window.removeEventListener("factorbeam:storage", onChange);
+  }, []);
+  const toggle = useCallback((slug: string, sectionNum: string, title: string) => {
+    const list = readJson<SavedDepth[]>(SAVED_DEPTH_KEY, []);
+    const exists = list.some((i) => i.slug === slug && i.sectionNum === sectionNum);
+    const next = exists
+      ? list.filter((i) => !(i.slug === slug && i.sectionNum === sectionNum))
+      : [{ slug, sectionNum, title, savedAt: Date.now() }, ...list];
+    writeJson(SAVED_DEPTH_KEY, next);
+    setItems(next);
+  }, []);
+  const isSaved = useCallback(
+    (slug: string, sectionNum: string) =>
+      items.some((i) => i.slug === slug && i.sectionNum === sectionNum),
+    [items],
+  );
+  return { items, toggle, isSaved };
 }
