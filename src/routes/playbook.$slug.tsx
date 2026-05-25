@@ -448,6 +448,7 @@ function BodyBlock({
       <div
         className="hairline-t mt-10 pt-6"
         id={block.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+        data-section-num={block.number}
       >
         <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-purple">
           <span>Section {block.number}</span>
