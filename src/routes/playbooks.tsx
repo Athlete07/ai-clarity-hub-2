@@ -90,6 +90,13 @@ const PM_FOUNDATIONS_SEQUENCE = [
   },
 ];
 
+const PM_LLMS_PROMPTING_SEQUENCE = [
+  {
+    slug: "pm-llm-tokenization",
+    note: "How machines read — and why tokens are the unit of cost, latency, and context for every LLM feature you'll ever ship.",
+  },
+];
+
 type Playbook = {
   id: string;
   title: string;
@@ -132,7 +139,7 @@ const PLAYBOOKS_BY_ROLE: Record<RoleId, Playbook[]> = {
         "Model families", 
         "Multimodal basics (vision, speech, image gen)"
       ],
-      sequence: [],
+      sequence: PM_LLMS_PROMPTING_SEQUENCE,
     },
   ],
 };
