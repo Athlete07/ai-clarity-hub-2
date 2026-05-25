@@ -1364,6 +1364,38 @@ export const concepts: Concept[] = [
     ],
     quiz: [
       {
+        kind: "order",
+        q: "Put the four steps of a single training iteration in the order they actually happen.",
+        prompt: "Drag to arrange — what runs first (top) through last (bottom).",
+        items: [
+          "Forward pass — push a batch of inputs through the network's current weights to produce predictions.",
+          "Loss calculation — compare predictions to the labels and score how wrong they were.",
+          "Backpropagation — assign blame for the loss to every parameter that contributed.",
+          "Weight update — nudge each parameter a small step in the direction that would have reduced the loss.",
+        ],
+        correctFeedback: "Exactly. Forward → loss → backprop → update. This single loop runs millions of times during training, and every line item in your compute bill traces back to it.",
+        wrongFeedback: "The model has to make a prediction before you can score it, and you have to score it before you can assign blame and adjust the weights. Re-read sections 2.3 and 2.4.",
+      },
+      {
+        kind: "categorize",
+        q: "Engineering shows you these training symptoms. Sort each one into the right diagnosis.",
+        categories: [
+          "Underfitting",
+          "Overfitting",
+          "Healthy fit",
+        ],
+        items: [
+          { text: "Training accuracy 62%, validation accuracy 61%.", category: 0 },
+          { text: "Training accuracy 99%, validation accuracy 70%.", category: 1 },
+          { text: "Training accuracy 92%, validation accuracy 89%.", category: 2 },
+          { text: "Model performs perfectly on the vendor's lab data but misses 40% of fraud in your live transactions.", category: 1 },
+          { text: "Both training and validation loss have flatlined high and won't budge with more epochs.", category: 0 },
+          { text: "Validation loss tracks training loss closely throughout training.", category: 2 },
+        ],
+        correctFeedback: "Right. A big gap between training and validation = overfitting (memorised, didn't generalise). Both poor and matching = underfitting (model is too dumb). Both good and matching = the model you actually want to ship.",
+        wrongFeedback: "The diagnostic is the GAP between training and validation, not the absolute number. Big gap → overfitting. Both flat & bad → underfitting. Re-read sections 2.7 and 2.8.",
+      },
+      {
         q: 'A vendor tells you they are "fine-tuning a 70 billion parameter model" on your company\'s internal wiki. What are they actually doing technically?',
         options: [
           "Writing 70 billion new rules to govern how the wiki is searched.",
@@ -2150,6 +2182,37 @@ export const concepts: Concept[] = [
     ],
     quiz: [
       {
+        kind: "categorize",
+        q: "Sort each line item on the AI cloud bill into the bucket it belongs to.",
+        categories: [
+          "Training (large one-time CapEx)",
+          "Inference (per-request OpEx)",
+        ],
+        items: [
+          { text: "Renting 1,024 GPUs for three weeks to pre-train a 70B-parameter foundation model.", category: 0 },
+          { text: "Every time a user clicks 'Summarise this doc' and the model generates 800 tokens.", category: 1 },
+          { text: "A nightly batch job that scores all new support tickets with your churn classifier.", category: 1 },
+          { text: "A two-day fine-tuning run on 5,000 brand-voice examples.", category: 0 },
+          { text: "Real-time autocomplete suggestions firing as the user types.", category: 1 },
+          { text: "An OpenAI API charge of $0.002 per 1k input tokens on a production chatbot.", category: 1 },
+        ],
+        correctFeedback: "Exactly. Training and fine-tuning are large fixed-cost events; inference is a per-call variable cost that scales linearly with usage. Confusing the two is how AI features end up with negative gross margins.",
+        wrongFeedback: "Training/fine-tuning happens once and produces a frozen artefact. Inference is what runs every single time a user (or background job) hits the model. Re-read sections 3.2 and 3.4.",
+      },
+      {
+        kind: "order",
+        q: "Put the typical lifecycle stages of shipping an LLM-powered feature in order.",
+        prompt: "Drag to arrange — earliest stage (top) to latest (bottom).",
+        items: [
+          "Pre-training — a foundation model is trained from scratch on internet-scale data (usually by a vendor like OpenAI or Meta, not you).",
+          "Fine-tuning or prompt engineering — you adapt the pre-trained model to your domain, brand voice, or task format.",
+          "Evaluation — you measure offline accuracy, latency, and cost against your launch gate metrics.",
+          "Inference in production — the model serves real user requests, generating ongoing per-call cost.",
+        ],
+        correctFeedback: "Right. Pre-training is the foundation, fine-tuning customises it, evaluation is the launch gate, and inference is the ongoing operational cost. Skipping evaluation is the most common failure mode.",
+        wrongFeedback: "You can't fine-tune a model that hasn't been pre-trained, and you can't serve inference for a model that hasn't passed evaluation. Re-read section 3.5.",
+      },
+      {
         q: 'Your startup wants a model that deeply understands your highly technical proprietary codebase. An engineer says, "We should train a new open-source model on it." Why should you push back?',
         options: [
           "Because open-source models cannot read code.",
@@ -2894,6 +2957,39 @@ export const concepts: Concept[] = [
   ],
   quiz: [
     {
+      kind: "categorize",
+      q: "Match each setup to the learning paradigm it actually uses.",
+      categories: [
+        "Supervised",
+        "Unsupervised",
+        "Self-supervised",
+        "RLHF",
+      ],
+      items: [
+        { text: "1M emails, each manually tagged spam/not-spam, used to train a classifier.", category: 0 },
+        { text: "10M customer records clustered into behavioural segments with no predefined labels.", category: 1 },
+        { text: "Billions of web pages where the model is trained to predict the next masked word.", category: 2 },
+        { text: "Human raters score pairs of model outputs; a reward model is trained on their preferences.", category: 3 },
+        { text: "A churn model trained on 18 months of accounts labelled 'churned' or 'retained'.", category: 0 },
+        { text: "GPT-style pre-training that uses raw text as its own answer key.", category: 2 },
+      ],
+      correctFeedback: "Exactly. Supervised needs human labels. Unsupervised finds structure with none. Self-supervised invents its own labels from raw data. RLHF uses humans to score and rank outputs rather than label inputs. Each implies a different cost structure and timeline.",
+      wrongFeedback: "The diagnostic is: who provides the answer key? Humans (supervised), nobody (unsupervised), the data itself (self-supervised), or human preference rankings (RLHF). Re-read sections 4.3–4.6.",
+    },
+    {
+      kind: "order",
+      q: "Order these labelling approaches from cheapest per label to most expensive per label.",
+      prompt: "Drag to arrange — cheapest (top) to most expensive (bottom).",
+      items: [
+        "Self-supervised — the data labels itself by masking parts of raw text. Marginal cost per label ≈ $0.",
+        "Implicit product signal — clicks, dwell time, accept/reject buttons collected automatically from your UI.",
+        "Crowdsourced annotation — Mechanical Turk / Scale workers labelling at a few cents per item.",
+        "Domain expert annotation — doctors, lawyers, or architects labelling at $50–$500 per hour.",
+      ],
+      correctFeedback: "Right. Cost scales with the cognitive load and credentials required. Burning expert hours on labels a crowd or your own UI could capture is the fastest way to destroy your data unit economics.",
+      wrongFeedback: "The order is determined by who (or what) is providing the label and what that costs. Re-read section 4.7 on the labelling cost spectrum.",
+    },
+    {
       q: "A competitor launches an AI feature using the exact same open-source model as your company. Why shouldn't you be panicked about the algorithm being identical?",
       options: [
         "Because open-source models are inherently secure.",
@@ -3469,6 +3565,37 @@ export const concepts: Concept[] = [
     }
   ],
   quiz: [
+    {
+      kind: "categorize",
+      q: "For each product scenario, decide whether you should raise the decision threshold (more conservative) or lower it (more aggressive).",
+      categories: [
+        "Raise threshold (favour precision)",
+        "Lower threshold (favour recall)",
+      ],
+      items: [
+        { text: "Auto-deleting comments flagged as toxic in a community of paying customers.", category: 0 },
+        { text: "Cancer screening pre-filter that routes suspicious scans for radiologist review.", category: 1 },
+        { text: "Airport security scanner identifying prohibited items in carry-on bags.", category: 1 },
+        { text: "Automated loan approvals where a wrong 'approve' costs ~$50k.", category: 0 },
+        { text: "Spam filter for a customer support inbox where missing a real ticket is unacceptable.", category: 1 },
+        { text: "Auto-refund bot that issues credits without human review.", category: 0 },
+      ],
+      correctFeedback: "Right. When false positives hurt more (deleting good comments, approving bad loans, wrongful refunds), raise the bar. When false negatives hurt more (missing cancer, weapons, real tickets), lower it. The threshold is the product's steering wheel.",
+      wrongFeedback: "Ask: what's worse — acting wrongly, or failing to act? If acting wrongly is worse, raise the threshold. If failing to act is worse, lower it. Re-read sections 5.5 and 5.7.",
+    },
+    {
+      kind: "order",
+      q: "Put the steps of a Human-in-the-Loop (HITL) decision flow in the right order.",
+      prompt: "Drag to arrange — what happens first (top) to last (bottom).",
+      items: [
+        "Model runs inference and produces a confidence score for each input.",
+        "Score is compared to two thresholds: a high one for auto-approve and a low one for auto-reject.",
+        "Inputs falling in the uncertain middle band are routed to a human reviewer queue.",
+        "Human decisions are logged as ground-truth labels and fed back into the next training cycle.",
+      ],
+      correctFeedback: "Exactly. HITL automates the confident extremes, escalates the ambiguous middle, and turns every human review into a labelled training example. The flywheel only works if step 4 is wired up.",
+      wrongFeedback: "The flow is: predict → compare to thresholds → route ambiguous cases to humans → harvest those decisions as labels. Skipping the feedback loop is the most common HITL mistake. Re-read section 5.6.",
+    },
     {
       q: "A user is furious that your generative AI product answered the exact same prompt differently on two different days. What is the fundamental issue?",
       options: [
@@ -4199,6 +4326,37 @@ export const concepts: Concept[] = [
     }
   ],
   quiz: [
+    {
+      kind: "categorize",
+      q: "For each product, sort which evaluation metric the PRD should optimise for.",
+      categories: [
+        "Optimise for Precision",
+        "Optimise for Recall",
+        "Balanced (F1)",
+      ],
+      items: [
+        { text: "AI assistant suggesting reply drafts in a busy customer support inbox.", category: 0 },
+        { text: "Pedestrian detection for an autonomous braking system.", category: 1 },
+        { text: "Cancer detection pre-filter for radiology review.", category: 1 },
+        { text: "Auto-refund bot that issues credits with no human review.", category: 0 },
+        { text: "General-purpose document classifier where FPs and FNs cost about the same.", category: 2 },
+        { text: "Internal duplicate-ticket detector where both error types create roughly equal annoyance.", category: 2 },
+      ],
+      correctFeedback: "Right. Precision when false alarms are expensive (assistant suggestions, auto-refunds). Recall when misses are catastrophic (braking, cancer). F1 only when both errors carry similar cost. Defaulting to F1 because it's the 'balanced' metric is how you ship a model that looks good in the lab and loses money in production.",
+      wrongFeedback: "The metric follows the asymmetry of the cost. If FPs are worse → precision. If FNs are worse → recall. If genuinely symmetric → F1. Re-read sections 6.3–6.6.",
+    },
+    {
+      kind: "order",
+      q: "Put the three dataset splits in the order they're used during a model's lifecycle, and pair each with what it's for.",
+      prompt: "Drag to arrange — used first (top) to used last (bottom).",
+      items: [
+        "Training set — the model sees this data and updates its weights to fit it.",
+        "Validation set — used between training runs to compare architectures, pick hyperparameters, and tune thresholds.",
+        "Test set — locked away until the very end; used once to estimate real-world generalisation before launch.",
+      ],
+      correctFeedback: "Exactly. The test set is sacred — if you peek at it while tuning, you've turned it into another validation set and have no honest read on whether the model will generalise. Re-evaluating on it after every change is the single most common evaluation fraud.",
+      wrongFeedback: "Training fits the weights, validation tunes the choices around the weights, test is the one-shot honest exam. Touching test data during tuning destroys its purpose. Re-read sections 6.8 and 6.9.",
+    },
     {
       q: "Your team builds a model to detect a rare manufacturing defect that occurs in 0.1% of products. The model achieves 99.9% accuracy. Why should you be highly skeptical?",
       options: [
@@ -4966,6 +5124,38 @@ export const concepts: Concept[] = [
     }
   ],
   quiz: [
+    {
+      kind: "categorize",
+      q: "Triage each model failure into the right category.",
+      categories: [
+        "Bias",
+        "Factual hallucination",
+        "Reasoning hallucination",
+      ],
+      items: [
+        { text: "An LLM invents a court case citation that does not exist.", category: 1 },
+        { text: "A resume screener systematically downgrades applicants from women's colleges.", category: 0 },
+        { text: "A financial assistant correctly pulls revenue numbers but miscalculates year-over-year growth.", category: 2 },
+        { text: "A facial recognition system has 30% higher error rates for darker-skinned users.", category: 0 },
+        { text: "An LLM produces a fluent biography of a person, including a fabricated PhD from a real university.", category: 1 },
+        { text: "An LLM correctly identifies all the constraints in a logic puzzle but draws the wrong conclusion.", category: 2 },
+      ],
+      correctFeedback: "Right. Bias = systematically worse performance for a demographic group. Factual hallucination = inventing things that aren't true. Reasoning hallucination = correct facts, broken logic on top. Each has a different mitigation: bias needs disaggregated metrics, factual hallucinations need RAG/grounding, reasoning hallucinations need tool use (calculators, code execution).",
+      wrongFeedback: "Bias is about WHO the model fails for. Factual hallucination is making up facts. Reasoning hallucination is logic/math failing on correct facts. Re-read sections 7.1, 7.6, and 7.7.",
+    },
+    {
+      kind: "order",
+      q: "Put the steps of a Retrieval-Augmented Generation (RAG) request in execution order.",
+      prompt: "Drag to arrange — what runs first (top) to last (bottom).",
+      items: [
+        "User query arrives at the application server.",
+        "Query is embedded and used to retrieve the top-k most relevant document chunks from a vector store.",
+        "Retrieved chunks are stitched into an augmented prompt alongside the original question.",
+        "The LLM generates an answer constrained by — and ideally citing — the supplied chunks.",
+      ],
+      correctFeedback: "Exactly. The whole point of RAG is that the LLM never sees the question alone — it sees the question plus grounded context. Skipping or weakening any of these steps leaks hallucination back into the answer.",
+      wrongFeedback: "You can't retrieve before you have a query, you can't augment the prompt before you've retrieved, and the LLM only generates last. Re-read section 7.9.",
+    },
     {
       q: "A facial recognition model boasts 98% overall accuracy but fails 30% of the time for darker-skinned users. What does this indicate about the model?",
       options: [
