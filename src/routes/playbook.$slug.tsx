@@ -119,8 +119,8 @@ export const Route = createFileRoute("/playbook/$slug")({
 });
 
 type RenderItem =
-  | { type: "block"; block: ConceptBodyBlock }
-  | { type: "depth"; blocks: ConceptBodyBlock[] };
+  | { type: "block"; block: ConceptBodyBlock; sectionNum: string }
+  | { type: "depth"; blocks: ConceptBodyBlock[]; sectionNum: string; sectionTitle: string };
 
 function ConceptPage() {
   const { concept } = Route.useLoaderData() as {
