@@ -5759,12 +5759,3 @@ export const concepts: Concept[] = [
 export const conceptBySlug = (slug: string): Concept | undefined =>
   concepts.find((c) => c.slug === slug);
 
-export const nextConcept = (slug: string): Concept | undefined => {
-  const i = concepts.findIndex((c) => c.slug === slug);
-  return i >= 0 && i < concepts.length - 1 ? concepts[i + 1] : undefined;
-};
-
-export const prevConcept = (slug: string): Concept | undefined => {
-  const i = concepts.findIndex((c) => c.slug === slug);
-  return i > 0 ? concepts[i - 1] : undefined;
-};
