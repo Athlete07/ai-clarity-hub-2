@@ -565,7 +565,7 @@ function CollapsibleExample({
 function BudgetChip({ mins }: { mins: number }) {
   const tone =
     mins <= 20
-      ? { label: "Within commute", cls: "bg-success-bg text-success" }
+      ? { label: "Quick read", cls: "bg-success-bg text-success" }
       : mins <= 30
         ? { label: "Long read", cls: "bg-amber-bg text-amber-dark" }
         : { label: "Over budget", cls: "bg-error-bg text-error" };

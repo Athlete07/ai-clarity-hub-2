@@ -47,7 +47,7 @@ export function Nav({ slim = false }: { slim?: boolean }) {
               to="/playbooks"
               className="hidden text-[13px] text-muted-foreground hover:text-foreground sm:inline"
             >
-              ← All concepts
+              ← Playbooks
             </Link>
           )}
         </div>
