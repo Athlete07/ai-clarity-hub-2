@@ -118,6 +118,10 @@ export const Route = createFileRoute("/playbook/$slug")({
   component: ConceptPage,
 });
 
+type RenderItem =
+  | { type: "block"; block: ConceptBodyBlock }
+  | { type: "depth"; blocks: ConceptBodyBlock[] };
+
 function ConceptPage() {
   const { concept } = Route.useLoaderData() as {
     concept: NonNullable<ReturnType<typeof conceptBySlug>>;
@@ -127,16 +131,62 @@ function ConceptPage() {
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Compute per-section minute estimates from the body blocks
+  // Layered reading contract:
+  //  - skip "trans" blocks (the Next button implies sequence)
+  //  - first <p> in each section stays inline (the "Core")
+  //  - remaining <p>s in that section fold into a single "Go deeper" group (the "Depth")
+  //  - take / why / ex / diagram render as before
+  const renderItems = useMemo<RenderItem[]>(() => {
+    const items: RenderItem[] = [];
+    let pIdxInSection = 0;
+    let depthBuf: ConceptBodyBlock[] = [];
+    const flushDepth = () => {
+      if (depthBuf.length) {
+        items.push({ type: "depth", blocks: depthBuf });
+        depthBuf = [];
+      }
+    };
+    for (const b of concept.body) {
+      if (b.kind === "h") {
+        flushDepth();
+        pIdxInSection = 0;
+        items.push({ type: "block", block: b });
+      } else if (b.kind === "trans") {
+        continue;
+      } else if (b.kind === "p") {
+        if (pIdxInSection === 0) {
+          items.push({ type: "block", block: b });
+        } else {
+          depthBuf.push(b);
+        }
+        pIdxInSection++;
+      } else {
+        flushDepth();
+        items.push({ type: "block", block: b });
+      }
+    }
+    flushDepth();
+    return items;
+  }, [concept.body]);
+
+  // Per-section essentials: header + take + why + first-p only.
+  // Depth + examples are opt-in, so they don't bloat the visible estimate.
   const sectionMinutes = useMemo(() => {
     const out: Record<string, number> = {};
     let currentId = "";
     let words = 0;
+    let pIdx = 0;
     for (const b of concept.body) {
       if (b.kind === "h") {
         if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
         currentId = b.number;
         words = 0;
+        pIdx = 0;
+      } else if (b.kind === "trans" || b.kind === "ex" || b.kind === "diagram") {
+        // excluded from essentials
+      } else if (b.kind === "p") {
+        if (pIdx === 0) words += blockWords(b);
+        pIdx++;
       } else {
         words += blockWords(b);
       }
@@ -144,6 +194,11 @@ function ConceptPage() {
     if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
     return out;
   }, [concept.body]);
+
+  const essentialsMinutes = useMemo(
+    () => Math.max(1, Object.values(sectionMinutes).reduce((a, b) => a + b, 0)),
+    [sectionMinutes],
+  );
 
   useEffect(() => {
     markInProgress(concept.slug);
