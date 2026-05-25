@@ -711,46 +711,67 @@ export const concepts: Concept[] = [
           "Deep models genuinely don't have readable rules — their 'knowledge' lives in weight matrices that don't map to human concepts. The PM job is to convert 'why did it decide this?' into a conversation about evaluation, guardrails, and human review. Re-read section 1.3.",
       },
       {
-        q: "Which statement most accurately describes the relationship between AI, machine learning, and deep learning?",
-        options: [
-          "They're three names for substantially the same set of techniques.",
-          "Deep learning is a kind of machine learning, which is one approach to AI; all deep learning is ML and all ML is AI, but not the reverse.",
-          "AI is a kind of machine learning, which is a kind of deep learning.",
-          "Machine learning and deep learning are separate fields that occasionally overlap.",
+        kind: "order",
+        q: "Order the three terms from broadest scope to narrowest.",
+        prompt: "Drag to arrange from broadest (top) to narrowest (bottom).",
+        items: [
+          "Artificial Intelligence — any system that mimics intelligent behaviour, including rules engines.",
+          "Machine Learning — a subset of AI where systems learn patterns from data instead of being hand-coded.",
+          "Deep Learning — a subset of ML that uses many-layered neural networks.",
         ],
-        correct: 1,
         correctFeedback:
-          "Exactly. Nested circles, in that order, no exceptions. Holding this precisely is the cheapest credibility upgrade in your AI vocabulary.",
+          "Exactly. Nested circles, in that order, no exceptions. Deep learning ⊂ machine learning ⊂ AI. Holding this precisely is the cheapest credibility upgrade in your AI vocabulary.",
         wrongFeedback:
-          "The relationship is strict containment: deep learning ⊂ machine learning ⊂ artificial intelligence. Every DL system is ML and AI; not all AI is ML, and not all ML is DL. Re-read section 1.4.",
+          "The relationship is strict containment: every DL system is ML and AI; not all AI is ML, and not all ML is DL. Re-read section 1.4.",
       },
       {
-        q: "A vendor pitches an 'AI-powered customer health score'. In the demo, they admit there's no trained model — the score is a weighted sum of nine product-usage signals chosen by their consulting team. Which framing is most accurate?",
-        options: [
-          "It's machine learning, because it produces a score from data.",
-          "It's deep learning, because the score combines multiple signals.",
-          "It's a rule-based system that has been marketed as AI; it may still be useful, but it should be evaluated on rules-engine criteria rather than on ML metrics.",
-          "It's not software at all.",
+        kind: "categorize",
+        q: "Sort each vendor pitch into the right bucket. Which are genuinely ML, and which are rules-based systems wearing an AI label?",
+        categories: ["Rules-based system", "Machine learning"],
+        items: [
+          {
+            text: "A customer health score that is a weighted sum of 9 product-usage signals chosen by the vendor's consulting team.",
+            category: 0,
+          },
+          {
+            text: "A churn model trained on 18 months of labelled account data; predictions update weekly after retraining.",
+            category: 1,
+          },
+          {
+            text: "An onboarding flow that picks one of 4 welcome screens via if-statements on plan, role, and signup source.",
+            category: 0,
+          },
+          {
+            text: "A fraud detector whose decision boundary was learned from millions of labelled historical transactions.",
+            category: 1,
+          },
+          {
+            text: "A 'smart' lead router that applies hand-tuned thresholds on company size and industry.",
+            category: 0,
+          },
+          {
+            text: "A recommendation engine whose ranking weights were fit by gradient descent on click-through data.",
+            category: 1,
+          },
         ],
-        correct: 2,
         correctFeedback:
-          "Right. A hand-tuned weighted sum is a rules engine, not ML. That doesn't make it bad — it makes it a different product, with different operational properties, and you should evaluate it accordingly.",
+          "Right. Hand-tuned weights, if-statements, and human-chosen thresholds are rules engines — useful, but not ML. ML requires that the system learned the combination from labelled data. Calling each one correctly changes how you scope, price, and evaluate it.",
         wrongFeedback:
-          "Combining signals or producing a score isn't what makes something ML. ML requires that the system learned the combination from labelled data, not that a consultant chose the weights. Re-read section 1.5.",
+          "Combining signals or producing a score isn't what makes something ML. The test is: who chose the weights — a person or an optimiser fitting to data? Re-read section 1.5.",
       },
       {
-        q: "You have twenty minutes with an 'AI-powered' vendor in a procurement call. Which set of three questions, asked in order, most reliably separates real AI work from marketing veneer?",
-        options: [
-          "'How fast is it?', 'What language is it written in?', 'Does it run on the cloud?'",
-          "'Is there a trained model or is this rules?', 'What was it trained on and how is performance measured?', 'What happens when it's wrong and how do you retrain?'",
-          "'Which LLM do you use?', 'Are you GPT-4 or Claude?', 'Do you have a chatbot?'",
-          "'Who are your biggest customers?', 'When was the company founded?', 'What's your pricing?'",
+        kind: "order",
+        q: "You have twenty minutes with an 'AI-powered' vendor in a procurement call. Put the three diagnostic questions in the order that most reliably separates real AI work from marketing veneer.",
+        prompt: "Drag to arrange first question (top) to last (bottom).",
+        items: [
+          "Is there a trained model here, or is this a rules engine? (Establishes what you're actually evaluating.)",
+          "What was it trained on, and how do you measure performance? (Tests whether anyone is measuring it.)",
+          "What happens when it's wrong, and how often do you retrain? (Tests whether it stays accurate as the world changes.)",
         ],
-        correct: 1,
         correctFeedback:
-          "Exactly. Model vs. rules, training data and evaluation, retraining and failure handling — those three, in order, expose almost every gap between an AI pitch and an AI product. The questions are free to ask and expensive to skip.",
+          "Exactly. Model vs. rules, training data and evaluation, retraining and failure handling — those three, in that order, expose almost every gap between an AI pitch and an AI product. The questions are free to ask and expensive to skip.",
         wrongFeedback:
-          "The diagnostic isn't about speed, cloud, or which LLM is under the hood — it's about whether anything is being learned, whether anyone is measuring it, and whether it stays accurate as the world changes. Re-read section 1.6.",
+          "The order matters: you can't meaningfully ask about training data before you've confirmed there's a model, and you can't ask about retraining before you know how performance is measured. Re-read section 1.6.",
       },
     ],
   },
