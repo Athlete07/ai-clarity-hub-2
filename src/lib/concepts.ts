@@ -5448,6 +5448,11 @@ export const concepts: Concept[] = [
       body: "Cursor's inline code-edit feature has an aggressive latency target: feel instant, even on a complex edit. The team's primary lever isn't a faster model — it's biasing the prompt to produce a unified diff (small output) rather than rewriting the whole file (large output). The number of output tokens the model is allowed to generate is the single biggest latency knob, and it's controlled by the prompt template, not the infrastructure.",
     },
     {
+      kind: "ex",
+      title: "ChatGPT free vs Plus — context window as a paywall, not a feature",
+      body: "OpenAI's tiered ChatGPT plans differ partly on context-window size — the free tier has historically capped conversation memory more aggressively than Plus or Team. That's not arbitrary product packaging; it's tokens directly converted to monetisation. Every extra K of context the free tier holds is real OpEx that has to come from somewhere. PMs designing freemium AI products learn quickly that 'how long do we let the conversation grow' is a pricing decision masquerading as a UX one.",
+    },
+    {
       kind: "h",
       number: "1.4",
       title: "Tokens across languages",
