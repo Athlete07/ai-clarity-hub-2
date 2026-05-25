@@ -561,19 +561,6 @@ function CollapsibleExample({
   );
 }
 
-function BudgetChip({ mins }: { mins: number }) {
-  const tone =
-    mins <= 20
-      ? { label: "Quick read", cls: "bg-success-bg text-success" }
-      : mins <= 30
-        ? { label: "Long read", cls: "bg-amber-bg text-amber-dark" }
-        : { label: "Over budget", cls: "bg-error-bg text-error" };
-  return (
-    <span className={`ml-1 inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${tone.cls}`}>
-      {tone.label}
-    </span>
-  );
-}
 
 function ResumeSavedPill({ slug }: { slug: string }) {
   const { items } = useSavedDepth();
