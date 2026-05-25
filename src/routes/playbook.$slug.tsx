@@ -12,8 +12,16 @@ import {
   prevConcept,
   type ConceptBodyBlock,
 } from "@/lib/concepts";
-import { useProgress } from "@/lib/storage";
-import { Clock, Hand, Menu, X, Check } from "lucide-react";
+import { useProgress, useReadMode, type ReadMode } from "@/lib/storage";
+import { Clock, Hand, Menu, X, Check, ChevronDown, BookOpen, Zap } from "lucide-react";
+
+// Approx 220 words per minute; word counts derived from block kind.
+function blockWords(b: ConceptBodyBlock): number {
+  if (b.kind === "p") return b.parts.reduce((n, p) => n + (typeof p === "string" ? p : p.text).split(/\s+/).length, 0);
+  if (b.kind === "take" || b.kind === "why" || b.kind === "trans") return b.text.split(/\s+/).length;
+  if (b.kind === "ex") return b.title.split(/\s+/).length + b.body.split(/\s+/).length;
+  return 0;
+}
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
@@ -115,8 +123,27 @@ function ConceptPage() {
     concept: NonNullable<ReturnType<typeof conceptBySlug>>;
   };
   const { progress, markDone, markInProgress } = useProgress();
+  const [readMode, setReadMode] = useReadMode();
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Compute per-section minute estimates from the body blocks
+  const sectionMinutes = useMemo(() => {
+    const out: Record<string, number> = {};
+    let currentId = "";
+    let words = 0;
+    for (const b of concept.body) {
+      if (b.kind === "h") {
+        if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
+        currentId = b.number;
+        words = 0;
+      } else {
+        words += blockWords(b);
+      }
+    }
+    if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
+    return out;
+  }, [concept.body]);
 
   useEffect(() => {
     markInProgress(concept.slug);
@@ -155,8 +182,34 @@ function ConceptPage() {
                 className="inline-block rounded-full bg-purple"
                 style={{ width: 8, height: 8 }}
               />
-              <span className="text-[15px] font-medium">FactorBeam</span>
+            <span className="text-[15px] font-medium">FactorBeam</span>
             </Link>
+          </div>
+          <div
+            className="hairline inline-flex items-center rounded-full bg-card p-0.5 text-[12px]"
+            role="tablist"
+            aria-label="Reading mode"
+          >
+            <button
+              role="tab"
+              aria-selected={readMode === "deep"}
+              onClick={() => setReadMode("deep")}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors ${
+                readMode === "deep" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <BookOpen size={12} /> Deep
+            </button>
+            <button
+              role="tab"
+              aria-selected={readMode === "skim"}
+              onClick={() => setReadMode("skim")}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors ${
+                readMode === "skim" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Zap size={12} /> Skim
+            </button>
           </div>
         </div>
       </header>
@@ -182,7 +235,12 @@ function ConceptPage() {
             </h1>
             <div className="mt-4 flex items-center gap-2 text-[13px] text-muted-foreground">
               <Clock size={14} className="opacity-70" />
-              <span>{concept.readingMinutes} min read</span>
+              <span>
+                {readMode === "skim" ? `~${Math.max(2, Math.round(concept.readingMinutes / 3))}` : concept.readingMinutes} min{" "}
+                {readMode === "skim" ? "skim" : "read"}
+              </span>
+              <span className="opacity-50">·</span>
+              <span>{Object.keys(sectionMinutes).length} sections</span>
               <span className="opacity-50">·</span>
               <span>{concept.quiz.length} quiz questions</span>
             </div>
@@ -201,14 +259,16 @@ function ConceptPage() {
               <p className="mt-1 font-medium leading-relaxed">{concept.keyTakeaway}</p>
             </div>
 
-            <div className="mt-5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-[12px] text-muted-foreground">
-              <Hand size={13} />
-              Select any sentence below to get a plain-English explanation
-            </div>
+            {readMode === "deep" && (
+              <div className="mt-5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-[12px] text-muted-foreground">
+                <Hand size={13} />
+                Select any sentence below to get a plain-English explanation
+              </div>
+            )}
 
             <div className="mt-7 space-y-5 text-base leading-relaxed text-foreground">
               {concept.body.map((block, i) => (
-                <BodyBlock key={i} block={block} />
+                <BodyBlock key={i} block={block} mode={readMode} sectionMinutes={sectionMinutes} />
               ))}
             </div>
 
@@ -300,16 +360,35 @@ function ConceptPage() {
   );
 }
 
-function BodyBlock({ block }: { block: ConceptBodyBlock }) {
+function BodyBlock({
+  block,
+  mode,
+  sectionMinutes,
+}: {
+  block: ConceptBodyBlock;
+  mode: ReadMode;
+  sectionMinutes: Record<string, number>;
+}) {
+  const skim = mode === "skim";
+
   if (block.kind === "h") {
+    const mins = sectionMinutes[block.number];
     return (
       <div
         className="hairline-t mt-10 pt-6"
         id={block.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
       >
-        <p className="text-[11px] font-medium uppercase tracking-wider text-purple">
-          Section {block.number}
-        </p>
+        <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-purple">
+          <span>Section {block.number}</span>
+          {mins ? (
+            <>
+              <span className="opacity-40">·</span>
+              <span className="text-muted-foreground normal-case font-normal tracking-normal">
+                ~{mins} min
+              </span>
+            </>
+          ) : null}
+        </div>
         <h2 className="mt-1 text-2xl font-semibold tracking-tight leading-snug text-foreground">
           {block.title}
         </h2>
@@ -332,6 +411,7 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
     );
   }
   if (block.kind === "why") {
+    if (skim) return null;
     return (
       <div
         className="rounded-xl bg-amber-bg/70 px-5 py-4 text-[14px] italic text-foreground"
@@ -345,22 +425,16 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
     );
   }
   if (block.kind === "ex") {
-    return (
-      <div className="hairline rounded-xl bg-card px-5 py-4">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          Example
-        </p>
-        <p className="mt-1 text-[14px] font-medium text-foreground">{block.title}</p>
-        <p className="mt-2 text-[14px] leading-relaxed text-foreground/90">{block.body}</p>
-      </div>
-    );
+    return <CollapsibleExample title={block.title} body={block.body} defaultOpen={false} />;
   }
   if (block.kind === "trans") {
     return <p className="text-[14px] italic leading-relaxed text-muted-foreground">{block.text}</p>;
   }
   if (block.kind === "diagram") {
+    if (skim) return null;
     return <DiagramBlock block={block} />;
   }
+  if (skim) return null;
   return (
     <p>
       {block.parts.map((part, i) => {
@@ -376,6 +450,43 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
         );
       })}
     </p>
+  );
+}
+
+function CollapsibleExample({
+  title,
+  body,
+  defaultOpen,
+}: {
+  title: string;
+  body: string;
+  defaultOpen: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="hairline rounded-xl bg-card">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-3 px-5 py-3 text-left"
+        aria-expanded={open}
+      >
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            Example
+          </p>
+          <p className="mt-0.5 text-[14px] font-medium text-foreground">{title}</p>
+        </div>
+        <ChevronDown
+          size={16}
+          className={`shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <p className="hairline-t px-5 py-4 text-[14px] leading-relaxed text-foreground/90">
+          {body}
+        </p>
+      )}
+    </div>
   );
 }
 
