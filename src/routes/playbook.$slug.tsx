@@ -139,10 +139,12 @@ function ConceptPage() {
   const renderItems = useMemo<RenderItem[]>(() => {
     const items: RenderItem[] = [];
     let pIdxInSection = 0;
+    let curSectionNum = "";
+    let curSectionTitle = "";
     let depthBuf: ConceptBodyBlock[] = [];
     const flushDepth = () => {
       if (depthBuf.length) {
-        items.push({ type: "depth", blocks: depthBuf });
+        items.push({ type: "depth", blocks: depthBuf, sectionNum: curSectionNum, sectionTitle: curSectionTitle });
         depthBuf = [];
       }
     };
@@ -150,19 +152,21 @@ function ConceptPage() {
       if (b.kind === "h") {
         flushDepth();
         pIdxInSection = 0;
-        items.push({ type: "block", block: b });
+        curSectionNum = b.number;
+        curSectionTitle = b.title;
+        items.push({ type: "block", block: b, sectionNum: curSectionNum });
       } else if (b.kind === "trans") {
         continue;
       } else if (b.kind === "p") {
         if (pIdxInSection === 0) {
-          items.push({ type: "block", block: b });
+          items.push({ type: "block", block: b, sectionNum: curSectionNum });
         } else {
           depthBuf.push(b);
         }
         pIdxInSection++;
       } else {
         flushDepth();
-        items.push({ type: "block", block: b });
+        items.push({ type: "block", block: b, sectionNum: curSectionNum });
       }
     }
     flushDepth();
