@@ -321,9 +321,13 @@ function ConceptPage() {
             )}
 
             <div className="mt-7 space-y-5 text-base leading-relaxed text-foreground">
-              {concept.body.map((block, i) => (
-                <BodyBlock key={i} block={block} mode={readMode} sectionMinutes={sectionMinutes} />
-              ))}
+              {renderItems.map((item, i) =>
+                item.type === "block" ? (
+                  <BodyBlock key={i} block={item.block} mode={readMode} sectionMinutes={sectionMinutes} />
+                ) : (
+                  <DepthFold key={i} blocks={item.blocks} mode={readMode} />
+                ),
+              )}
             </div>
 
             {/* Examples */}
