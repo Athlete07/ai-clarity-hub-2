@@ -76,6 +76,7 @@ export function Nav({ slim = false }: { slim?: boolean }) {
               {streak}-day streak
             </span>
           )}
+          <ThemeToggle />
         </div>
       </div>
     </header>
