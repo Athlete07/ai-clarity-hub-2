@@ -123,8 +123,27 @@ function ConceptPage() {
     concept: NonNullable<ReturnType<typeof conceptBySlug>>;
   };
   const { progress, markDone, markInProgress } = useProgress();
+  const [readMode, setReadMode] = useReadMode();
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Compute per-section minute estimates from the body blocks
+  const sectionMinutes = useMemo(() => {
+    const out: Record<string, number> = {};
+    let currentId = "";
+    let words = 0;
+    for (const b of concept.body) {
+      if (b.kind === "h") {
+        if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
+        currentId = b.number;
+        words = 0;
+      } else {
+        words += blockWords(b);
+      }
+    }
+    if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
+    return out;
+  }, [concept.body]);
 
   useEffect(() => {
     markInProgress(concept.slug);
