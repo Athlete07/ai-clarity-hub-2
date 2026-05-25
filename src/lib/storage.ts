@@ -3,6 +3,24 @@ import { useEffect, useState, useCallback } from "react";
 const PROGRESS_KEY = "factorbeam:progress";
 const GLOSSARY_KEY = "factorbeam:glossary";
 const STREAK_KEY = "factorbeam:streak";
+const READ_MODE_KEY = "factorbeam:readMode";
+
+export type ReadMode = "deep" | "skim";
+
+export function useReadMode(): [ReadMode, (m: ReadMode) => void] {
+  const [mode, setMode] = useState<ReadMode>("deep");
+  useEffect(() => {
+    setMode(readJson<ReadMode>(READ_MODE_KEY, "deep"));
+    const onChange = () => setMode(readJson<ReadMode>(READ_MODE_KEY, "deep"));
+    window.addEventListener("factorbeam:storage", onChange);
+    return () => window.removeEventListener("factorbeam:storage", onChange);
+  }, []);
+  const update = useCallback((m: ReadMode) => {
+    writeJson(READ_MODE_KEY, m);
+    setMode(m);
+  }, []);
+  return [mode, update];
+}
 
 export type Progress = {
   // slug -> "in-progress" | "done"
