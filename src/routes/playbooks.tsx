@@ -114,6 +114,26 @@ const PLAYBOOKS_BY_ROLE: Record<RoleId, Playbook[]> = {
       topics: ["AI vs ML vs DL", "How models learn", "Training vs Inference", "Data & Labels", "Probability & Confidence", "Model Evaluation", "Bias & Hallucination"],
       sequence: PM_FOUNDATIONS_SEQUENCE,
     },
+    {
+      id: "pm-llms-prompting",
+      title: "LLMs, Models & Prompting",
+      subtitle: "Deep dive into language models and advanced prompting.",
+      description: "Understand the core mechanics of LLMs, from tokenization and attention to practical prompt engineering and deciding between fine-tuning and RAG.",
+      difficulty: "Advanced",
+      readingMinutes: 45,
+      topics: [
+        "Tokenization", 
+        "Transformers & attention", 
+        "Context windows", 
+        "Temperature & sampling", 
+        "Prompt engineering depth (CoT, ToT, structured output)", 
+        "Fine-tuning vs RAG decision", 
+        "Embeddings", 
+        "Model families", 
+        "Multimodal basics (vision, speech, image gen)"
+      ],
+      sequence: [],
+    },
   ],
 };
 
@@ -282,7 +302,7 @@ function PlaybooksPage() {
                 return (
                   <div
                     key={p.id}
-                    className="rounded-2xl border p-4 pr-[150px] sm:p-5 sm:pr-[165px] bg-card relative transition-all duration-300 border-border/60 hover:border-purple/40 animate-fade-in-up"
+                    className="rounded-2xl border p-4 sm:p-5 bg-card relative transition-all duration-300 border-border/60 hover:border-purple/40 animate-fade-in-up"
                     style={{
                       animationDelay: `${index * 120}ms`,
                       animationFillMode: "both",
@@ -294,25 +314,33 @@ function PlaybooksPage() {
                     />
 
                     {/* Absolute CTA button */}
-                    <Link
-                      to="/playbook/$slug"
-                      params={{ slug: nextIncompleteSlug }}
-                      className={`absolute top-4 right-4 sm:top-5 sm:right-5 py-1.5 px-3.5 text-[11px] font-semibold rounded-lg text-white transition-all inline-flex items-center gap-1.5 justify-center cursor-pointer ${theme.progress} hover:opacity-90`}
-                    >
-                      {pPct === 0 ? (
-                        <>
-                          Start Playbook <ArrowRight size={12} />
-                        </>
-                      ) : pPct === 100 ? (
-                        "Review Playbook"
-                      ) : (
-                        "Resume Playbook"
-                      )}
-                    </Link>
+                    {p.sequence.length > 0 ? (
+                      <Link
+                        to="/playbook/$slug"
+                        params={{ slug: nextIncompleteSlug as string }}
+                        className={`absolute top-4 right-4 sm:top-5 sm:right-5 py-1.5 px-3.5 text-[11px] font-semibold rounded-lg text-white transition-all inline-flex items-center gap-1.5 justify-center cursor-pointer ${theme.progress} hover:opacity-90`}
+                      >
+                        {pPct === 0 ? (
+                          <>
+                            Start Playbook <ArrowRight size={12} />
+                          </>
+                        ) : pPct === 100 ? (
+                          "Review Playbook"
+                        ) : (
+                          "Resume Playbook"
+                        )}
+                      </Link>
+                    ) : (
+                      <span
+                        className={`absolute top-4 right-4 sm:top-5 sm:right-5 py-1.5 px-3.5 text-[11px] font-semibold rounded-lg text-white/50 bg-muted-foreground/30 transition-all inline-flex items-center gap-1.5 justify-center cursor-not-allowed`}
+                      >
+                        Coming Soon
+                      </span>
+                    )}
 
                     <div className="flex flex-col gap-3">
                       {/* Top Row: Badges */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2 pr-[120px] sm:pr-[140px]">
                         <span
                           className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
                         >
@@ -328,9 +356,24 @@ function PlaybooksPage() {
 
                       {/* Title & Description */}
                       <div>
-                        <h3 className="text-[17px] font-bold text-foreground tracking-tight">
-                          {p.title}
-                        </h3>
+                        <div className="flex flex-wrap items-center gap-3 pr-[120px] sm:pr-[140px]">
+                          <h3 className="text-[17px] font-bold text-foreground tracking-tight">
+                            {p.title}
+                          </h3>
+                          {pPct > 0 && (
+                            <div className="flex items-center gap-2">
+                              <div className="h-1 w-16 overflow-hidden rounded-full bg-muted shrink-0">
+                                <div
+                                  className={`h-full transition-all duration-500 rounded-full ${theme.progress}`}
+                                  style={{ width: `${pPct}%` }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-muted-foreground font-medium whitespace-nowrap">
+                                {pPct}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
                         <p className="mt-1 text-[13px] text-muted-foreground leading-relaxed">
                           {p.description}
                         </p>
@@ -351,20 +394,6 @@ function PlaybooksPage() {
                         ))}
                       </div>
 
-                      {/* Slim Progress bar */}
-                      {pPct > 0 && (
-                        <div className="flex items-center gap-3 w-full sm:max-w-[280px] mt-1">
-                          <div className="h-1 w-24 overflow-hidden rounded-full bg-muted shrink-0">
-                            <div
-                              className={`h-full transition-all duration-500 rounded-full ${theme.progress}`}
-                              style={{ width: `${pPct}%` }}
-                            />
-                          </div>
-                          <span className="text-[11px] text-muted-foreground font-medium whitespace-nowrap">
-                            {pPct}% complete ({pDoneCount} of {p.sequence.length})
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 );
