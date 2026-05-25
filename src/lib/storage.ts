@@ -4,6 +4,8 @@ const PROGRESS_KEY = "factorbeam:progress";
 const GLOSSARY_KEY = "factorbeam:glossary";
 const STREAK_KEY = "factorbeam:streak";
 const READ_MODE_KEY = "factorbeam:readMode";
+const SECTIONS_VIEWED_KEY = "factorbeam:sectionsViewed";
+const SAVED_DEPTH_KEY = "factorbeam:savedDepth";
 
 export type ReadMode = "deep" | "skim";
 
