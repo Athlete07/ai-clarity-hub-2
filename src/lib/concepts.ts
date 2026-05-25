@@ -5659,6 +5659,11 @@ export const concepts: Concept[] = [
       title: "The startup that almost died from a 400-token greeting",
       body: "A YC-stage AI sales tool added a 400-token 'company values and tone' preamble to every prompt because the design team felt it improved voice consistency. Three weeks after launch, the COGS overshoot triggered a board-level escalation. Removing the preamble (and moving tone enforcement into a one-line style guide plus output-side validation) cut costs by 38% with no measurable quality drop in user studies. The PM who owned the feature now teaches a workshop on prompt diets at the accelerator.",
     },
+    {
+      kind: "ex",
+      title: "Perplexity's model routing — the token-aware product call",
+      body: "Perplexity publicly routes different query types to different models — cheaper models for simple lookups, frontier models for synthesis-heavy answers. The routing isn't an infra optimisation tacked on after launch; it was a product decision baked into the architecture from day one because the team modelled per-query token cost before they wrote the routing code. The result is a free-tier that's economically survivable and a pro-tier whose margins fund the next round of capability — both downstream of one PM-level call to treat tokens as inventory.",
+    },
   ],
   examples: [],
   quiz: [
