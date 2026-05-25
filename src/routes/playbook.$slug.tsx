@@ -703,6 +703,12 @@ function Sidebar({
     };
   }, []);
 
+  const playbook = playbookForSlug(currentSlug);
+  const items = (playbook?.sequence ?? []).map((s) => {
+    const c = conceptBySlug(s.slug);
+    return { slug: s.slug, shortTitle: c?.shortTitle ?? s.slug };
+  });
+
   const list = (
     <nav className="px-5 py-6 flex flex-col">
       <Link
@@ -711,9 +717,9 @@ function Sidebar({
       >
         ← Playbooks
       </Link>
-      <p className="section-label">AI Foundations for PMs</p>
+      <p className="section-label">{playbook?.title ?? "Playbook"}</p>
       <ul className="mt-4 space-y-1">
-        {concepts.map((c, idx) => {
+        {items.map((c, idx) => {
           const isCurrent = c.slug === currentSlug;
           const done = progress[c.slug] === "done";
 
