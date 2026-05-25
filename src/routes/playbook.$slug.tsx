@@ -118,6 +118,10 @@ export const Route = createFileRoute("/playbook/$slug")({
   component: ConceptPage,
 });
 
+type RenderItem =
+  | { type: "block"; block: ConceptBodyBlock }
+  | { type: "depth"; blocks: ConceptBodyBlock[] };
+
 function ConceptPage() {
   const { concept } = Route.useLoaderData() as {
     concept: NonNullable<ReturnType<typeof conceptBySlug>>;
@@ -127,16 +131,62 @@ function ConceptPage() {
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Compute per-section minute estimates from the body blocks
+  // Layered reading contract:
+  //  - skip "trans" blocks (the Next button implies sequence)
+  //  - first <p> in each section stays inline (the "Core")
+  //  - remaining <p>s in that section fold into a single "Go deeper" group (the "Depth")
+  //  - take / why / ex / diagram render as before
+  const renderItems = useMemo<RenderItem[]>(() => {
+    const items: RenderItem[] = [];
+    let pIdxInSection = 0;
+    let depthBuf: ConceptBodyBlock[] = [];
+    const flushDepth = () => {
+      if (depthBuf.length) {
+        items.push({ type: "depth", blocks: depthBuf });
+        depthBuf = [];
+      }
+    };
+    for (const b of concept.body) {
+      if (b.kind === "h") {
+        flushDepth();
+        pIdxInSection = 0;
+        items.push({ type: "block", block: b });
+      } else if (b.kind === "trans") {
+        continue;
+      } else if (b.kind === "p") {
+        if (pIdxInSection === 0) {
+          items.push({ type: "block", block: b });
+        } else {
+          depthBuf.push(b);
+        }
+        pIdxInSection++;
+      } else {
+        flushDepth();
+        items.push({ type: "block", block: b });
+      }
+    }
+    flushDepth();
+    return items;
+  }, [concept.body]);
+
+  // Per-section essentials: header + take + why + first-p only.
+  // Depth + examples are opt-in, so they don't bloat the visible estimate.
   const sectionMinutes = useMemo(() => {
     const out: Record<string, number> = {};
     let currentId = "";
     let words = 0;
+    let pIdx = 0;
     for (const b of concept.body) {
       if (b.kind === "h") {
         if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
         currentId = b.number;
         words = 0;
+        pIdx = 0;
+      } else if (b.kind === "trans" || b.kind === "ex" || b.kind === "diagram") {
+        // excluded from essentials
+      } else if (b.kind === "p") {
+        if (pIdx === 0) words += blockWords(b);
+        pIdx++;
       } else {
         words += blockWords(b);
       }
@@ -144,6 +194,11 @@ function ConceptPage() {
     if (currentId) out[currentId] = Math.max(1, Math.round(words / 220));
     return out;
   }, [concept.body]);
+
+  const essentialsMinutes = useMemo(
+    () => Math.max(1, Object.values(sectionMinutes).reduce((a, b) => a + b, 0)),
+    [sectionMinutes],
+  );
 
   useEffect(() => {
     markInProgress(concept.slug);
@@ -236,13 +291,12 @@ function ConceptPage() {
             <div className="mt-4 flex items-center gap-2 text-[13px] text-muted-foreground">
               <Clock size={14} className="opacity-70" />
               <span>
-                {readMode === "skim" ? `~${Math.max(2, Math.round(concept.readingMinutes / 3))}` : concept.readingMinutes} min{" "}
-                {readMode === "skim" ? "skim" : "read"}
+                ~{essentialsMinutes} min essentials
               </span>
               <span className="opacity-50">·</span>
-              <span>{Object.keys(sectionMinutes).length} sections</span>
+              <span>{concept.readingMinutes} min full</span>
               <span className="opacity-50">·</span>
-              <span>{concept.quiz.length} quiz questions</span>
+              <span>{Object.keys(sectionMinutes).length} sections</span>
             </div>
 
             <p className="hairline-b mt-6 pb-5 text-base leading-relaxed text-muted-foreground">
@@ -267,9 +321,13 @@ function ConceptPage() {
             )}
 
             <div className="mt-7 space-y-5 text-base leading-relaxed text-foreground">
-              {concept.body.map((block, i) => (
-                <BodyBlock key={i} block={block} mode={readMode} sectionMinutes={sectionMinutes} />
-              ))}
+              {renderItems.map((item, i) =>
+                item.type === "block" ? (
+                  <BodyBlock key={i} block={item.block} mode={readMode} sectionMinutes={sectionMinutes} />
+                ) : (
+                  <DepthFold key={i} blocks={item.blocks} mode={readMode} />
+                ),
+              )}
             </div>
 
             {/* Examples */}
@@ -485,6 +543,59 @@ function CollapsibleExample({
         <p className="hairline-t px-5 py-4 text-[14px] leading-relaxed text-foreground/90">
           {body}
         </p>
+      )}
+    </div>
+  );
+}
+
+function DepthFold({ blocks, mode }: { blocks: ConceptBodyBlock[]; mode: ReadMode }) {
+  const [open, setOpen] = useState(false);
+  if (mode === "skim") return null;
+  const paraCount = blocks.length;
+  const words = blocks.reduce((n, b) => n + (b.kind === "p" ? b.parts.reduce((m, p) => m + (typeof p === "string" ? p : p.text).split(/\s+/).length, 0) : 0), 0);
+  const mins = Math.max(1, Math.round(words / 220));
+  return (
+    <div className="hairline rounded-xl bg-card/60">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-3 px-5 py-3 text-left"
+        aria-expanded={open}
+      >
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            Go deeper
+          </p>
+          <p className="mt-0.5 text-[13px] text-foreground/80">
+            {paraCount} more paragraph{paraCount === 1 ? "" : "s"} · ~{mins} min
+          </p>
+        </div>
+        <ChevronDown
+          size={16}
+          className={`shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="hairline-t space-y-4 px-5 py-4 text-[15px] leading-relaxed text-foreground/90">
+          {blocks.map((b, i) =>
+            b.kind === "p" ? (
+              <p key={i}>
+                {b.parts.map((part, j) =>
+                  typeof part === "string" ? (
+                    <span key={j}>{part}</span>
+                  ) : (
+                    <span
+                      key={j}
+                      data-explain={part.explain}
+                      className="rounded-sm bg-purple-light/40 underline decoration-purple/30 decoration-dotted underline-offset-4 transition-colors hover:bg-purple-light"
+                    >
+                      {part.text}
+                    </span>
+                  ),
+                )}
+              </p>
+            ) : null,
+          )}
+        </div>
       )}
     </div>
   );
