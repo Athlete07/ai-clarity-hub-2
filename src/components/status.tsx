@@ -1,24 +1,7 @@
-import { concepts } from "@/lib/concepts";
 import { Check, Lock } from "lucide-react";
-import type { Progress } from "@/lib/storage";
 
 type Status = "done" | "active" | "locked" | "todo";
 
-export function statusFor(slug: string, progress: Progress, allowLocked = false): Status {
-  const state = progress[slug];
-  if (state === "done") return "done";
-  if (state === "in-progress") return "active";
-  if (allowLocked) {
-    // First non-done concept is active, rest locked
-    for (const c of concepts) {
-      const s = progress[c.slug];
-      if (s === "done") continue;
-      if (c.slug === slug) return "active";
-      return "locked";
-    }
-  }
-  return "todo";
-}
 
 export function StatusIndicator({
   status,
