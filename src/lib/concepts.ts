@@ -5798,9 +5798,614 @@ export const concepts: Concept[] = [
         "It's not a model bug — it's a property of how messages and special tokens work. The model receives one stream of tokens and treats them as conversation. Defence has to come from the surrounding system: never put unfiltered user content in the system role, sanitise inputs, validate outputs. Re-read section 1.5.",
     },
   ],
+},
+{
+  slug: "pm-llm-transformers-attention",
+  number: 2,
+  shortTitle: "Transformers & Attention",
+  title: "Transformers & Attention",
+  readingMinutes: 22,
+  summary:
+    "The architecture that changed everything — explained without the math. Transformers are the engine under every modern LLM. You don't need linear algebra to use them well, but you do need to understand attention, the encoder/decoder split, and why depth and parallelism are the two levers that turned NLP from a research project into a product category.",
+  keyTakeaway:
+    "Transformers replaced sequence-by-sequence reading with parallel attention over the whole input. That single shift is why LLMs scale, why context windows exist, and why encoder-only, decoder-only, and encoder-decoder models are good at completely different product jobs.",
+  pmCallout:
+    "As a PM: the choice between an encoder-only model (BERT-style), a decoder-only model (GPT-style), or an encoder-decoder model (T5-style) decides what features you can ship and at what latency. Knowing the difference saves you from picking the wrong model for the wrong job.",
+  body: [
+    {
+      kind: "h",
+      number: "2.1",
+      title: "What came before transformers",
+      subtitle: "RNNs, LSTMs and why they couldn't scale",
+    },
+    {
+      kind: "take",
+      text: "Before 2017, language models read text one word at a time, carrying a running 'memory' from left to right. That sequential design made them slow to train, weak at long-range context, and fundamentally incompatible with the parallel hardware (GPUs) the rest of deep learning was riding.",
+    },
+    {
+      kind: "why",
+      text: "Understanding what RNNs couldn't do is the cleanest way to understand why transformers feel like magic. Every product capability you take for granted in modern LLMs — long context, fast training, few-shot learning — was blocked by the architecture that came before.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Recurrent neural networks (RNNs) and their better-behaved cousin the LSTM were the dominant NLP architecture from roughly 2014 to 2017. "),
+        x(
+          "An RNN processes a sentence one token at a time, updating a single hidden state vector that's supposed to summarise everything seen so far. To read word 100, it must first read words 1 through 99 in order.",
+          "That sequential dependency means the GPU sits mostly idle — it can't parallelise the next step until the current step finishes. Training a model on a billion sentences this way is impossibly slow at modern scale.",
+        ),
+        s(" The architecture worked for short sequences and small datasets, which is exactly the regime in which today's LLMs would be useless."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The second problem was memory. "),
+        x(
+          "By the time an LSTM has read 200 words, the hidden state has been overwritten so many times that information from word 1 is effectively gone. The model 'forgets' the beginning of the sentence before it reaches the end.",
+          "Engineers tried bigger hidden states, gated cells, attention bolted on as an add-on — but the sequential bottleneck remained. You could not scale RNNs to the size that turned out to matter.",
+        ),
+        s(" This is why pre-2017 NLP felt like a craft and post-2017 NLP feels like an industry. The ceiling on the old architecture was too low to support the kind of products we now build daily."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The 2017 paper 'Attention Is All You Need' from Google Brain proposed a radical alternative. "),
+        x(
+          "Drop recurrence entirely. Let every word in the sentence look at every other word in parallel, using a mechanism called attention. The result trains faster, scales further, and handles long-range dependencies natively.",
+          "Within 18 months, every state-of-the-art NLP benchmark had been retaken by transformer variants — BERT, GPT, T5. Within 5 years, transformers had eaten not just NLP but also vision, speech, protein folding, and code.",
+        ),
+        s(" The story of modern AI is, in large part, the story of one architectural decision compounding for a decade."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Google Translate's 2016 leap — the last great pre-transformer product",
+      body: "Google's Neural Machine Translation system, launched in 2016, was an LSTM-based encoder-decoder that dramatically improved translation quality overnight. It was also the system that taught Google's research team exactly where LSTMs hit a wall — long sentences, rare language pairs, training cost. The team that shipped it published 'Attention Is All You Need' a year later. NMT is the bridge product: good enough to prove the market existed, painful enough to motivate the architecture that replaced it.",
+    },
+    {
+      kind: "ex",
+      title: "Why your 2017 chatbot forgot what you said three turns ago",
+      body: "Most consumer chatbots from 2014–2017 — including early Alexa skills, Facebook M, and countless startup assistants — were built on LSTM stacks. The 'goldfish memory' problem PMs constantly complained about wasn't a bug in the product spec; it was the architecture's failure mode. You can't ship a coherent multi-turn conversation on a hidden state that overwrites itself every 50 tokens. The post-transformer chatbots that arrived in 2023 felt like a different species because they literally were.",
+    },
+    {
+      kind: "ex",
+      title: "The GPU bill that funded the transformer revolution",
+      body: "OpenAI, Google, and Anthropic could all justify spending hundreds of millions on training compute because the underlying architecture used that compute efficiently. RNNs would have wasted the same hardware — most GPU cores idle, waiting for the previous step. The transformer's parallel design is the only reason 'just throw more GPUs at it' became a viable strategy. The architecture choice unlocked the capital strategy that unlocked the product category.",
+    },
+    {
+      kind: "h",
+      number: "2.2",
+      title: "The transformer architecture",
+      subtitle: "Encoders, decoders, and encoder-decoder models — what each one is built for",
+    },
+    {
+      kind: "take",
+      text: "Transformers come in three flavours: encoder-only (read and understand), decoder-only (read and generate), and encoder-decoder (read one thing, generate another). Every modern LLM product is built on one of these three shapes, and each shape is good at a different job.",
+    },
+    {
+      kind: "why",
+      text: "The shape of the model is the shape of the product. If you pick a decoder-only model for a classification task you'll pay 10x more for worse latency; if you pick an encoder-only model for a chat product you simply can't ship it. This is the most consequential architectural decision a PM is asked to weigh in on.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("An encoder takes a sequence of tokens and produces a dense vector representation — a 'meaning fingerprint' for every token in context. "),
+        x(
+          "BERT, RoBERTa, and modern embedding models (text-embedding-3, Cohere Embed v3) are encoder-only. They're not designed to generate text; they're designed to understand it well enough to classify, search, or compare.",
+          "Encoder-only models excel at: search ranking, semantic similarity, classification, sentiment analysis, named-entity recognition, deduplication. Anything where the output is a label, a score, or a vector — not new text.",
+        ),
+        s(" If your product needs to decide 'is this email spam?' or 'find the 10 most similar support tickets', you want an encoder. Using a chat model for this is a multi-order-of-magnitude waste."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("A decoder takes a sequence and generates the next token, then the next, then the next. "),
+        x(
+          "GPT-4, Claude, Llama, Gemini, Mistral — every chat and completion model you've heard of is decoder-only. The architecture is autoregressive: each output token depends on all the previous ones, generated one at a time.",
+          "Decoder-only models are general-purpose: with the right prompting, they can do classification, summarisation, translation, code, agents — anything that can be framed as 'continue this text'. That generality is also their cost: you're paying for a generation-capable model even when you only needed a label.",
+        ),
+        s(" The dominance of decoder-only models in the consumer LLM market is less about architectural superiority and more about the fact that scaling laws turned out to work cleanest in this shape."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Encoder-decoder models — T5, BART, the original transformer, every major translation system — read a full input through an encoder and generate a full output through a decoder. "),
+        x(
+          "They're the natural fit for any task with a clean 'input here, output there' structure: translation, summarisation, image captioning, speech-to-text. The two halves can be specialised independently and the architecture handles the source-to-target mapping cleanly.",
+          "Whisper (speech-to-text), NLLB (Meta's translation model), and most production-grade summarisation systems are encoder-decoder. The shape matches the task; the costs are lower than running a general-purpose decoder for the same job.",
+        ),
+        s(" If your product has a fixed input modality and a fixed output modality, the boring answer is usually an encoder-decoder model — and the boring answer is usually right."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "BERT in Google Search — the largest encoder deployment in history",
+      body: "Google announced in 2019 that BERT was being used to improve roughly 10% of English search queries — and by 2020, virtually all of them. Search ranking is the canonical encoder job: take a query and a document, output a relevance score. Google never needed BERT to 'write' anything; they needed it to understand. Using GPT-4 for the same job would cost the company orders of magnitude more for worse latency and no quality gain. The model shape matches the product shape.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI Whisper — encoder-decoder by design, not accident",
+      body: "Whisper, OpenAI's speech-to-text model, is a classic encoder-decoder transformer: the encoder ingests audio spectrograms, the decoder generates text. The team explicitly chose this shape because the task is sequence-to-sequence with two different modalities. A decoder-only model would force the audio into the same token stream as the text, which wastes both compute and quality. Most production transcription products (Otter, Rev, Descript) are built on Whisper or a very close cousin — the architecture is so well-matched to the task that there's no commercial reason to pick anything else.",
+    },
+    {
+      kind: "ex",
+      title: "Pinecone and the embedding-economy boom",
+      body: "Vector databases like Pinecone, Weaviate, and Chroma exploded as a product category because encoder-only models made high-quality text embeddings cheap and fast. The entire RAG architecture pattern that powers most enterprise LLM features today depends on an encoder doing the retrieval and a decoder doing the generation. Mature AI products use both shapes side by side: BERT-family for finding the right context, GPT-family for writing the answer. PMs who only know about chat models miss half the architecture they're paying for.",
+    },
+    {
+      kind: "h",
+      number: "2.3",
+      title: "What is attention",
+      subtitle: "How a model decides which words matter when processing each word",
+    },
+    {
+      kind: "take",
+      text: "Attention is a mechanism that lets the model, when processing any one word, look at every other word in the input and decide how relevant each is to the current calculation. It's a weighted lookup, learned from data, applied in parallel.",
+    },
+    {
+      kind: "why",
+      text: "Attention is the single mechanism that powers every behaviour you associate with LLMs: context tracking, coreference, instruction following, in-context learning. Once you internalise what attention does, most LLM 'magic' becomes legible.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Imagine you're reading the sentence 'The trophy didn't fit in the suitcase because it was too big.' What does 'it' refer to? "),
+        x(
+          "A human resolves the pronoun by glancing back across the sentence and weighing each candidate noun. Attention is the mathematical version of that glance: every word computes a relevance score against every other word, then uses those scores to pull in information.",
+          "Concretely, each token produces three vectors — a query, a key, and a value. The query for 'it' is compared against the key of every other token; the matches with high scores contribute their values to 'it's updated representation. The model learns from data which queries should match which keys.",
+        ),
+        s(" The output for each token isn't just a function of that token — it's a function of every token in the input, weighted by learned relevance. That's attention in one sentence."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Attention is what makes context windows useful at all. "),
+        x(
+          "Without attention, doubling the context window would just give the model more text it can't use coherently. With attention, every new token in the window contributes — the model can pull from a fact 50,000 tokens back as easily as one a sentence ago, subject to quality degradation at extreme lengths.",
+          "This is also why context-window numbers in marketing copy are misleading without quality benchmarks. A 1M-token context with weak long-range attention is product theatre; a 200K-token context with strong recall is a usable feature.",
+        ),
+        s(" PMs who ask 'how big is the context window?' without asking 'how well does attention hold up at the far end?' are reading the spec sheet, not the product."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Attention is also why prompt engineering works. "),
+        x(
+          "When you put an instruction at the top of a prompt and then user content below, the model's attention learns to weight system-level instructions strongly when generating each output token. The 'instruction-following' behaviour you rely on every day is attention plus the right training data, not a separate module.",
+          "It's also why prompt injection works: if user content gets concatenated into the same attention stream as system instructions, the model has no innate way to tell them apart. Attention is content-blind; trust boundaries are a product-design problem.",
+        ),
+        s(" Every reliability and safety conversation about LLMs eventually loops back to attention. It's the mechanism that gives you the capability and the mechanism that opens the attack surface."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "ChatGPT remembering your name 20 turns later — attention, not memory",
+      body: "When ChatGPT recalls your name from earlier in a long conversation, there's no database lookup happening. The whole conversation history is in the context window, and attention is pulling the relevant tokens forward when generating each new response. This is also why 'memory' degrades at the edges of the context window — the attention signal weakens, not because the model 'forgot', but because the mechanism that surfaces old context gets noisier at extreme distances.",
+    },
+    {
+      kind: "ex",
+      title: "Why Claude 'lost in the middle' became a benchmark",
+      body: "Researchers and Anthropic itself have publicly documented the 'lost in the middle' phenomenon: information placed in the middle of a long context is recalled less reliably than information at the start or end. This is a direct, measurable property of how attention distributes weight across long sequences. PMs designing RAG pipelines learned the hard way to put the most important retrieved chunks at the top or bottom of the context, not buried in the middle. The mechanism dictates the prompt design.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's needle-in-a-haystack tests — attention as a public benchmark",
+      body: "Anthropic and every major model provider now publish 'needle in a haystack' results: hide a specific fact somewhere in a 100K-token document and ask the model to retrieve it. The score is essentially a measurement of attention quality at long range. When Claude 3 launched with near-perfect recall across 200K tokens, that wasn't a context-window achievement — it was an attention-quality achievement. PMs comparing models for long-document use cases should be reading these benchmarks, not just the context-window number.",
+    },
+    {
+      kind: "h",
+      number: "2.4",
+      title: "Self-attention explained",
+      subtitle: "Why 'bank' means different things in different sentences — and how the model knows",
+    },
+    {
+      kind: "take",
+      text: "Self-attention is attention where the queries, keys, and values all come from the same sequence. Each word looks at every other word in its own sentence to figure out what it means in this particular context.",
+    },
+    {
+      kind: "why",
+      text: "Self-attention is what turns a static dictionary into a context-aware representation. It's why 'bank' in 'river bank' and 'bank' in 'savings bank' get completely different internal vectors despite being the same token. Without it, no nuance.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Take the word 'bank'. In isolation, it's ambiguous. "),
+        x(
+          "In 'I sat on the river bank', self-attention causes the 'bank' token to attend heavily to 'river', pulling in geographic context. In 'I deposited cash at the bank', the same token attends to 'deposited' and 'cash', pulling in financial context. Same input token, different output representation, decided by context.",
+          "This is the mechanism that makes LLMs feel like they 'understand' words. They don't — they compute context-conditional vectors. But the behaviour is functionally indistinguishable from understanding for most product purposes.",
+        ),
+        s(" Every word in every sentence the model has ever processed gets this treatment. It's the default mode of operation, not a special case."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Self-attention is also how the model handles long-range syntactic dependencies. "),
+        x(
+          "In 'The cat that the dog that the man owned chased ran away', the model has to figure out which verb belongs to which subject across nested clauses. Self-attention lets 'ran' look directly at 'cat' without having to walk word-by-word through the intervening clauses.",
+          "Pre-transformer architectures choked on this kind of structure. Transformers handle it natively because the attention path between any two tokens is a single hop, not a sequential walk.",
+        ),
+        s(" The architectural gift is constant-distance access. Whether two tokens are 5 apart or 5,000 apart, the attention computation is the same shape — only the noise floor changes."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Self-attention is what makes in-context learning possible. "),
+        x(
+          "When you give the model 3 examples of input/output pairs in the prompt and then a new input, self-attention lets the new input attend to the pattern in the examples. The model isn't 'learning' in the gradient-descent sense — it's recognising the pattern in-context and continuing it.",
+          "This is the mechanism behind every few-shot prompting trick. Chain-of-thought, role prompting, format-by-example — all of them rely on self-attention surfacing the pattern in the prompt at generation time.",
+        ),
+        s(" When few-shot prompts mysteriously stop working as you add more examples, the failure mode is usually attention dilution — too many competing patterns for the mechanism to weight cleanly."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Why GitHub Copilot suggests the right variable name",
+      body: "When Copilot suggests `userEmail` instead of `email` because three lines above you wrote `userId` and `userName`, that's self-attention at work. The model's attention over your file pulls in the naming convention and applies it to the new suggestion. There's no rule engine; there's just attention learning that 'when you see `userId` and `userName`, the next variable in this scope probably follows the `user*` pattern'. It feels like the model 'gets' your codebase. What it gets is the local context, surfaced by attention.",
+    },
+    {
+      kind: "ex",
+      title: "Notion AI's 'continue writing' — attention over your whole document",
+      body: "When Notion AI continues a paragraph in your voice, the model is running self-attention over the entire document you've written so far. It's pulling tone, vocabulary, sentence rhythm, and topic from the existing text and conditioning generation on that pattern. Notion ships this as 'AI that writes like you' — but architecturally, it's just attention with a long-enough context window and a good base model. The product magic is downstream of one mechanism.",
+    },
+    {
+      kind: "ex",
+      title: "Why long PDFs in ChatGPT sometimes feel 'flat'",
+      body: "When users upload a 100-page PDF and ask follow-up questions, they sometimes report that answers feel generic — not anchored to specifics in the document. The usual culprit is attention dilution: 100 pages of text spreads attention so thinly that no specific passage gets enough weight to dominate the answer. Mature products solve this with retrieval-augmented generation: pre-filter the document down to the 3–5 most relevant chunks before generation, so attention has fewer, sharper targets. This is a product fix to an architectural property.",
+    },
+    {
+      kind: "h",
+      number: "2.5",
+      title: "Multi-head attention",
+      subtitle: "Why the model looks at the same sentence through multiple lenses simultaneously",
+    },
+    {
+      kind: "take",
+      text: "Instead of one attention computation per layer, transformers run many in parallel — typically 8 to 96 'heads'. Each head learns to focus on a different aspect: syntax, semantics, coreference, position, tone. The outputs are concatenated and combined.",
+    },
+    {
+      kind: "why",
+      text: "Multi-head attention is why transformers can hold multiple kinds of context simultaneously. The product implication: when you wonder how a model can track speaker identity, formality level, and topic continuity all at once across a long conversation — different heads, different jobs.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("A single attention computation has to compress all relevant relationships into one weighted sum. That's a bottleneck. "),
+        x(
+          "Multi-head attention splits the computation into N parallel attention heads, each with its own learned query, key, and value projections. Each head can specialise: one tracks subject-verb agreement, another tracks pronoun resolution, another tracks topical coherence.",
+          "Researchers have shown via interpretability work (induction heads, attention probes) that specific heads in trained models really do specialise in identifiable linguistic phenomena. The architecture invites specialisation; the training data delivers it.",
+        ),
+        s(" The model isn't programmed to have a 'pronoun head'. It develops one because the training objective rewards getting pronoun resolution right, and the multi-head architecture gives the optimiser a place to put that capability."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Multi-head is also a parallelism win. "),
+        x(
+          "All heads run simultaneously on the GPU. There's no sequential dependency between them — they only combine at the end of each layer. This is one of the reasons transformers scale to hundreds of billions of parameters without training times becoming prohibitive.",
+          "Compare to RNNs, where every step had to wait for the previous one. Multi-head attention is what 'embarrassingly parallel' looks like inside a single layer.",
+        ),
+        s(" Architectural decisions that match the hardware compound. Transformers won not just because the math was elegant but because the math mapped cleanly onto GPUs."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The number of heads is a hyperparameter that providers tune carefully. "),
+        x(
+          "GPT-3 used 96 heads per layer. Llama 3 8B uses 32. Smaller models with fewer heads can be cheaper and faster but lose some of the multi-perspective coverage. This is one of many knobs that distinguishes 'small fast model' from 'large smart model'.",
+          "When you see latency-vs-quality tradeoffs in provider model lineups (gpt-4o-mini vs gpt-4o, Claude Haiku vs Sonnet vs Opus), head count is one of the dimensions being traded, alongside depth, parameter count, and training data quality.",
+        ),
+        s(" PMs don't tune this directly, but understanding that it's a knob explains why 'just use the smaller model' isn't always a free lunch."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's interpretability research on induction heads",
+      body: "Anthropic has published widely-cited work identifying specific attention heads in production models that implement 'induction' — the ability to recognise repeated patterns in context and continue them. These heads are the mechanistic explanation for in-context learning. Knowing that a specific head does a specific job is the kind of finding that lets researchers (and eventually PMs) reason about why a model behaves the way it does on a given prompt. The architecture is becoming legible, one head at a time.",
+    },
+    {
+      kind: "ex",
+      title: "Why Mistral 7B punches above its weight",
+      body: "Mistral 7B uses grouped-query attention (GQA), a variant that shares some attention computation across heads to cut cost without losing much quality. The architectural choice is one reason a 7B-parameter model can serve production traffic at latencies competitive with much smaller models. When you see open-source models claiming 'matches GPT-3.5 at 1/10 the size', architecture innovations like GQA are doing a lot of the lifting. PMs evaluating open models should look past parameter count to architecture details.",
+    },
+    {
+      kind: "ex",
+      title: "Multi-head as the reason ChatGPT can roleplay convincingly",
+      body: "When you ask ChatGPT to 'respond as a 17th-century pirate explaining quantum physics', the model has to simultaneously track register (pirate speech), content accuracy (physics), and conversational thread (your follow-up). Different attention heads are doing different parts of that work in parallel. A single-head model would smear these signals together and produce something that feels off-register or wrong on facts. Multi-head is part of why modern LLMs feel like coherent characters rather than autocomplete.",
+    },
+    {
+      kind: "h",
+      number: "2.6",
+      title: "Positional encoding",
+      subtitle: "How the model knows word order when it processes everything in parallel",
+    },
+    {
+      kind: "take",
+      text: "Attention is order-blind by default — it treats the input as a set, not a sequence. Positional encoding is the trick that injects 'this token is at position 5' as extra information, so the model can tell 'dog bites man' from 'man bites dog'.",
+    },
+    {
+      kind: "why",
+      text: "Positional encoding is the unsung hero behind every modern long-context feature. The advances from 2K to 128K to 1M context windows are mostly positional-encoding advances, not raw attention advances. If you've ever wondered how context windows grew 500x in three years, look here.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Attention treats its input as a bag of tokens with relevance scores. Without something extra, it has no idea which token came first. "),
+        x(
+          "The original transformer paper used sinusoidal positional encodings: each position gets a unique fingerprint derived from sine and cosine functions at different frequencies, added to the token embedding before attention runs.",
+          "Modern models use more sophisticated schemes — learned positional embeddings (GPT-2 style), relative position encodings (T5), and rotary position embeddings (RoPE, used by Llama and most current open models). Each scheme is a tradeoff between simplicity, extrapolation, and quality at long distances.",
+        ),
+        s(" Without positional encoding, an LLM couldn't tell a question from its answer or a recipe from its grocery list. The mechanism is invisible in the product but load-bearing."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The reason context windows grew so quickly is mostly positional-encoding innovation. "),
+        x(
+          "RoPE (rotary position embedding) plus tricks like position interpolation and YaRN let models trained on 4K contexts extrapolate to 32K or 128K with relatively cheap fine-tuning. This is why the same base model family can ship a 4K and a 128K variant a few months apart — the upgrade is mostly positional, not full retraining.",
+          "Google's Gemini 1.5 Pro shipped with 1M-token context using a combination of architectural changes including aggressive positional-encoding work. The headline number is downstream of dozens of small engineering decisions in this layer.",
+        ),
+        s(" PMs who hear 'we're upgrading to a 1M context model' should ask 'and how is recall in the middle?' The answer depends on whether the positional encoding holds up at the extremes."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Positional encoding is also where some of the weirdest LLM behaviours come from. "),
+        x(
+          "When the same prompt produces different results depending on whether you put the instructions at the top or bottom, that's often a positional artifact. The model has learned strong priors about where instructions usually live in its training data.",
+          "When a model performs worse on tasks framed as 'answer this question then read the document' versus 'read the document then answer this question', the difference is partly positional encoding plus partly attention's known biases toward recent context.",
+        ),
+        s(" Production prompt engineering is, in part, working around the positional priors the model picked up during training."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Why Llama 3.1 jumped from 8K to 128K context overnight",
+      body: "Meta released Llama 3 with 8K context and Llama 3.1 with 128K context a few months later. The upgrade was mostly positional-encoding work — extending RoPE to handle the longer range plus continued pretraining at the new length. The base architecture and weights are closely related; the long-context capability is a positional trick on top. This is why context-window upgrades can ship faster than full model releases.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's prompt-order best practices — positional priors codified",
+      body: "OpenAI's official prompting guides explicitly recommend putting instructions at the start of the prompt, before user content. That's not a stylistic preference; it's a workaround for the positional priors the model learned during instruction tuning. PMs writing prompts should treat 'order matters' as a hard rule, not a soft suggestion. The model's positional encoding plus its training data make some orders dramatically more reliable than others.",
+    },
+    {
+      kind: "ex",
+      title: "RAG retrieval ordering — a PM lever most teams miss",
+      body: "When a RAG pipeline retrieves 10 chunks and stuffs them into the prompt, the order of those chunks affects answer quality measurably. Putting the most relevant chunk first or last (not in the middle) leverages the model's positional priors and 'lost in the middle' attention behaviour. Several enterprise AI platforms have published internal benchmarks showing 10–20% quality improvements from re-ordering retrieved chunks — zero model change, just product-side awareness of how positional encoding shapes attention.",
+    },
+    {
+      kind: "h",
+      number: "2.7",
+      title: "Layers and depth",
+      subtitle: "Why stacking more transformer layers creates more capable models",
+    },
+    {
+      kind: "take",
+      text: "A transformer isn't one attention computation — it's dozens stacked on top of each other. Each layer takes the previous layer's output and refines it. Early layers learn surface patterns; deep layers learn abstract reasoning.",
+    },
+    {
+      kind: "why",
+      text: "Depth is one of the three knobs (depth, width, data) that turns a small model into a capable one. When providers ship 'small' vs 'large' models, depth is usually a big part of the difference — and it directly drives latency, since every layer runs sequentially per token.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("A transformer layer is a self-contained block: attention + a feedforward network + some normalisation, with a residual connection that lets information flow around it. "),
+        x(
+          "Stack 12 of those and you have a small model (GPT-2 small). Stack 96 and you have GPT-3. Stack ~120 and you're in frontier territory. Each layer adds capacity to refine the representation.",
+          "Interpretability research has shown that early layers tend to learn syntactic features (parts of speech, basic grammar), middle layers learn semantic structure, and deep layers learn task-level abstractions. The hierarchy emerges from training; it's not designed in.",
+        ),
+        s(" 'More layers' isn't free — but for a long time, every doubling of depth bought meaningful capability gains. Scaling laws made depth a product strategy."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Depth directly drives latency. "),
+        x(
+          "Generating one token requires running the input through every layer in sequence. A 32-layer model generates roughly 3x faster than a 96-layer model with the same width, because there's literally 3x less sequential work per token.",
+          "This is why provider lineups often ship a 'mini' and a 'full' version of the same model family: the mini is usually a shallower, narrower variant for latency-sensitive use cases. Same training recipe, fewer layers, dramatically different product profile.",
+        ),
+        s(" When you pick gpt-4o-mini over gpt-4o for an autocomplete feature, you're trading depth for latency — a PM-level call dressed as a model selection."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Depth also explains why 'distilling' a big model into a small one works. "),
+        x(
+          "A student model with fewer layers can be trained to mimic a teacher model's outputs, capturing most of the teacher's capability at a fraction of the inference cost. Llama 3 70B distilled into 8B variants, GPT-4 distilled into gpt-4o-mini — the entire 'small but capable' generation of 2024 models leans on distillation across the depth dimension.",
+          "Distillation is one reason the gap between frontier and commodity models keeps shrinking. Capability discovered at depth N gets compressed into depth N/4 within a year. PMs picking models in 2026 have access to capabilities that were frontier in 2024 at a fraction of the cost.",
+        ),
+        s(" This is the dynamic that makes 'just wait 12 months and use a cheaper model' a viable, if cynical, product strategy."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "GPT-4o-mini — the depth-for-latency tradeoff productised",
+      body: "OpenAI's gpt-4o-mini is significantly shallower and narrower than gpt-4o, with latency to match. The model is designed for high-volume, latency-sensitive use cases (autocomplete, classification, simple chat) where the full depth of gpt-4o would be overkill. The product decision to ship a mini variant — and to price it 10–20x cheaper — is downstream of the architectural fact that depth has a latency cost. Most consumer-scale AI features are built on mini-class models because the math works out only at that depth.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's Haiku/Sonnet/Opus ladder — depth as a product tier",
+      body: "Claude Haiku, Sonnet, and Opus differ across depth, width, and training compute. The tiering exists because different product jobs need different points on the latency/cost/capability curve. PMs choosing a tier should map their use case to the dimension that matters: depth (and width) affect reasoning quality, latency, and cost in tightly coupled ways. Picking Opus for a feature that Haiku handles well is a permanent COGS choice, not a temporary one.",
+    },
+    {
+      kind: "ex",
+      title: "DeepSeek and the depth-efficiency frontier",
+      body: "DeepSeek's V3 and R1 models pushed the open-source frontier in part by being smarter about how depth is allocated — mixture-of-experts variants that effectively run only some layers per token, keeping inference cost low even at large effective depth. The architecture innovation lets a notionally 600B-parameter model serve at the latency of a 40B dense model. PMs watching open-source costs in 2025 saw these architecture details translate directly into pricing pressure on the closed-source frontier.",
+    },
+    {
+      kind: "h",
+      number: "2.8",
+      title: "PM decision lens: why transformer architecture decisions affect your product roadmap",
+      subtitle: "What encoder-only vs decoder-only means for the features you can build",
+    },
+    {
+      kind: "take",
+      text: "The architecture you build on dictates which features are easy, which are hard, and which are economically impossible. Choosing encoder-only for retrieval, decoder-only for generation, and encoder-decoder for translation isn't pedantry — it's the difference between a viable product and a money-losing one.",
+    },
+    {
+      kind: "why",
+      text: "When a PM says 'let's just use GPT-4 for everything', they're committing to the most expensive shape of compute regardless of what the task needs. When a PM understands the architectural shapes, they ship features that match their use cases — and their CFO stays out of their roadmap reviews.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The first roadmap implication is model selection by task shape. "),
+        x(
+          "Classification, deduplication, semantic search, sentiment, similarity ranking → encoder-only (BERT family, embedding models). Cost per call is 10–100x lower than chat models. Latency is in the milliseconds, not seconds.",
+          "Chat, generation, agents, multi-turn reasoning, anything with novel output → decoder-only (GPT, Claude, Llama). General-purpose, more expensive, slower, dramatically more capable on open-ended tasks.",
+        ),
+        s(" Translation, summarisation, speech-to-text, image captioning → encoder-decoder (T5, BART, Whisper). The boring right answer when the task has a clean input-to-output shape."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The second implication is feature feasibility tied to attention quality. "),
+        x(
+          "Features that need to recall specific facts from long inputs (legal-doc Q&A, long-form summarisation, multi-document synthesis) live or die by attention quality at long range. PMs scoping these features should run needle-in-a-haystack tests on the candidate models before promising delivery.",
+          "Features that need cheap, frequent classification across millions of items (spam, moderation, routing) should be on encoder-only models, full stop. Putting them on chat models is a margin-destroying mistake disguised as a quick win.",
+        ),
+        s(" 'Pick the right shape' is the single highest-leverage decision a PM makes when scoping an AI feature."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The third implication is roadmap pacing. "),
+        x(
+          "Architecture improvements (longer context, faster attention, better positional encoding) ship from providers every few months, and they change which features become viable. A feature that was uneconomical at 4K context becomes trivial at 128K. A use case that was too slow at 32-layer depth becomes shippable with a distilled variant.",
+          "Mature AI roadmaps include a 'feasibility re-review' cadence: every quarter, the team revisits backlog items that were architecturally blocked and checks whether the latest model releases unblock them. This is a PM responsibility, not an engineering one — the architectural changes are visible in provider release notes, not in the codebase.",
+        ),
+        s(" The PMs who win this category are the ones whose roadmap moves at the speed of the architecture, not the speed of their own team's habits."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Notion's hybrid stack — encoder for search, decoder for AI writing",
+      body: "Notion AI uses an embedding model (encoder-only) to power semantic search across your workspace and decoder-only models (GPT family, Claude family) to power writing assistance. The architectural split is invisible to users but load-bearing for unit economics — running every search through GPT-4 would make the product impossible to price. The PMs who designed the feature lineup understood that search and generation are different shapes of problem, and matched the architecture to each.",
+    },
+    {
+      kind: "ex",
+      title: "Intercom Fin — depth tiering based on query complexity",
+      body: "Intercom's Fin AI agent routes incoming customer queries to different model tiers based on complexity heuristics — simple FAQ-style queries to cheaper, shallower models; complex multi-turn troubleshooting to deeper, more expensive models. The routing logic is itself a product feature, designed by PMs who internalised that depth = cost = latency = capability. The result: a customer-facing AI agent with margins that work, because no query is over-served.",
+    },
+    {
+      kind: "ex",
+      title: "The startup that put every feature on GPT-4 and ran out of runway",
+      body: "Multiple post-mortems from failed AI-first startups in 2023–2024 share a common pattern: every feature, from auto-categorising emails to ranking suggestions to generating responses, was wired to GPT-4 because it was the easy choice. The COGS curve outran the revenue curve and the company died. The PMs in those rooms didn't know that 'categorise emails' is an encoder job and 'generate responses' is a decoder job. The architectural ignorance was the root cause; the runway was just the lagging indicator.",
+    },
+  ],
+  examples: [],
+  quiz: [
+    {
+      q: "Your team needs to ship a feature that classifies incoming support tickets into one of 12 categories at a volume of 5 million tickets per month. Which model shape is the right starting point?",
+      options: [
+        "GPT-4-class decoder-only model, because it's the most capable.",
+        "An encoder-only model (BERT-family or a dedicated classification model), because classification is exactly what encoders are designed for and the cost-per-call is 10–100x lower.",
+        "An encoder-decoder model like T5, because tickets have variable length.",
+        "Whichever model the engineering team is most comfortable with.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Classification at high volume is the canonical encoder-only job. Putting it on a chat model is a margin-destroying mistake. Match the architecture shape to the task shape.",
+      wrongFeedback:
+        "Classification is what encoder-only models are built for. Using a chat-class decoder for 5M classifications/month is the kind of decision that shows up in a board-deck COGS review. Re-read sections 2.2 and 2.8.",
+    },
+    {
+      q: "A PM is comparing two models for a long-document Q&A feature. Model A advertises 1M-token context but scores 60% on needle-in-a-haystack at 500K tokens. Model B advertises 200K-token context and scores 95% on needle-in-a-haystack at 150K tokens. The expected document size is 100K tokens. Which is the better choice?",
+      options: [
+        "Model A — bigger context window is always better.",
+        "Model B — at the actual document size you'll operate at, recall quality dominates context-window size, and a model that reliably finds facts in 150K is more useful than one that often loses them in 1M.",
+        "Whichever is cheaper — context-window quality doesn't matter for production.",
+        "Neither — you need to fine-tune your own model.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly. Context window is a marketing number; attention quality at your actual operating range is the product reality. PMs who don't run their own needle-in-a-haystack tests get burned by spec-sheet shopping.",
+      wrongFeedback:
+        "The spec sheet says one thing; the attention mechanism's behaviour says another. At 100K tokens, Model B's much stronger recall in that range matters more than Model A's headline number. Re-read section 2.3.",
+    },
+    {
+      q: "A frontend engineer suggests gpt-4o-mini for an in-editor autocomplete feature instead of gpt-4o. Why is this architecturally a good call?",
+      options: [
+        "Mini models are always more accurate.",
+        "Mini variants are shallower (fewer transformer layers) and narrower, which makes them dramatically faster per token — and autocomplete latency is the dominant UX factor for the feature.",
+        "Mini models have larger context windows.",
+        "Mini models don't hallucinate.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Depth equals sequential work per token equals latency. Autocomplete lives or dies by p95 latency, not by raw capability. The PM call is to trade depth for speed when the task allows.",
+      wrongFeedback:
+        "It's not about accuracy or context. Mini models are shallower; fewer layers means less sequential work per token; less work means lower latency. For autocomplete, latency is the product. Re-read section 2.7.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each feature into the most appropriate transformer architecture shape.",
+      categories: ["Encoder-only", "Decoder-only", "Encoder-decoder"],
+      items: [
+        { text: "Real-time spam detection on inbound emails at 50M/day.", category: 0 },
+        { text: "A chat assistant that answers product questions and books meetings.", category: 1 },
+        { text: "Translating user-generated reviews from any language into English.", category: 2 },
+        { text: "Semantic search across an internal knowledge base of 200K documents.", category: 0 },
+        { text: "An AI agent that browses the web and writes a research report.", category: 1 },
+        { text: "Transcribing customer-support phone calls into text.", category: 2 },
+        { text: "Deduplicating customer records across CRM imports.", category: 0 },
+        { text: "Summarising 100-page contracts into 1-page briefs.", category: 2 },
+      ],
+      correctFeedback:
+        "Right. Every one of these has a natural architectural home. Putting classification or search on a chat model wastes 10–100x on cost; putting generation on an encoder is structurally impossible. The shape decision is the most leveraged call you make.",
+      wrongFeedback:
+        "The test is always: is the output a label/score/vector (encoder), free-form text continuing the input (decoder), or a transformation of input into a different sequence (encoder-decoder)? Re-read sections 2.2 and 2.8.",
+    },
+    {
+      kind: "order",
+      q: "A PM scopes a new long-document summarisation feature. Put the architectural feasibility steps in the order they should happen.",
+      prompt: "Drag to arrange first step (top) to last (bottom).",
+      items: [
+        "Define the realistic input length distribution (p50, p95, p99 token counts) for the documents users will actually upload.",
+        "Shortlist candidate models whose advertised context window comfortably covers p99, and check their needle-in-a-haystack recall at that length.",
+        "Decide between a pure decoder-only model (long context + RAG) and an encoder-decoder summarisation model, based on cost and recall data.",
+        "Estimate per-call cost and latency at production volume, and pressure-test against the next 12 months of expected provider price changes.",
+      ],
+      correctFeedback:
+        "Exactly. The order forces you to ground every architectural decision in the actual document distribution and the actual recall behaviour at that length — not the marketing spec. PMs who skip the recall test ship features that work in demo and fail at scale.",
+      wrongFeedback:
+        "Each step depends on the previous one. You can't pick an architecture before you know the input length distribution. You can't choose decoder vs encoder-decoder before you've checked recall. You can't budget before you've picked. Re-read section 2.8.",
+    },
+    {
+      q: "A user reports that your AI assistant 'loses track' of details mentioned at the beginning of long conversations. Which architectural property best explains this and what's the PM-appropriate fix?",
+      options: [
+        "The model is intentionally limited; nothing can be done.",
+        "Attention quality degrades over long context — especially in the middle of the context window. The fix is product-level: summarise older turns into a compact context block, retrieve key facts via RAG, or place critical information at the start or end of the prompt.",
+        "Upgrade to a model with a larger context window and the problem disappears.",
+        "Switch to an encoder-only model.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Bigger context windows don't fix attention degradation — they often make it worse if recall isn't tested. The fix is a product/architecture decision: compress, retrieve, or reorder. PMs who reach for 'just upgrade the model' miss that the mechanism, not the size, is the problem.",
+      wrongFeedback:
+        "Bigger context is not a fix on its own; attention degrades in the middle of long sequences as a property of the architecture. The fix is product-side: summarisation, retrieval, or careful ordering. Re-read sections 2.3 and 2.6.",
+    },
+  ],
 }
 ];
 
 export const conceptBySlug = (slug: string): Concept | undefined =>
   concepts.find((c) => c.slug === slug);
+
 
