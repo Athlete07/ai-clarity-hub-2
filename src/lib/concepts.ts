@@ -149,11 +149,6 @@ export const concepts: Concept[] = [
         body: "Notion AI shipped as a thin wrapper over a third-party large language model, with no proprietary model and no proprietary training data on day one. Notion still ships it as 'Notion AI', which is fine — but it tells you exactly what's inside the box: a vendor relationship, a prompt library, and a pricing margin. For a competing product team, knowing this changes the build-versus-buy conversation completely. You're not competing with a model, you're competing with a distribution channel.",
       },
       {
-        kind: "trans",
-        text: "That umbrella shrinks the moment you go one layer deeper, into the specific approach that powers most modern AI: machine learning.",
-      },
-
-      {
         kind: "h",
         number: "1.2",
         title: "What is Machine Learning",
@@ -248,11 +243,6 @@ export const concepts: Concept[] = [
         title: "Zillow's Zestimate — what happens when drift wins",
         body: "Zillow's home-price estimates are an ML system trained on historical sales data. When the housing market shifted suddenly in 2021–2022, Zillow's home-buying arm relied on Zestimate-derived predictions that quietly stopped matching reality, and the company took a $500M+ writedown before shutting the program. The model didn't break; the world changed faster than the retraining cadence could keep up. It's the most expensive case study in concept drift PMs have, and the lesson is operational: an ML system without monitoring is a balance-sheet risk.",
       },
-      {
-        kind: "trans",
-        text: "ML is the family of techniques. The branch of that family that powers nearly every breakthrough you've heard about in the last decade is deep learning.",
-      },
-
       {
         kind: "h",
         number: "1.3",
@@ -357,11 +347,6 @@ export const concepts: Concept[] = [
         body: "Tesla's driving system is a deep neural network that takes raw camera input and outputs driving actions. When the car makes a surprising choice, even Tesla's engineers can't point to a specific reason — the decision is distributed across billions of weights. Regulators have repeatedly run into this opacity when investigating incidents, and Tesla's response is operational: more data, more evaluation, more shadow-mode testing, not better explanations. That's the deep-learning trade-off at industrial scale.",
       },
       {
-        kind: "trans",
-        text: "Three terms, three layers, and a precise relationship between them — which is the next thing you need to be able to draw on a whiteboard from memory.",
-      },
-
-      {
         kind: "h",
         number: "1.4",
         title: "The nested hierarchy explained",
@@ -464,11 +449,6 @@ export const concepts: Concept[] = [
         title: "Duolingo — moving down the hierarchy deliberately",
         body: "Duolingo's lesson sequencing started as rules, moved to classical ML (a model called Birdbrain that predicts which exercises a learner needs next), and selectively added deep learning for things like speech evaluation and conversational practice. The company is unusually public about which layer each feature uses, partly because that clarity is what lets them control unit economics in a freemium product. It's a working example of using the hierarchy as a roadmap tool, not just a vocabulary one.",
       },
-      {
-        kind: "trans",
-        text: "Once you can name the layers, the next skill is recognising when the layer being claimed isn't the layer being shipped — which usually starts with one specific question.",
-      },
-
       {
         kind: "h",
         number: "1.5",
@@ -573,11 +553,6 @@ export const concepts: Concept[] = [
         body: "Klarna publicly replaced large portions of its customer-service workflow with an LLM-based agent, reporting work equivalent to 700 full-time agents in the first month. The interesting detail is that they were explicit about what was learned (the conversational layer) versus what stayed as rules (refund logic, eligibility, escalation paths). That layered honesty is what made the announcement credible to operators rather than a marketing claim. Just as you shouldn't dress rules up as ML, you also shouldn't hide the rules that hold a real ML system together.",
       },
       {
-        kind: "trans",
-        text: "Knowing the diagnostic is half the work. Having a reusable script for applying it in every vendor conversation is the other half — and it fits on a sticky note.",
-      },
-
-      {
         kind: "h",
         number: "1.6",
         title: "PM decision lens: spotting real AI vs marketing AI",
@@ -671,10 +646,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "Internal AI features — applying the lens to your own team",
         body: "A PM at a fintech proposed an 'AI-powered transaction categorisation' feature in a quarterly planning session. Applying the three questions to her own proposal: there was no model yet (rules), no labelled dataset (the data team hadn't started), and no retraining plan (no one had thought about it). The proposal was rebadged as a rules-based v1 with an ML upgrade path scoped for the following quarter, and shipped on time as rules. The same lens that protects you from vendor hype protects you from your own.",
-      },
-      {
-        kind: "trans",
-        text: "Six sections in, you have the vocabulary, the hierarchy, the diagnostic, and the script. The chapter quiz is where you find out whether you have the instincts.",
       },
     ],
     examples: [],
@@ -858,10 +829,6 @@ export const concepts: Concept[] = [
         title: "Grammarly's Tone Detection",
         body: "Grammarly's tone classifier relies on a specific set of parameters that map word combinations to emotional states. When they update the model to better understand sarcastic tones, they are updating the underlying parameter values through new training data, not writing new rules for sarcasm. This means improvements are data-driven rather than engineering-driven.",
       },
-      {
-        kind: "trans",
-        text: "Before the model can twist these billions of knobs into the right configuration, it first needs a mathematical way to realize that it's making a mistake.",
-      },
       { kind: "h", number: "2.2", title: "What is a loss function", subtitle: "The mathematical definition of a mistake" },
       {
         kind: "take",
@@ -938,10 +905,6 @@ export const concepts: Concept[] = [
         title: "Stripe Radar's Fraud Detection",
         body: "Stripe's fraud models must balance catching fraudulent charges against blocking legitimate transactions. The loss function is carefully tuned because a false positive (blocking a good customer) damages merchant trust immediately. The product team ensures the loss function aligns with the acceptable risk tolerance for different merchant categories.",
       },
-      {
-        kind: "trans",
-        text: "With the penalty defined, the model needs a way to actually generate a prediction and see how it performs.",
-      },
       { kind: "h", number: "2.3", title: "Forward pass explained", subtitle: "The core action of generating predictions" },
       {
         kind: "take",
@@ -1017,10 +980,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "Netflix's Batch Inference",
         body: "Netflix generates personalized movie recommendations for millions of users, but they do not run the forward pass in real-time when you log in. Instead, they run forward passes in massive batches overnight when compute is cheap, caching the results so the UI loads instantly the next day. This architectural choice decouples the forward pass from the user's session.",
-      },
-      {
-        kind: "trans",
-        text: "Once the forward pass generates a prediction, and the loss function measures the mistake, the model must finally correct itself.",
       },
       {
         kind: "h",
@@ -1102,10 +1061,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "Midjourney's Image Generation",
         body: "When Midjourney generates an image that perfectly matches a prompt, the forward pass is incredibly fast. However, teaching the model to understand new artistic styles requires backpropagation across billions of images. The separation of these processes allows Midjourney to serve millions of users quickly while handling the heavy lifting of learning in massive private data centers.",
-      },
-      {
-        kind: "trans",
-        text: "With backpropagation calculating the blame, the model relies on a specific mathematical strategy to actually turn the volume knobs in the right direction.",
       },
       {
         kind: "h",
@@ -1195,10 +1150,6 @@ export const concepts: Concept[] = [
         title: "The Training Loop",
         caption: "How the four components work together to iteratively improve the model.",
       },
-      {
-        kind: "trans",
-        text: "Taking one step down the mountain isn't enough; the model must repeat this process millions of times over the entire dataset.",
-      },
       { kind: "h", number: "2.6", title: "Epochs and iterations", subtitle: "The cycles required to fully absorb patterns" },
       {
         kind: "take",
@@ -1281,10 +1232,6 @@ export const concepts: Concept[] = [
         type: "nested",
         title: "The Data Hierarchy",
         caption: "An epoch contains multiple batches; processing one batch is one iteration.",
-      },
-      {
-        kind: "trans",
-        text: "However, if you force the model to read the textbook too many times, it stops learning the concepts and simply memorizes the answers.",
       },
       {
         kind: "h",
@@ -1374,10 +1321,6 @@ export const concepts: Concept[] = [
         title: "The Fitting Spectrum",
         caption:
           "Underfitting learns nothing. Overfitting memorizes everything. Optimal fit learns the underlying pattern.",
-      },
-      {
-        kind: "trans",
-        text: "Recognizing an overfitted model is just one part of a broader skill set: diagnosing the root causes of model failure and translating them into actionable product strategy.",
       },
     ],
     quiz: [
@@ -1606,10 +1549,6 @@ export const concepts: Concept[] = [
         body: "Bloomberg decided they needed a model trained specifically on financial data from scratch, rather than renting one. They had to provision millions of hours of GPU time and build a dedicated engineering team just for the training phase, making it a massive capital investment rather than a simple feature launch.",
       },
       {
-        kind: "trans",
-        text: "Once that massive upfront investment is finished and the weights are frozen, the model is finally ready to answer your users.",
-      },
-      {
         kind: "h",
         number: "3.2",
         title: "What is inference",
@@ -1703,10 +1642,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "Apple Intelligence — Shifting inference to the edge",
         body: "Apple runs inference for smaller tasks directly on the iPhone's processor, rather than in the cloud. By pushing the compute cost of inference onto the user's hardware, Apple completely eliminates the variable server costs that plague other AI products.",
-      },
-      {
-        kind: "trans",
-        text: "Knowing that inference is a variable cost inevitably leads to the most important architectural decision you will make: deciding whose servers will actually run the math.",
       },
       {
         kind: "h",
@@ -1804,10 +1739,6 @@ export const concepts: Concept[] = [
         body: "Some developer tools avoid cloud inference costs entirely by downloading open-source models directly to the user's laptop. By forcing the user's machine to run the inference, the company pays zero variable costs, making a one-time purchase business model viable.",
       },
       {
-        kind: "trans",
-        text: "If you stay on the vendor API path and your product succeeds, you will quickly discover how brutally fast variable costs can multiply.",
-      },
-      {
         kind: "h",
         number: "3.4",
         title: "Inference cost at scale",
@@ -1899,10 +1830,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "ChatGPT Plus — Hard limits for paying users",
         body: "OpenAI caps GPT-4 usage to a specific number of messages per three hours, even for paying subscribers. They know exactly how much inference a $20 subscription can cover, and they hard-gate the product to prevent heavy users from breaking the unit economics.",
-      },
-      {
-        kind: "trans",
-        text: "While pure inference costs scale linearly, sometimes you need the model to behave differently than the baseline, which requires a small investment back into the learning phase.",
       },
       {
         kind: "h",
@@ -1998,10 +1925,6 @@ export const concepts: Concept[] = [
         body: "The original GPT-3 was a wild text-completion engine that would just continue a sentence rather than answering a question. OpenAI fine-tuned it on human feedback to follow instructions, transforming a raw autocomplete engine into the helpful chatbot paradigm we use today.",
       },
       {
-        kind: "trans",
-        text: "Even if you perfectly optimize your costs and tone, the mechanical reality of generating text one word at a time creates a severe user experience bottleneck.",
-      },
-      {
         kind: "h",
         number: "3.6",
         title: "The latency problem",
@@ -2093,10 +2016,6 @@ export const concepts: Concept[] = [
         kind: "ex",
         title: "Notion AI — The ghost writer UI",
         body: "When you ask Notion to write a blog post, it immediately starts typing onto the page block by block. They don't use a loading spinner because staring at a spinner for ten seconds feels broken, but watching an invisible ghost write a draft is magical.",
-      },
-      {
-        kind: "trans",
-        text: "Managing latency keeps the user happy, but keeping the business viable requires mastering the math behind all these generation costs.",
       },
       {
         kind: "h",
@@ -2369,10 +2288,6 @@ export const concepts: Concept[] = [
       body: "Reddit recently signed multi-million dollar deals licensing its user comments to AI companies. The business realized that the conversations it hosted were no longer just a community feature; they were a highly valuable, proprietary training dataset for large language models.",
     },
     {
-      kind: "trans",
-      text: "Having a massive database is necessary, but a pile of raw data is completely useless to an algorithm unless it has been explicitly told what to look for.",
-    },
-    {
       kind: "h",
       number: "4.2",
       title: "What are labels and annotations",
@@ -2434,10 +2349,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Captcha — Crowdsourced ground truth",
       body: "When you click on all the images containing traffic lights to prove you aren't a robot, you are acting as free, crowdsourced labour. Google used this system to generate millions of high-quality, human-verified labels to train their computer vision models.",
-    },
-    {
-      kind: "trans",
-      text: "The process of feeding these perfectly labelled examples to a model is the foundation of the most reliable and widely used paradigm in the industry.",
     },
     {
       kind: "h",
@@ -2503,10 +2414,6 @@ export const concepts: Concept[] = [
       body: "Stripe's fraud detection system learns by analyzing millions of historical transactions. When a bank flags a transaction as a chargeback, Stripe uses that explicit label to supervise the training of the model, teaching it to recognize similar patterns in the future.",
     },
     {
-      kind: "trans",
-      text: "While supervised learning requires explicit labels, sometimes you have massive amounts of data and absolutely no idea what patterns might be hiding inside it.",
-    },
-    {
       kind: "h",
       number: "4.4",
       title: "Unsupervised learning",
@@ -2568,10 +2475,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Segment's Persona Builder — Discovering the unknown",
       body: "Customer data platforms use unsupervised clustering algorithms to help marketers discover entirely new audience segments hidden in their analytics data that they would never have thought to manually define.",
-    },
-    {
-      kind: "trans",
-      text: "Relying entirely on humans for labels is too expensive, but pure unsupervised clustering is too ambiguous; the breakthrough that enabled modern AI was finding a way for data to label itself.",
     },
     {
       kind: "h",
@@ -2637,10 +2540,6 @@ export const concepts: Concept[] = [
       body: "Tesla uses self-supervised learning on massive amounts of unlabelled dashcam video. The model is shown the first five seconds of a video clip and is tasked with predicting the next frame. The actual video provides the perfect, free label for whether the prediction was correct.",
     },
     {
-      kind: "trans",
-      text: "Taking that raw, unconstrained self-supervised intelligence and shaping it into a polite, helpful assistant requires a very specific, human-centric intervention.",
-    },
-    {
       kind: "h",
       number: "4.6",
       title: "Reinforcement learning from human feedback (RLHF)",
@@ -2704,10 +2603,6 @@ export const concepts: Concept[] = [
       body: "Meta uses extensive RLHF to ensure their open-source models refuse to generate instructions for illegal acts or hate speech. The model inherently \"knows\" how to generate that text from its base training, but the RLHF layer actively penalizes it for doing so.",
     },
     {
-      kind: "trans",
-      text: "Using humans to grade outputs or label data is highly effective, but the financial cost of that human labor varies wildly depending on the complexity of the task.",
-    },
-    {
       kind: "h",
       number: "4.7",
       title: "The labelling cost spectrum",
@@ -2768,10 +2663,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "ReCaptcha — Crowdsourcing at zero cost",
       body: "Google entirely bypassed the cost spectrum for computer vision labels by making ReCaptcha a free security tool for websites. Every time a user proves they are human by clicking the crosswalks, they provide a free, high-quality label that would have cost Google millions of dollars to acquire manually.",
-    },
-    {
-      kind: "trans",
-      text: "Even if you have the budget to acquire millions of labels, you must be ruthlessly vigilant about the quality of the work being produced.",
     },
     {
       kind: "h",
@@ -2837,10 +2728,6 @@ export const concepts: Concept[] = [
       body: "Autonomous vehicle companies routinely discard 99% of the driving data their fleets collect. Straight highway driving is useless noise. They actively curate their datasets to heavily over-index on rare, high-quality examples (like a person on a bicycle carrying a stop sign) to ensure the model learns from maximum signal.",
     },
     {
-      kind: "trans",
-      text: "Once you understand the supreme value of clean, proprietary data, you must design your software to harvest it automatically.",
-    },
-    {
       kind: "h",
       number: "4.9",
       title: "The data flywheel",
@@ -2902,10 +2789,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Tesla's Fleet Learning — Edge cases at scale",
       body: "When a human driver disengages Tesla's Autopilot to manually swerve around an obstacle, the car captures the sensor data from that exact moment and sends it back to Tesla. The human's intervention acts as a perfect label of \"this is what the AI should have done,\" feeding the flywheel.",
-    },
-    {
-      kind: "trans",
-      text: "Building a flywheel requires more than just backend pipelines; it requires designing a user interface that actively coerces the user into providing the signal you need.",
     },
     {
       kind: "h",
@@ -3171,10 +3054,6 @@ export const concepts: Concept[] = [
       body: "Voice assistants are heavily probabilistic when parsing speech. When Alexa mishears a command, it doesn't just fail silently or execute the wrong action aggressively. It uses phrases like \"I'm not sure I understood\" or \"Did you mean...\", explicitly exposing its probabilistic uncertainty to the user to salvage trust.",
     },
     {
-      kind: "trans",
-      text: "Because the model is always making a bet, it is crucial to understand exactly how confident it feels about the chips it just pushed to the center of the table.",
-    },
-    {
       kind: "h",
       number: "5.2",
       title: "What is a confidence score",
@@ -3236,10 +3115,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Zillow Zestimate Ranges",
       body: "Instead of providing a single confident point-estimate for a house's value, Zillow explicitly provides a range (e.g., $450k - $510k). This UI choice masks the raw internal confidence score of the regression model, communicating the inherent statistical uncertainty to the user in a way they intuitively understand.",
-    },
-    {
-      kind: "trans",
-      text: "While it is dangerous to expose confidence scores to users, those scores are still the primary operational lever for your internal teams—provided the scores aren't lying.",
     },
     {
       kind: "h",
@@ -3305,10 +3180,6 @@ export const concepts: Concept[] = [
       body: "A hospital uses an AI to read patient symptoms and output a triage priority. If the model is uncalibrated and flags minor colds with 99% confidence as \"Critical,\" it floods the ICU. The hospital relies on perfect calibration to ensure the AI's internal panic matches the actual medical severity.",
     },
     {
-      kind: "trans",
-      text: "The most common and destructive form of poor calibration is a model that aggressively insists it knows the answer when it is actually completely wrong.",
-    },
-    {
       kind: "h",
       number: "5.4",
       title: "Overconfident models",
@@ -3370,10 +3241,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Copilot's Ghost Text",
       body: "Github Copilot mitigates overconfidence entirely through UI. Even if the model is 99% confident in a 50-line code snippet, it never inserts it directly into the codebase. It renders as grey ghost text, forcing the developer to explicitly hit Tab. The UI treats every output as a low-confidence suggestion, completely neutering the risk of the model's internal overconfidence.",
-    },
-    {
-      kind: "trans",
-      text: "Once you understand that the model's raw score is just an internal bet, you must mathematically define the exact point where that bet is safe enough to act on.",
     },
     {
       kind: "h",
@@ -3438,10 +3305,6 @@ export const concepts: Concept[] = [
       body: "Gmail uses a very low threshold to flag emails with the yellow \"Important\" chevron. Google knows that missing an important email (false negative) is highly annoying, while flagging a newsletter as important (false positive) is just slightly messy. They optimize the threshold to aggressively over-flag.",
     },
     {
-      kind: "trans",
-      text: "Often, the business risk is too high to set a single threshold that automates everything, which forces you to build an operational safety net between the model and the user.",
-    },
-    {
       kind: "h",
       number: "5.6",
       title: "Human-in-the-loop design",
@@ -3502,10 +3365,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Radiology AI Tools",
       body: "AI models for detecting anomalies in X-rays are almost never allowed to diagnose patients autonomously due to FDA regulations. Instead, they act as high-powered assistants, highlighting suspicious areas on the scan and routing them to a human radiologist. The human always makes the final diagnostic decision based on the AI's triage.",
-    },
-    {
-      kind: "trans",
-      text: "Balancing thresholds, calibration, and human triage workflows ultimately falls on the shoulders of the person who owns the product strategy.",
     },
     {
       kind: "h",
@@ -3734,10 +3593,6 @@ export const concepts: Concept[] = [
       body: "A car manufacturer built an AI to detect microscopic cracks in engine blocks. Because 98% of engines are flawless, the model achieved 98% accuracy by never flagging a single defect. The manufacturer had to scrap the accuracy metric entirely to force the model to actually look for cracks.",
     },
     {
-      kind: "trans",
-      text: "To properly evaluate a model finding needles in a haystack, you have to split its mistakes into two distinct, fundamentally different categories.",
-    },
-    {
       kind: "h",
       number: "6.2",
       title: "False positives vs false negatives",
@@ -3799,10 +3654,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "YouTube Copyright Claims",
       body: "YouTube's automated Content ID system aggressively flags user videos for copyright infringement. Because the legal cost of a false negative (missing a copyrighted song) is massive due to lawsuits, the model is tuned to generate high volumes of false positives, infuriating creators whose original content is mistakenly demonetized.",
-    },
-    {
-      kind: "trans",
-      text: "When the cost of a false positive is incredibly high, you need a metric specifically designed to measure how often the model cries wolf.",
     },
     {
       kind: "h",
@@ -3868,10 +3719,6 @@ export const concepts: Concept[] = [
       body: "Quantitative hedge funds use AI models to trigger buy orders. The precision of the model must be near-perfect, because every false positive results in the fund executing a losing trade. The fund would much rather miss a profitable opportunity than execute a bad one.",
     },
     {
-      kind: "trans",
-      text: "Conversely, when missing an event is completely unacceptable, precision must take a backseat to an entirely different metric.",
-    },
-    {
       kind: "h",
       number: "6.4",
       title: "Recall explained",
@@ -3933,10 +3780,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Self-Driving Pedestrian Detection",
       body: "Autonomous vehicles optimize their vision models for extreme recall when detecting humans. The software is designed to brake for cardboard cutouts, shadows, and plastic bags (false positives) because the alternative—failing to brake for a real child (false negative)—is an unacceptable system failure.",
-    },
-    {
-      kind: "trans",
-      text: "You cannot have a model that perfectly trusts its own alerts while also catching every single edge case; you must dictate where the model lives on the sliding scale between them.",
     },
     {
       kind: "h",
@@ -4002,10 +3845,6 @@ export const concepts: Concept[] = [
       body: "A manufacturer uses AI to sort imperfect apples. If the apples are destined for a premium grocery store, the threshold is set for extreme recall—flagging every minor blemish to ensure no bad apples get through. If they are destined for a juice factory, the threshold is shifted to extreme precision, only flagging totally rotten fruit.",
     },
     {
-      kind: "trans",
-      text: "Sometimes, you need a quick way to gauge the overall health of a model before diving into the specific threshold economics.",
-    },
-    {
       kind: "h",
       number: "6.6",
       title: "F1 score",
@@ -4067,10 +3906,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The F1 Trap in Lending",
       body: "An AI lending model might show an improved F1 score because it aggressively approved more loans (increasing recall of good borrowers) while slightly increasing defaults (lowering precision). The bank lost money despite the higher F1 score because the financial penalty of a defaulted loan far outweighed the profit of a good one.",
-    },
-    {
-      kind: "trans",
-      text: "While F1 looks at a single specific threshold, evaluating a model's true underlying capability requires a metric that looks at every possible threshold simultaneously.",
     },
     {
       kind: "h",
@@ -4136,10 +3971,6 @@ export const concepts: Concept[] = [
       body: "If engineering requests a larger, more expensive cloud instance to run a heavier model, the PM should demand to see the AUC comparison. If the heavier model only increases the AUC by 0.01, the fundamental intelligence gain does not justify the massive increase in hosting costs.",
     },
     {
-      kind: "trans",
-      text: "Knowing how to read these metrics is useless if the metrics themselves are lying to you, which happens the moment data leaks from the real world into the training environment.",
-    },
-    {
       kind: "h",
       number: "6.8",
       title: "Train set, validation set, test set",
@@ -4200,10 +4031,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Time-Series Forecasting",
       body: "When Uber trains models to predict ride demand, they never use a random data split. They always use a chronological split (train on January-October, test on November-December) to ensure the model proves it can predict the unknown future, rather than interpolating the known past.",
-    },
-    {
-      kind: "trans",
-      text: "But even a perfectly quarantined test set is just a static snapshot of the past; the ultimate evaluation happens the moment the model hits live traffic.",
     },
     {
       kind: "h",
@@ -4267,10 +4094,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Netflix's Latency Tradeoff",
       body: "Netflix frequently researches massive, complex recommendation algorithms that achieve stunning offline accuracy. They routinely discard them because the models are too heavy to run in real-time. Netflix knowingly deploys models with lower offline accuracy because their online metrics prove that fast loading times retain more users than marginally better recommendations.",
-    },
-    {
-      kind: "trans",
-      text: "Balancing these offline mathematical metrics and online business realities is the core responsibility of the AI product manager.",
     },
     {
       kind: "h",
@@ -4538,10 +4361,6 @@ export const concepts: Concept[] = [
       body: "A viral video showed an automated airport soap dispenser that easily dispensed soap for a lighter-skinned user but completely failed to register a darker-skinned user's hand. The infrared sensor's underlying threshold was biased toward lighter skin reflectance, proving that even simple, non-neural-network automation can harbor deep structural bias if not tested across diverse groups.",
     },
     {
-      kind: "trans",
-      text: "To fix this discrimination, you must understand that algorithms do not invent prejudice; they simply memorize the prejudice that humans feed them.",
-    },
-    {
       kind: "h",
       number: "7.2",
       title: "How bias enters training data",
@@ -4603,10 +4422,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Healthcare Risk Scoring",
       body: "An algorithm widely used in US hospitals to identify high-risk patients who needed extra care was discovered to be racially biased. The model used \"historical healthcare spending\" as a proxy for \"health risk.\" Because systemic inequalities meant Black patients historically had less money spent on their healthcare, the model incorrectly assumed they were healthier, systematically denying them necessary medical interventions.",
-    },
-    {
-      kind: "trans",
-      text: "Knowing that data is flawed is only half the battle; you must also be able to identify the specific flavor of bias corrupting your product.",
     },
     {
       kind: "h",
@@ -4672,10 +4487,6 @@ export const concepts: Concept[] = [
       body: "A pneumonia-detecting AI trained on high-resolution X-rays from a wealthy urban hospital is deployed to a rural clinic that uses older, lower-resolution X-ray machines. The model fails completely. This is deployment bias: the model was perfectly fair and accurate in its original context, but became biased and useless when deployed in a fundamentally different environment.",
     },
     {
-      kind: "trans",
-      text: "You cannot fix what you cannot see, which is why a single blended average score is the enemy of a fair product.",
-    },
-    {
       kind: "h",
       number: "7.4",
       title: "Disaggregated metrics",
@@ -4739,10 +4550,6 @@ export const concepts: Concept[] = [
       body: "A hospital system evaluating a sepsis-prediction model refused to look at the overall AUC. They demanded the AUC be sliced by age bracket and pre-existing conditions. The disaggregated view revealed that the model was highly accurate for adults but actively dangerous when applied to pediatric patients, forcing them to restrict the model's deployment solely to the adult wards.",
     },
     {
-      kind: "trans",
-      text: "Beyond ethical and product considerations, tracking these disaggregated metrics is rapidly becoming a strict legal requirement.",
-    },
-    {
       kind: "h",
       number: "7.5",
       title: "Regulatory and legal exposure",
@@ -4804,10 +4611,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "EU GDPR Automated Decision-Making",
       body: "The GDPR explicitly gives EU citizens the right \"not to be subject to a decision based solely on automated processing.\" If a European user is automatically denied a loan by an AI, they have the legal right to demand a human review and an explanation of the algorithm's logic. PMs must build this human-escalation workflow directly into the product to remain legally compliant.",
-    },
-    {
-      kind: "trans",
-      text: "While classification models fail by discriminating, generative models fail by hallucinating—creating confident, grammatically perfect nonsense.",
     },
     {
       kind: "h",
@@ -4874,10 +4677,6 @@ export const concepts: Concept[] = [
       body: "Tech publisher CNET quietly used an AI model to write dozens of financial explainer articles. The model generated grammatically perfect articles that contained massive, fundamental math errors regarding compound interest and loan payments. CNET had to issue massive retractions because the confident tone of the AI masked the deep factual inaccuracies from the human editors.",
     },
     {
-      kind: "trans",
-      text: "Just like bias, hallucination is not a single problem; it comes in multiple different flavors that require completely different technical solutions.",
-    },
-    {
       kind: "h",
       number: "7.7",
       title: "Types of hallucination",
@@ -4938,10 +4737,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Confident Extrapolation in Summarization",
       body: "When asked to summarize a meeting transcript that cut off halfway through, an LLM confidently invented the ending of the meeting, including action items that were never discussed. The model was trained to complete patterns; when the pattern was cut short, it hallucinated the completion. PMs fix this by explicitly prompting the model: \"Do not guess. If information is missing, state 'Not discussed'.\"",
-    },
-    {
-      kind: "trans",
-      text: "Even with precise diagnosis and massive engineering effort, you will quickly learn that hallucination cannot be patched out of existence.",
     },
     {
       kind: "h",
@@ -5006,10 +4801,6 @@ export const concepts: Concept[] = [
       body: "Google and Bing did not \"solve\" hallucination in their AI overviews by changing the underlying LLM. They mitigated it by drastically reducing the scope of what the LLM is allowed to do. They use traditional deterministic search algorithms to find the facts, and only use the LLM to format those facts into a readable paragraph, severely restricting its generative freedom.",
     },
     {
-      kind: "trans",
-      text: "To achieve that containment, you must deploy a combination of architectural constraints and prompting techniques to build a cage around the model's creativity.",
-    },
-    {
       kind: "h",
       number: "7.9",
       title: "Hallucination mitigation strategies",
@@ -5071,10 +4862,6 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Fact-Checking Architectures",
       body: "Some enterprise AI tools utilize a dual-model architecture. Model A generates the initial answer. Model B, operating in the background, takes Model A's answer and explicitly cross-references every factual claim against a trusted database. If Model B detects a hallucination, it forces Model A to rewrite the sentence before showing it to the user. This guarantees accuracy but doubles the compute cost.",
-    },
-    {
-      kind: "trans",
-      text: "Even with the best RAG architecture in the world, the model will eventually fail; the final layer of defense is how the product UI handles that failure.",
     },
     {
       kind: "h",
