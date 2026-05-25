@@ -425,7 +425,7 @@ function BodyBlock({
     );
   }
   if (block.kind === "ex") {
-    return <CollapsibleExample title={block.title} body={block.body} defaultOpen={!skim ? false : false} />;
+    return <CollapsibleExample title={block.title} body={block.body} defaultOpen={false} />;
   }
   if (block.kind === "trans") {
     return <p className="text-[14px] italic leading-relaxed text-muted-foreground">{block.text}</p>;
