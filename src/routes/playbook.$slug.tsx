@@ -807,21 +807,25 @@ function Sidebar({
 
 function TableOfContents({
   concept,
+  slug,
   mobile,
 }: {
   concept: NonNullable<ReturnType<typeof conceptBySlug>>;
+  slug: string;
   mobile?: boolean;
 }) {
   const [activeId, setActiveId] = useState<string>("");
+  const { viewed, markViewed } = useSectionsViewed(slug);
 
   const headings = useMemo(() => {
-    const list: { id: string; title: string; kind: string }[] = [];
+    const list: { id: string; title: string; kind: string; sectionNum?: string }[] = [];
     concept.body.forEach((b) => {
       if (b.kind === "h") {
         list.push({
           id: b.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
           title: b.title,
           kind: b.kind,
+          sectionNum: b.number,
         });
       }
     });
@@ -835,24 +839,23 @@ function TableOfContents({
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        // If multiple entries are intersecting, we pick the one closest to the top
         for (const entry of entries) {
           if (entry.isIntersecting) {
             setActiveId(entry.target.id);
+            const num = (entry.target as HTMLElement).dataset.sectionNum;
+            if (num) markViewed(num);
             break;
           }
         }
       },
-      { rootMargin: "0px 0px -80% 0px" },
+      { rootMargin: "0px 0px -70% 0px" },
     );
-
-    headings.forEach((h: { id: string; title: string; kind: string }) => {
+    headings.forEach((h) => {
       const el = document.getElementById(h.id);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
-  }, [headings]);
+  }, [headings, markViewed]);
 
   return (
     <nav
@@ -866,20 +869,33 @@ function TableOfContents({
         On this page
       </p>
       <ul className="space-y-2.5">
-        {headings.map((h: { id: string; title: string; kind: string }) => (
-          <li key={h.id} className={h.kind === "h3" ? "ml-4" : ""}>
-            <a
-              href={`#${h.id}`}
-              className={`block text-[13px] leading-snug transition-colors ${
-                activeId === h.id
-                  ? "text-purple font-medium"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {h.title}
-            </a>
-          </li>
-        ))}
+        {headings.map((h) => {
+          const isViewed = h.sectionNum ? viewed.includes(h.sectionNum) : false;
+          const isActive = activeId === h.id;
+          return (
+            <li key={h.id} className="flex items-start gap-1.5">
+              <span className="mt-[5px] inline-flex w-3 shrink-0 justify-center">
+                {isViewed ? (
+                  <Check size={11} className="text-success" />
+                ) : (
+                  <span className="h-1 w-1 rounded-full bg-muted-foreground/30" />
+                )}
+              </span>
+              <a
+                href={`#${h.id}`}
+                className={`block text-[13px] leading-snug transition-colors ${
+                  isActive
+                    ? "text-purple font-medium"
+                    : isViewed
+                      ? "text-foreground/70 hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {h.title}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
