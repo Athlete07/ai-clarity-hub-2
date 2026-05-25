@@ -360,16 +360,35 @@ function ConceptPage() {
   );
 }
 
-function BodyBlock({ block }: { block: ConceptBodyBlock }) {
+function BodyBlock({
+  block,
+  mode,
+  sectionMinutes,
+}: {
+  block: ConceptBodyBlock;
+  mode: ReadMode;
+  sectionMinutes: Record<string, number>;
+}) {
+  const skim = mode === "skim";
+
   if (block.kind === "h") {
+    const mins = sectionMinutes[block.number];
     return (
       <div
         className="hairline-t mt-10 pt-6"
         id={block.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
       >
-        <p className="text-[11px] font-medium uppercase tracking-wider text-purple">
-          Section {block.number}
-        </p>
+        <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-wider text-purple">
+          <span>Section {block.number}</span>
+          {mins ? (
+            <>
+              <span className="opacity-40">·</span>
+              <span className="text-muted-foreground normal-case font-normal tracking-normal">
+                ~{mins} min
+              </span>
+            </>
+          ) : null}
+        </div>
         <h2 className="mt-1 text-2xl font-semibold tracking-tight leading-snug text-foreground">
           {block.title}
         </h2>
@@ -392,6 +411,7 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
     );
   }
   if (block.kind === "why") {
+    if (skim) return null;
     return (
       <div
         className="rounded-xl bg-amber-bg/70 px-5 py-4 text-[14px] italic text-foreground"
@@ -405,22 +425,16 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
     );
   }
   if (block.kind === "ex") {
-    return (
-      <div className="hairline rounded-xl bg-card px-5 py-4">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          Example
-        </p>
-        <p className="mt-1 text-[14px] font-medium text-foreground">{block.title}</p>
-        <p className="mt-2 text-[14px] leading-relaxed text-foreground/90">{block.body}</p>
-      </div>
-    );
+    return <CollapsibleExample title={block.title} body={block.body} defaultOpen={!skim ? false : false} />;
   }
   if (block.kind === "trans") {
     return <p className="text-[14px] italic leading-relaxed text-muted-foreground">{block.text}</p>;
   }
   if (block.kind === "diagram") {
+    if (skim) return null;
     return <DiagramBlock block={block} />;
   }
+  if (skim) return null;
   return (
     <p>
       {block.parts.map((part, i) => {
@@ -436,6 +450,43 @@ function BodyBlock({ block }: { block: ConceptBodyBlock }) {
         );
       })}
     </p>
+  );
+}
+
+function CollapsibleExample({
+  title,
+  body,
+  defaultOpen,
+}: {
+  title: string;
+  body: string;
+  defaultOpen: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="hairline rounded-xl bg-card">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-3 px-5 py-3 text-left"
+        aria-expanded={open}
+      >
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            Example
+          </p>
+          <p className="mt-0.5 text-[14px] font-medium text-foreground">{title}</p>
+        </div>
+        <ChevronDown
+          size={16}
+          className={`shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <p className="hairline-t px-5 py-4 text-[14px] leading-relaxed text-foreground/90">
+          {body}
+        </p>
+      )}
+    </div>
   );
 }
 
