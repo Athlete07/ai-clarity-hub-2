@@ -5391,6 +5391,11 @@ export const concepts: Concept[] = [
       body: "Internal benchmarks at multiple AI-tooling startups have shown that asking GPT-4 to respond in strict JSON typically inflates token count by 20–40% over equivalent free-text responses, because braces, quotes, and field names all consume tokens. Several teams have moved to YAML or compact custom formats specifically to shave that tax. The lesson: the output format you mandate in the prompt is a line item in your COGS.",
     },
     {
+      kind: "ex",
+      title: "Stripe's API field names — naming as a token decision at scale",
+      body: "When an AI feature returns Stripe-shaped JSON, short field names like 'id', 'amt', 'cur' tokenize to one token each, while descriptive names like 'transaction_identifier', 'amount_in_smallest_currency_unit', 'currency_code' tokenize to four to seven each. Multiplied across millions of API responses, this is the difference between a comfortable margin and a margin compression conversation with finance. Mature AI-product teams treat schema design as a tokenization decision and review field names in design crit, not just engineering review.",
+    },
+    {
       kind: "h",
       number: "1.3",
       title: "Why tokenization matters for your product",
