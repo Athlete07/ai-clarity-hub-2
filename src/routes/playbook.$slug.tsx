@@ -721,7 +721,7 @@ function Sidebar({
         to="/playbooks"
         className="inline-flex items-center text-[13px] text-muted-foreground transition-colors hover:text-foreground mb-6"
       >
-        ← All concepts
+        ← Playbooks
       </Link>
       <p className="section-label">AI Foundations for PMs</p>
       <ul className="mt-4 space-y-1">
