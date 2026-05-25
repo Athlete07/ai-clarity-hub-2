@@ -182,8 +182,34 @@ function ConceptPage() {
                 className="inline-block rounded-full bg-purple"
                 style={{ width: 8, height: 8 }}
               />
-              <span className="text-[15px] font-medium">FactorBeam</span>
+            <span className="text-[15px] font-medium">FactorBeam</span>
             </Link>
+          </div>
+          <div
+            className="hairline inline-flex items-center rounded-full bg-card p-0.5 text-[12px]"
+            role="tablist"
+            aria-label="Reading mode"
+          >
+            <button
+              role="tab"
+              aria-selected={readMode === "deep"}
+              onClick={() => setReadMode("deep")}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors ${
+                readMode === "deep" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <BookOpen size={12} /> Deep
+            </button>
+            <button
+              role="tab"
+              aria-selected={readMode === "skim"}
+              onClick={() => setReadMode("skim")}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors ${
+                readMode === "skim" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Zap size={12} /> Skim
+            </button>
           </div>
         </div>
       </header>
