@@ -235,7 +235,12 @@ function ConceptPage() {
             </h1>
             <div className="mt-4 flex items-center gap-2 text-[13px] text-muted-foreground">
               <Clock size={14} className="opacity-70" />
-              <span>{concept.readingMinutes} min read</span>
+              <span>
+                {readMode === "skim" ? `~${Math.max(2, Math.round(concept.readingMinutes / 3))}` : concept.readingMinutes} min{" "}
+                {readMode === "skim" ? "skim" : "read"}
+              </span>
+              <span className="opacity-50">·</span>
+              <span>{Object.keys(sectionMinutes).length} sections</span>
               <span className="opacity-50">·</span>
               <span>{concept.quiz.length} quiz questions</span>
             </div>
@@ -254,14 +259,16 @@ function ConceptPage() {
               <p className="mt-1 font-medium leading-relaxed">{concept.keyTakeaway}</p>
             </div>
 
-            <div className="mt-5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-[12px] text-muted-foreground">
-              <Hand size={13} />
-              Select any sentence below to get a plain-English explanation
-            </div>
+            {readMode === "deep" && (
+              <div className="mt-5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-[12px] text-muted-foreground">
+                <Hand size={13} />
+                Select any sentence below to get a plain-English explanation
+              </div>
+            )}
 
             <div className="mt-7 space-y-5 text-base leading-relaxed text-foreground">
               {concept.body.map((block, i) => (
-                <BodyBlock key={i} block={block} />
+                <BodyBlock key={i} block={block} mode={readMode} sectionMinutes={sectionMinutes} />
               ))}
             </div>
 
