@@ -299,7 +299,6 @@ function ConceptPage() {
               <span>{concept.readingMinutes} min full</span>
               <span className="opacity-50">·</span>
               <span>{Object.keys(sectionMinutes).length} sections</span>
-              <BudgetChip mins={essentialsMinutes} />
             </div>
 
             <ResumeSavedPill slug={concept.slug} />
