@@ -5494,6 +5494,11 @@ export const concepts: Concept[] = [
       body: "Duolingo's GPT-4-powered 'Roleplay' and 'Explain my answer' features have been publicly discussed as having dramatically different unit economics per language pair. The team builds language-specific routing — cheaper models for high-cost-per-token languages, frontier models reserved for English/Spanish where the token-per-conversation cost stays low. The fact that the routing exists at all is a tokenization decision wearing a product hat.",
     },
     {
+      kind: "ex",
+      title: "Sarvam AI — building an India-first LLM around tokenizer fairness",
+      body: "Sarvam AI explicitly trains its tokenizer on Indic scripts (Hindi, Tamil, Telugu, Bengali, Marathi) so that a Devanagari sentence compresses to roughly the same token count as its English equivalent. For Indian product teams, the choice between a US-trained frontier model and a Sarvam-class model isn't just about quality — it can be the difference between a 4x and a 1.2x cost multiplier on every non-English user. PMs serving Indic markets who haven't run this comparison are leaving margin on the table by default.",
+    },
+    {
       kind: "h",
       number: "1.5",
       title: "Special tokens",
