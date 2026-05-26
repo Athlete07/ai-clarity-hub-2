@@ -279,6 +279,41 @@ function ConceptPage() {
 
             <ResumeSavedPill slug={concept.slug} />
 
+            <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div
+                className="hairline inline-flex w-fit items-center rounded-full bg-card p-0.5 text-[12px]"
+                role="tablist"
+                aria-label="Reading mode"
+              >
+                <button
+                  role="tab"
+                  aria-selected={readMode === "deep"}
+                  onClick={() => setReadMode("deep")}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 transition-colors ${
+                    readMode === "deep" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <BookOpen size={12} /> Full
+                </button>
+                <button
+                  role="tab"
+                  aria-selected={readMode === "skim"}
+                  onClick={() => setReadMode("skim")}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 transition-colors ${
+                    readMode === "skim" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Zap size={12} /> Essentials
+                </button>
+              </div>
+              <p className="text-[12px] text-muted-foreground">
+                {readMode === "deep"
+                  ? "Full — every example, fold, and depth note."
+                  : "Essentials — takeaways and key points only."}
+              </p>
+            </div>
+
+
 
             <p className="hairline-b mt-6 pb-5 text-base leading-relaxed text-muted-foreground">
               {concept.summary}
