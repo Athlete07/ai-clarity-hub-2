@@ -8,17 +8,20 @@ import { PLAYBOOKS, type Playbook } from "@/lib/playbooks";
 export const Route = createFileRoute("/playbooks")({
   head: () => ({
     meta: [
-      { title: "AI concepts, sequenced for your role — FactorBeam" },
+      { title: "All AI playbooks for product managers — FactorBeam" },
       {
         name: "description",
         content:
-          "Same AI concepts, sequenced for how you actually work. Pick your role and read in the order that makes the most sense for you.",
+          "Browse every FactorBeam playbook. Plain-English AI chapters sequenced for product managers — pick the playbook that matches the gap in your work.",
       },
-      { property: "og:title", content: "AI concepts, sequenced for your role — FactorBeam" },
+      { property: "og:title", content: "All AI playbooks for product managers — FactorBeam" },
       {
         property: "og:description",
-        content: "Role-based sequences through the FactorBeam AI playbook.",
+        content:
+          "Plain-English AI playbooks for product managers — sequenced like a course, skimmable like a doc.",
       },
+      { property: "og:url", content: "/playbooks" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "/playbooks" }],
   }),

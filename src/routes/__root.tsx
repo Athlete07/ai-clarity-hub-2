@@ -72,19 +72,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "FactorBeam — AI playbooks for product managers" },
+      {
+        name: "description",
+        content:
+          "Plain-English AI playbooks for product managers. Highlight any sentence to get an instant, in-place explanation. Free, no signup.",
+      },
+      { name: "author", content: "FactorBeam" },
+      { property: "og:site_name", content: "FactorBeam" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "FactorBeam",
+          description: "Plain-English AI playbooks for product managers.",
+          publisher: {
+            "@type": "Organization",
+            name: "FactorBeam",
+          },
+        }),
       },
     ],
   }),
