@@ -71,17 +71,34 @@ export const Route = createFileRoute("/playbook/$slug")({
   },
   head: ({ loaderData }) => {
     const c = loaderData?.concept;
-    if (!c) return { meta: [{ title: "Concept — FactorBeam" }] };
+    if (!c) return { meta: [{ title: "Chapter — FactorBeam" }] };
+    const shortTitle = c.shortTitle ?? c.title;
+    const metaTitle = `${shortTitle} — FactorBeam`;
     return {
       meta: [
-        { title: `${c.title} — AI Playbook · FactorBeam` },
+        { title: metaTitle },
         { name: "description", content: c.summary },
-        { property: "og:title", content: `${c.title} — FactorBeam` },
+        { property: "og:title", content: metaTitle },
         { property: "og:description", content: c.summary },
         { property: "og:url", content: `/playbook/${c.slug}` },
         { property: "og:type", content: "article" },
+        { property: "og:site_name", content: "FactorBeam" },
       ],
       links: [{ rel: "canonical", href: `/playbook/${c.slug}` }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: c.title,
+            description: c.summary,
+            author: { "@type": "Organization", name: "FactorBeam" },
+            publisher: { "@type": "Organization", name: "FactorBeam" },
+            mainEntityOfPage: `/playbook/${c.slug}`,
+          }),
+        },
+      ],
     };
   },
   notFoundComponent: () => (

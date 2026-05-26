@@ -1,0 +1,16 @@
+# FactorBeam
+
+> Plain-English AI playbooks for product managers. Highlight any sentence to get an instant, in-place explanation. Free, no signup.
+
+FactorBeam is a free reading site that teaches how modern AI actually works — written for product managers, founders, and operators rather than ML engineers. Each playbook is a sequenced set of chapters with three real product examples per concept and a short quiz at the end.
+
+## Pages
+
+- [Home](/): Overview of FactorBeam and the available playbooks.
+- [All playbooks](/playbooks): Index of every playbook in the library.
+- [About](/about): Why FactorBeam exists and who it's for.
+
+## Playbooks
+
+- [AI Foundations for PMs](/playbook/ai-vs-ml-vs-deep-learning): Technical fast-track on models, training vs inference, evaluation, bias and hallucination.
+- [LLMs, Models & Prompting](/playbook/pm-llm-tokenization): Tokenization, transformers and attention, context windows, prompting, fine-tuning vs RAG.

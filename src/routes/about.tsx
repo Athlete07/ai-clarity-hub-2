@@ -8,14 +8,16 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "FactorBeam is a personal AI playbook made public — written for people who think in products, not models.",
+          "FactorBeam is a personal AI playbook made public — written for people who think in products, not models. Why it exists, and who it's for.",
       },
       { property: "og:title", content: "About — FactorBeam" },
       {
         property: "og:description",
-        content: "Why FactorBeam exists, and who it's for.",
+        content:
+          "A personal AI playbook made public — written for people who think in products, not models.",
       },
       { property: "og:url", content: "/about" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "/about" }],
   }),

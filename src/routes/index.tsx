@@ -30,8 +30,52 @@ export const Route = createFileRoute("/")({
           "Plain-English AI playbooks for product managers. Highlight anything confusing and get an instant explanation.",
       },
       { property: "og:url", content: "/" },
+      { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Do I need a technical background?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "None at all. Every chapter is written for operators, founders, and curious people — not engineers. Where math would normally appear, we use product analogies and real examples instead.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "How long does each chapter take?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Most chapters take 20–35 minutes including reading, the three examples, and the quiz. There's no timer — and your progress is saved automatically.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What if I get stuck on a sentence?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Highlight it. You'll get a plain-English explanation in place. You can also flag it as confusing — those flags drive the next round of edits.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Is it really free?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes — no signup, no paywall, no ads.",
+              },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: Home,
 });

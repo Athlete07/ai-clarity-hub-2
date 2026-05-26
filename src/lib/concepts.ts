@@ -67,7 +67,7 @@ export const concepts: Concept[] = [
     title: "AI vs ML vs Deep Learning",
     readingMinutes: 18,
     summary:
-      "The hierarchy you'll explain 100 times in your career. Three terms that get used interchangeably in every roadmap, every vendor pitch, and every all-hands — and three nested ideas that, once you can separate them cleanly, change how you scope work and how seriously your engineers take you.",
+      "The hierarchy you'll explain a hundred times in your career — AI vs ML vs Deep Learning, and how separating them changes how you scope work and earn engineering trust.",
     keyTakeaway:
       "AI is the umbrella, machine learning is one approach to AI, and deep learning is one approach to ML. Every deep learning system is ML; every ML system is AI; the reverse is never true.",
     pmCallout:
@@ -1516,7 +1516,7 @@ export const concepts: Concept[] = [
     title: "Training vs Inference — Two completely different operations with very different costs",
     readingMinutes: 15,
     summary:
-      "The most expensive mistake PMs make in AI is conflating the cost of building a model with the cost of running one. Training is a massive, upfront capital expenditure. Inference is a variable, ongoing operational expense. If you don't design your product around this distinction, your viral success will bankrupt your margins.",
+      "Training is a massive one-time R&D cost; inference is the ongoing variable cost of running the model. Confuse them and viral success will bankrupt your margins.",
     keyTakeaway:
       "Training is a massive fixed R&D cost; inference is an ongoing variable cost. You rent intelligence during inference to avoid the capital expenditure of training.",
     pmCallout:
@@ -2320,7 +2320,7 @@ export const concepts: Concept[] = [
   title: "Data & Labels — Why your data strategy is your AI strategy",
   readingMinutes: 20,
   summary:
-    "Data is the raw material that shapes the model. Without explicit ground truth labels, data provides no learning signal. In a world of commoditized algorithms, a proprietary dataset created through a continuous product flywheel is the only defensible moat an AI company can build.",
+    "Algorithms are commoditized; data is the moat. How training data and labels work, and why a product-driven data flywheel is your real AI defensibility.",
   keyTakeaway:
     "Proprietary data is the ultimate moat. Algorithms are rented; data is owned.",
   pmCallout:
@@ -3119,7 +3119,7 @@ export const concepts: Concept[] = [
   title: "Probability & Confidence — Why AI outputs aren't answers — they're bets",
   readingMinutes: 15,
   summary:
-    "AI models don't query a database; they sample from a probability distribution. Every output is a statistical bet. Managing an AI product means calibrating the model's confidence, setting the mathematical thresholds for action, and building human-in-the-loop workflows for the edge cases.",
+    "AI models don't look up answers — they sample from a probability distribution. Calibrating confidence and choosing thresholds is the PM's job, not engineering's.",
   keyTakeaway:
     "A model's confidence score is an internal mathematical distance, not a guarantee of truth. The product threshold is where math becomes strategy.",
   pmCallout:
@@ -3690,7 +3690,7 @@ export const concepts: Concept[] = [
   title: "Model Evaluation — Why \"accuracy\" alone will mislead you every time",
   readingMinutes: 20,
   summary:
-    "Accuracy is a deceptive metric that masks models failing to catch rare events. A PM must choose evaluation metrics (Precision, Recall, F1, AUC) based on the specific business cost of false positives versus false negatives, while ensuring data science teams maintain pristine test sets to prevent overfitting.",
+    "Accuracy hides models that miss rare events. Choose precision, recall, F1 or AUC based on the cost of false positives vs false negatives — it's a product call.",
   keyTakeaway:
     "The evaluation metric is a product decision. If you leave it to engineering, they will optimize for mathematical elegance instead of commercial viability.",
   pmCallout:
@@ -4487,7 +4487,7 @@ export const concepts: Concept[] = [
   title: "Bias & Hallucination — The two failure modes that will define your AI PM career",
   readingMinutes: 20,
   summary:
-    "AI models fail in two distinct ways: by discriminating against minorities due to flawed historical training data (bias), and by inventing perfectly grammatical falsehoods because they are built to synthesize text rather than retrieve facts (hallucination). Both require specific PM strategies to mitigate.",
+    "AI fails in two ways: bias (discrimination learned from historical data) and hallucination (confident, fluent falsehoods). Each needs its own PM mitigation.",
   keyTakeaway:
     "Bias is memorized prejudice; hallucination is unconstrained creativity. You cannot patch them out of existence; you must build safety scaffolding and failure-aware UIs to contain them.",
   pmCallout:
@@ -5286,7 +5286,7 @@ export const concepts: Concept[] = [
   title: "Tokenization",
   readingMinutes: 20,
   summary:
-    "How machines read — and why it's nothing like how humans do. Before a model can reason, generate, or hallucinate, it has to chop your text into tokens. That chopping decides what the model costs you, how much context it can hold, and why your Hindi users pay three times more than your English ones for the same feature.",
+    "How machines read text — and why it's nothing like how humans do. Tokens drive cost, latency, and context, which makes tokenization a product decision.",
   keyTakeaway:
     "Tokens are the atomic unit of every LLM — not words, not characters. Token count drives cost, latency, and context limits, which means tokenization is a product decision, not a backend implementation detail.",
   pmCallout:
@@ -5806,7 +5806,7 @@ export const concepts: Concept[] = [
   title: "Transformers & Attention",
   readingMinutes: 22,
   summary:
-    "The architecture that changed everything — explained without the math. Transformers are the engine under every modern LLM. You don't need linear algebra to use them well, but you do need to understand attention, the encoder/decoder split, and why depth and parallelism are the two levers that turned NLP from a research project into a product category.",
+    "Transformers, explained without the math. Attention, encoder/decoder splits, depth and parallelism — and why these choices decide what your AI product can do.",
   keyTakeaway:
     "Transformers replaced sequence-by-sequence reading with parallel attention over the whole input. That single shift is why LLMs scale, why context windows exist, and why encoder-only, decoder-only, and encoder-decoder models are good at completely different product jobs.",
   pmCallout:
@@ -6410,7 +6410,7 @@ export const concepts: Concept[] = [
   title: "Context Windows",
   readingMinutes: 22,
   summary:
-    "The context window is the model's working memory — every system prompt, every retrieved document, every previous turn, every token of the answer all live inside the same budget. Understanding how it's measured, how it degrades, and how it's priced is the difference between a feature that scales and one that quietly breaks at the edges.",
+    "The context window is the model's working memory — a shared budget across input, output, and history. How it's measured, how it degrades, and how it's priced.",
   keyTakeaway:
     "A context window is a hard, shared budget across input + output. Pricing scales with it, quality degrades inside it (especially in the middle), and most production AI bugs trace back to a PM treating it as 'effectively infinite' when it isn't.",
   pmCallout:
