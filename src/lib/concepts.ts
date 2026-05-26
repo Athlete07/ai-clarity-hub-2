@@ -6402,10 +6402,616 @@ export const concepts: Concept[] = [
         "Bigger context is not a fix on its own; attention degrades in the middle of long sequences as a property of the architecture. The fix is product-side: summarisation, retrieval, or careful ordering. Re-read sections 2.3 and 2.6.",
     },
   ],
+},
+{
+  slug: "pm-llm-context-windows",
+  number: 3,
+  shortTitle: "Context Windows",
+  title: "Context Windows",
+  readingMinutes: 22,
+  summary:
+    "The context window is the model's working memory — every system prompt, every retrieved document, every previous turn, every token of the answer all live inside the same budget. Understanding how it's measured, how it degrades, and how it's priced is the difference between a feature that scales and one that quietly breaks at the edges.",
+  keyTakeaway:
+    "A context window is a hard, shared budget across input + output. Pricing scales with it, quality degrades inside it (especially in the middle), and most production AI bugs trace back to a PM treating it as 'effectively infinite' when it isn't.",
+  pmCallout:
+    "As a PM: every feature spec involving an LLM is implicitly a context-budget spec. System prompt + tools + retrieved docs + conversation history + user input + reserved output — they all compete for the same window. Treat it like a memory budget on a mobile device, not free RAM.",
+  body: [
+    {
+      kind: "h",
+      number: "3.1",
+      title: "What is a context window",
+      subtitle: "Everything the model can 'see' at once — inputs, outputs, history",
+    },
+    {
+      kind: "take",
+      text: "The context window is the total number of tokens the model can process in a single call — system instructions, prior turns, retrieved documents, the user's question, and the model's own answer all share the same budget.",
+    },
+    {
+      kind: "why",
+      text: "If you treat the context window as 'how long a document the model can read', you'll over-promise features and under-budget for production. The window is shared, not partitioned — and every byte of it is paid for in latency and dollars.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("A context window is best thought of as the model's working memory for a single call. "),
+        x(
+          "Everything you want the model to know — your system prompt, the conversation so far, any documents you retrieved with RAG, tool definitions, the user's latest message — gets concatenated into one stream of tokens and fed to the model in a single pass.",
+          "The model does not have separate 'memory' for system instructions vs user messages vs documents. They all sit in the same attention stream, distinguished only by markers like 'system:' or special tokens.",
+        ),
+        s(" There is no persistent state between calls. Each request starts with a blank slate and must be re-fed everything you want the model to remember."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("This is the single most misunderstood property of LLMs in PM specs. "),
+        x(
+          "Engineers and PMs from a traditional database background expect 'memory' to mean stored state. In an LLM, memory is whatever you stuff into the next prompt — every turn, every time. If you want a chat product to remember a user preference set on turn 3, you must include it on turn 47.",
+          "This shapes architecture: persistence layers, summarisation jobs, retrieval pipelines, conversation truncation rules — they all exist because the context window is the only memory the model has, and you the PM are responsible for what goes into it.",
+        ),
+        s(" 'The model remembers' is always shorthand for 'our code put the right tokens back into the next call'."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The output also counts. "),
+        x(
+          "If a model has a 128K-token context window and you've used 120K tokens of input (long doc + chat history + system prompt), you only have 8K tokens of headroom for the answer. Ask for a 20K-token summary and you'll either hit a hard error, get a silently truncated response, or — worst case — get an answer that simply stops mid-sentence.",
+          "Most providers reserve some headroom for output by default, but the budgeting is the PM's responsibility. Reserved output tokens (max_tokens) is a feature spec, not a tuning parameter.",
+        ),
+        s(" Every feature spec should declare its expected input ceiling and reserved output, and engineering should enforce both."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "ChatGPT's 'memory' feature — context window dressed as state",
+      body: "When ChatGPT 'remembers' your name, your preferences, or your project across conversations, there is no model-side memory at work. OpenAI silently summarises facts about you into a small persistent record and re-injects that record into the system prompt at the top of every new conversation. The 'memory' is just a few hundred tokens of pre-baked context that get prepended to each call. PMs who think of LLM memory as anything other than 'tokens we paid to reload' end up shipping features that confuse users when the trick breaks.",
+    },
+    {
+      kind: "ex",
+      title: "Cursor's repo indexing — the entire codebase doesn't fit, so what does?",
+      body: "Cursor and similar AI coding tools cannot fit a real codebase into any model's context window. Instead, they embed every file, retrieve the most relevant chunks at query time, and assemble a per-request context window that includes: a system prompt, the open file, a handful of retrieved chunks, recent edits, and the user's question. The 'feels like the AI knows my codebase' UX is entirely a context-window assembly problem — and the engineering effort spent on retrieval ranking is what makes or breaks the product.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's Claude Projects — system prompt as durable context",
+      body: "Claude Projects lets you attach files and custom instructions that persist across conversations within the project. Under the hood, those files and instructions are added to the context window of every message in the project. There is no special storage — just a different default for what gets reloaded each call. PMs designing 'workspace' or 'project' features should understand this is the standard pattern: persistent UX, ephemeral context, reloaded every turn.",
+    },
+    {
+      kind: "h",
+      number: "3.2",
+      title: "How context windows are measured",
+      subtitle: "Tokens in, tokens out — and why both count against your limit",
+    },
+    {
+      kind: "take",
+      text: "Context windows are measured in tokens, not words or characters. The advertised number (e.g., 200K) is the total of input tokens + output tokens — not input alone. Output tokens often cost 3–5x more than input tokens, even though they share the same budget.",
+    },
+    {
+      kind: "why",
+      text: "PMs who assume 'context window = how much I can send' will mis-spec features by 20–50%. Pricing pages reinforce this confusion because input and output are priced separately even though they consume the same window.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Every modern provider — OpenAI, Anthropic, Google, Meta — measures context in tokens. "),
+        x(
+          "A token is roughly 4 characters of English, but varies dramatically by language and content (see Chapter 1 on tokenization). 1,000 tokens ≈ 750 English words ≈ 4 paragraphs of prose ≈ 50 lines of Python.",
+          "Always estimate token counts from a real tokenizer (tiktoken for OpenAI, the Anthropic count_tokens API for Claude) before committing to feature specs. Word counts and character counts are misleading enough to break budgets.",
+        ),
+        s(" A '128K context window' means 128,000 tokens of combined input + output, not 128,000 words and not 'as much as you'd reasonably need'."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Input and output share the same budget but have different price tags. "),
+        x(
+          "OpenAI's gpt-4o, for example, charges roughly $2.50 per million input tokens and $10 per million output tokens. Claude Sonnet charges $3 in / $15 out per million. Output is 3–5x more expensive across virtually every provider.",
+          "This is because output generation is autoregressive — the model produces one token at a time, each conditioned on every previous one, which is fundamentally more expensive than reading input in a single parallel pass.",
+        ),
+        s(" When you cost-model a feature, separate input and output volumes. Treating them as one blended number can be off by 3x — large enough to flip the unit economics."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The output budget also has a hard ceiling that's usually smaller than the full window. "),
+        x(
+          "Most chat APIs default to a max_tokens setting (often 4K or 8K) that caps output regardless of context window size. Asking gpt-4o (128K context) for a 50K-token document by default returns 4K tokens, silently truncated.",
+          "max_tokens is a PM-level decision dressed as a config flag. It controls how much your model is allowed to produce, which controls latency, cost, and whether features like 'summarise this 100-page contract' work at all.",
+        ),
+        s(" Every LLM feature spec should explicitly state: expected input tokens, expected output tokens, and the max_tokens cap. If it doesn't, an engineer is silently making that decision for you."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's pricing page — input and output as separate line items",
+      body: "OpenAI's pricing has always listed input and output tokens as two separate columns, often with a 4–5x multiplier on output. This isn't an accounting convenience — it's a signal to PMs that the two halves of a context window are not economically equivalent. A feature that reads 10K tokens and writes 200 is fundamentally cheaper than one that reads 200 and writes 10K, even though both 'use' the same window. PMs who price-model their features as 'tokens per call * blended rate' miss this and over- or under-price by integer multiples.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's count_tokens API — the production pre-flight check",
+      body: "Anthropic ships a count_tokens endpoint that lets you measure exactly how many tokens a prompt will consume before you send it. Production-grade Claude integrations call count_tokens on every request to: (a) reject inputs that would exceed the window, (b) display accurate cost estimates to the user, (c) pre-emptively trim conversation history. PMs who don't require this in feature specs end up debugging 'why did the model just stop?' in production.",
+    },
+    {
+      kind: "ex",
+      title: "GitHub Copilot's max_tokens budget — why suggestions are short",
+      body: "Copilot's inline suggestions are deliberately capped at a small max_tokens budget — typically a few hundred tokens — because the product's UX target is sub-200ms latency. Output token count is the dominant latency driver in autoregressive models; capping output is how Copilot keeps suggestions snappy. The product feature 'short, fast suggestions' is implemented as a max_tokens ceiling, not as a separate model. PMs designing latency-sensitive AI features should treat max_tokens as a primary UX lever.",
+    },
+    {
+      kind: "h",
+      number: "3.3",
+      title: "What happens when you exceed the context window",
+      subtitle: "Truncation, forgetting, and silent failure modes",
+    },
+    {
+      kind: "take",
+      text: "Exceeding the context window fails in three different ways depending on where the overflow happens: a hard error from the API, silent truncation of input or output, or invisibly degraded answers because something got cut. Two of the three are silent — and the silent ones are what hurts in production.",
+    },
+    {
+      kind: "why",
+      text: "Most context-window bugs are not crashes. They're answers that are subtly wrong because the model never saw the relevant token. These are the hardest LLM bugs to debug because the symptom looks like a quality problem, not an architecture problem.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The cleanest failure mode is the hard error. "),
+        x(
+          "Send a prompt that exceeds the model's context window and the API will reject the call with a 400-class error. This is the failure mode you want — it's visible, it's debuggable, and it forces your code to handle the edge case explicitly.",
+          "Mature LLM integrations always check token counts before sending and either trim, summarise, or refuse the request with a meaningful error message to the user. A 400 from the provider should be treated as a bug in your pre-flight code, not a runtime condition.",
+        ),
+        s(" If your only context-window handling is 'try it and catch the error', you're shipping a fragile feature."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The dangerous failure mode is silent truncation. "),
+        x(
+          "Many client libraries, SDKs, and middleware (LangChain, LlamaIndex, Vercel AI SDK, even some provider SDKs) will silently trim oversized prompts to fit. The model gets a truncated input and produces an answer based on partial information — with no indication to the user or the downstream code that anything was lost.",
+          "Similarly, when output runs into the max_tokens cap or the window edge, the model stops mid-token. The response field returns successfully; the JSON parses; the feature 'works'. Only the user notices that the summary ends in '...the third reason being'.",
+        ),
+        s(" Every LLM feature should log token counts on both ends and alert when truncation occurs. 'Silently incomplete' is the dominant failure mode of production LLM features."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The third failure mode is contextual forgetting in chat products. "),
+        x(
+          "When a conversation history grows past the context window, the typical pattern is to drop the oldest turns. The model 'forgets' early context — including critical instructions or facts the user provided 20 turns ago — without any user-facing indication that the dropping happened.",
+          "Sophisticated chat products implement rolling summarisation: as turns get evicted, a background job summarises them into a compact context block that gets re-injected at the top of every call. This is the standard pattern, but it has to be designed in, not bolted on.",
+        ),
+        s(" 'It used to remember and now it doesn't' is almost always an eviction policy issue, not a model issue."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Bing Chat's early turn limit — eviction policy disguised as a product rule",
+      body: "Bing Chat (now Copilot) launched with a hard cap of 5, then 10, then 20 turns per conversation. Microsoft framed it as a safety/quality decision, but the underlying constraint was context window exhaustion: each turn added to history, and beyond a certain point, either critical instructions were getting evicted or quality was degrading from window pressure. The product rule ('start a new chat') was an honest way to expose the architectural constraint to users. Most chat products silently degrade instead, which is worse UX.",
+    },
+    {
+      kind: "ex",
+      title: "ChatGPT's 'I can't see the earlier messages' — the eviction surface",
+      body: "Long ChatGPT conversations will sometimes have the model openly admit it can't recall content from earlier in the thread. That's the model noticing — via missing tokens — that its own context has been truncated by the client. The honest behaviour is good for trust; the underlying eviction is the standard pattern for handling overflow. PMs designing long-running conversational products need an explicit answer to: when we run out of room, what do we drop, summarise, or surface to the user?",
+    },
+    {
+      kind: "ex",
+      title: "The customer-support bot that 'forgot' the user's account number",
+      body: "A recurring failure mode in production support bots: the user provides their account number on turn 1, then has a 30-turn conversation, then asks 'what was the status I asked about earlier?' — and the bot has no idea, because turn 1 has been evicted. The fix is always a small structured 'session memory' that lives outside the chat history and gets re-injected on every call. The bug is always a PM who didn't spec that memory because they assumed the context window was big enough. It never is, at scale.",
+    },
+    {
+      kind: "h",
+      number: "3.4",
+      title: "Context window sizes across models",
+      subtitle: "GPT-4, Claude, Gemini — the real differences and what they mean",
+    },
+    {
+      kind: "take",
+      text: "Context window sizes range from 8K tokens on older open-source models to 2M+ tokens on Gemini's frontier offerings. The advertised number is the headline; the real differences are recall quality at long range, pricing per 1K tokens, and latency under load.",
+    },
+    {
+      kind: "why",
+      text: "PMs picking a model on context window alone are reading the spec sheet. The product-relevant question is 'how well does it remember stuff at my realistic input length, and how much does that cost me at production volume?'",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The headline numbers as of 2026: "),
+        x(
+          "GPT-4o and GPT-4o-mini: 128K tokens. GPT-4.1: 1M tokens. Claude Sonnet 4 and Opus 4: 200K tokens (with 1M tier available on request). Gemini 2.0 Pro: 2M tokens. Llama 3.3 and 4: 128K. Most open-source models below the frontier: 32K–128K.",
+          "These numbers shift roughly every quarter; the relative ranking is more stable than the absolute values. Always check the current model card before committing to a feature spec.",
+        ),
+        s(" Frontier providers are converging on '100K is minimum, 1M is achievable, 2M is the marketing edge'. The product question is what you actually need."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Bigger is not strictly better. "),
+        x(
+          "Long-context performance varies wildly by model. Gemini's 2M-token window has historically scored well on needle-in-a-haystack, but it costs more per token and latency grows non-linearly with input length. Claude's 200K window has industry-leading recall but smaller raw size. GPT-4.1's 1M window is competitive on recall but most usage stays under 100K because cost and latency scale poorly past that.",
+          "The right way to evaluate is to run your own needle-in-a-haystack tests at the input lengths your product will actually see, on each candidate model, and compare recall + latency + cost. Provider marketing materials all cherry-pick.",
+        ),
+        s(" The 'best' context window for your product is the smallest one that reliably covers your p99 input length with acceptable recall."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Latency and cost scale with context length, not just with output. "),
+        x(
+          "Processing a 100K-token input costs ~25x more than a 4K-token input (linear in tokens) and adds significant time-to-first-token. A 1M-token input call can take 30+ seconds of pure attention computation before the first output token appears, regardless of how short the answer is.",
+          "This makes the choice between 'long context' and 'RAG' partly a UX decision. If your user expects sub-second responses, you cannot ship a 500K-token input prompt no matter how cheap or capable the model is.",
+        ),
+        s(" Context size is a UX constraint, not just a cost line item."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Gemini's 2M-token window — Google's flagship marketing claim",
+      body: "Google launched Gemini 1.5 Pro with a then-unprecedented 1M-token context, then extended to 2M. The pitch was 'put an entire codebase, a feature-length film, or 1,500 pages of documents into one prompt.' In practice, most production usage of Gemini stays well under 200K tokens because (a) cost scales linearly, (b) latency scales worse than linearly, and (c) for most tasks, retrieval over a smaller window outperforms stuffing everything in. The 2M number is real and useful for specific use cases (genomic analysis, video) but is not the default operating point for most products.",
+    },
+    {
+      kind: "ex",
+      title: "Claude's 200K + 1M tier — pricing the long tail",
+      body: "Anthropic offers Claude with a 200K-token default context and a separate 1M-token tier available on request, with different pricing. This tiered approach acknowledges that long context is a specialised product surface, not a default. PMs evaluating Claude for a long-document feature should explicitly request and price the 1M tier — and benchmark recall at the document sizes they actually expect. The default tier is sufficient for the vast majority of products.",
+    },
+    {
+      kind: "ex",
+      title: "Open-source models stuck at 32K — the practical ceiling for self-hosted",
+      body: "Most production-deployed open-source models (Llama 3 70B, Mistral Large, DeepSeek V3) operate effectively in a 32K–128K window despite advertising larger numbers, because attention quality degrades sharply past the training distribution and inference cost grows quickly on local GPUs. PMs choosing open-source for cost reasons need to model their features around the realistic operating context, not the spec sheet — otherwise the cost savings disappear into degraded quality or infrastructure spend.",
+    },
+    {
+      kind: "h",
+      number: "3.5",
+      title: "Long context vs retrieval",
+      subtitle: "When to stuff everything in the context vs when to use RAG",
+    },
+    {
+      kind: "take",
+      text: "Long context says 'put everything in the prompt and let attention sort it out'. RAG says 'find the most relevant 1-5% of the corpus and put only that in the prompt'. The right answer depends on corpus size, latency budget, cost ceiling, and how reliably the model needs to find specific facts.",
+    },
+    {
+      kind: "why",
+      text: "This is one of the highest-leverage architectural decisions in any LLM product. Pick wrong and you over-pay by 10x, ship a slow feature, or hit a recall ceiling you can't engineer around. Pick right and the same model that's 'too expensive' for your competitor becomes profitable for you.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Long context wins when the corpus is small, query patterns are unpredictable, and the model needs to reason across the whole thing. "),
+        x(
+          "Reviewing a single 200-page contract for inconsistencies. Summarising a 100-page report. Analysing a single codebase under 100K tokens. In these cases, retrieval would have to chunk the document and risk missing cross-section dependencies; stuffing it all in lets the model see everything at once.",
+          "Long context is also simpler to build: no embedding pipeline, no vector store, no chunking strategy, no retrieval ranking. For prototypes and low-volume features, the simplicity is worth the cost.",
+        ),
+        s(" 'When in doubt, start with long context and measure' is reasonable advice — until volume or latency forces a rebuild."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("RAG wins when the corpus is large, queries target specific facts, and you care about cost or latency. "),
+        x(
+          "A knowledge base of 200K documents will never fit in any context window. A customer support bot answering specific product questions doesn't need to see your entire help center every turn. Even a moderately large codebase benefits from retrieving just the relevant files instead of stuffing the whole repo.",
+          "RAG cuts the working context from millions of tokens to a few thousand, which means 10–100x lower cost and dramatically faster responses. The tradeoff is engineering complexity (embeddings, vector DB, retrieval quality) and the recall ceiling — you can only retrieve what the embedding model can find.",
+        ),
+        s(" Most production AI features that look 'expensive but obvious' are actually RAG-shaped problems being solved with long context. The rebuild path is well-trodden but disruptive."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The hybrid pattern is increasingly the standard answer. "),
+        x(
+          "Retrieve broadly, pack the top 50–100 chunks into a long context window, and let the model do final ranking and synthesis. This combines RAG's scalability with long context's reasoning quality and works particularly well for legal, medical, and technical knowledge work.",
+          "Mature implementations include re-ranking (a cross-encoder over the retrieved candidates), de-duplication, and structured packing (most-important chunks at the start and end of the prompt to dodge the lost-in-the-middle problem).",
+        ),
+        s(" The cleanest architecture for most production AI features in 2026 is 'RAG + long context window + careful prompt assembly', not pure RAG and not pure long-context."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Perplexity — RAG-first by design",
+      body: "Perplexity does not stuff the web into its prompts. Every query triggers a search, retrieves the top results, fetches and chunks the relevant pages, and assembles a tight context window of the most relevant passages. The model then synthesises the answer with citations. The product feels like 'the model knows everything' but architecturally it's the model knows almost nothing in-context and retrieves freshly per query. PMs designing search-grounded AI features should treat Perplexity's architecture as the default pattern, not the edge case.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's '100K context for legal review' demo — long context as the right call",
+      body: "Anthropic explicitly markets Claude's long context for use cases like reviewing entire contracts, financial filings, or research papers in a single prompt. For a 50-page contract, the cross-section reasoning matters: a clause on page 3 might reference a definition on page 47. RAG would chunk these apart; long context keeps them together. The cost is acceptable because the document is single-tenant and the analysis is high-value. The right architecture is the one that matches the workflow's actual structure.",
+    },
+    {
+      kind: "ex",
+      title: "Notion AI Q&A — hybrid by necessity",
+      body: "Notion AI's workspace Q&A cannot fit a real workspace into any context window. The implementation retrieves the most relevant pages via embeddings, packs them into a context window of typically 8K–16K tokens, and asks the model to answer with citations to the source pages. As Notion's customers scale workspaces past millions of pages, RAG becomes the only viable architecture — and the quality of the retrieval pipeline dominates the perceived quality of the AI feature.",
+    },
+    {
+      kind: "h",
+      number: "3.6",
+      title: "The lost-in-the-middle problem",
+      subtitle: "Why models forget information in the middle of long contexts",
+    },
+    {
+      kind: "take",
+      text: "Models reliably recall information placed at the start or end of a long context, and unreliably recall information placed in the middle. The 'U-shaped' recall curve is a well-documented property of attention at long range, and it changes how you should assemble prompts.",
+    },
+    {
+      kind: "why",
+      text: "If you've ever wondered why your model 'misses' specific facts in a long RAG context even though they're clearly in there — this is why. The fix is product-side prompt engineering, not a model upgrade.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("In 2023, Stanford researchers published 'Lost in the Middle: How Language Models Use Long Contexts'. "),
+        x(
+          "They placed a target fact at different positions inside a long context and measured recall accuracy. The result was a clear U-shape: facts at the start and end were retrieved reliably; facts in the middle were missed at much higher rates. The pattern held across every major model family and across context lengths.",
+          "The underlying cause is a combination of training data distribution (most training examples have important content at start or end) and attention mechanics at long range (positional encoding and attention head specialisation favour edges).",
+        ),
+        s(" This is not a bug. It's a property of how transformers learn from real-world text — most of which is structured with intros and conclusions."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The PM implication is direct: prompt assembly order matters. "),
+        x(
+          "When building a RAG prompt, the most important retrieved chunk goes at the top or the very bottom of the context, not buried in the middle. When packing a long conversation, the most important system instructions go at the very start and a compact 'critical context' summary goes immediately above the user's query.",
+          "This is a free quality win. Re-ordering prompts costs nothing at inference and can move recall accuracy by 10–20 percentage points on long contexts.",
+        ),
+        s(" Any production prompt assembly code should have an explicit ordering policy, justified by recall testing."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Lost-in-the-middle also shapes how you should benchmark models. "),
+        x(
+          "The needle-in-a-haystack benchmarks model providers publish are typically run with the needle at varying positions — and the 'multi-needle' or 'middle-position' variants are the ones that reveal real quality differences. A model with 99% recall at the edges and 60% in the middle is not the same product as a model with 95% across the board, even though both look fine on a summary chart.",
+          "Anthropic, Google, and Meta have all published model cards that show position-stratified recall. Reading these carefully tells you more about real-world long-context quality than the headline window size.",
+        ),
+        s(" 'How well does it remember the middle?' is the question that separates marketing claims from production reality."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "The Stanford 'Lost in the Middle' paper — the benchmark that named the bug",
+      body: "Liu et al. (2023) published the canonical study showing that GPT-3.5, GPT-4, Claude, and every model tested at the time exhibited the U-shaped recall curve at long context. The paper became standard reading inside every major AI lab and led directly to changes in how providers report long-context performance. PMs scoping long-context features should be familiar with at least the shape of these results; they explain a class of bugs that otherwise look like model hallucination.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's position-stratified needle tests",
+      body: "Anthropic's Claude 3 launch materials explicitly showed needle-in-a-haystack recall plotted against position in the context window — not just a single number. The plots demonstrated that Claude 3 maintained high recall across positions, which was the actual technical claim being made, distinct from the raw context size. PMs evaluating long-context models should ask for this kind of stratified data, not just 'maximum tokens supported'.",
+    },
+    {
+      kind: "ex",
+      title: "LangChain's 'reorder' utility — lost-in-the-middle as standard library tooling",
+      body: "LangChain ships a built-in document reorder utility specifically designed to combat lost-in-the-middle: take a ranked list of retrieved chunks, then re-arrange them so the most relevant chunks are at the start and end of the prompt rather than concentrated in the middle. The fact that this utility ships in the framework's standard library shows how broadly the problem is recognised and how widely the workaround is needed. PMs whose teams use LangChain, LlamaIndex, or any RAG framework should verify that reorder logic is actually being applied — it's a one-line fix that's frequently overlooked.",
+    },
+    {
+      kind: "h",
+      number: "3.7",
+      title: "Context window cost implications",
+      subtitle: "Why longer contexts cost exponentially more to process",
+    },
+    {
+      kind: "take",
+      text: "Cost scales linearly with context length in pricing, but the user-perceived cost — latency, infrastructure load, fail rates — grows worse than linearly. A 10x longer prompt typically costs 10x more in API spend but 15-30x more in total cost of ownership when you include latency, retries, and degraded quality.",
+    },
+    {
+      kind: "why",
+      text: "PMs who model long-context features as 'token count × price' miss the structural costs that don't show up on the pricing page. The pricing page is the floor, not the ceiling.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("API pricing for input tokens is linear: 2x the tokens, 2x the bill. "),
+        x(
+          "But the per-token price for long-context calls is often higher than for short ones. Anthropic, Google, and OpenAI all have tiered pricing where the highest-context model variants are priced 1.5–2x above the short-context defaults. The 'long context tax' is a real line item.",
+          "And output pricing is, again, 3–5x more than input. A long-context call that produces a long output stacks both costs.",
+        ),
+        s(" Always cost-model long-context features with separate input and output rates and check whether you're on the premium long-context tier."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Latency is the silent cost. "),
+        x(
+          "Time-to-first-token grows roughly linearly with input length because the entire prompt must be processed by every layer before generation starts. A 100K-token prompt typically takes 3–10 seconds before the first output token appears, regardless of how short the output is.",
+          "For interactive features, this is product-defining. Users will tolerate a 1-second pause; most will abandon at 5 seconds. Long-context features are inherently non-interactive — they're batch features dressed up as chat.",
+        ),
+        s(" If your feature lives in a real-time UI, your context budget is bounded by latency, not cost or window size."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Operational costs scale worse than linearly. "),
+        x(
+          "Longer prompts have higher failure rates: rate limit hits, network timeouts, partial response truncations, and silent quality degradations all become more common as context grows. Retries on long prompts are extra expensive because you're paying for the full input twice.",
+          "Engineering overhead also grows: long-context features need more sophisticated pre-flight checks, more careful error handling, more aggressive caching, and more monitoring. None of that shows up on the model invoice, but it shows up on the engineering payroll.",
+        ),
+        s(" A reasonable rule of thumb: total cost of a long-context feature is ~2x the headline API cost once you include retries, ops overhead, and latency-driven user churn."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Cursor's prompt caching — turning long context into a fixed cost",
+      body: "Cursor relies on Anthropic's prompt caching: once a system prompt or large context block has been sent, subsequent calls reusing that prefix are charged at a fraction of the normal input rate. Cursor uses this aggressively to amortise the cost of including large codebase contexts across many user queries. PMs building features that re-send the same large context repeatedly should check whether their provider offers prompt caching and design the prompt structure (stable prefix + variable suffix) to take advantage of it.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's tiered model pricing — the long-context premium",
+      body: "OpenAI's GPT-4.1 with 1M context is priced at a premium above the 128K-context default, reflecting both the compute cost and the operational complexity of serving long-context inference. PMs evaluating the 1M variant should explicitly compare per-token cost against the default and run their feature through both — often the cost difference dwarfs the recall improvement, and the right answer is to stay on the cheaper tier with better prompt engineering.",
+    },
+    {
+      kind: "ex",
+      title: "The startup that priced 'unlimited document analysis' as a flat fee",
+      body: "Multiple early AI document-analysis startups offered 'unlimited document Q&A' on a flat monthly fee, modelling cost as 'avg document size × avg queries'. Their power users — legal firms, financial analysts — uploaded 500-page documents and queried them dozens of times per day, blowing through margin in week one. The fix in every case was the same: introduce per-document and per-query limits, or move to a usage-based price. Context window cost is not amortisable across users; the 99th percentile user defines your cost basis.",
+    },
+    {
+      kind: "h",
+      number: "3.8",
+      title: "PM decision lens: designing features within context constraints",
+      subtitle: "The conversation history, document, and system prompt budget problem",
+    },
+    {
+      kind: "take",
+      text: "Every LLM feature spec should include an explicit context budget: how many tokens for the system prompt, how many for retrieved content, how many for conversation history, how many reserved for output. If the budget isn't written down, the engineer makes it up — and it shows up as a bug six months later.",
+    },
+    {
+      kind: "why",
+      text: "Context-window decisions are PM decisions disguised as engineering decisions. What gets kept, what gets evicted, what gets summarised, what gets retrieved — these are product choices that determine what your feature feels like to use. Defaulting to engineering instinct means defaulting to whatever's easiest, not whatever's right.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Write the budget down as a table. "),
+        x(
+          "System prompt: 800 tokens. Tool definitions: 400 tokens. Retrieved documents (top 5 chunks of 600 tokens each): 3,000 tokens. Conversation history (rolling window): 4,000 tokens. User input (capped): 2,000 tokens. Reserved output: 4,000 tokens. Total: 14,200 tokens. Target context window: 16K minimum, 32K for headroom.",
+          "This budget is the most important artifact in the feature spec. It tells engineering what to build, makes overflow logic a deliberate decision, and prevents the 'we have 200K context, just throw everything in' anti-pattern.",
+        ),
+        s(" If the budget exceeds the chosen model's window, you have a feature-scoping conversation to have — before code gets written."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Decide the eviction policy explicitly. "),
+        x(
+          "When the budget overflows, what gets dropped first? Oldest conversation turns? Lowest-scoring retrieved chunks? Tool definitions that haven't been used? Each policy creates a different user experience. 'Drop oldest turns' makes the bot feel forgetful; 'drop lowest-relevance chunks' makes it feel less precise; 'summarise oldest turns into a compact block' adds latency but preserves the feel of continuity.",
+          "There is no universally right policy. The right policy is the one that matches your product's emotional contract with the user. A coding assistant should preserve recent code context above old chat; a customer support bot should preserve account details above older greetings.",
+        ),
+        s(" Eviction policy is product copywriting, not engineering trivia."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Pressure-test the budget against extreme users. "),
+        x(
+          "Your average user might send 2K tokens and get a 500-token answer. Your power user sends 50K tokens and asks for a 10K-token document. Your malicious user sends 200K of garbage to drive up your bill. Each of these breaks a different part of your budget if you only spec the average case.",
+          "Production-grade specs include hard caps per request (max input tokens, max output tokens), per-user-per-day quotas, and explicit handling for inputs that exceed the cap (refuse, truncate with warning, or upsell to a higher tier).",
+        ),
+        s(" Designing for the 99th percentile is the difference between a feature that scales and a feature that gets a feature-freeze memo from finance."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's ChatGPT Plus — quota-driven feature gating",
+      body: "ChatGPT Plus's per-hour message limits, file size caps, and reduced rate limits during peak hours are all visible expressions of context-window economics. OpenAI cannot afford to give every Plus user unbounded long-context calls; the budget is enforced through usage limits that map back to underlying token spend. PMs designing AI features with subscription pricing should expect to design similar guardrails — and to communicate them transparently rather than letting users discover them through unexplained slowdowns.",
+    },
+    {
+      kind: "ex",
+      title: "GitHub Copilot Chat's compact context window — a deliberate scoping choice",
+      body: "Copilot Chat operates with a relatively tight context window even when the underlying model supports much more. The product deliberately includes only the open file, a small set of relevant repo chunks, and recent chat — not the entire codebase. The scoping choice is a PM call: a tighter context means faster responses, lower cost, and more focused answers, at the price of occasional missed cross-file context. The team accepted that tradeoff because latency and cost won out for the use case.",
+    },
+    {
+      kind: "ex",
+      title: "Linear's AI features — small, sharp prompts beat big, vague ones",
+      body: "Linear's AI-assisted issue creation, summarisation, and search features all operate on small, structured context windows: the specific issue, a few related issues, a short user query. There is no 'load the whole workspace into the prompt' option. The product team explicitly chose constrained context as a feature philosophy, prioritising speed and predictability over flexibility. The result is AI features that feel fast and reliable — because the context budget is small enough to be consistently spec'd and tested. PMs designing AI features in productivity tools should consider 'less context, faster answers' as a design direction, not a limitation.",
+    },
+  ],
+  examples: [],
+  quiz: [
+    {
+      q: "A PM specs a chat feature with a 128K-token context window model. The team estimates: 1K system prompt, 8K of retrieved RAG chunks, 100K of conversation history, 2K user input. They request a 25K-token summary as output. What goes wrong?",
+      options: [
+        "Nothing — 128K is plenty.",
+        "The total (1K + 8K + 100K + 2K + 25K = 136K) exceeds the 128K window. Either input gets silently truncated, output runs into the window edge mid-generation, or the call errors. Input + output share one budget.",
+        "The model will be slow but everything will fit.",
+        "Output tokens don't count against the context window.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Input + output share the budget. 136K > 128K means something breaks — and silent truncation is the most common, hardest-to-debug failure mode. Always budget end-to-end.",
+      wrongFeedback:
+        "The 128K window covers input + output together, not input alone. Adding everything up exceeds the budget and produces a silent failure in most stacks. Re-read sections 3.1 and 3.2.",
+    },
+    {
+      q: "A team builds a customer support bot and notices that users complain it 'forgets' details they mentioned at the start of a long conversation. What's the most appropriate first fix?",
+      options: [
+        "Switch to a model with a 2M-token context window.",
+        "Implement rolling summarisation of older turns plus a small structured 'session memory' (account number, ticket ID, preferences) that gets re-injected on every call.",
+        "Tell users to keep conversations shorter.",
+        "Fine-tune the model on the customer's data.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly. The bug is an eviction policy issue, not a model issue. The product-side fix — explicit session memory + rolling summarisation — solves it without changing the model and works even on cheap models.",
+      wrongFeedback:
+        "Bigger context windows don't fix this and often make it worse (cost, latency, lost-in-the-middle). The fix is product-side state management: persist critical session facts and summarise old turns. Re-read sections 3.3 and 3.8.",
+    },
+    {
+      q: "Your team is building a feature to answer questions over a 50,000-document internal knowledge base. Which architecture should you reach for first?",
+      options: [
+        "Long context — pick a 2M-token window model and stuff everything in.",
+        "RAG — embed every document, retrieve the top relevant chunks per query, and pack only those into a small context window.",
+        "Fine-tune a custom model on the entire knowledge base.",
+        "Build a keyword search and skip the LLM.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. 50K documents will never fit in any context window, and you don't need them to — most queries depend on a tiny relevant subset. RAG is the structural answer; long context handles synthesis after retrieval.",
+      wrongFeedback:
+        "Long context cannot scale to 50K documents. Fine-tuning bakes in facts you can't update. The right pattern is RAG: retrieve a small relevant subset and let the model synthesise. Re-read section 3.5.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each PM scenario into the architectural answer that fits best.",
+      categories: ["Long context", "RAG", "Hybrid (RAG + long context)"],
+      items: [
+        { text: "Reviewing a single 80-page contract for inconsistent clauses.", category: 0 },
+        { text: "Answering questions over a 200K-document help center.", category: 1 },
+        { text: "Synthesising answers across a legal research corpus of 50K cases with citations.", category: 2 },
+        { text: "Summarising a 60-page quarterly earnings report.", category: 0 },
+        { text: "A customer-support bot answering product FAQs from a 2K-article knowledge base.", category: 1 },
+        { text: "A research assistant that retrieves relevant papers from a corpus of millions and writes a literature review.", category: 2 },
+        { text: "Searching across a workspace of 5M Notion pages.", category: 1 },
+        { text: "Reviewing a 100K-token codebase for security issues, with related security advisories pulled in.", category: 2 },
+      ],
+      correctFeedback:
+        "Right. Single high-value document or report → long context. Large corpus, focused queries → RAG. Large corpus where the model needs both broad recall and deep synthesis → hybrid. The shape of the data dictates the architecture.",
+      wrongFeedback:
+        "Test: does the source fit in a context window (long context), is it too big and queries are specific (RAG), or is it too big but the model needs broad reasoning across retrievals (hybrid)? Re-read section 3.5.",
+    },
+    {
+      kind: "order",
+      q: "A PM scopes a long-document Q&A feature. Put the budget-design steps in the order they should happen.",
+      prompt: "Drag to arrange first step (top) to last (bottom).",
+      items: [
+        "Measure realistic document size distribution (p50, p95, p99 tokens) from sample user data.",
+        "Write the per-call context budget: system prompt + retrieved chunks + history + user input + reserved output, and verify it fits a chosen model with headroom.",
+        "Define the eviction and truncation policy for inputs that exceed the budget (refuse, summarise, retrieve fewer chunks, etc.).",
+        "Pressure-test against the 99th-percentile user: what does an abusive 200K-token input do to cost, latency, and rate limits?",
+      ],
+      correctFeedback:
+        "Exactly. You can't write a budget without the data distribution, can't pick a model without the budget, can't define eviction without knowing what overflows, and can't stress-test without a baseline. The order is forced by dependency.",
+      wrongFeedback:
+        "Each step depends on the previous. Skipping the data step means writing a budget against assumptions; skipping the eviction step means engineering silently invents one. Re-read section 3.8.",
+    },
+    {
+      q: "Your RAG pipeline retrieves 20 relevant chunks for each query and packs them into the prompt. Recall on factual questions is lower than expected. The chunks contain the right information. What should you try first?",
+      options: [
+        "Retrieve more chunks (40 instead of 20).",
+        "Re-order the prompt so the most relevant chunks sit at the start and end of the context, not buried in the middle, to mitigate the lost-in-the-middle effect.",
+        "Switch to a model with a 2M-token context window.",
+        "Ask users to phrase questions more precisely.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Lost-in-the-middle is a well-documented attention property. Re-ordering chunks costs nothing at inference and is the standard first fix when retrieved facts are present but not surfaced.",
+      wrongFeedback:
+        "More chunks makes the middle bigger and the problem worse. The fix is prompt assembly order: most relevant chunks at the edges of the context, not buried in the middle. Re-read section 3.6.",
+    },
+  ],
 }
 ];
 
 export const conceptBySlug = (slug: string): Concept | undefined =>
   concepts.find((c) => c.slug === slug);
+
+
 
 

@@ -89,6 +89,10 @@ export const PLAYBOOKS: Playbook[] = [
         slug: "pm-llm-transformers-attention",
         note: "The architecture that changed everything — encoders, decoders, attention, and why these choices shape what your product can do.",
       },
+      {
+        slug: "pm-llm-context-windows",
+        note: "The model's working memory — why every input, output, and history token counts against the same budget, and how to design features inside that constraint.",
+      },
     ],
   },
 ];
