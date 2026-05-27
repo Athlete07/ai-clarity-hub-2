@@ -101,6 +101,10 @@ export const PLAYBOOKS: Playbook[] = [
         slug: "pm-llm-prompt-engineering-foundations",
         note: "The craft of talking to models so they actually do what you need — instructions, system vs user prompts, zero/few-shot, role prompting, output formats, and negative prompting.",
       },
+      {
+        slug: "pm-llm-prompt-engineering-advanced",
+        note: "The techniques that separate good AI products from great ones — chain-of-thought, tree-of-thought, self-consistency, ReAct, structured output, constitutional prompting, chaining, and when advanced prompting replaces fine-tuning.",
+      },
     ],
   },
   {
