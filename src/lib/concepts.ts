@@ -9092,6 +9092,626 @@ export const concepts: Concept[] = [
   ],
 },
 {
+  slug: "pm-llm-embeddings",
+  number: 7,
+  shortTitle: "Embeddings",
+  title: "Embeddings",
+  readingMinutes: 30,
+  summary:
+    "How models represent meaning as numbers — what an embedding is, why vector arithmetic captures semantics, the difference between embedding models and generative models, similarity search and cosine distance, what 1536 dimensions actually mean, the practical text use cases, multimodal embeddings that put images and audio in the same space, and the PM lens on which product features embeddings unlock.",
+  keyTakeaway:
+    "Embeddings are the quiet workhorse behind every modern AI feature that 'understands' content: semantic search, recommendations, duplicate detection, classification, clustering, RAG. They are cheaper, faster, and more deterministic than generative calls — and they compose with everything. A PM who can spot an embedding-shaped problem ships features that competitors using only LLM prompts can't match on cost, latency, or scale.",
+  pmCallout:
+    "As a PM: any time a user asks 'show me things like this' or 'is this similar to that' or 'group these for me' or 'is this a duplicate of an existing one', you are looking at an embeddings problem before you are looking at an LLM problem. Reach for embeddings first; reach for generation second.",
+  body: [
+    // ============== 7.1 ==============
+    {
+      kind: "h",
+      number: "7.1",
+      title: "What is an embedding",
+      subtitle: "Turning words, sentences, and documents into vectors of numbers",
+    },
+    {
+      kind: "take",
+      text: "An embedding is a list of numbers — typically a few hundred to a few thousand — that represents the meaning of a piece of content in a way a computer can compare. Two pieces of content with similar meanings produce embeddings that are numerically close; two with different meanings produce embeddings that are numerically far apart.",
+    },
+    {
+      kind: "why",
+      text: "Without embeddings, search means matching keywords and recommendations mean matching tags. With embeddings, 'show me articles like this one' becomes a math operation that takes microseconds and works across millions of items. Almost every AI feature that feels intelligent is sitting on top of an embedding layer somewhere in the stack.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Think of an embedding as a "),
+        x(
+          "fingerprint for meaning",
+          "Not for the literal text, but for what the text is about. The sentence 'the cat sat on the mat' and 'a feline rested on the rug' have almost no words in common, but their embeddings are very close because they describe the same situation. That's the whole point: embeddings let you compare meaning, not strings.",
+        ),
+        s(". The model that produces it has been trained on enormous amounts of text and has learned that certain combinations of words tend to appear in similar contexts. The output is a fixed-length vector — say, 1,536 numbers — where each dimension captures some learned aspect of meaning. No single dimension is human-interpretable; the geometry of the whole vector is what matters."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Embeddings are produced by a specialised model — an embedding model — that maps text to vectors. "),
+        x(
+          "The same model always produces the same embedding for the same input, which is what makes the system useful: you can embed a million documents once, store the vectors, and then embed a new query at request time and compare. The expensive work is one-shot at indexing; queries are cheap forever.",
+          "This is the asymmetry that makes embeddings such a strong fit for production systems: indexing happens offline in batch, queries happen online in milliseconds, and the cost of comparison is dominated by the database, not the model.",
+        ),
+        s(" Embed once, search forever."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("You can embed almost any unit of content: a single word, a sentence, a paragraph, a whole document, a user query, a product description, even a customer support ticket. "),
+        x(
+          "The choice of granularity is a product decision with real consequences. Embedding whole documents loses the ability to point at a specific passage; embedding individual sentences blows up your index size and dilutes the meaning of each vector. Most production systems chunk documents into ~200-800 token passages and embed those.",
+          "PMs scoping any RAG, search, or recommendation feature need an explicit opinion on chunk size. It is not an engineering detail — it determines what your product can and cannot retrieve.",
+        ),
+        s(" Granularity is a product decision, not an implementation detail."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's text-embedding-3-large — the workhorse general-purpose model",
+      body: "OpenAI's text-embedding-3-large produces 3,072-dimensional vectors (configurable down to 256 with negligible quality loss thanks to Matryoshka representation learning), costs about $0.13 per million tokens, and is the default choice for English-language semantic search in most production stacks. PMs evaluating a new search or RAG feature should benchmark against it as a baseline before considering anything fancier.",
+    },
+    {
+      kind: "ex",
+      title: "Cohere Embed v3 — multilingual and reranker-friendly",
+      body: "Cohere's Embed v3 family was designed with retrieval quality on noisy real-world content as the primary metric, with strong multilingual support out of the box (100+ languages share a single vector space). It is widely used by enterprises with non-English content or with retrieval pipelines that pair embeddings with Cohere's reranker for a precision boost on top-K results.",
+    },
+    {
+      kind: "ex",
+      title: "Voyage AI / open-source models (BGE, E5, Nomic) — when the API cost matters",
+      body: "Open-source embedding models such as BGE-M3, E5, and Nomic Embed are competitive with the closed APIs on standard benchmarks and can be self-hosted for fractions of a cent per million tokens. Companies embedding billions of items — large e-commerce catalogs, enterprise document stores, log search — almost always end up running their own embedding model rather than paying API fees per token at that volume.",
+    },
+
+    // ============== 7.2 ==============
+    {
+      kind: "h",
+      number: "7.2",
+      title: "Why embeddings capture meaning",
+      subtitle: "How 'king - man + woman = queen' is actually just math",
+    },
+    {
+      kind: "take",
+      text: "Embeddings capture meaning because the training objective forces them to. Models are trained so that words and passages that appear in similar contexts end up with similar vectors. After billions of examples, the geometry of the vector space starts to mirror the structure of the concepts themselves — so much so that you can do arithmetic on meanings.",
+    },
+    {
+      kind: "why",
+      text: "PMs often treat embeddings as magic. Knowing the mechanism — context shapes vectors, vectors encode relationships — lets you predict where embeddings will work brilliantly (anything where similar things show up in similar contexts) and where they will fail silently (jargon-heavy domains the model never saw, novel acronyms, intentionally adversarial paraphrases).",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The classic demonstration is the analogy "),
+        x(
+          "king - man + woman ≈ queen",
+          "Take the vector for 'king', subtract the vector for 'man', add the vector for 'woman', and the nearest vector to the result is 'queen'. This isn't a parlour trick — it's evidence that the embedding space has learned a 'gender' direction and a 'royalty' direction as separable geometric concepts. Similar arithmetic works for Paris - France + Italy ≈ Rome (a 'capital-of' direction).",
+        ),
+        s(". The model was never told what gender or royalty or capital-of mean — it just observed that certain words appear in analogous contexts often enough that the geometry of the space encodes the relationship."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The mechanism behind this is the "),
+        x(
+          "distributional hypothesis",
+          "First articulated by linguists in the 1950s: words that appear in similar contexts tend to have similar meanings. 'Doctor' and 'physician' show up in nearly identical sentence patterns; the embedding model learns this and places them next to each other. The hypothesis is decades old; modern neural networks just operationalised it at massive scale.",
+        ),
+        s(" — 'you shall know a word by the company it keeps'. Modern embedding models extend this from individual words to whole sentences and paragraphs: two passages that could plausibly substitute for each other in real text end up close in vector space."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("This is also why embeddings fail in predictable ways. "),
+        x(
+          "If your domain has jargon the model never saw — proprietary product names, internal acronyms, novel medical terms — the embedding will be the average of the nearest things it does know, which is usually wrong. Two distinct internal codes might collapse to almost identical vectors because the model has no signal to distinguish them. The fix is either fine-tuning the embedding model on your domain or, more commonly, ensuring your retrieval pipeline isn't relying on embeddings alone for high-stakes distinctions.",
+          "Senior PMs treat embeddings as 'good for fuzzy retrieval, bad for exact distinctions' and design hybrid retrieval (embeddings + keyword/BM25 + filters) accordingly.",
+        ),
+        s(" Embeddings encode what the model saw. They guess at what it didn't."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "word2vec (2013) — the paper that made embeddings famous",
+      body: "Mikolov et al.'s word2vec showed for the first time that word embeddings learned without any explicit supervision could solve analogy tasks like king:man :: queen:woman with simple vector arithmetic. The result was so surprising it kicked off a decade of representation-learning research and is the conceptual ancestor of every modern embedding model.",
+    },
+    {
+      kind: "ex",
+      title: "Sentence-BERT (2019) — extending embeddings from words to sentences",
+      body: "Reimers and Gurevych's Sentence-BERT showed that a fine-tuned BERT could produce sentence-level embeddings where cosine similarity matched human judgments of semantic similarity. Before SBERT, getting a single useful vector for a whole sentence was hacky; after it, sentence embeddings became standard infrastructure. Almost every modern embedding model traces its lineage here.",
+    },
+    {
+      kind: "ex",
+      title: "Spotify's annoy / Meta's FAISS — the indexes that made embeddings practical",
+      body: "Embeddings would have stayed an academic curiosity without efficient nearest-neighbour search libraries. Spotify open-sourced annoy in 2015 to power music recommendations across hundreds of millions of tracks; Meta released FAISS in 2017. Both let you search billions of vectors in milliseconds on a single machine. The capability they unlocked — fast approximate similarity at scale — is what turned embeddings from theory into product.",
+    },
+
+    // ============== 7.3 ==============
+    {
+      kind: "h",
+      number: "7.3",
+      title: "Embedding models vs generative models",
+      subtitle: "Two different model types doing two completely different jobs",
+    },
+    {
+      kind: "take",
+      text: "Generative models (GPT-4, Claude, Gemini) take input and produce text. Embedding models take input and produce a fixed-length vector of numbers. They are different architectures, optimised for different objectives, with different cost profiles. Conflating them is one of the most common PM mistakes in AI scoping.",
+    },
+    {
+      kind: "why",
+      text: "Using a generative model where an embedding model belongs makes your feature 100× more expensive and 50× slower for worse results. Using an embedding model where you actually need generation produces empty vectors instead of answers. Picking the right tool for the job is the first decision in every AI feature spec.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The differences are stark. "),
+        x("Generative models produce variable-length text", "One call in, one paragraph out. Latency is hundreds to thousands of milliseconds. Cost is per input and output token, with output tokens typically 3-5× more expensive."),
+        s(", are non-deterministic, are slow, and are expensive per call. "),
+        x("Embedding models produce a fixed-length vector", "One call in, ~1,500 numbers out. Latency is tens of milliseconds. Cost is per input token only, and is 10-100× cheaper than generative models per token."),
+        s(", are deterministic for the same input, are fast, and are cheap. They are different tools for different jobs."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The architectural difference is that embedding models are typically "),
+        x(
+          "encoder-only transformers",
+          "They take input, run it through the network once, and pool the result into a single vector. There is no generation loop, no sampling, no temperature. The whole forward pass is a single matrix multiplication chain — which is why embeddings are so fast and so cheap. Generative models are decoder-only and run their forward pass repeatedly, once per output token.",
+        ),
+        s(" optimised for representation, while generative models are decoder-only transformers optimised for next-token prediction. The same company often ships both — OpenAI has GPT-4 and text-embedding-3-large; Cohere has Command and Embed; Anthropic has Claude (and uses third-party or internal embedding models for retrieval)."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The PM mental model: "),
+        x(
+          "embeddings find the right content; generation talks about it.",
+          "A good RAG system uses embeddings to retrieve the 5 most relevant passages from a corpus of 10 million documents, then feeds those passages to a generative model to compose an answer. The expensive generative model only sees the few hundred tokens that matter; the cheap embedding model did the work of narrowing the search space.",
+        ),
+        s(" Almost every production AI feature that scales economically has this two-stage structure. PMs who design features without it tend to end up either paying $0.20 per query or shipping something that hallucinates because the model never saw the right context."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Notion AI Q&A — embeddings retrieve, generation answers",
+      body: "Notion AI's question-answering feature embeds every page in your workspace, retrieves the top relevant pages by cosine similarity to your question, and then sends only those pages plus the question to a generative model. Without the embedding step, every question would either hit a context-window wall or cost dollars per query. The embedding stage is the unsung half of the feature that makes the economics work.",
+    },
+    {
+      kind: "ex",
+      title: "GitHub Copilot's repo-aware completions",
+      body: "Modern Copilot variants embed the open repository so that completion requests can pull in the most semantically relevant snippets from elsewhere in the codebase, not just the open file. The completion model is generative; the 'which snippets are relevant' decision is an embedding lookup. Two model types, one feature, dramatically better suggestions.",
+    },
+    {
+      kind: "ex",
+      title: "Stripe Radar — embeddings for fraud-pattern matching",
+      body: "Stripe's fraud-detection system embeds transaction patterns into a vector space where similar fraud techniques cluster together. New transactions are scored by their distance to known fraud clusters. No generation is involved at all — embeddings alone do the work because the question is structural similarity, not natural-language explanation. A useful reminder that 'embeddings + classifier' is often a complete product without ever calling an LLM.",
+    },
+
+    // ============== 7.4 ==============
+    {
+      kind: "h",
+      number: "7.4",
+      title: "Similarity search",
+      subtitle: "How cosine similarity finds 'conceptually close' content",
+    },
+    {
+      kind: "take",
+      text: "Similarity search is the operation that makes embeddings useful: take a query vector, compare it against every vector in your index, and return the closest matches. Cosine similarity is the standard distance metric — it measures the angle between two vectors rather than their absolute magnitude, which is exactly what you want when comparing meanings.",
+    },
+    {
+      kind: "why",
+      text: "Every 'related items', 'people you may know', 'find similar tickets', and 'show me passages about this' feature is a similarity search at the bottom. Understanding cosine similarity — and its tradeoffs against alternatives — lets you reason about why your search is returning weird results and what to do about it.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Cosine similarity scores two vectors from -1 (opposite) to 1 (identical), with 0 meaning unrelated. "),
+        x(
+          "It measures the cosine of the angle between the vectors, which is mathematically equivalent to the dot product divided by the product of magnitudes. The crucial property is that it ignores vector length — only direction matters — which means a long document and a short query can still match strongly if they're about the same topic.",
+          "Alternatives include Euclidean distance (sensitive to magnitude, generally worse for text) and dot product (faster, used when vectors are normalised). For most embedding models, cosine similarity is the metric the model was trained against, so it's also the metric you should query with.",
+        ),
+        s(" Direction encodes meaning; magnitude is mostly noise."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Naive similarity search is O(n) — you compare the query against every vector in the index. "),
+        x(
+          "At a million vectors that's fine; at a billion it's catastrophic. The practical solution is approximate nearest neighbour (ANN) search using algorithms like HNSW, IVF, or product quantisation. These trade a small amount of recall (you might miss the 99th-percentile match) for orders of magnitude in speed.",
+          "Every production vector database — Pinecone, Weaviate, Qdrant, pgvector, Vespa, Milvus — is essentially a wrapper around an ANN library plus a query API and operational tooling. PMs choosing a vector DB are mostly choosing along axes of operational maturity, multi-tenancy, hybrid search support, and price — not raw algorithm quality.",
+        ),
+        s(" ANN is what makes billion-scale similarity search feasible at all."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Pure semantic search has a classic failure mode: it can miss exact matches. "),
+        x(
+          "If a user searches for 'XR-7000 firmware update', the embedding model might return semantically similar passages about other firmware updates while missing the exact passage that contains the literal string 'XR-7000'. The fix is hybrid search — combine cosine similarity from embeddings with keyword/BM25 scores from a traditional index, then merge the results.",
+          "Hybrid search is now the default in mature retrieval systems. Treat 'embeddings-only' as a v0 and 'embeddings + BM25 + reranker' as the v1 production target.",
+        ),
+        s(" Embeddings find similar; keywords find exact. You usually need both."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Pinecone, Weaviate, Qdrant, pgvector — the vector DB landscape",
+      body: "Pinecone is the managed market leader; Weaviate and Qdrant are popular open-source alternatives; pgvector is a Postgres extension that lets teams add vector search to an existing database without a new system. PMs picking a stack should optimise for 'fewest moving parts that meet our scale' — for under 10M vectors with existing Postgres, pgvector is usually plenty; above that, dedicated vector DBs start to win on ops.",
+    },
+    {
+      kind: "ex",
+      title: "Algolia / Elasticsearch hybrid search — embeddings bolted onto keyword infrastructure",
+      body: "Algolia and Elasticsearch both added vector search to their existing keyword-search engines rather than asking customers to migrate. The product insight: most teams have a working keyword search and want to add semantic capability without a forklift upgrade. Hybrid search APIs let you blend both scores in a single query, which is what production systems usually want anyway.",
+    },
+    {
+      kind: "ex",
+      title: "Cohere's reranker — the precision layer on top of recall",
+      body: "After retrieving the top 100 candidates by cosine similarity, a cross-encoder reranker (Cohere Rerank, BGE-Reranker, etc.) re-scores them by looking at the query and each candidate together, producing dramatically better top-10 ordering. The pattern — fast embedding retrieval for recall, slower reranker for precision — is now the standard 'good retrieval' architecture. PMs whose retrieval feels weak should look at adding a reranker before considering bigger embedding models.",
+    },
+
+    // ============== 7.5 ==============
+    {
+      kind: "h",
+      number: "7.5",
+      title: "Embedding dimensions",
+      subtitle: "What 1,536-dimensional space means and why it matters for storage and speed",
+    },
+    {
+      kind: "take",
+      text: "An embedding's dimension count is the length of its vector. Common sizes are 384, 768, 1,024, 1,536, 3,072. Higher dimensions can encode more nuance but cost more to store, more to compare, and more to index. The right dimension is a product-economics decision, not a quality decision.",
+    },
+    {
+      kind: "why",
+      text: "PMs who don't know that 1,536-dim embeddings at a billion items take ~6 TB of raw storage will scope features whose vector index alone costs more than the rest of their infrastructure combined. The dimension number on the model card has direct unit-economics consequences.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Each dimension is a learned 'axis' of meaning the model uses to distinguish content. "),
+        x(
+          "No individual axis is interpretable — the model doesn't have a 'sports' dimension or a 'sadness' dimension — but in aggregate the geometry of the high-dimensional space separates concepts cleanly. More dimensions means more capacity to make fine distinctions; fewer dimensions means more compact vectors but more collisions between similar-but-distinct concepts.",
+          "Empirically, the quality returns from extra dimensions are sharply diminishing above ~768 for most general-purpose tasks. The frontier models offering 1,536 or 3,072 dimensions are mostly hedging for specialised use cases.",
+        ),
+        s(" Beyond a point, more dimensions are diminishing returns at increasing cost."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The storage math is unforgiving. "),
+        x(
+          "A single 1,536-dim float32 vector is 6 KB. A million vectors is 6 GB. A billion is 6 TB. Add ANN-index overhead (typically 1.5-3× the raw size), replication, and backups, and a billion-vector index can comfortably need 30-50 TB before you start serving any traffic.",
+          "This is why dimension reduction matters in production. Matryoshka embeddings (used by OpenAI's text-embedding-3 family) let you truncate the vector to a shorter prefix — say, 256 dimensions — with minimal quality loss. Product quantisation compresses each dimension to 1 byte instead of 4. Both techniques can cut storage by 6-24× at small quality cost.",
+        ),
+        s(" Dimension is a knob you can tune. Tune it before you sign the storage bill."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Query latency also scales with dimension. "),
+        x(
+          "Cosine similarity is a dot product over D dimensions; doubling D roughly doubles per-comparison cost. ANN indexes mitigate this, but the constant factor still hits you at scale. At a billion vectors with 3,072 dimensions, even with HNSW you're looking at meaningful single-digit-millisecond queries; cut to 384 dimensions and the same query is sub-millisecond.",
+          "For latency-sensitive consumer features (autocomplete, type-ahead, real-time recommendations), the right embedding is often a smaller, faster model with 384-768 dimensions — not the highest-quality 3,072-dim option.",
+        ),
+        s(" Dimension is a cost and latency knob disguised as a quality knob."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "OpenAI's Matryoshka embeddings — truncate the vector, keep the quality",
+      body: "OpenAI's text-embedding-3-small (1,536 dims) and text-embedding-3-large (3,072 dims) were trained with Matryoshka representation learning, meaning the first N dimensions of any vector are themselves a usable embedding. You can truncate to 256 or 512 dimensions to cut storage by 6-12× while keeping over 90% of retrieval quality. PMs ignoring this leave significant storage savings on the table.",
+    },
+    {
+      kind: "ex",
+      title: "Pinecone's quantisation pricing tiers",
+      body: "Pinecone offers tiers with different vector compression schemes — full precision, scalar-quantised, product-quantised — at different price points. The cheapest tier can hold 4-8× more vectors per dollar at a measurable but often acceptable quality cost. The PM lesson: storage cost is not fixed by your vector count; it's a product of vector count, dimension, and compression. All three are levers.",
+    },
+    {
+      kind: "ex",
+      title: "Cohere Embed v3 'int8' embeddings — quantisation at the model level",
+      body: "Cohere ships an int8 variant of its embedding model that produces vectors with 1-byte instead of 4-byte components — 4× storage reduction with sub-1% quality loss on most benchmarks. The trend across the industry is clear: high dimension counts make for impressive marketing, but production deployments at scale almost always run quantised, truncated, or both.",
+    },
+
+    // ============== 7.6 ==============
+    {
+      kind: "h",
+      number: "7.6",
+      title: "Text embeddings in practice",
+      subtitle: "Semantic search, clustering, classification, recommendations — the use cases",
+    },
+    {
+      kind: "take",
+      text: "Text embeddings power four major families of product feature: semantic search, classification, clustering, and recommendations. Each looks different to the user but shares the same underlying machinery — embed the items, embed the query or compare items to each other, return what's closest by some metric.",
+    },
+    {
+      kind: "why",
+      text: "PMs who can map a product requirement to one of these four patterns scope features that engineers can actually build. PMs who can't tend to ask for 'AI-powered understanding' and get back something that looks like a chatbot bolted onto the wrong problem.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Semantic search is the canonical use case: "),
+        x(
+          "embed the corpus once, embed each user query at request time, return the most similar items by cosine similarity.",
+          "Works for help-centre articles, internal documentation, product catalogs, legal contracts, code search, and any 'find me content about X' surface. The quality jump over keyword search is dramatic for queries phrased in natural language; the latency is single-digit milliseconds at million-scale.",
+        ),
+        s(" If you're shipping a search bar in 2026, semantic search is the floor, not the ceiling."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Classification with embeddings is the cheapest production-grade NLP move available. "),
+        x(
+          "Embed labelled training examples, embed a new input, and assign it the label of its nearest neighbours (k-NN classification). Or train a lightweight logistic-regression head on top of the embeddings. Both approaches give you a working classifier with a few hundred examples and no fine-tuning. It is dramatically cheaper than fine-tuning an LLM and dramatically better than zero-shot prompting for high-volume routing.",
+          "Use cases: spam vs ham, support-ticket routing, intent detection, content moderation pre-filters, lead qualification. Any time you need to assign one of a small number of labels to a high volume of inputs, embeddings + a small classifier is the right tool.",
+        ),
+        s(" The unglamorous, profitable application of AI nobody writes blog posts about."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Clustering and deduplication are the third family. "),
+        x(
+          "Embed all items, run a clustering algorithm (k-means, HDBSCAN) over the vectors, and you get groups of semantically similar content for free. This powers 'related tickets' in support tools, topic discovery in survey responses, near-duplicate detection in user-generated content, and content-moderation feedback loops where you want to find all variants of a banned post.",
+          "The fourth family — recommendations — is just similarity search with extra metadata. 'Users who liked X also liked Y' is a vector similarity between user embeddings or item embeddings, filtered by business rules.",
+        ),
+        s(" Once you see the four families, every 'we need AI for this' conversation gets shorter."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Klarna's customer-support embedding stack",
+      body: "Klarna's published architecture for their AI customer-service agent uses embeddings extensively: to retrieve the right help-center article for a question, to classify the intent of incoming messages for routing, and to detect duplicate tickets across languages. The generative LLM is the visible part of the feature; the embedding layer handles the work that scales to millions of monthly conversations.",
+    },
+    {
+      kind: "ex",
+      title: "Algolia AI search — semantic + keyword in one query",
+      body: "Algolia's AI search blends BM25 keyword scoring with embedding-based semantic similarity in a single hybrid query, returning a merged ranked list. Customers see better recall on natural-language queries without losing the exact-match precision of keyword search. The product pattern — hybrid not hybrid — is now table stakes for any serious search product.",
+    },
+    {
+      kind: "ex",
+      title: "Spotify Discover Weekly — recommendations via embeddings of listening behaviour",
+      body: "Spotify embeds tracks based on co-listening patterns: tracks that get played in similar playlists by similar users end up nearby in vector space. Discover Weekly is essentially nearest-neighbour search in this learned space, filtered by 'tracks you haven't heard yet'. No LLM in sight — just embeddings doing the heavy lifting at the scale of 600M+ users.",
+    },
+
+    // ============== 7.7 ==============
+    {
+      kind: "h",
+      number: "7.7",
+      title: "Multimodal embeddings",
+      subtitle: "When images, audio, and text share the same vector space",
+    },
+    {
+      kind: "take",
+      text: "Multimodal embedding models map content of different types — text, images, audio, video — into a single shared vector space, where 'a photo of a golden retriever' and the literal photo of a golden retriever end up near each other. This unlocks cross-modal search and a new class of product features that were essentially impossible before.",
+    },
+    {
+      kind: "why",
+      text: "PMs who think of embeddings as a text-only tool miss half the product surface. Search images with text, search text with images, find videos matching a description, group photos by visual concept, moderate user uploads — all are unlocked by multimodal embeddings, and all are now production-ready.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The breakthrough model was CLIP (Contrastive Language-Image Pretraining) from OpenAI, 2021. "),
+        x(
+          "CLIP was trained on 400 million (image, caption) pairs scraped from the web with a contrastive objective: the embedding for an image should be close to the embedding for its caption and far from the embeddings for other captions. After enough training, the text encoder and image encoder produced vectors that lived in the same space — meaning you could embed text and search images, or embed an image and search text.",
+          "Every modern multimodal embedding model — Google's SigLIP, Meta's ImageBind, OpenAI's later embedding APIs — is a descendant of this idea. The trick is data: you need huge volumes of paired examples across modalities to teach the model that 'photo of cat' and the actual cat photo belong together.",
+        ),
+        s(" Same vector space, different modalities. That's the whole magic."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("In product terms, multimodal embeddings give you "),
+        x(
+          "cross-modal retrieval: query in one modality, results in another.",
+          "Type 'red sneakers with white soles' and get matching product photos without ever tagging them. Upload a photo of a bug and get matching field-guide entries. Hum a melody and find the song. Pre-multimodal, all of these required someone to manually annotate the non-text modality. Post-multimodal, the annotation is implicit in the embedding model.",
+        ),
+        s(" Tagging is dead; cross-modal search ate it."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The limits matter as much as the capability. "),
+        x(
+          "Multimodal embeddings are weaker than single-modality embeddings at within-modality tasks — a CLIP image embedding is worse at 'find visually similar images' than a model trained only on images, because some of its representational capacity went to staying compatible with text. They also have weaker fine-grained understanding: 'a red car' is fine, 'a 1967 Mustang in Wimbledon white' usually isn't.",
+          "PMs should treat multimodal embeddings as 'good for fuzzy cross-modal search, weaker for fine distinctions or expert domains'. Pair with metadata filters for the precision the embedding alone can't provide.",
+        ),
+        s(" Multimodal is breadth; single-modal is depth. Pick the one your feature needs."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "CLIP — the model that started the multimodal embedding era",
+      body: "OpenAI's CLIP (2021) was trained on 400M (image, caption) pairs and demonstrated zero-shot image classification across thousands of classes by simply comparing image embeddings to text embeddings of candidate labels. The open weights kicked off a wave of downstream products — Stable Diffusion uses CLIP for text-conditioning, every 'search images with words' demo since 2021 traces back to it.",
+    },
+    {
+      kind: "ex",
+      title: "Pinterest's visual search — embeddings for 'find more like this image'",
+      body: "Pinterest's visual search feature lets users tap on any region of a pin and see visually similar pins, products, and outfits. The underlying machinery is image embeddings (now multimodal so text queries work too) indexed for nearest-neighbour search at the scale of billions of pins. The feature is responsible for billions of monthly searches and is the canonical 'embeddings as the entire product' case study in consumer apps.",
+    },
+    {
+      kind: "ex",
+      title: "Shopify's Semantic Search & Google Lens — text↔image search at consumer scale",
+      body: "Shopify uses multimodal embeddings to let merchants and shoppers search product catalogs with natural language ('blue mid-century armchair under $500') and image uploads alike. Google Lens runs the same playbook at planetary scale: point your camera at an object, get matching products, recipes, or information. Both are built on the same shared-vector-space idea CLIP made practical.",
+    },
+
+    // ============== 7.8 ==============
+    {
+      kind: "h",
+      number: "7.8",
+      title: "PM decision lens: where embeddings power product features",
+      subtitle: "Semantic search, duplicate detection, personalisation — the PM's use case map",
+    },
+    {
+      kind: "take",
+      text: "Embeddings are the right tool any time the product question is 'how similar are these things?', 'show me more like this', 'group these together', or 'is this a duplicate of an existing one'. They are the wrong tool when the question is 'compose me a paragraph', 'reason through this problem', or 'make a decision with side effects'. The first step in scoping any AI feature is asking which kind of question you're answering.",
+    },
+    {
+      kind: "why",
+      text: "PMs who default to 'add an LLM' for every problem ship features that are slow, expensive, and non-deterministic for jobs that embeddings would do faster, cheaper, and more reliably. The opposite mistake — defaulting to embeddings when generation is needed — produces empty user experiences. Knowing the map of which problem belongs to which tool is the senior PM skill.",
+    },
+    {
+      kind: "diagram",
+      id: "embeddings-use-case-map",
+      type: "comparison",
+      title: "The embeddings-first decision map",
+      caption:
+        "For each product question, the right starting tool is embeddings, generation, or both. Embeddings dominate retrieval, similarity, and classification. Generation dominates composition, reasoning, and dialogue. Most production features use both — embeddings to find, generation to talk.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The embeddings-first questions to ask in any AI feature spec: "),
+        x("(1) Is there a corpus of items the user wants to navigate or retrieve from?", "Help articles, documents, products, tickets, snippets — anything searchable. If yes, embeddings are your retrieval layer."),
+        s(", "),
+        x("(2) Is the user asking 'find me things like this'?", "Recommendations, related content, similar products, look-alike audiences. Embeddings handle this natively."),
+        s(", "),
+        x("(3) Is there a high-volume routing or classification job?", "Ticket routing, intent detection, content moderation pre-filters, lead scoring. Embeddings + a small classifier beat both LLM prompting and traditional fine-tuning on cost."),
+        s(", and "),
+        x("(4) Is there duplicate, near-duplicate, or clustering work?", "Deduplication, topic clustering across user-generated content, fraud-pattern detection. Embeddings turn these into geometry problems with mature, fast solutions."),
+        s(". Any 'yes' is an embeddings-shaped problem."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The pattern in mature AI products is "),
+        x(
+          "embeddings on the retrieval and classification edges, generation in the middle.",
+          "Embeddings narrow the search space from millions to dozens of relevant items, classify the request to route it to the right pipeline, and detect duplicates before storing anything. The generative model only handles the small remaining job: compose a coherent reply from the retrieved context. This architecture is 10-100× cheaper than 'send everything to GPT-4' and produces measurably better answers because the model sees only relevant context. RAG (retrieval-augmented generation) is the canonical name for this pattern, but the underlying idea — embeddings find, generation talks — applies to almost every production AI feature that scales, regardless of whether it's branded as RAG.",
+        ),
+        s(" Pay the cheap models to filter; pay the expensive model only for the last mile."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Finally: embeddings are often a complete feature on their own. "),
+        x(
+          "You don't have to call an LLM at all to ship semantic search, related-items rails, duplicate detection, smart routing, or look-alike audiences. Many of the highest-ROI 'AI features' in real businesses are pure embedding plays with no generation at the surface — they're just labelled as 'smart' or 'AI-powered' in the product copy.",
+          "The PMs who shipped these features in 2023-2024 did so for a fraction of the cost of generation-heavy competitors and have margins that survive scale. Knowing when to stop at embeddings — and resist the urge to add an LLM because it sounds more impressive — is a competitive advantage as much as a technical one.",
+        ),
+        s(" Sometimes the best AI feature has no LLM in it at all."),
+      ],
+    },
+  ],
+  quiz: [
+    {
+      kind: "mcq",
+      q: "A PM proposes a help-centre AI assistant. They want every user question to be sent to GPT-4 along with the entire 50,000-article corpus 'so the model has full context'. The feature would cost roughly $4 per query at expected volume. What's the right pushback?",
+      options: [
+        "Approve it — GPT-4 with full context will give the best answers.",
+        "Rescope to a retrieval-augmented architecture: embed the 50,000 articles once, retrieve the top 5-10 most similar to each question with cosine similarity, and only send those passages plus the question to GPT-4. Same quality, ~100× cheaper, dramatically faster.",
+        "Switch to a smaller LLM and keep sending the full corpus each time.",
+        "Build a hand-curated FAQ instead of using AI.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly right. 'Send everything to GPT-4' is the demo-grade architecture; 'embed once, retrieve the few that matter, generate from those' is the production architecture. Embeddings do the cheap filtering work that makes the expensive generation step economically viable. This is the canonical RAG pattern and it should be the default for any retrieval-heavy AI feature.",
+      wrongFeedback:
+        "Sending full context to a generative model on every query is the most expensive way to build any retrieval feature. The whole point of embeddings is that they let you narrow from millions of items to a handful before paying for generation. Re-read sections 7.3 and 7.8.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each product requirement into 'embeddings-first', 'generation-first', or 'both (RAG-style)'.",
+      categories: ["Embeddings-first", "Generation-first", "Both"],
+      items: [
+        { text: "'Show me related help articles when a user is reading one.'", category: 0 },
+        { text: "'Group 100,000 customer survey responses into themes automatically.'", category: 0 },
+        { text: "'Detect near-duplicate user posts before they're submitted.'", category: 0 },
+        { text: "'Compose a personalised follow-up email from these meeting notes.'", category: 1 },
+        { text: "'Reason through a multi-step legal question and propose next steps.'", category: 1 },
+        { text: "'Answer customer questions using our 30,000-page documentation as the source of truth.'", category: 2 },
+        { text: "'Let users ask natural-language questions over their own uploaded files.'", category: 2 },
+        { text: "'Route incoming support tickets to the right team based on content.'", category: 0 },
+      ],
+      correctFeedback:
+        "Right. 'Find similar / group / classify / detect duplicates' is embeddings. 'Compose / reason / write' is generation. 'Answer from a large corpus' is both — embeddings retrieve, generation answers. Once you can sort feature requests into this map quickly, AI scoping conversations get dramatically shorter.",
+      wrongFeedback:
+        "Embeddings handle retrieval, similarity, and classification. Generation handles composition and reasoning. RAG-style features need both: embeddings to find the right context, generation to talk about it. Re-read sections 7.6 and 7.8.",
+    },
+    {
+      kind: "order",
+      q: "Order the stages of a production RAG pipeline from first to last.",
+      prompt: "Drag to put the lifecycle in the right order.",
+      items: [
+        "Chunk the source corpus into ~200-800 token passages (offline, once).",
+        "Run each passage through an embedding model and store the vectors in a vector index (offline, once).",
+        "At query time, embed the user's question with the same embedding model.",
+        "Run cosine similarity (often with a BM25 keyword score blended in) to retrieve the top-K candidate passages.",
+        "Optionally rerank the top-K with a cross-encoder reranker for better precision.",
+        "Send the question + the retrieved passages to a generative model and return its answer to the user.",
+      ],
+      correctFeedback:
+        "Exactly the canonical pipeline. The first two steps are offline and pay for themselves over millions of queries; the last four are the online query path. PMs who can sketch this on a whiteboard scope RAG features correctly the first time, instead of discovering chunking and reranking decisions in week 6 of the build.",
+      wrongFeedback:
+        "Indexing is offline (chunk → embed → store). Queries are online (embed query → retrieve → rerank → generate). The same embedding model has to be used on both sides — that's what makes the vectors comparable. Re-read sections 7.4 and 7.8.",
+    },
+    {
+      kind: "mcq",
+      q: "Your team's semantic search is returning great results for natural-language queries like 'how do I cancel my subscription' but completely missing queries like 'XR-7000 firmware update' even though the exact string appears in your docs. What's the most likely cause and fix?",
+      options: [
+        "Switch to a bigger embedding model with more dimensions.",
+        "Pure embedding search can miss rare exact strings because the embedding for an obscure SKU is essentially noise. Add hybrid search: blend BM25 keyword scoring with cosine similarity, then optionally rerank the merged top-K. Mature retrieval is almost always hybrid.",
+        "Fine-tune the embedding model on every product code in your catalog.",
+        "Lower the cosine similarity threshold so more results come back.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. The classic embedding failure mode: rare, jargon-y, or alphanumeric strings (SKUs, error codes, internal acronyms) get embeddings that don't usefully cluster, because the model never saw them in training. Hybrid search — embeddings for fuzzy semantic matches plus BM25 for exact strings — solves this without retraining anything.",
+      wrongFeedback:
+        "Bigger embedding models don't fix the 'never seen this exact string' problem. Lower thresholds add noise. Fine-tuning is overkill. The structural fix is hybrid search. Re-read section 7.4.",
+    },
+    {
+      kind: "mcq",
+      q: "Your CFO flags that the vector index for your new product-search feature is projected to cost more than your application servers combined. The team is using a 3,072-dimensional embedding with full float32 precision over 800M product vectors. What's the right first move?",
+      options: [
+        "Switch to a less capable but cheaper search algorithm.",
+        "Most of that bill is dimension × precision × vector count. Truncate the embeddings to 512 or 768 dimensions (Matryoshka-style if the model supports it) and quantise to int8. Both have minimal quality impact and together can cut storage 12-24×. Measure retrieval quality before and after; ship the smallest variant that still passes.",
+        "Reduce the vector count by sampling only 10% of the catalog.",
+        "Move the index to cold storage to save money.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly. Dimension and precision are the two big storage levers for vector indexes, and both compress cheaply on modern embedding models. Sampling the catalog hurts recall directly. Cold storage destroys query latency. Truncation + quantisation is the standard mature-team move and should be tried before any architectural change.",
+      wrongFeedback:
+        "Storage cost = dimensions × bytes-per-dimension × vector count. The first two are tunable without changing the corpus. Sampling and cold storage trade away the things that make the feature work. Re-read section 7.5.",
+    },
+    {
+      kind: "mcq",
+      q: "A PM is briefing engineering on a 'visual search' feature: users upload a photo of a product and see similar products in the catalog. The engineer says 'we'd need someone to tag every product with detailed visual attributes first'. What should the PM say?",
+      options: [
+        "Agree and budget six months for a tagging effort.",
+        "Push back: modern multimodal embedding models (CLIP and its descendants) put images and text in the same vector space. We can embed every product image once, embed the uploaded image at query time, and use cosine similarity to find matches — no manual tagging needed. Tagging is dead for this class of feature.",
+        "Skip the feature because tagging is too expensive.",
+        "Use a generative model to describe each image in text and then do text search.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Multimodal embeddings — CLIP, SigLIP, and successors — are exactly the technology that obsoletes manual visual tagging for similarity search. Embed the catalog once, embed the query image at request time, search by cosine similarity. The generative-description workaround works but is slower, more expensive, and lossy. PMs who know multimodal embeddings exist scope visual-search features in days instead of quarters.",
+      wrongFeedback:
+        "Multimodal embeddings (CLIP and descendants) put images and text in a shared vector space, which makes 'find similar images' a pure embedding lookup. No tagging, no generative description loop required. Re-read section 7.7.",
+    },
+  ],
+  examples: [],
+},
+{
   slug: "pm-dev-git-github",
   number: 1,
   shortTitle: "Git & GitHub",
