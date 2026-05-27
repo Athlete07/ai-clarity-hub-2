@@ -105,6 +105,10 @@ export const PLAYBOOKS: Playbook[] = [
         slug: "pm-llm-prompt-engineering-advanced",
         note: "The techniques that separate good AI products from great ones — chain-of-thought, tree-of-thought, self-consistency, ReAct, structured output, constitutional prompting, chaining, and when advanced prompting replaces fine-tuning.",
       },
+      {
+        slug: "pm-llm-embeddings",
+        note: "How models represent meaning as numbers — what an embedding is, why vector arithmetic captures semantics, similarity search, dimensions and cost, the practical text use cases, multimodal embeddings, and the PM map of where embeddings power product features.",
+      },
     ],
   },
   {
