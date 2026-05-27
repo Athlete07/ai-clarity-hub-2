@@ -7008,6 +7008,392 @@ export const concepts: Concept[] = [
   ],
 },
 {
+  slug: "pm-llm-temperature-sampling",
+  number: 4,
+  shortTitle: "Temperature & Sampling",
+  title: "Temperature & Sampling",
+  readingMinutes: 22,
+  summary:
+    "The dials that control how creative, random, or predictable your model is — temperature, top-p, top-k, greedy decoding, beam search, and repetition penalties — and how to set them per use case.",
+  keyTakeaway:
+    "Sampling parameters aren't 'model tuning trivia' — they are the difference between a support bot that gives the same correct answer every time and a brainstorming tool that surprises you. The dials are cheap to change and product-defining in effect.",
+  pmCallout:
+    "As a PM: every LLM feature spec should declare a target temperature, top-p, and (where supported) a repetition penalty — and pin them in tests. 'We'll use defaults' is how identical-looking features ship with wildly different vibes, and how a customer support bot starts inventing refund policies on a Tuesday.",
+  body: [
+    {
+      kind: "h",
+      number: "4.1",
+      title: "What is temperature",
+      subtitle: "The randomness dial — from deterministic to chaotic",
+    },
+    {
+      kind: "take",
+      text: "Temperature is a single number that rescales the model's probability distribution before a token is picked. Low temperature sharpens the distribution toward the most likely token; high temperature flattens it so unlikely tokens get a real shot.",
+    },
+    {
+      kind: "why",
+      text: "If you don't understand temperature, you'll ship features whose 'creativity' is actually unpredictability — and whose 'consistency' is actually staleness. The dial is the cheapest product lever in your stack; spec it explicitly or inherit whatever the SDK happens to default to today.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("After the model computes a probability for every possible next token, it doesn't have to pick the highest one. "),
+        x(
+          "It draws a sample from that distribution — and temperature is the parameter that decides how 'peaked' or 'flat' the distribution looks before the draw. Mathematically, the model's raw scores (logits) are divided by the temperature value; lower numbers exaggerate differences, higher numbers compress them.",
+          "Concretely: with temperature 0.1, the top token might end up with 99% probability and everything else rounds to zero. With temperature 1.5, that same top token might only have 22% probability and ten other tokens become live options. The underlying model didn't change — only the sampler in front of it did.",
+        ),
+        s(" Same model, same prompt, different temperature: you can move from 'always says the same thing' to 'never says the same thing twice' without retraining anything."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The common range you'll see is 0 to 2, but the useful range is much narrower. "),
+        x(
+          "Most production systems live between 0 and 1. Below 0.3 is 'I want the same answer every time'. 0.3–0.7 is 'mostly the same with small variation'. 0.7–1.0 is 'noticeably varied phrasing and ideas'. Above 1.0 is 'creative writing or brainstorming where weirdness is a feature'. Above 1.5 the model starts to lose coherence in most providers.",
+          "Different providers clip the range differently — OpenAI accepts 0 to 2, Anthropic 0 to 1, some open-source stacks accept arbitrarily high values. The number on the dial is not portable across providers; the *shape of the distribution* it produces is what you actually care about.",
+        ),
+        s(" Treat the value as relative within a provider, not as an absolute description of behaviour."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Why two teams using 'GPT-4' get different vibes",
+      body: "Two PMs at the same company both build chat features on GPT-4. One inherits LangChain's defaults (temperature 0.7); the other inherits the OpenAI Python SDK's defaults (temperature 1.0). Neither writes the value down. Six months later in a review, one feature is described as 'safe and corporate' and the other as 'creative but flaky'. Same model, same company, different SDK defaults. The fix wasn't a model swap — it was writing the temperature into the spec.",
+    },
+    {
+      kind: "h",
+      number: "4.2",
+      title: "Temperature = 0 vs temperature = 1",
+      subtitle: "When you want the same answer every time vs when you want variety",
+    },
+    {
+      kind: "take",
+      text: "Temperature 0 means 'always pick the highest-probability token' — the closest the model gets to deterministic. Temperature 1 means 'sample from the unmodified distribution' — the model's natural level of randomness.",
+    },
+    {
+      kind: "why",
+      text: "These two settings represent fundamentally different product promises. Temperature 0 promises 'the same input produces the same output' (almost). Temperature 1 promises 'you'll get a fresh phrasing each time'. Mixing those promises in one feature confuses users and breaks tests.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Temperature 0 is the setting you reach for whenever consistency matters more than novelty. "),
+        x(
+          "Classification ('is this email spam?'), structured extraction ('pull the invoice number from this PDF'), code generation against a strict spec, and any feature that an internal eval suite needs to grade — all of these want temperature 0. The model becomes effectively a function: same input, same output.",
+          "'Effectively' is doing work here. Even at temperature 0, modern LLMs are not bit-for-bit deterministic across runs because of GPU non-determinism in batched inference. You'll see >95% identical outputs at temperature 0, not 100%. That's fine for most product use cases and devastating for cryptographic ones.",
+        ),
+        s(" If your QA team asks 'why did the same prompt give a different answer in test', the first question is always 'what temperature are you using' — not 'is the model broken'."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Temperature 1 is the natural sampling behaviour of the model. "),
+        x(
+          "It's what the model was trained on — the unaltered probability distribution. You use it when variety is the product: brainstorming, copywriting, naming, creative dialogue, ideation. The same prompt produces different outputs each time, and that's the feature, not the bug.",
+          "At temperature 1 you also expose more of the model's weird side: occasional non-sequiturs, surprising metaphors, and the genuine creativity that low temperatures sand off. The cost is testability — you cannot write a snapshot test against a temperature-1 feature; you can only write a *property* test ('the output contains five suggestions, each under 60 chars').",
+        ),
+        s(" Pick temperature 1 deliberately, and pair it with the eval strategy that fits — judged evals, not assertion-based ones."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Notion AI's split-personality temperature ladder",
+      body: "Notion AI's 'Summarize' uses low temperature — you want a faithful summary, not a creative reimagining. 'Brainstorm ideas' uses high temperature — you want ten genuinely different angles, not ten paraphrases of one. The buttons look identical in the UI; the underlying calls have very different sampling settings. The product team didn't expose a 'creativity slider' to users because the right setting per task is a PM call, not a user call.",
+    },
+    {
+      kind: "h",
+      number: "4.3",
+      title: "What is top-p (nucleus sampling)",
+      subtitle: "Why cutting the probability tail produces better outputs than pure randomness",
+    },
+    {
+      kind: "take",
+      text: "Top-p (nucleus sampling) keeps only the smallest set of tokens whose probabilities sum to p, then samples from that set. It throws away the long tail of unlikely tokens before the random draw, so the model stays varied without going off the rails.",
+    },
+    {
+      kind: "why",
+      text: "Pure temperature is a blunt instrument — turn it up and you get creativity and incoherence in the same dose. Top-p lets you keep creativity while clipping the tokens most likely to make the output sound unhinged. Most production stacks use top-p instead of temperature as the primary creativity dial, and the ones that don't probably should.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Imagine the model's next-token distribution sorted from most to least likely. "),
+        x(
+          "Top-p says: walk down that sorted list adding up probabilities until you reach p (say, 0.9), then throw away everything below that cutoff and renormalise. With top-p 0.9, the model is sampling from the smallest set of tokens that account for 90% of the probability mass — which might be 3 tokens for a constrained prompt or 200 for a wide-open one.",
+          "This is dynamic in a way temperature isn't. For a prompt like 'The capital of France is', the top token (' Paris') has 99% probability — top-p collapses to just that one option. For 'Write me a poem about', dozens of tokens share the mass and top-p keeps all of them in play.",
+        ),
+        s(" Top-p adapts the candidate set to how confident the model is — temperature does not."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Typical top-p values are 0.9–0.95 for general use. "),
+        x(
+          "Lower (0.7) means more conservative, more repetitive output. Higher (1.0) disables top-p entirely. Below 0.5 you start cutting tokens that the model genuinely considered, and quality drops. Above 0.95 you're letting in the long tail, which contains most of the model's hallucinations and grammatical errors.",
+          "The reason 0.9 is a sweet spot: empirically, the top 90% of probability mass contains almost all the 'sensible' continuations, and the remaining 10% is where 'and then the moon ate a sandwich' lives. Cutting that tail removes most failure modes without removing creativity.",
+        ),
+        s(" If you only set one creativity parameter in your spec, set top-p — it's safer than temperature alone."),
+      ],
+    },
+    {
+      kind: "h",
+      number: "4.4",
+      title: "What is top-k sampling",
+      subtitle: "Limiting the vocabulary the model can choose from at each step",
+    },
+    {
+      kind: "take",
+      text: "Top-k keeps only the k most likely tokens at each step and samples from that fixed-size set. It's simpler than top-p but cruder — it always keeps the same number of options regardless of how confident the model is.",
+    },
+    {
+      kind: "why",
+      text: "Top-k is the older cousin of top-p. You'll see it in open-source stacks (Llama, Mistral, local inference) more than in hosted APIs. Knowing it exists prevents the 'why does my open-source model behave differently' surprise when you read someone else's config file.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("With top-k 40, the model considers only the 40 most likely tokens at each step, no matter what. "),
+        x(
+          "For a prompt where the model is highly confident ('2 + 2 ='), 39 of those 40 candidates are essentially noise — the top one is the only realistic answer, and top-k keeps a long tail in play anyway. For an open-ended prompt where 200 tokens are reasonable, top-k 40 unnecessarily clips most of them.",
+          "This is why top-p has largely replaced top-k in modern hosted APIs: top-p adapts to the model's confidence, top-k doesn't. Top-k still shows up in local inference because it's cheaper to compute and easier to reason about.",
+        ),
+        s(" If your stack exposes both, common practice is top-p 0.9 with top-k 40 as a belt-and-braces ceiling — but tuning both at once is rarely worth the time."),
+      ],
+    },
+    {
+      kind: "diagram",
+      id: "sampling-funnel",
+      type: "flow",
+      title: "How a token actually gets picked",
+      caption:
+        "Raw logits → temperature rescales them → top-k clips to the k highest → top-p clips to the smallest set summing to p → repetition penalty downweights recently used tokens → final sample. Every sampling parameter is a filter on the same distribution, applied in sequence.",
+    },
+    {
+      kind: "h",
+      number: "4.5",
+      title: "Greedy decoding",
+      subtitle: "Always picking the most likely next token — and why it produces boring text",
+    },
+    {
+      kind: "take",
+      text: "Greedy decoding skips sampling entirely and always picks the single highest-probability token. It is what temperature 0 with no top-p approximates — fully deterministic, fully boring.",
+    },
+    {
+      kind: "why",
+      text: "Greedy decoding is the right default for narrow, factual tasks (extraction, classification) and the wrong default for anything user-facing in prose. Recognising it is also how you debug 'why does my output keep saying the same thing every paragraph' — greedy decoding is one of the usual suspects.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Greedy is appealing because it's reproducible, fast, and easy to test. "),
+        x(
+          "Every test run produces the same string, your snapshot tests pass, and your eval scores are stable. For classification ('label this ticket') and extraction ('pull the date from this email'), greedy is genuinely the right choice — there is a single best answer and you want it every time.",
+          "For prose, greedy produces text that is grammatically fine but emotionally flat and frequently repetitive. The model keeps picking the highest-probability next token, which often means the same phrase appears two paragraphs later because it was the highest-probability continuation again.",
+        ),
+        s(" 'My summarisation feature sounds like a robot' is sometimes a prompt problem and sometimes a 'you set temperature to 0 on a prose task' problem."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Why Gmail's Smart Compose feels different from ChatGPT",
+      body: "Gmail's Smart Compose suggestions are essentially greedy (or near-greedy) — they need to be fast, predictable, and to disappear quietly when wrong. ChatGPT uses sampling — it needs to feel alive and creative. Both are correct calls for their respective products. A PM porting one pattern to the other (greedy chat, or sampled inline completion) typically ships a feature that confuses users about what kind of tool they're using.",
+    },
+    {
+      kind: "h",
+      number: "4.6",
+      title: "Beam search",
+      subtitle: "Looking ahead to find better sequences — and its tradeoffs",
+    },
+    {
+      kind: "take",
+      text: "Beam search keeps the top-k most likely *sequences* (beams) at each step instead of the top-k tokens. It looks ahead a few steps and picks the sequence with the best total probability, not the locally greediest next token.",
+    },
+    {
+      kind: "why",
+      text: "Beam search dominated machine translation a decade ago and still shows up in narrow tasks (translation, summarisation with strict length targets). It's largely absent from modern open-ended chat because it produces fluent but generic, repetitive, weirdly hedged text — and it's expensive.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Beam search trades inference cost for sequence-level optimality. "),
+        x(
+          "With beam width 4, the decoder maintains 4 candidate sequences in parallel, expands each by one token, keeps the 4 best of the 16 resulting partials, and repeats. The final output is the highest-scoring complete sequence — which is often more globally coherent than greedy decoding.",
+          "The cost is roughly linear in beam width (4× compute for width 4), and the failure mode is what researchers call the 'curse of beam search': as you widen the beam, outputs become *more* repetitive and bland, not less, because the highest-probability sequence is usually the safest, most generic one.",
+        ),
+        s(" Modern chat models use sampling not because beam search is broken, but because sampling produces text that feels human and beam search produces text that feels written by a committee."),
+      ],
+    },
+    {
+      kind: "h",
+      number: "4.7",
+      title: "Repetition penalties",
+      subtitle: "Why models get stuck in loops and how sampling parameters fix it",
+    },
+    {
+      kind: "take",
+      text: "Repetition penalties downweight tokens (or n-grams) the model has already used in the current generation, breaking it out of loops like 'I think I think I think…' or 'thanks! thanks! thanks!'.",
+    },
+    {
+      kind: "why",
+      text: "Repetition loops are one of the most common 'is the model broken?' tickets in production. The fix is almost never a model swap — it's a sampling-parameter change. Recognising the pattern saves you a week of escalations.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Two parameters handle this in most APIs. "),
+        x(
+          "frequency_penalty (OpenAI-style) reduces a token's probability proportionally to how many times it has already appeared. presence_penalty applies a flat downweight to any token that has appeared at least once. Anthropic and open-source stacks use a 'repetition_penalty' multiplier instead, which divides probabilities of recently used tokens by a fixed factor (1.0 = off, 1.1–1.3 = gentle, >1.5 = aggressive).",
+          "Useful defaults: frequency_penalty 0.0–0.5 for general use; 0.5–1.0 if you're seeing obvious repetition. Going much higher pushes the model to avoid common words and starts producing thesaurus-soup. Setting these is a tuning exercise; check outputs after every change.",
+        ),
+        s(" If your output reads like Roget's Thesaurus exploded, your repetition penalty is too high. If it reads like a stuck record, it's too low."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Repetition is also a temperature symptom. "),
+        x(
+          "At temperature 0 with no top-p, the model will repeat itself because the same conditional context keeps producing the same highest-probability token. Bumping temperature to 0.3 and top-p to 0.9 often eliminates the loop without touching repetition penalties at all — because you've reintroduced enough variety that the loop never forms.",
+          "Rule of thumb: try temperature + top-p first; reach for repetition_penalty only when the model loops *despite* having sampling freedom. The penalty is a sharper tool that can degrade quality if overused.",
+        ),
+        s(" 'The bot keeps repeating itself' is a sampling-stack diagnosis, not a model diagnosis."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Early GPT-3 customer support bots and the 'thanks loop'",
+      body: "A wave of early GPT-3 support bots in 2021–22 had a notorious failure mode: under stress they would produce 'Thank you for your patience. Thank you for your patience. Thank you for your patience.' until they hit the token limit. The bug looked like a model failure to executives and a sampling-config failure to engineers. The fix in every case was the same — non-zero temperature, top-p 0.9, modest frequency_penalty. None of those teams swapped models; they swapped configs.",
+    },
+    {
+      kind: "h",
+      number: "4.8",
+      title: "PM decision lens: matching sampling parameters to your use case",
+      subtitle: "Customer support needs temperature 0. Creative writing needs temperature 0.9. Knowing the difference.",
+    },
+    {
+      kind: "take",
+      text: "Every LLM feature spec should declare target sampling parameters (temperature, top-p, repetition penalty) and lock them in tests. Defaults are not a strategy — they are the absence of one.",
+    },
+    {
+      kind: "why",
+      text: "Sampling parameters are the cheapest, fastest product lever you have. Tuning them takes minutes, costs nothing, and frequently outperforms model swaps. PMs who treat sampling as 'engineering trivia' ship features whose feel they cannot control or explain.",
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Map the sampling profile to the product promise. "),
+        x(
+          "Customer support, classification, structured extraction, internal eval-graded features: temperature 0–0.2, top-p 0.9, no repetition penalty. The promise is 'same input, same correct answer'. Variance is a bug. Snapshot tests work.",
+          "Anything where the wrong answer is worse than no answer belongs here. The CFO does not want 'creative interpretation' of the refund policy. The fraud analyst does not want 'a fresh take' on whether a transaction is suspicious.",
+        ),
+        s(" The default for risk-bearing features is low temperature, not 'whatever the SDK ships with'."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Conversational assistants, summarisation, rewriting: temperature 0.3–0.7, top-p 0.9, light repetition penalty. "),
+        x(
+          "The promise is 'sounds human, stays on-topic'. A small amount of variation makes the bot feel less robotic without making it unreliable. Property tests (length, format, presence of key facts) work better than snapshot tests here.",
+          "This is the band where most production chat features live. If you don't know what temperature to ship with, 0.5 with top-p 0.9 is a defensible starting point you can defend in a review.",
+        ),
+        s(" The middle of the dial is where most product judgment happens — and where most teams stop tuning too early."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Brainstorming, ideation, creative copy, naming: temperature 0.8–1.2, top-p 0.95, moderate repetition penalty. "),
+        x(
+          "The promise is 'surprise me, but stay grammatical'. Variation is the feature; getting the same answer twice would be a bug. Tests have to be judged (LLM-as-judge or human rubric), not asserted.",
+          "Don't be afraid of the high end here — a brainstorm tool at temperature 0.4 is a worse product than the same tool at 0.9. Users opted into variety; deliver it.",
+        ),
+        s(" The most common mistake at this end of the dial is being too conservative — high-temperature features get reviewed and dialed *down* because someone got a weird result once, and they end up indistinguishable from medium-temperature features."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Lock the values in the spec, in source control, and in tests. "),
+        x(
+          "Sampling parameters are part of the contract of your feature, not implementation detail. They belong in the spec ('temperature 0.2, top-p 0.9') and in a config file an engineer can change without touching feature code. A test suite should set them explicitly and not rely on SDK defaults that can change underneath you.",
+          "Provider SDKs have shipped default-temperature changes before (LangChain notoriously changed its default temperature in a minor version). If your feature's behaviour drifts after a dependency bump, sampling-default churn is the first thing to check.",
+        ),
+        s(" 'We used defaults' is the most expensive sentence in an LLM post-mortem."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Intercom Fin — temperature 0 by design",
+      body: "Intercom's Fin support agent operates at near-zero temperature. The product promise is 'safe, sourced, never invents policy', and that promise lives or dies on sampling settings as much as on retrieval. The team has talked publicly about choosing low temperature plus strict retrieval grounding over higher creativity — because the failure mode for a support bot inventing a refund policy is materially worse than the failure mode for one being slightly dry.",
+    },
+    {
+      kind: "ex",
+      title: "Jasper and Copy.ai — temperature 0.9 by default",
+      body: "Marketing-copy tools sit at the opposite end of the dial. Jasper, Copy.ai, and their peers ship with high default temperatures and high top-p because customers explicitly want variety — generating ten headline options that all read like the same headline would be a refund-worthy outcome. The same underlying models that power Intercom Fin are tuned for the opposite product promise here, with sampling settings doing most of the work.",
+    },
+    {
+      kind: "ex",
+      title: "GitHub Copilot — temperature 0 for inline, higher for chat",
+      body: "Copilot's inline code completions run at temperature 0 (or very close) — programmers want the same suggestion every time for a given context, and want it to disappear quickly when wrong. Copilot Chat runs higher — explanations and refactor suggestions benefit from variation. Same product surface, two sampling regimes, deliberately scoped per interaction type. PMs building multi-surface AI products should expect to ship multiple sampling configs, not one.",
+    },
+  ],
+  examples: [],
+  quiz: [
+    {
+      q: "A customer support bot built on GPT-4 occasionally invents refund policies that don't exist in the company's documentation. The team's current config is temperature 0.9, top-p 1.0, no repetition penalty. They're using strong RAG with verified docs. What should you change first?",
+      options: [
+        "Switch to a smaller, cheaper model.",
+        "Lower temperature to 0.0–0.2 and top-p to 0.9 so the model sticks closely to the retrieved documents instead of sampling creative alternatives.",
+        "Increase the number of retrieved chunks.",
+        "Add a repetition penalty.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. High temperature on a grounded-answer task is the classic 'invented policy' failure. The retrieval was already correct — the sampler was the bug. Sampling settings should match the product promise.",
+      wrongFeedback:
+        "Model swaps don't fix temperature problems. More chunks don't help if the sampler is free to ignore them. Repetition penalties affect repetition, not factuality. Re-read sections 4.2 and 4.8.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each feature into the sampling profile that fits it best.",
+      categories: ["Low temp (0–0.2)", "Medium temp (0.3–0.7)", "High temp (0.8–1.2)"],
+      items: [
+        { text: "Extracting invoice numbers from PDFs.", category: 0 },
+        { text: "Classifying support tickets by urgency.", category: 0 },
+        { text: "Summarising a meeting transcript.", category: 1 },
+        { text: "Rewriting a paragraph in a friendlier tone.", category: 1 },
+        { text: "Generating 10 product name ideas.", category: 2 },
+        { text: "Brainstorming marketing campaign angles.", category: 2 },
+      ],
+      correctFeedback:
+        "Exactly. Risk-bearing factual tasks want low temperature; conversational rewriting wants the middle of the dial; ideation wants the high end. Match the profile to the product promise.",
+      wrongFeedback:
+        "Re-read section 4.8. The rule of thumb: if the wrong answer is worse than no answer, low temperature; if variation is the product, high temperature; everything else sits in the middle.",
+    },
+    {
+      kind: "order",
+      q: "Put the sampling pipeline steps in the order they actually happen when the model picks one token.",
+      prompt: "From raw model output to the chosen token.",
+      items: [
+        "Model produces raw logits for every possible next token.",
+        "Temperature rescales the logits (lower = sharper, higher = flatter).",
+        "Top-k clips the candidate set to the k highest-probability tokens.",
+        "Top-p further clips to the smallest set summing to probability p.",
+        "Repetition penalty downweights tokens already used in this generation.",
+        "Sampler draws one token from the remaining distribution.",
+      ],
+      correctFeedback:
+        "Right. Every sampling parameter is a filter applied in sequence to the same underlying distribution. Knowing the order makes 'why didn't my parameter do anything?' debuggable instead of mysterious.",
+      wrongFeedback:
+        "Re-read the diagram in section 4.4. The order is: logits → temperature → top-k → top-p → repetition penalty → sample. Parameters earlier in the chain can make later ones moot (e.g. temperature 0 makes top-p irrelevant).",
+    },
+  ],
+},
+{
   slug: "pm-dev-git-github",
   number: 1,
   shortTitle: "Git & GitHub",
