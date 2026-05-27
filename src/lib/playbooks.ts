@@ -93,6 +93,10 @@ export const PLAYBOOKS: Playbook[] = [
         slug: "pm-llm-context-windows",
         note: "The model's working memory — why every input, output, and history token counts against the same budget, and how to design features inside that constraint.",
       },
+      {
+        slug: "pm-llm-temperature-sampling",
+        note: "The dials that control how creative, random, or predictable your model is — temperature, top-p, top-k, decoding strategies, and how to match them to your use case.",
+      },
     ],
   },
   {
