@@ -7012,7 +7012,7 @@ export const concepts: Concept[] = [
   number: 4,
   shortTitle: "Temperature & Sampling",
   title: "Temperature & Sampling",
-  readingMinutes: 22,
+  readingMinutes: 28,
   summary:
     "The dials that control how creative, random, or predictable your model is — temperature, top-p, top-k, greedy decoding, beam search, and repetition penalties — and how to set them per use case.",
   keyTakeaway:
@@ -7020,6 +7020,7 @@ export const concepts: Concept[] = [
   pmCallout:
     "As a PM: every LLM feature spec should declare a target temperature, top-p, and (where supported) a repetition penalty — and pin them in tests. 'We'll use defaults' is how identical-looking features ship with wildly different vibes, and how a customer support bot starts inventing refund policies on a Tuesday.",
   body: [
+    // ============== 4.1 ==============
     {
       kind: "h",
       number: "4.1",
@@ -7051,9 +7052,20 @@ export const concepts: Concept[] = [
         s("The common range you'll see is 0 to 2, but the useful range is much narrower. "),
         x(
           "Most production systems live between 0 and 1. Below 0.3 is 'I want the same answer every time'. 0.3–0.7 is 'mostly the same with small variation'. 0.7–1.0 is 'noticeably varied phrasing and ideas'. Above 1.0 is 'creative writing or brainstorming where weirdness is a feature'. Above 1.5 the model starts to lose coherence in most providers.",
-          "Different providers clip the range differently — OpenAI accepts 0 to 2, Anthropic 0 to 1, some open-source stacks accept arbitrarily high values. The number on the dial is not portable across providers; the *shape of the distribution* it produces is what you actually care about.",
+          "Different providers clip the range differently — OpenAI accepts 0 to 2, Anthropic 0 to 1, some open-source stacks accept arbitrarily high values. The number on the dial is not portable across providers; the shape of the distribution it produces is what you actually care about.",
         ),
         s(" Treat the value as relative within a provider, not as an absolute description of behaviour."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Temperature is also one of the only model parameters that costs nothing to change. "),
+        x(
+          "No retraining, no redeploy, no fine-tune run. You edit a config value, ship it, and the behaviour shifts on the next call. That makes it the highest-leverage product lever in the stack — and the one most often ignored because it looks like an engineering setting.",
+          "Compare to changing a prompt (medium effort, has to be re-evaluated) or switching models (high effort, changes pricing, latency, capability). A temperature tweak is a five-second change that can move CSAT scores in a week.",
+        ),
+        s(" Treat it as a product setting that lives in a spec, not an engineering knob that lives in a notebook."),
       ],
     },
     {
@@ -7061,6 +7073,18 @@ export const concepts: Concept[] = [
       title: "Why two teams using 'GPT-4' get different vibes",
       body: "Two PMs at the same company both build chat features on GPT-4. One inherits LangChain's defaults (temperature 0.7); the other inherits the OpenAI Python SDK's defaults (temperature 1.0). Neither writes the value down. Six months later in a review, one feature is described as 'safe and corporate' and the other as 'creative but flaky'. Same model, same company, different SDK defaults. The fix wasn't a model swap — it was writing the temperature into the spec.",
     },
+    {
+      kind: "ex",
+      title: "Anthropic's Claude default at 1.0 and the 'too playful' bug reports",
+      body: "Anthropic's Claude API defaults temperature to 1.0. Teams porting from OpenAI (default 1.0 in raw SDK, often 0.7 via wrappers) sometimes file 'Claude is too playful' tickets that turn out to be sampling-default differences, not model-personality differences. The same Claude at temperature 0.3 reads as the 'safe, careful' model those teams expected. The lesson: never compare two providers without normalising sampling settings first.",
+    },
+    {
+      kind: "ex",
+      title: "Cursor's autocomplete vs Cursor's chat — same model, two temps",
+      body: "Cursor exposes the same underlying models in two surfaces: inline code completion and conversational chat. Inline completion runs at temperature 0 (or very close) because programmers want the same suggestion every time for a given cursor position. Chat runs higher so explanations and refactors don't feel mechanically repetitive. One model, two sampling regimes, deliberately scoped per interaction. PMs building multi-surface AI features should expect to ship multiple temperature configs, not one global default.",
+    },
+
+    // ============== 4.2 ==============
     {
       kind: "h",
       number: "4.2",
@@ -7092,9 +7116,20 @@ export const concepts: Concept[] = [
         s("Temperature 1 is the natural sampling behaviour of the model. "),
         x(
           "It's what the model was trained on — the unaltered probability distribution. You use it when variety is the product: brainstorming, copywriting, naming, creative dialogue, ideation. The same prompt produces different outputs each time, and that's the feature, not the bug.",
-          "At temperature 1 you also expose more of the model's weird side: occasional non-sequiturs, surprising metaphors, and the genuine creativity that low temperatures sand off. The cost is testability — you cannot write a snapshot test against a temperature-1 feature; you can only write a *property* test ('the output contains five suggestions, each under 60 chars').",
+          "At temperature 1 you also expose more of the model's weird side: occasional non-sequiturs, surprising metaphors, and the genuine creativity that low temperatures sand off. The cost is testability — you cannot write a snapshot test against a temperature-1 feature; you can only write a property test ('the output contains five suggestions, each under 60 chars').",
         ),
         s(" Pick temperature 1 deliberately, and pair it with the eval strategy that fits — judged evals, not assertion-based ones."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("The trap most teams fall into is the middle. "),
+        x(
+          "Temperature 0.5 is a non-decision masquerading as a decision. It's varied enough to break snapshot tests, conservative enough that users don't feel any 'spark', and indefensible in a product review because nobody can explain why 0.5 and not 0.4 or 0.6. Pick a value because it matches a specific product promise, not because it's the middle of the slider.",
+          "Better defaults if you're unsure: 0.2 for 'should feel reliable', 0.7 for 'should feel conversational', 1.0 for 'should feel creative'. Three values, three product promises, three explainable choices.",
+        ),
+        s(" The middle of the dial is where features go to feel like nothing in particular."),
       ],
     },
     {
@@ -7102,6 +7137,18 @@ export const concepts: Concept[] = [
       title: "Notion AI's split-personality temperature ladder",
       body: "Notion AI's 'Summarize' uses low temperature — you want a faithful summary, not a creative reimagining. 'Brainstorm ideas' uses high temperature — you want ten genuinely different angles, not ten paraphrases of one. The buttons look identical in the UI; the underlying calls have very different sampling settings. The product team didn't expose a 'creativity slider' to users because the right setting per task is a PM call, not a user call.",
     },
+    {
+      kind: "ex",
+      title: "Stripe Radar — temperature 0 by necessity",
+      body: "Stripe's fraud-scoring features that use LLM components run at temperature 0. A fraud decision that flips between 'allow' and 'block' for the same transaction on retry would be unacceptable to merchants and regulators. The model behaves as a deterministic function inside an auditable pipeline — sampling variance is treated as a defect, not a flavor. Any feature with regulatory or audit exposure inherits this constraint.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI Playground defaults caught a wave of devs off-guard",
+      body: "For years the OpenAI Playground defaulted to temperature 1.0, while many tutorials wrote prompts as if the model were deterministic. Developers prototyped at 1.0, shipped, then filed bugs when production answers 'drifted'. The Playground later added more visible sampling controls and OpenAI's docs now lead with explicit temperature guidance per task. The takeaway for PMs: a sensible default in a sandbox is not a sensible default in production — pin the value before launch.",
+    },
+
+    // ============== 4.3 ==============
     {
       kind: "h",
       number: "4.3",
@@ -7114,7 +7161,7 @@ export const concepts: Concept[] = [
     },
     {
       kind: "why",
-      text: "Pure temperature is a blunt instrument — turn it up and you get creativity and incoherence in the same dose. Top-p lets you keep creativity while clipping the tokens most likely to make the output sound unhinged. Most production stacks use top-p instead of temperature as the primary creativity dial, and the ones that don't probably should.",
+      text: "Pure temperature is a blunt instrument — turn it up and you get creativity and incoherence in the same dose. Top-p lets you keep creativity while clipping the tokens most likely to make the output sound unhinged. Most production stacks use top-p instead of (or alongside) temperature as the primary creativity dial.",
     },
     {
       kind: "p",
@@ -7138,6 +7185,34 @@ export const concepts: Concept[] = [
         s(" If you only set one creativity parameter in your spec, set top-p — it's safer than temperature alone."),
       ],
     },
+    {
+      kind: "p",
+      parts: [
+        s("Most teams shouldn't tune temperature and top-p together. "),
+        x(
+          "Pick one as your primary dial and pin the other to a sensible default. The OpenAI cookbook recommends adjusting either temperature or top-p, not both, because their interaction is not intuitive — turning down temperature with top-p already low can collapse the candidate set to a single token and produce near-greedy output you didn't ask for.",
+          "Practical pattern: keep top-p at 0.9 as a guardrail and move temperature for the product feel. Reach for top-p adjustments only when you can articulate why temperature alone isn't enough.",
+        ),
+        s(" Two dials, one decision — tune one, hold the other."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Why ChatGPT's default top-p 1.0 still feels coherent",
+      body: "ChatGPT ships with top-p 1.0 (disabled) and relies on temperature plus fine-tuning to keep output coherent. It works because RLHF has already squashed most of the truly unhinged tail tokens during training — the model itself rarely puts mass on 'moon ate a sandwich' tokens, so a tail cutter isn't needed. Open-source base models without that fine-tuning often need top-p 0.9 just to read as competent.",
+    },
+    {
+      kind: "ex",
+      title: "Perplexity's answer engine — top-p as a precision dial",
+      body: "Perplexity's answer engine, which must cite real sources without drifting, runs at low temperature plus tight top-p. The combination is what lets it produce varied phrasings across answers (you don't see the same sentence twice) while almost never inventing facts. Strip out the top-p constraint and the same model starts confabulating sources on edge-case queries.",
+    },
+    {
+      kind: "ex",
+      title: "Open-source Llama deployments that look 'dumber' than the benchmarks",
+      body: "Teams self-hosting Llama 3 sometimes report it 'feels worse' than benchmark scores suggest. A common cause: they kept the vLLM defaults (top-p 1.0, temperature 1.0) instead of the recommended top-p 0.9, temperature 0.6 from Meta's own release notes. Same weights, different sampler, very different perceived quality. Always check the model card's recommended sampling block before declaring a model 'underwhelming'.",
+    },
+
+    // ============== 4.4 ==============
     {
       kind: "h",
       number: "4.4",
@@ -7164,13 +7239,44 @@ export const concepts: Concept[] = [
       ],
     },
     {
-      kind: "diagram",
-      id: "sampling-funnel",
-      type: "flow",
-      title: "How a token actually gets picked",
-      caption:
-        "Raw logits → temperature rescales them → top-k clips to the k highest → top-p clips to the smallest set summing to p → repetition penalty downweights recently used tokens → final sample. Every sampling parameter is a filter on the same distribution, applied in sequence.",
+      kind: "p",
+      parts: [
+        s("Top-k still earns its keep in latency-sensitive deployments. "),
+        x(
+          "On a local GPU, computing top-k 40 is a fixed-size operation the kernel can fuse efficiently; computing top-p requires a sort and a cumulative sum across the whole vocab (often 100K+ tokens) on every step. For high-throughput inference (chatbots running on consumer hardware, edge deployments), top-k 40 with a moderate temperature is sometimes the right tradeoff.",
+          "For hosted APIs where the provider absorbs the compute, the latency difference is invisible to you and top-p wins on quality. The choice tracks where the model runs, not just what the model is.",
+        ),
+        s(" 'Why is top-k in this config?' is often answered by 'because we run our own inference', not 'because it's better'."),
+      ],
     },
+    {
+      kind: "p",
+      parts: [
+        s("Common defaults to recognise in the wild. "),
+        x(
+          "Hugging Face's text-generation pipeline defaults to top-k 50. Meta's Llama 3 model card recommends top-k 50 with top-p 0.9. Google's Gemini API exposes top-k but defaults it to a large number so it rarely binds. Anthropic doesn't expose top-k at all. Reading a config without knowing these defaults leads to false conclusions about why a model is behaving a certain way.",
+          "When debugging behaviour drift after a library upgrade or model swap, dump the actual effective sampling parameters — not the ones in your code, the ones the SDK actually sent. Many bugs hide between 'what I set' and 'what got through'.",
+        ),
+        s(" The right question is never 'what does the docs page say' — it's 'what arrived at the model'."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Llama 3's release notes — top-k 50, top-p 0.9 by design",
+      body: "Meta's Llama 3 model card explicitly recommends top-k 50 and top-p 0.9 with temperature 0.6 as the default sampling profile. Teams that ignored this and ran 'pure' top-p 1.0 with temperature 1.0 reported the model as 'unreliable' for two weeks until someone read the model card. The lesson is structural: every open-weights model ships with recommended sampling settings; treat them as part of the model, not optional polish.",
+    },
+    {
+      kind: "ex",
+      title: "Hugging Face pipelines and the silent top-k 50",
+      body: "Hugging Face's transformers pipeline('text-generation') has defaulted to top-k 50 for years. Developers prototyping with the pipeline and then porting to raw model.generate() calls often see different output and assume something broke — when in fact the default top-k clipping was silently shaping the output the whole time. Always pass sampling parameters explicitly when moving between frameworks.",
+    },
+    {
+      kind: "ex",
+      title: "Mistral's local-deployment guides — top-k as a latency knob",
+      body: "Mistral's community deployment guides for running 7B models on consumer GPUs frequently recommend top-k 40 with greedy fallback under load, specifically because the sort cost of top-p eats into tokens-per-second on smaller cards. The same model in Mistral's hosted API uses top-p as the primary dial because the compute envelope is different. Same model family, different infra, different sampler — and that's correct.",
+    },
+
+    // ============== 4.5 ==============
     {
       kind: "h",
       number: "4.5",
@@ -7197,10 +7303,44 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "p",
+      parts: [
+        s("Greedy has a subtle quality trap: locally optimal does not mean globally optimal. "),
+        x(
+          "At each step greedy picks the best next token, but the sequence of best-next-tokens is often not the best overall sequence. The model might pick a likely word that paints it into a corner three tokens later, while a slightly less likely word would have opened a far better continuation. Sampling sidesteps this by sometimes taking the 'wrong' local pick and finding a better global path.",
+          "This is why greedy decoding scores well on word-level metrics but lower on human-quality evaluations for long-form text. It optimises the wrong unit — tokens instead of meaning.",
+        ),
+        s(" Greedy is a sniper for single answers and a poor narrator for stories."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Use greedy when you'd otherwise write a regex. "),
+        x(
+          "Tasks where the right output is a single string drawn from a small set — 'positive', 'negative', 'neutral'; '$42.00'; 'INV-2024-0918' — are tasks where greedy is correct. If you can imagine writing a deterministic function for the task in classical software, greedy is the LLM equivalent and you should reach for it.",
+          "Tasks where the right output is a sentence, paragraph, or anything that should 'sound like a person wrote it' are tasks where greedy is wrong. The product promise of prose is variety within constraint; greedy delivers constraint without variety.",
+        ),
+        s(" 'Would a regex have worked?' is a good test for 'should I use greedy?'"),
+      ],
+    },
+    {
       kind: "ex",
       title: "Why Gmail's Smart Compose feels different from ChatGPT",
       body: "Gmail's Smart Compose suggestions are essentially greedy (or near-greedy) — they need to be fast, predictable, and to disappear quietly when wrong. ChatGPT uses sampling — it needs to feel alive and creative. Both are correct calls for their respective products. A PM porting one pattern to the other (greedy chat, or sampled inline completion) typically ships a feature that confuses users about what kind of tool they're using.",
     },
+    {
+      kind: "ex",
+      title: "GitHub Copilot's inline completions — greedy with constrained context",
+      body: "Copilot's inline suggestions run at near-zero temperature so that given the same code context the same suggestion appears. This is a deliberate product choice — programmers train muscle memory around their tools, and a suggestion that varies between keystrokes would feel buggy. The variety in Copilot comes from changing context (more code around the cursor), not from sampling randomness.",
+    },
+    {
+      kind: "ex",
+      title: "Klarna's customer service AI — greedy where it matters",
+      body: "Klarna's AI assistant, which famously handles the workload of 700 agents, uses temperature 0 / near-greedy decoding for any response that quotes policy, balances, or fees. Variation in those answers would be a regulatory and CSAT problem. Greedy is not a 'cheap' choice here — it is the only choice consistent with the product's contract with the customer.",
+    },
+
+    // ============== 4.6 ==============
     {
       kind: "h",
       number: "4.6",
@@ -7209,7 +7349,7 @@ export const concepts: Concept[] = [
     },
     {
       kind: "take",
-      text: "Beam search keeps the top-k most likely *sequences* (beams) at each step instead of the top-k tokens. It looks ahead a few steps and picks the sequence with the best total probability, not the locally greediest next token.",
+      text: "Beam search keeps the top-k most likely sequences (beams) at each step instead of the top-k tokens. It looks ahead a few steps and picks the sequence with the best total probability, not the locally greediest next token.",
     },
     {
       kind: "why",
@@ -7221,11 +7361,50 @@ export const concepts: Concept[] = [
         s("Beam search trades inference cost for sequence-level optimality. "),
         x(
           "With beam width 4, the decoder maintains 4 candidate sequences in parallel, expands each by one token, keeps the 4 best of the 16 resulting partials, and repeats. The final output is the highest-scoring complete sequence — which is often more globally coherent than greedy decoding.",
-          "The cost is roughly linear in beam width (4× compute for width 4), and the failure mode is what researchers call the 'curse of beam search': as you widen the beam, outputs become *more* repetitive and bland, not less, because the highest-probability sequence is usually the safest, most generic one.",
+          "The cost is roughly linear in beam width (4× compute for width 4), and the failure mode is what researchers call the 'curse of beam search': as you widen the beam, outputs become more repetitive and bland, not less, because the highest-probability sequence is usually the safest, most generic one.",
         ),
         s(" Modern chat models use sampling not because beam search is broken, but because sampling produces text that feels human and beam search produces text that feels written by a committee."),
       ],
     },
+    {
+      kind: "p",
+      parts: [
+        s("Beam search still wins where the output space is narrow and the right answer is well-defined. "),
+        x(
+          "Machine translation has been the canonical use case for years — there's a small space of 'correct' translations for a given sentence, and beam search reliably finds one of them. Length-controlled summarisation, code completion under strict constraints (a function signature you must match), and grammar correction all benefit from the look-ahead.",
+          "These tasks share a structure: a clear notion of 'best sequence' that the model can evaluate locally as it generates. When that structure is missing — as it is in open-ended chat — beam search has nothing to look ahead toward.",
+        ),
+        s(" Beam search is a precision tool for narrow problems, not a general-purpose decoder."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Knowing beam search exists also helps debug 'too generic' outputs from older stacks. "),
+        x(
+          "If you inherit a summarisation pipeline from 2020 that produces oddly samey, slightly hedged summaries, beam search is a likely culprit. Swapping to nucleus sampling (top-p 0.9, temperature 0.7) usually unlocks immediate quality gains on the prose-quality axis, at the cost of stricter length control.",
+          "Conversely, if a team is shipping a translation feature on a chat-tuned LLM and the translations 'feel off' compared to a dedicated translation model, the difference is often that the dedicated model uses beam search while the LLM uses sampling. The fix isn't to retrain — it's to pick the right decoder for the task.",
+        ),
+        s(" The decoder is part of the product spec, not an afterthought."),
+      ],
+    },
+    {
+      kind: "ex",
+      title: "Google Translate's beam-search legacy and the NMT era",
+      body: "Google's neural machine translation system in the late 2010s used beam search with width 4–8 as the default decoder, and the academic literature on translation still uses beam search as the baseline. Translation is the textbook good fit: a narrow output space, a clear quality metric (BLEU), and a strong penalty for getting individual words wrong. Most modern chat-tuned LLMs that 'do translation' are using sampling — which is why they sometimes produce more fluent but less literal translations than dedicated systems.",
+    },
+    {
+      kind: "ex",
+      title: "Hugging Face's generate() with num_beams — the foot-gun",
+      body: "Hugging Face's model.generate() accepts num_beams as a parameter. Developers who set num_beams=5 expecting 'better quality' on chat tasks routinely report that outputs became more generic and started repeating phrases — the curse of beam search in action. The Hugging Face docs now explicitly warn against using beam search for open-ended generation, but the parameter is still there and still defaults to off for good reason.",
+    },
+    {
+      kind: "ex",
+      title: "DeepL's translation edge over LLM-based translators",
+      body: "DeepL's continued quality advantage in machine translation, even against frontier LLMs, owes a meaningful share to its decoder design — heavily tuned beam search with length penalties and coverage constraints, optimised over years for translation specifically. When a PM evaluates 'should we use GPT-4 for translation?', the right comparison isn't just model size — it's also decoder fitness for the task.",
+    },
+
+    // ============== 4.7 ==============
     {
       kind: "h",
       number: "4.7",
@@ -7257,9 +7436,20 @@ export const concepts: Concept[] = [
         s("Repetition is also a temperature symptom. "),
         x(
           "At temperature 0 with no top-p, the model will repeat itself because the same conditional context keeps producing the same highest-probability token. Bumping temperature to 0.3 and top-p to 0.9 often eliminates the loop without touching repetition penalties at all — because you've reintroduced enough variety that the loop never forms.",
-          "Rule of thumb: try temperature + top-p first; reach for repetition_penalty only when the model loops *despite* having sampling freedom. The penalty is a sharper tool that can degrade quality if overused.",
+          "Rule of thumb: try temperature + top-p first; reach for repetition_penalty only when the model loops despite having sampling freedom. The penalty is a sharper tool that can degrade quality if overused.",
         ),
         s(" 'The bot keeps repeating itself' is a sampling-stack diagnosis, not a model diagnosis."),
+      ],
+    },
+    {
+      kind: "p",
+      parts: [
+        s("Beware repetition penalties on structured output. "),
+        x(
+          "If your prompt asks for JSON, a strong repetition penalty will fight you — JSON requires the same tokens ('}', '\"', ',', field names) to appear over and over, and a penalty that downweights repeats will produce malformed output. For structured generation, set repetition_penalty to 1.0 (off) and let the schema do the work. Same for code generation: variables get referenced many times by name and that's correct.",
+          "The penalty's mental model is 'don't say the same word twice in a paragraph of prose'. Apply it where that model fits and disable it everywhere else.",
+        ),
+        s(" 'Why is my JSON breaking?' sometimes has nothing to do with the prompt and everything to do with a copy-pasted sampling config."),
       ],
     },
     {
@@ -7267,6 +7457,18 @@ export const concepts: Concept[] = [
       title: "Early GPT-3 customer support bots and the 'thanks loop'",
       body: "A wave of early GPT-3 support bots in 2021–22 had a notorious failure mode: under stress they would produce 'Thank you for your patience. Thank you for your patience. Thank you for your patience.' until they hit the token limit. The bug looked like a model failure to executives and a sampling-config failure to engineers. The fix in every case was the same — non-zero temperature, top-p 0.9, modest frequency_penalty. None of those teams swapped models; they swapped configs.",
     },
+    {
+      kind: "ex",
+      title: "Character.ai's long-conversation degradation and presence penalty",
+      body: "Character.ai chats that ran for hundreds of turns historically degraded into repetitive 'I love you / I love you too' style loops as the conversation history saturated attention. The platform's tuning combined moderate presence_penalty with rolling history summarisation to break the loop without making characters feel mechanically anti-repetitive. The PM lesson: degradation in long sessions is a sampling+memory problem, not a model-quality problem.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI function-calling and the no-penalty rule",
+      body: "OpenAI's function-calling and structured-output guides explicitly recommend temperature 0 and no frequency/presence penalty when calling tools or generating JSON. Teams that left their default 'creative' config in place when adding tool use saw mysterious tool-call failures — penalties were rewriting field names to avoid 'repetition'. The fix is to keep a separate sampling profile per call type, not one global default.",
+    },
+
+    // ============== 4.8 ==============
     {
       kind: "h",
       number: "4.8",
@@ -7311,19 +7513,16 @@ export const concepts: Concept[] = [
           "The promise is 'surprise me, but stay grammatical'. Variation is the feature; getting the same answer twice would be a bug. Tests have to be judged (LLM-as-judge or human rubric), not asserted.",
           "Don't be afraid of the high end here — a brainstorm tool at temperature 0.4 is a worse product than the same tool at 0.9. Users opted into variety; deliver it.",
         ),
-        s(" The most common mistake at this end of the dial is being too conservative — high-temperature features get reviewed and dialed *down* because someone got a weird result once, and they end up indistinguishable from medium-temperature features."),
+        s(" The most common mistake at this end of the dial is being too conservative — high-temperature features get reviewed and dialed down because someone got a weird result once, and they end up indistinguishable from medium-temperature features."),
       ],
     },
     {
-      kind: "p",
-      parts: [
-        s("Lock the values in the spec, in source control, and in tests. "),
-        x(
-          "Sampling parameters are part of the contract of your feature, not implementation detail. They belong in the spec ('temperature 0.2, top-p 0.9') and in a config file an engineer can change without touching feature code. A test suite should set them explicitly and not rely on SDK defaults that can change underneath you.",
-          "Provider SDKs have shipped default-temperature changes before (LangChain notoriously changed its default temperature in a minor version). If your feature's behaviour drifts after a dependency bump, sampling-default churn is the first thing to check.",
-        ),
-        s(" 'We used defaults' is the most expensive sentence in an LLM post-mortem."),
-      ],
+      kind: "diagram",
+      id: "sampling-funnel",
+      type: "flow",
+      title: "How a token actually gets picked",
+      caption:
+        "Raw logits → temperature rescales them → top-k clips to the k highest → top-p clips to the smallest set summing to p → repetition penalty downweights recently used tokens → final sample. Every sampling parameter is a filter on the same distribution, applied in sequence.",
     },
     {
       kind: "ex",
@@ -7389,7 +7588,7 @@ export const concepts: Concept[] = [
       correctFeedback:
         "Right. Every sampling parameter is a filter applied in sequence to the same underlying distribution. Knowing the order makes 'why didn't my parameter do anything?' debuggable instead of mysterious.",
       wrongFeedback:
-        "Re-read the diagram in section 4.4. The order is: logits → temperature → top-k → top-p → repetition penalty → sample. Parameters earlier in the chain can make later ones moot (e.g. temperature 0 makes top-p irrelevant).",
+        "Re-read the diagram in section 4.8. The order is: logits → temperature → top-k → top-p → repetition penalty → sample. Parameters earlier in the chain can make later ones moot (e.g. temperature 0 makes top-p irrelevant).",
     },
   ],
 },
