@@ -7590,6 +7590,48 @@ export const concepts: Concept[] = [
       wrongFeedback:
         "Re-read the diagram in section 4.8. The order is: logits → temperature → top-k → top-p → repetition penalty → sample. Parameters earlier in the chain can make later ones moot (e.g. temperature 0 makes top-p irrelevant).",
     },
+    {
+      q: "A creative writing app uses temperature 1.4 to maximise variety. Users complain outputs are 'weird' — non-sequiturs, made-up words, broken syntax. What's the most surgical fix that preserves variety?",
+      options: [
+        "Drop temperature to 0 to make outputs coherent.",
+        "Keep temperature around 0.9 but add top-p 0.9 (nucleus sampling) so the long tail of low-probability, incoherent tokens is clipped while the creative middle stays in play.",
+        "Switch to greedy decoding.",
+        "Add a very large repetition penalty.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. The bug is the long tail, not the temperature itself. Top-p clips the garbage tokens without flattening the creative distribution — this is exactly what nucleus sampling was invented for.",
+      wrongFeedback:
+        "Temperature 0 kills the variety the product needs. Greedy decoding is even more deterministic. Repetition penalties target a different problem. Top-p is the right knob for 'creative but coherent'. Re-read sections 4.3 and 4.8.",
+    },
+    {
+      q: "A code-completion feature uses greedy decoding (temperature 0). Users complain that when it's wrong, it's wrong in the same way every time — and re-prompting gives the identical bad suggestion. What's happening?",
+      options: [
+        "The model is broken.",
+        "Greedy decoding always picks the single most likely next token, so the same input deterministically produces the same output. There's no exploration to surface a different completion.",
+        "The context window is too small.",
+        "The model needs fine-tuning.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly. Determinism is a feature for reproducibility and a bug for retry-to-recover UX. A tiny amount of temperature (0.2) or top-k > 1 gives the model room to offer a different completion when re-prompted.",
+      wrongFeedback:
+        "Greedy = argmax at every step. Same input → same output, by design. To make 'try again' meaningful, you need a non-zero temperature or top-k > 1. Re-read sections 4.5 and 4.2.",
+    },
+    {
+      q: "A long-form generator keeps producing outputs that loop: 'The product is great. The product is great. The product is great.' The team is using temperature 0.7, top-p 0.9, no repetition penalty. What's the right fix?",
+      options: [
+        "Increase temperature to 1.2.",
+        "Add a repetition penalty (≈1.1–1.3) or a presence/frequency penalty so already-emitted tokens get downweighted on subsequent steps.",
+        "Lower top-p to 0.5.",
+        "Switch to a larger model.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Loops are an attractor in the probability distribution — once the model emits a phrase, the most likely continuation is the same phrase. Repetition penalties break the attractor without distorting the rest of the distribution.",
+      wrongFeedback:
+        "Raising temperature adds noise but doesn't break the loop attractor. Lowering top-p makes the loop tighter. The targeted fix is a repetition or frequency penalty. Re-read section 4.7.",
+    },
   ],
 },
 {
