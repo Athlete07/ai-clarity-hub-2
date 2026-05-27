@@ -97,6 +97,10 @@ export const PLAYBOOKS: Playbook[] = [
         slug: "pm-llm-temperature-sampling",
         note: "The dials that control how creative, random, or predictable your model is — temperature, top-p, top-k, decoding strategies, and how to match them to your use case.",
       },
+      {
+        slug: "pm-llm-prompt-engineering-foundations",
+        note: "The craft of talking to models so they actually do what you need — instructions, system vs user prompts, zero/few-shot, role prompting, output formats, and negative prompting.",
+      },
     ],
   },
   {
