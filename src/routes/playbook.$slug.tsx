@@ -12,6 +12,7 @@ import {
 import { playbookForSlug, nextSlugInPlaybook, prevSlugInPlaybook } from "@/lib/playbooks";
 import { useProgress, useReadMode, useSectionsViewed, useSavedDepth, type ReadMode } from "@/lib/storage";
 import { Clock, Hand, Menu, X, Check, ChevronDown, BookOpen, Zap, Bookmark, BookmarkCheck } from "lucide-react";
+import { ShareMenu } from "@/components/share-menu";
 
 // Approx 220 words per minute; word counts derived from block kind.
 function blockWords(b: ConceptBodyBlock): number {
@@ -292,6 +293,9 @@ function ConceptPage() {
               <span>{concept.readingMinutes} min full</span>
               <span className="opacity-50">·</span>
               <span>{Object.keys(sectionMinutes).length} sections</span>
+              <span className="ml-auto">
+                <ShareMenu title={concept.title} summary={concept.summary} slug={concept.slug} />
+              </span>
             </div>
 
             <ResumeSavedPill slug={concept.slug} />
