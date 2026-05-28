@@ -293,6 +293,9 @@ function ConceptPage() {
               <span>{concept.readingMinutes} min full</span>
               <span className="opacity-50">·</span>
               <span>{Object.keys(sectionMinutes).length} sections</span>
+              <span className="ml-auto">
+                <ShareMenu title={concept.title} summary={concept.summary} slug={concept.slug} />
+              </span>
             </div>
 
             <ResumeSavedPill slug={concept.slug} />
