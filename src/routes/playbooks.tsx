@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Nav, Footer } from "@/components/site-nav";
+import { ShareMenu } from "@/components/share-menu";
 import { useProgress } from "@/lib/storage";
 import { Briefcase, ArrowRight } from "lucide-react";
 import { PLAYBOOKS, type Playbook } from "@/lib/playbooks";
@@ -207,20 +208,28 @@ function PlaybooksPage() {
                 <h2 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                   Available Playbooks
                 </h2>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setRole(null);
-                    try {
-                      window.localStorage.removeItem(ROLE_KEY);
-                    } catch {
-                      // ignore
-                    }
-                  }}
-                  className="text-[11px] text-purple hover:underline font-medium cursor-pointer"
-                >
-                  View all roles
-                </button>
+                <div className="flex items-center gap-2">
+                  <ShareMenu
+                    title="AI Playbooks for Product Managers"
+                    summary="Plain-English AI playbooks sequenced for product managers — from foundations to LLMs to developer toolchain."
+                    url={typeof window !== "undefined" ? `${window.location.origin}/playbooks` : "/playbooks"}
+                    variant="pill"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRole(null);
+                      try {
+                        window.localStorage.removeItem(ROLE_KEY);
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                    className="text-[11px] text-purple hover:underline font-medium cursor-pointer"
+                  >
+                    View all roles
+                  </button>
+                </div>
               </div>
               {playbooks.map((p, index) => {
                 const pDoneCount = p.sequence.filter((s) => progress[s.slug] === "done").length;

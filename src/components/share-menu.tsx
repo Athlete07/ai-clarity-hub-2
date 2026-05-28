@@ -4,19 +4,21 @@ import { Share2, Link as LinkIcon, Check, Twitter, Linkedin, Mail } from "lucide
 type Props = {
   title: string;
   summary: string;
-  slug: string;
+  slug?: string;
+  url?: string;
   variant?: "pill" | "ghost";
 };
 
-export function ShareMenu({ title, summary, slug, variant = "pill" }: Props) {
+export function ShareMenu({ title, summary, slug, url: urlProp, variant = "pill" }: Props) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const url =
-    typeof window !== "undefined"
+    urlProp ??
+    (typeof window !== "undefined"
       ? `${window.location.origin}/playbook/${slug}`
-      : `/playbook/${slug}`;
+      : `/playbook/${slug}`);
   const shareText = `${title} — ${summary}`;
 
   useEffect(() => {
@@ -71,7 +73,7 @@ export function ShareMenu({ title, summary, slug, variant = "pill" }: Props) {
         className={triggerCls}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Share this chapter"
+        aria-label="Share this page"
       >
         <Share2 size={12} />
         Share
