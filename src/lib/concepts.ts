@@ -9771,6 +9771,11 @@ export const concepts: Concept[] = [
       body: "A PM ships an onboarding change that unexpectedly tanks activation. The team doesn't debate whether to roll back — they revert the commit (or PR) and restore yesterday's behaviour in minutes. Without version control, rollback is a manual scramble: hunt down the changed files, hope you remember what was touched, and pray you didn't miss one. Version control turns 'we made a mistake' into 'we can undo it safely', which is why teams can move fast without betting the company on every deploy.",
     },
     {
+      kind: "ex",
+      title: "Google's 2 billion lines of code in one place",
+      body: "Google famously stores nearly its entire codebase — about 2 billion lines — in a single version-controlled monorepo, with tens of thousands of engineers committing to it daily. The only reason that scale doesn't collapse into chaos is rigorous version control. When a PM at a 50-person startup says 'we'll figure out git later', they're skipping the one piece of infra that Google considers load-bearing at any size.",
+    },
+    {
       kind: "h",
       number: "1.2",
       title: "What Git is, specifically",
@@ -9815,6 +9820,11 @@ export const concepts: Concept[] = [
       body: "A feature branch has 23 commits: experiments, fixes, typo corrections, 'wip', and one final clean change. Many teams squash them into a single commit when merging the PR so main stays readable and incident-friendly. Other teams keep the full chain for traceability. Both are valid; the point is that Git gives you the choice, and the choice affects how easy it is to debug production later.",
     },
     {
+      kind: "ex",
+      title: "Linus Torvalds wrote Git in two weeks",
+      body: "Git was built by Linus Torvalds in 2005 over roughly two weeks to manage the Linux kernel after a previous tool's licence dispute. The 'distributed' design — every developer has the full history on their laptop — was a direct response to the kernel team being scattered across continents and timezones. That design is why a Git repo keeps working when GitHub goes down: the source of truth lives on each developer's machine, not on the server.",
+    },
+    {
       kind: "h",
       number: "1.3",
       title: "Repositories, commits, and branches",
@@ -9856,6 +9866,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Linux kernel — the original use case",
       body: "Git was written specifically because the Linux kernel had thousands of contributors around the world, no shared office, and no shared work hours. Every other tool at the time assumed engineers could talk to a central server constantly. Git assumed they couldn't. Every PM who has ever shipped with a distributed team is benefitting from a design that was forced into existence by an even more distributed one.",
+    },
+    {
+      kind: "ex",
+      title: "Why feature branches stop ten people stepping on each other",
+      body: "On a 10-engineer team shipping into the same product, every feature lives on its own branch — login-redesign, billing-fix, onboarding-experiment — until it's reviewed and merged. Without branches, two engineers editing the same file would constantly overwrite each other; with branches, the conflicts surface only at merge time, where they can be handled deliberately. When you hear 'we work in trunk' vs 'we work in branches', it's a clue to the team's coordination model, not a religious preference.",
     },
     {
       kind: "h",
@@ -9905,6 +9920,11 @@ export const concepts: Concept[] = [
         "A typical change flows through five stages: local commits on a branch, push to remote, open PR, review and CI, merge to main, then deploy. Each stage is a separate gate, and a 'done' feature can sit at any of them.",
     },
     {
+      kind: "ex",
+      title: "Why GitHub's pull-request page is where culture lives",
+      body: "Open any healthy engineering team's PR list and you'll see paragraph-length descriptions, screenshots, links to the Linear or Jira ticket, and conversational review comments. Open an unhealthy team's PRs and you'll see one-line titles, no description, and a single thumbs-up. The PR page is the most honest cultural artefact a team produces — and unlike Slack or Notion, you can read months of it in an afternoon.",
+    },
+    {
       kind: "h",
       number: "1.5",
       title: "Merge conflicts and why they happen",
@@ -9945,6 +9965,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The rebase week that silently kills a sprint",
       body: "A feature branch stays open for two weeks. Meanwhile, main evolves. When the engineer finally tries to merge, they hit a cascade of conflicts and spend 2–3 days rebasing instead of shipping. The PM lesson: long-lived branches are an economic cost. Smaller PRs and shorter branch lifetimes are not process theatre — they are direct velocity multipliers.",
+    },
+    {
+      kind: "ex",
+      title: "Shopify's 'merge queue' and the cost of conflict-prone files",
+      body: "High-velocity teams like Shopify and Uber run merge queues that automatically rebase and re-test each PR against the latest main before letting it land, specifically because conflicts in hot files (routing tables, schema migrations, shared configs) would otherwise create a constant stream of broken builds. The PM signal: when you hear 'we're adding a merge queue', it usually means the team has crossed the threshold where uncoordinated merges cost more than the queue does.",
     },
     {
       kind: "h",
@@ -9988,6 +10013,11 @@ export const concepts: Concept[] = [
       body: "Many enterprises use GitLab or Bitbucket for compliance, SSO, and on-prem hosting requirements. If your tool only supports GitHub, you've cut off a large portion of the market. This isn't an 'engineering edge case' — it's go-to-market. Knowing the platform vs protocol distinction is what lets a PM scope 'supports Git' correctly as either a quick win or a major multi-platform effort.",
     },
     {
+      kind: "ex",
+      title: "Why Microsoft paid $7.5B for GitHub, not for Git",
+      body: "In 2018 Microsoft bought GitHub for $7.5B even though the underlying Git protocol is free and open-source. They weren't buying version control — they were buying the network of 100M+ developers, the social graph of who works on what, and the workflow layer (PRs, Issues, Actions, Packages) that turns Git into a collaboration platform. The split between protocol and platform is exactly why your competitor could be on GitLab and still use Git just as well.",
+    },
+    {
       kind: "h",
       number: "1.7",
       title: "Reading a repo as a non-engineer",
@@ -10029,6 +10059,11 @@ export const concepts: Concept[] = [
       body: "Open the README (is it current?), scan the last 20 commits on main (is there steady cadence?), click 'Pull requests' and sort by oldest (is review a bottleneck?), then scan open issues (is the tracker maintained or a graveyard?). You don't need to read a line of code to get a high-confidence picture of team health. Doing this weekly makes you the PM with the best situational awareness in the room.",
     },
     {
+      kind: "ex",
+      title: "Reading shadcn/ui's repo as a PM in ten minutes",
+      body: "Open the shadcn/ui repo on GitHub: the README explains what it is in a paragraph, the components/ folder shows you every primitive shipped, recent commits show what's actively changing, and the Issues tab shows what users are asking for. In ten minutes a PM can answer 'is this project alive, what does it do, and what's missing?' — without writing a line of code. That ten-minute scan is repeatable on any vendor, open-source dependency, or acquisition target.",
+    },
+    {
       kind: "h",
       number: "1.8",
       title: "PM decision lens: GitHub as a velocity instrument",
@@ -10068,6 +10103,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Hotspot files as roadmap signals",
       body: "If 60% of PRs touch the same handful of files, those files are organizational bottlenecks. The fix might be refactoring, modularization, or creating clearer ownership boundaries. This is one of the cleanest cases where a PM can justify 'platform work' in roadmap terms: it directly reduces queueing and merge-conflict tax, which increases delivery rate.",
+    },
+    {
+      kind: "ex",
+      title: "The 'commits per day' graph as a hiring red flag",
+      body: "When evaluating a small startup as a partner or acquisition target, GitHub's Insights tab shows you the team's commits-per-week graph going back years. A graph that looks like a heartbeat — consistent, with occasional spikes — signals healthy delivery cadence. A graph that flatlines for months, or where one developer's bar is 90% of the total, tells you about key-person risk and velocity decay before any sales call confirms it.",
     },
   ],
   quiz: [
@@ -10223,6 +10263,11 @@ export const concepts: Concept[] = [
       body: "A PM asks for a simple integration: 'sync customers to HubSpot'. The first demo works in an afternoon. Then production reality hits: auth token refresh, rate limits, partial failures, retries, idempotency, pagination, and mapping edge cases when schemas differ. The original 'just call their API' statement wasn't wrong — it was incomplete. The PM lesson is to scope the *operational wrapper* around the API call, not the call itself.",
     },
     {
+      kind: "ex",
+      title: "Plaid's entire company is an API",
+      body: "Plaid is a $13B company whose product is, almost literally, an API that lets fintech apps connect to bank accounts. There's no UI for end users; the API is the product, and every Plaid customer (Venmo, Robinhood, Coinbase) integrates by writing code against it. When a PM hears 'API-first company', Plaid is the cleanest example of what that actually means at the business model level.",
+    },
+    {
       kind: "h",
       number: "2.2",
       title: "What REST is, and why it's everywhere",
@@ -10272,6 +10317,11 @@ export const concepts: Concept[] = [
       body: "A team adopts GraphQL to avoid over-fetching on mobile. It works — and they also inherit a more complex backend, caching challenges, and a schema governance problem. REST is simpler and more predictable for public integrations; GraphQL can be better for product clients that need flexible queries. The PM takeaway: choosing the API style is choosing *where* complexity lives.",
     },
     {
+      kind: "ex",
+      title: "Why the Twitter/X API price hike broke a thousand products",
+      body: "When X raised the price of its REST API from free to $42,000/month in 2023, an entire ecosystem of tools — TweetDeck alternatives, archival services, research bots — died overnight. The lesson for PMs: the REST contract felt permanent because it was stable for a decade, but the commercial terms behind it were never permanent. Every external API you depend on is one pricing decision away from breaking your roadmap.",
+    },
+    {
       kind: "h",
       number: "2.3",
       title: "Endpoints, methods, and resources",
@@ -10317,6 +10367,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The 'POST for everything' integration smell",
       body: "Some vendor APIs use POST for every action — create, update, fetch, even list — because they didn't adopt REST conventions. It still works, but it removes the 'method as documentation' benefit and often correlates with weaker error handling and versioning. As a PM, treat it as an estimate multiplier: you will spend more time debugging and supporting the integration.",
+    },
+    {
+      kind: "ex",
+      title: "Stripe's URL design as a teaching moment",
+      body: "Stripe's API uses URLs like POST /v1/customers, GET /v1/customers/cus_abc123, POST /v1/customers/cus_abc123/subscriptions. A new engineer can predict the next endpoint they need without opening the docs, because the structure is consistent. This 'guessability' is not aesthetic — it's why Stripe integrations take days where competitors take weeks, and it shows up in their developer NPS.",
     },
     {
       kind: "h",
@@ -10365,6 +10420,11 @@ export const concepts: Concept[] = [
         "A request leaves the client with a method, URL, headers, and body; reaches the server; the server processes it and returns a response with a status code, headers, and body. Every API call you'll ever depend on follows this same shape.",
     },
     {
+      kind: "ex",
+      title: "Why an empty 200 response can be a bug, not a success",
+      body: "An API that returns HTTP 200 OK with an empty body looks healthy to a monitoring dashboard but can mean 'we silently failed and returned nothing'. Mature APIs return explicit shapes — { data: [], meta: { count: 0 } } — so the client can distinguish 'no results' from 'something went wrong'. PMs reviewing a new internal API should ask 'what does the response look like when there are zero results?' — the answer reveals how defensively the team thinks.",
+    },
+    {
       kind: "h",
       number: "2.5",
       title: "Authentication — who gets to call which endpoints",
@@ -10396,6 +10456,21 @@ export const concepts: Concept[] = [
         ),
         s(" When a vendor's docs are vague about auth options, that opacity itself is a procurement signal worth flagging."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why GitHub deprecated password auth for the API",
+      body: "GitHub removed password authentication for its REST API in 2020 in favour of personal access tokens and OAuth, because passwords were leaking into logs, scripts, and screenshots. The migration broke thousands of scripts but eliminated a class of credential leaks. The PM signal: when a vendor changes auth mechanisms, the cost is integration work, but the win is usually a security incident that didn't happen.",
+    },
+    {
+      kind: "ex",
+      title: "OpenAI keys leaked on GitHub",
+      body: "Within months of the OpenAI API launch, GitHub's public code search showed thousands of accidentally-committed sk-... keys, each one rackable for hundreds of dollars of free inference before being revoked. OpenAI built automated scanners that revoke keys the moment they appear in a public repo. PMs shipping API-key-based products should assume keys will leak and design rotation, scoping, and rate limits accordingly — not as polish, but as table stakes.",
+    },
+    {
+      kind: "ex",
+      title: "Scoped tokens vs admin tokens — the principle-of-least-privilege test",
+      body: "A mature API lets you mint tokens that can read invoices but not refund them, or write to one project but not another. An immature API gives you one all-powerful key per account. When evaluating a vendor, ask 'what's the smallest token I can create for this integration?' — the answer is a proxy for how seriously they take customer security, and how much trouble you'll be in if the integration leaks.",
     },
     {
       kind: "h",
@@ -10435,6 +10510,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Batching turns 1,000 calls into 10",
       body: "A product needs to update 1,000 records in a third-party system. Naively calling the API 1,000 times hits rate limits and takes minutes. Mature APIs offer bulk endpoints (or you build a batcher) so you can send 100 updates per call and do it in 10 calls. The PM lesson: ask 'is there a bulk endpoint?' before committing to an integration design that doesn't scale.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's tier system as a roadmap gate",
+      body: "Anthropic's Claude API ships with usage tiers — Tier 1 starts at modest requests-per-minute and tokens-per-minute, and you only unlock Tier 4 (which can actually power a real product) after weeks of paid usage. A PM planning a launch on Claude has to either start integrating months in advance to climb tiers, or negotiate enterprise access. Rate limits aren't just engineering knobs; they're a launch-date input.",
     },
     {
       kind: "h",
@@ -10481,6 +10561,11 @@ export const concepts: Concept[] = [
       body: "(1) Verify signatures so attackers can't spoof events. (2) Make handlers idempotent so retries don't double-charge or double-provision. Most real webhook bugs are violations of one of these two rules. PMs who know them can spot risky designs in PRDs before launch.",
     },
     {
+      kind: "ex",
+      title: "Slack's Events API replacing polling every-three-seconds",
+      body: "Slack originally let bots poll for new messages, which meant thousands of integrations were hammering their API every few seconds even when nothing was happening. The Events API (webhooks) replaced this with 'we'll push messages to you when they happen', cutting Slack's API load by orders of magnitude. The PM lesson: webhooks aren't a feature for the integrator, they're a feature for the API provider's infrastructure bill.",
+    },
+    {
       kind: "h",
       number: "2.8",
       title: "Reading API documentation as a PM",
@@ -10517,6 +10602,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Docs as a vendor-quality signal",
       body: "If the docs clearly explain pagination, retries, error codes, and versioning, the vendor has probably lived through real production incidents and hardened the interface. If the docs are a PDF with screenshots and no error formats, expect slow support and surprise breakage. PMs can treat doc quality as a procurement input, not an afterthought.",
+    },
+    {
+      kind: "ex",
+      title: "The 'try it' button as a documentation litmus test",
+      body: "Stripe, Twilio, OpenAI, and GitHub all let you call their APIs from inside the documentation page, with your own API key, and see the real response. If a vendor's docs don't offer this, your engineers will lose hours to 'I think I'm authenticated but I'm not sure'. A PM doing vendor evaluation can use the presence or absence of a working try-it button as a proxy for how much integration time the team is about to spend.",
     },
     {
       kind: "h",
@@ -10559,6 +10649,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Abstract tactical dependencies early",
       body: "If you integrate a niche enrichment vendor for a tactical use case, put it behind your own internal interface from day one. Then switching vendors is 'swap adapters', not 'rewrite product flows'. Strategic dependencies like Stripe can be direct; tactical dependencies should be swappable. This is a simple design choice that prevents expensive migrations later.",
+    },
+    {
+      kind: "ex",
+      title: "Why companies build internal wrappers around third-party APIs",
+      body: "Mature engineering orgs almost always wrap third-party APIs (Stripe, Twilio, OpenAI) in an internal abstraction — a thin layer that the rest of the codebase calls instead of calling the vendor directly. This makes it possible to swap the vendor, add caching, add logging, or insert mock data for tests, without rewriting every caller. The PM signal: when a team resists this pattern, the eventual vendor migration will cost five times what it should.",
     },
   ],
   quiz: [
@@ -10706,6 +10801,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Instagram still runs on Django",
+      body: "Instagram, with over a billion users, still serves the bulk of its web traffic from Django — a Python web framework. They've optimised the hell out of it (custom Python forks, aggressive caching, services peeled off into other languages) but the Python core remains. The 'Python is too slow for production' argument is technically true and practically wrong; what kills you is bad architecture, not the language.",
+    },
+    {
+      kind: "ex",
+      title: "The PyTorch coup over TensorFlow",
+      body: "In 2018 TensorFlow dominated deep-learning research; by 2022 PyTorch had taken roughly 80% of new research papers. Both are Python libraries — the shift had nothing to do with language and everything to do with API ergonomics and debugging experience. The lesson for PMs: 'we use Python' tells you almost nothing about your team's stack; the libraries on top of Python tell you almost everything.",
+    },
+    {
+      kind: "ex",
+      title: "Dropbox's quiet rewrite away from Python — and back",
+      body: "Dropbox famously moved parts of its desktop client off Python (to Go and Rust) for performance, then kept Python everywhere it didn't hurt — internal tools, ML pipelines, backend services. The pattern is industry-wide: Python where iteration speed matters, faster languages where milliseconds compound. PMs should expect a healthy team's stack to be polyglot, not monolingual.",
+    },
+    {
       kind: "h",
       number: "3.2",
       title: "Variables, types, and the syntax that hides nothing",
@@ -10741,6 +10851,16 @@ export const concepts: Concept[] = [
       body: "customers = df[df['plan'] == 'enterprise']. Translation: from the table called df, give me only the rows where the value in the 'plan' column equals 'enterprise', and call that result 'customers'. You don't need to know Pandas to read it — the verbs and nouns are visible. This is the level of Python literacy a PM benefits from, and it's an afternoon of reading, not a degree.",
     },
     {
+      kind: "ex",
+      title: "Reading a Stripe webhook handler in Python",
+      body: "A line like event = stripe.Event.construct_from(json.loads(payload), STRIPE_KEY) translates to 'take the raw webhook payload, parse it as JSON, and turn it into a Stripe Event object using my API key'. A PM who can read that line can follow the entire payment-success handler without an engineer in the room — and that's roughly the literacy bar that earns you trust in technical reviews.",
+    },
+    {
+      kind: "ex",
+      title: "Why type hints showed up in modern Python",
+      body: "Modern Python lets you write def compute_discount(price: float, tier: str) -> float: — declaring that price is a number, tier is text, and the function returns a number. The runtime still ignores types, but editors and tools like mypy catch mismatches before the code runs. Seeing type hints in a codebase is a maturity signal; not seeing them in a 2026-era project is one too.",
+    },
+    {
       kind: "h",
       number: "3.3",
       title: "Functions — naming a piece of behaviour",
@@ -10767,6 +10887,21 @@ export const concepts: Concept[] = [
         ),
         s(" You'll often understand the shape of an analysis just by reading the function signatures, without reading the bodies."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The Stripe API in 5 well-named functions",
+      body: "Stripe's internal Python SDK exposes the entire payments surface through functions like create_customer, attach_payment_method, charge, refund, list_invoices. A PM reading their integration code can follow the entire flow without understanding HTTP, JSON serialisation, or retry logic, because the function names form a narrative. Naming is the most under-rated PM-engineering interface.",
+    },
+    {
+      kind: "ex",
+      title: "How to skim a 2,000-line notebook in 60 seconds",
+      body: "Scroll only to lines that start with def — those are the function definitions. In a well-structured notebook, those four or five names give you the whole story: def load_data, def clean_outliers, def train_model, def evaluate. If the names don't tell a story, the analysis usually doesn't either. This skim works on any Python file, not just notebooks.",
+    },
+    {
+      kind: "ex",
+      title: "Pure functions vs functions that touch the database",
+      body: "A pure function (compute_tax(price, region)) takes inputs and returns a result with no side effects. An impure function (charge_customer(id)) hits the database or an external API. Engineers care about this distinction because pure functions are testable and impure ones aren't — and PMs care because 'we can't test this' is usually a sign the code mixed the two when it shouldn't have.",
     },
     {
       kind: "h",
@@ -10818,6 +10953,16 @@ export const concepts: Concept[] = [
         "Your model code sits at the top of a tower: PyTorch/TensorFlow → optimised C++/CUDA kernels → GPU drivers → hardware. The Python you read is the thin top layer; the speed comes from everything beneath it.",
     },
     {
+      kind: "ex",
+      title: "Hugging Face's transformers as the new import to watch for",
+      body: "If a notebook starts with from transformers import AutoTokenizer, AutoModel, you're reading code that's about to load a pre-trained LLM or vision model — probably gigabytes of weights, probably from Hugging Face's model hub. The single import tells you the notebook is doing modern AI work, not classical ML. Recognising these import-level signatures is the cheapest way to triage what a piece of code is doing.",
+    },
+    {
+      kind: "ex",
+      title: "Why 'import requests' is the most boring, most important line in any integration",
+      body: "Half of all Python integration code starts with import requests — the library that makes HTTP calls. The moment you see it, you know the script is talking to an external API, and you know which lines to inspect for endpoint URLs, auth headers, and timeout settings. Reading the requests calls is usually 80% of understanding what a backend script actually does.",
+    },
+    {
       kind: "h",
       number: "3.5",
       title: "Control flow — if, for, and while",
@@ -10844,6 +10989,21 @@ export const concepts: Concept[] = [
           "Once you can mentally translate a loop into a sentence like that, you can follow the logic of most analytical code without coding it yourself.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "List comprehensions: one line that replaces five",
+      body: "Python lets you write [user.id for user in users if user.is_active] instead of building a list with a for-loop and an if-check. PMs encountering this for the first time often find it cryptic; once you can read it, you can read most idiomatic Python. The pattern is 'transform-each, keep-some' compressed into a single expression.",
+    },
+    {
+      kind: "ex",
+      title: "Why nested loops are a performance warning sign",
+      body: "A loop inside a loop (for customer in customers: for order in customer.orders: ...) is fine for hundreds of items and catastrophic for millions. When a notebook works on a sample and crawls on the real dataset, the cause is almost always nested loops that should have been a database query or a Pandas join. The PM-useful skill is spotting the indentation pattern and asking 'how big does this get?'.",
+    },
+    {
+      kind: "ex",
+      title: "Async/await — what 'concurrent API calls' actually looks like",
+      body: "Modern Python uses async def and await to fire off multiple API calls in parallel — useful for fan-out patterns like 'enrich each row with a call to OpenAI'. Seeing async in code tells you the engineer cared about latency; not seeing it in a script that loops 1,000 API calls sequentially tells you the script is going to take an hour to run. Both are useful diagnostic signals.",
     },
     {
       kind: "h",
@@ -10880,6 +11040,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "The Heisenbug: passes on dev, fails in prod",
+      body: "A class of errors only appears in production — different data, different timezone, different OS. The Python error usually points to a single line, but the root cause is environmental drift. PMs should treat 'works on my laptop' as a half-truth and ask 'has this been tested with production-shaped data?' before approving a launch.",
+    },
+    {
+      kind: "ex",
+      title: "RecursionError in agent loops",
+      body: "LangChain and other agent frameworks have shipped with RecursionError bugs where the model gets stuck in a 'call tool → think → call tool' loop until Python's default 1,000-frame stack limit explodes. The error is a hard runtime crash, but the underlying issue is a product one: the agent has no stopping condition. PMs shipping agents should write the stopping condition into the spec, not assume the framework provides one.",
+    },
+    {
+      kind: "ex",
+      title: "Why a try/except that catches everything is a smell",
+      body: "When you see try: ... except Exception: pass in a codebase, the engineer is hiding all errors silently. This 'swallowing' makes bugs invisible — the code keeps running, the dashboard stays green, and the user just sees wrong output. A PM reviewing an incident postmortem should ask 'was anything in the error path being suppressed?' — the answer often explains why detection took so long.",
+    },
+    {
       kind: "h",
       number: "3.7",
       title: "Environments and dependency hell",
@@ -10913,6 +11088,16 @@ export const concepts: Concept[] = [
       body: "Every Python project has a 'requirements.txt' file listing exactly which libraries and which versions it depends on. 'pip freeze > requirements.txt' is how you generate it from your current environment. Without it, sharing code is rolling dice on whether the recipient gets the same library behaviour. With it, anyone can recreate your setup. It's the closest thing Python has to a reproducibility receipt.",
     },
     {
+      kind: "ex",
+      title: "Anaconda vs pip vs uv — and why the team has opinions",
+      body: "Anaconda is the science-flavoured Python distribution; pip is the standard installer; uv is a newer Rust-based installer that's 10-100x faster. Engineers often have strong preferences because each handles dependency conflicts and binary packages differently. The PM-relevant outcome: pick one and stick with it project-wide, because mixing them is the fastest way to create environment chaos.",
+    },
+    {
+      kind: "ex",
+      title: "Docker as the answer Python deserved",
+      body: "The proliferation of conda/poetry/pyenv/uv exists precisely because Python's native environment story is messy. Docker containers (next chapter) sidestep the whole problem by shipping the OS, Python version, and libraries together. When a team adopts containers for ML serving, the unspoken win is 'we never have to debug a Python environment in production again'.",
+    },
+    {
       kind: "h",
       number: "3.8",
       title: "PM decision lens: when 'rewrite in Python' is a feature, not a refactor",
@@ -10941,6 +11126,21 @@ export const concepts: Concept[] = [
           "This is one of the cleanest PM interventions in AI product work, and almost nobody does it consistently. You can build a reputation just by making this meeting happen.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The Pinterest visual-search rewrite",
+      body: "Pinterest's visual search started as a Python research prototype and ran in Python for years; the production version eventually moved hot paths into C++ for latency and Java for serving infrastructure. The Python work wasn't wasted — it defined the model, the metrics, and the API shape. The rewrite cost was the price of the original speed of iteration, and the team accepted it knowingly.",
+    },
+    {
+      kind: "ex",
+      title: "When 'Python in production' is actually fine",
+      body: "Many AI products serve Python in production at scale — Instagram, Reddit, YouTube, Spotify's recommendation services. The trick is that the Python orchestrates fast underlying code (databases, C++ ML kernels, message queues), and the Python layer itself isn't doing tight loops. PMs should resist the reflex 'we need to rewrite for performance' until the profiler actually points at Python code, not at the work Python is delegating.",
+    },
+    {
+      kind: "ex",
+      title: "The 'data scientist hands you a Jupyter notebook on Friday' anti-pattern",
+      body: "When a notebook arrives without tests, type hints, error handling, or a clear interface, productionising it is a multi-week project regardless of how good the model is. The cure is process: pair the data scientist with an engineer from week one, agree on the function signatures the production system will call, and write the notebook against those signatures. This single change is the highest-leverage PM intervention in AI engineering.",
     },
   ],
   quiz: [
@@ -11040,6 +11240,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Jupyter's name is a tribute, and a clue",
+      body: "Jupyter is named after Julia, Python, and R — the three languages it originally supported. The name encodes the original ambition: a single notebook environment for every flavour of data science. Today Python dominates Jupyter use, but the polyglot DNA shows up in the architecture and is why ports to other languages (R Markdown, Observable for JS) feel familiar.",
+    },
+    {
+      kind: "ex",
+      title: "Why the Nobel-Prize gravitational-waves discovery shipped as a notebook",
+      body: "When LIGO announced the first detection of gravitational waves in 2016, the supplementary 'reproduce our analysis' material was a Jupyter notebook. Anyone could open it, run the cells, and re-derive the discovery. The notebook had become the lingua franca not just of data science but of reproducible scientific publishing — that's the cultural weight you're dealing with when you ask 'why don't we just use a real IDE?'.",
+    },
+    {
+      kind: "ex",
+      title: "Kaggle and the rise of the public notebook",
+      body: "Kaggle, the data-science competition platform, hosts millions of public notebooks where competitors share their approach to each problem. A PM exploring 'how do people typically solve customer-churn problems' can read top-voted notebooks and learn the standard techniques in an afternoon. Notebooks turned data science into a publicly readable craft, the way GitHub turned software into one.",
+    },
+    {
       kind: "h",
       number: "4.2",
       title: "Cells, kernels, and the execution model",
@@ -11074,6 +11289,16 @@ export const concepts: Concept[] = [
       body: "A data scientist sends you a notebook showing a model with 92% accuracy. You open it on your machine, run all cells, and get 71%. The notebook isn't broken — the author ran cells out of order, modified some variables in-place, and accidentally evaluated on a subset of the data. The 92% was real on their machine in that exact sequence; it isn't reproducible. This is the single most common failure mode in handed-off notebooks, and it's why production teams insist on rewriting notebook code into proper scripts before trusting any metric.",
     },
     {
+      kind: "ex",
+      title: "The 'restart kernel and run all' commandment",
+      body: "Senior data scientists insist on 'restart kernel and run all' before sharing a notebook — clearing the in-memory state and re-running every cell top-to-bottom. The reason: the order you ran cells while exploring is rarely the order they'd run for a stranger. If 'restart and run all' fails, the notebook isn't reproducible, regardless of what the output cells show.",
+    },
+    {
+      kind: "ex",
+      title: "Why GPUs make Colab feel like magic",
+      body: "A Colab notebook's kernel can be backed by a free GPU (T4 or sometimes better), giving you access to hardware that would cost thousands of dollars to buy. For a PM, the practical effect is that 'can we test this on a real GPU?' becomes a question you can answer in five minutes, not in a procurement cycle. This single change collapsed the time-to-prototype for AI features.",
+    },
+    {
       kind: "h",
       number: "4.3",
       title: "Colab and free GPU access",
@@ -11105,6 +11330,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Why students learn ML on Colab, not a laptop",
+      body: "An entire generation of data scientists learned PyTorch and TensorFlow on Colab because it eliminated the friction of installing CUDA, drivers, and the right Python version. The downstream effect: when your data scientist joins from a bootcamp or PhD programme, their muscle memory is Colab-shaped, and your stack should accommodate that for the first month before pushing toward production tooling.",
+    },
+    {
+      kind: "ex",
+      title: "The Colab Pro upgrade as a hidden line item",
+      body: "Free Colab caps GPU time and disconnects idle sessions; Colab Pro ($10/month) and Pro+ ($50/month) unlock longer sessions and faster GPUs. When a data scientist asks for $50/month on a personal card to 'finish training', the PM-mature response is to have a team-level provisioning plan, not to leave it as personal expense reimbursement.",
+    },
+    {
+      kind: "ex",
+      title: "How Hugging Face Spaces extends the Colab idea",
+      body: "Hugging Face Spaces lets a notebook-style demo run permanently as a hosted app, accessible via URL. The line between 'I built a notebook' and 'I shipped a demo' has nearly disappeared, which means PMs need to make explicit the distinction between a Space (good for sharing) and a production service (good for users) before the team accidentally treats the first as the second.",
+    },
+    {
       kind: "h",
       number: "4.4",
       title: "What a good notebook looks like vs a bad one",
@@ -11132,6 +11372,16 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The structure of Kaggle's top-voted notebooks",
       body: "If you want to learn what a great notebook looks like, browse the top-voted notebooks on Kaggle for any competition. They invariably follow the same structure: introduction, exploratory data analysis (with charts), feature engineering, model selection, cross-validation, error analysis, conclusions. You can scroll one in 90 seconds and form a credible opinion about it. Compare that to the typical internal notebook handed to you with no context — the difference in structure is the difference in trustworthiness.",
+    },
+    {
+      kind: "ex",
+      title: "The 'big inscrutable cell' anti-pattern",
+      body: "The fastest way to make a notebook unreadable is to write one giant 300-line cell that does everything — loading, cleaning, modelling, evaluation, plotting. A good notebook breaks each step into its own cell with a markdown header above it. PMs reviewing notebooks can use 'how many lines is the longest cell?' as a near-perfect proxy for code review-ability.",
+    },
+    {
+      kind: "ex",
+      title: "Markdown narration as the difference between exploration and explanation",
+      body: "A notebook with no markdown is a working log — useful for the author, opaque to everyone else. A notebook with markdown that explains 'why this filter', 'what we expect to see', 'why this result is surprising' becomes a memo that survives the team rotation. The narration is the artefact; the code is the supporting evidence.",
     },
     {
       kind: "h",
@@ -11169,6 +11419,21 @@ export const concepts: Concept[] = [
         "Notebook for exploration → final logic extracted into .py modules → production code with tests → deployed service. Skipping the middle step is what produces 'works on the data scientist's laptop' bugs.",
     },
     {
+      kind: "ex",
+      title: "Why GitHub renders notebooks badly on purpose",
+      body: "GitHub renders .ipynb files as static HTML — pretty, but lossy for diffs. The reason notebooks diff badly is that the file format includes outputs, execution counts, and metadata that change every run, so a one-line code edit looks like a 200-line diff. Tools like nbdime and jupytext exist to solve this, and any team doing serious notebook work needs to adopt one.",
+    },
+    {
+      kind: "ex",
+      title: "The jupytext convention: notebook as paired .py file",
+      body: "jupytext lets a notebook be saved as both a .ipynb and a plain .py file in sync. The .py file diffs cleanly in Git, code reviewers see only the actual code change, and the .ipynb is reconstructed on open. Teams that take notebooks seriously adopt this within the first three months — its absence is a sign that notebooks are being treated as throwaway.",
+    },
+    {
+      kind: "ex",
+      title: "Why Netflix open-sourced Papermill",
+      body: "Netflix open-sourced Papermill to programmatically execute notebooks with different parameters — turning a notebook into a parameterised, schedulable report. The PM signal: when notebooks are this critical to a business, version control alone isn't enough; you need execution infra. This is a vote of confidence in notebooks as production-adjacent tooling, not just exploration.",
+    },
+    {
       kind: "h",
       number: "4.6",
       title: "Demos, reports, and the audience problem",
@@ -11196,6 +11461,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Plotly and Altair: notebooks that look like Stripe dashboards",
+      body: "Modern notebooks can embed interactive Plotly or Altair charts — hover, zoom, filter — making them feel more like a Stripe dashboard than a static research artefact. For a PM, this changes the audience: a well-designed notebook can be the report you send to a non-technical exec, not just an artefact for the data team.",
+    },
+    {
+      kind: "ex",
+      title: "Streamlit and Gradio: when the notebook should have been an app",
+      body: "Streamlit and Gradio let a data scientist turn a model into a hosted web app in under 50 lines of Python. When a stakeholder keeps asking 'can you re-run that notebook with different inputs?', the right answer is usually 'we should wrap this in Streamlit'. The PM intervention is recognising this pattern early — before the data scientist has manually re-run the notebook for the seventh time.",
+    },
+    {
+      kind: "ex",
+      title: "The exec demo that should have been a slide",
+      body: "Notebooks fail badly as exec presentations because they leak technical detail and require a live kernel. The mature pattern: export the chart, drop it in a Loom or slide, and keep the notebook as 'append-only proof' that the chart is real. PMs who blur these layers waste exec time and undermine the message.",
+    },
+    {
       kind: "h",
       number: "4.7",
       title: "Notebooks and reproducibility",
@@ -11218,6 +11498,21 @@ export const concepts: Concept[] = [
         x("documenting the kernel restart-and-run-all sequence", "Confirming the notebook actually works top-to-bottom, not just in the order the author happened to run it."),
         s(". A notebook that does all four is dramatically more credible than one that does none."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "DVC and the data side of reproducibility",
+      body: "Code reproducibility is solved by Git; data reproducibility is solved by tools like DVC (Data Version Control), which hashes datasets and stores pointers in Git. Without DVC or equivalent, a notebook says 'I got 92% accuracy' and the only proof is 'trust me'. With DVC, anyone can recreate the exact dataset and re-run — which is the bar that regulators and serious customers actually require.",
+    },
+    {
+      kind: "ex",
+      title: "Random seeds and the silent variance problem",
+      body: "ML models often depend on random numbers — for data splits, weight initialisation, dropout. Without a fixed seed, two runs of the same notebook produce different results, sometimes wildly. Setting np.random.seed(42), torch.manual_seed(42), random.seed(42) at the top is the cheapest reproducibility intervention there is, and its absence in a notebook is an immediate yellow flag.",
+    },
+    {
+      kind: "ex",
+      title: "MLflow as the notebook's experiment ledger",
+      body: "MLflow logs every notebook run — parameters, metrics, artefacts, model versions — into a searchable ledger. Without it, 'which experiment gave us the 94% number?' becomes a Slack archaeology dig. With it, the question takes ten seconds. PMs should consider an MLflow-equivalent table-stakes once experiment count crosses a few dozen.",
     },
     {
       kind: "h",
@@ -11262,6 +11557,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The fastest notebook credibility check",
       body: "Open the notebook, click 'Restart kernel', then 'Run all'. If the results change, the notebook is not evidence — it's a story. This single ritual catches out-of-order execution, hidden global state, missing dependencies, and data leakage. PMs who make this a standard expectation stop getting surprised by 'it worked yesterday' prototypes.",
+    },
+    {
+      kind: "ex",
+      title: "Notebook as launch criterion in regulated industries",
+      body: "In pharma, finance, and healthcare, regulators sometimes require the full computational artefact — notebook + data + environment — as part of an approval submission. The notebook is the launch deliverable, not the precursor to it. A PM in those industries who treats notebooks as throwaway is going to discover, expensively, that they were the product.",
     },
   ],
   quiz: [
@@ -11361,6 +11661,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "AWS started as Amazon's internal infrastructure",
+      body: "AWS launched publicly in 2006, but it started as the internal infrastructure Amazon built to run its own retail business. The reason every modern cloud feels like 'someone else's data centre' is literal: you're renting capacity from infrastructure originally built for a specific company's workload. The pattern repeats — Google Cloud started inside Google, Azure inside Microsoft.",
+    },
+    {
+      kind: "ex",
+      title: "Why Netflix went all-in on AWS",
+      body: "Netflix famously runs almost entirely on AWS — even though AWS owns Prime Video, a direct competitor. The reason: building and operating their own data centres at Netflix's scale would have cost billions in capex and a multi-year delay, while AWS let them ship globally in months. The 'we run on a competitor's cloud' decision is one of the cleanest examples of buy-vs-build economics in modern tech.",
+    },
+    {
+      kind: "ex",
+      title: "Dropbox's $75M exit from AWS",
+      body: "Dropbox spent two years moving the bulk of its workload off AWS to its own data centres ('Magic Pocket'), saving an estimated $75M in two years. The lesson isn't 'cloud is too expensive' — it's that at extreme scale, the cloud's economics flip, and a small number of companies cross the threshold where building beats renting. Most companies never come near that threshold.",
+    },
+    {
       kind: "h",
       number: "5.2",
       title: "IaaS, PaaS, SaaS — the three layers",
@@ -11395,6 +11710,16 @@ export const concepts: Concept[] = [
       body: "Notion publicly discusses an architecture that uses AWS for raw infrastructure (EC2, RDS, S3), with their application code running on top. They use Postgres for the primary database, ElasticSearch for search, and various managed AWS services for queues and storage. The PM lesson isn't the specific choices — it's that even a billion-dollar product chooses a mix of managed services (PaaS-like) and raw infrastructure (IaaS), and the boundary they choose is itself a business decision.",
     },
     {
+      kind: "ex",
+      title: "Why Vercel and Netlify exist on top of AWS",
+      body: "Vercel and Netlify are PaaS layers built on top of AWS — they take a GitHub repo, build it, and deploy it globally without you ever touching IAM, S3, or CloudFront. The customer pays a markup for the simplification, and AWS still gets the underlying infra revenue. The PaaS layer is where developer experience is sold; the IaaS layer is where compute is rented.",
+    },
+    {
+      kind: "ex",
+      title: "Salesforce, Workday, and Notion are all SaaS",
+      body: "SaaS isn't a hosting choice — it's a delivery model. Salesforce sells CRM, Workday sells HR, Notion sells docs; none of their customers care which cloud they run on. From a PM perspective, SaaS is the only layer where the product is a feature surface; IaaS and PaaS are infrastructure surfaces, and their 'product' is the abstraction itself.",
+    },
+    {
       kind: "h",
       number: "5.3",
       title: "Compute, storage, and networking — the three core resources",
@@ -11422,6 +11747,16 @@ export const concepts: Concept[] = [
         ),
         s(" Every PM should know roughly how their product's data flows — where it's stored, where it's served from, and what crosses cloud boundaries."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why S3 is the 'default' for cloud storage",
+      body: "Amazon S3 stores trillions of objects with 99.999999999% durability and has become the de facto standard for cloud object storage — so much so that 'S3-compatible' is a feature competitors advertise. When a PM hears 'just put it in S3', they're hearing the cloud equivalent of 'just put it in a database' — a default chosen so often it stops being a decision.",
+    },
+    {
+      kind: "ex",
+      title: "How egress fees became a strategic moat",
+      body: "Egress fees — the cost of moving data out of a cloud — are deliberately high (often $0.08-0.12 per GB) and create lock-in. A petabyte of data sitting in AWS S3 costs $80-120K to move to GCP. PMs negotiating cloud bills or planning multi-cloud strategies routinely under-estimate this; engineers usually know but assume someone else is tracking the cost.",
     },
     {
       kind: "h",
@@ -11458,6 +11793,21 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Why EU customers ask about regions before signing",
       body: "Enterprise EU buyers will routinely ask 'which region is our data stored in?' before signing a contract. The reason is GDPR: data stored in an EU region stays under EU jurisdiction, while data stored in us-east-1 may be subject to US law (including the CLOUD Act). Selling to EU enterprise without an EU region is often a non-starter. This isn't an infrastructure question; it's a sales-blocker that lives in the cloud architecture. PMs who learn this early avoid the painful 'we just lost a $2M deal because we don't have an EU region' lesson.",
+    },
+    {
+      kind: "ex",
+      title: "The 2017 S3 outage that took down half the internet",
+      body: "On 28 February 2017, an S3 outage in AWS's us-east-1 region took down Slack, Trello, Quora, and parts of Netflix for hours. The blast radius was so wide because most teams had implicitly assumed us-east-1 would always be up. Multi-region resilience was sold afterwards as table stakes; it had been table stakes the whole time, but the outage made it visible.",
+    },
+    {
+      kind: "ex",
+      title: "us-east-1 is special, and not in a good way",
+      body: "AWS's us-east-1 (Northern Virginia) is the oldest and largest region and disproportionately the source of major outages — partly because new services often launch there first. Experienced teams deliberately avoid making us-east-1 their primary region. The PM-useful fact: 'where in the cloud do we run?' has real availability implications, not just latency ones.",
+    },
+    {
+      kind: "ex",
+      title: "Why Stripe runs active-active across regions",
+      body: "Stripe famously runs payments across multiple regions in active-active mode — every region can handle every transaction. The engineering cost is enormous, but it means a region outage doesn't take down payments globally. For a payments PM, this is the architectural standard; for most products, single-region with a failover plan is the realistic posture.",
     },
     {
       kind: "h",
@@ -11497,6 +11847,21 @@ export const concepts: Concept[] = [
         "VMs: flat cost regardless of traffic. Containers: cost scales with traffic, with a minimum floor. Serverless: near-zero idle cost, but per-invocation cost grows with traffic. The right choice depends on your traffic shape.",
     },
     {
+      kind: "ex",
+      title: "Lambda's 100M-developer head start",
+      body: "AWS Lambda popularised serverless in 2014 and has been the default 'run code without a server' option for a decade. The model — pay per millisecond of execution — is genuinely cheap for spiky, low-volume workloads and genuinely expensive for sustained high-throughput ones. Knowing which side of that line a workload is on is a back-of-envelope every cloud PM should be able to do.",
+    },
+    {
+      kind: "ex",
+      title: "Cloud Run, Fly.io, and the container-without-Kubernetes wave",
+      body: "Google Cloud Run, Fly.io, Render, and Railway let you ship a container and get a URL, without configuring Kubernetes. They're not as cheap as serverless for tiny workloads or as flexible as raw Kubernetes for huge ones, but they're a sweet spot for most startups. The PM signal: when your team picks one of these, they're optimising for engineering time, not for infrastructure cost.",
+    },
+    {
+      kind: "ex",
+      title: "Why ML inference rarely fits serverless",
+      body: "Most ML models need GPUs, fast cold-start, and large weights loaded in memory — none of which serverless does well. Serverless is great for 'wrap this API endpoint'; it's a poor fit for 'serve this 13B-parameter model'. PMs scoping AI features should know which path the inference is on, because the cost curves are wildly different.",
+    },
+    {
       kind: "h",
       number: "5.6",
       title: "Identity, access, and the compliance perimeter",
@@ -11528,6 +11893,21 @@ export const concepts: Concept[] = [
         ),
         s(" When enterprise sales ask 'what's your security posture?', the answer almost always starts with 'we build on AWS/GCP/Azure, which gives us...'."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why every cloud bill starts with an IAM mistake",
+      body: "The most common cause of cloud security incidents — and AWS itself publishes this — is misconfigured IAM (Identity and Access Management). 'Public S3 bucket' has leaked the data of Verizon, Accenture, and the US Department of Defense. The PM lesson: ask 'who can read this?' as a launch-criterion question, not as a post-launch audit.",
+    },
+    {
+      kind: "ex",
+      title: "Capital One's 2019 breach as the IAM cautionary tale",
+      body: "In 2019 a single misconfigured AWS IAM role let an attacker exfiltrate 100M Capital One customer records. The breach cost roughly $300M and triggered Congressional hearings. The fix would have been 'least privilege' — the role had access far beyond what the application needed. Every cloud project ships with this exact risk; only some teams treat it as a launch blocker.",
+    },
+    {
+      kind: "ex",
+      title: "Why 'SOC 2' is the cloud's pricing tier",
+      body: "Most B2B SaaS deals above $100K require SOC 2 Type II attestation — a third-party audit of your cloud security controls. The audit itself costs $20-50K and takes months. The PM-relevant fact: enterprise pricing tiers and cloud security posture are linked. You can't sell to a bank without controls a bank can audit.",
     },
     {
       kind: "h",
@@ -11562,6 +11942,21 @@ export const concepts: Concept[] = [
           "This back-of-envelope math is the difference between 'we shipped it and the unit economics work' and 'we shipped it and the CFO is asking why our gross margin dropped 8 points'.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The 'AWS bill arrives' meme is real",
+      body: "Engineering Twitter is full of screenshots of $40K AWS bills caused by a single misconfigured cron job, a leaked key spun up GPU instances, or an infinite-loop Lambda. AWS bills are post-paid, which means the first signal that something is wrong is the invoice. PMs should sponsor cost alerts in week one of any new cloud project — not as governance, but as bug detection.",
+    },
+    {
+      kind: "ex",
+      title: "Reserved instances and the 60% discount waiting room",
+      body: "AWS Reserved Instances and Savings Plans give 30-60% discounts in exchange for a 1- or 3-year commitment. Most startups don't take them because the future is uncertain; most mid-stage companies should. The PM signal: when a cloud bill is in the 7-figure range and the team has zero reserved capacity, the next quarter's biggest cost lever is sitting on the desk untouched.",
+    },
+    {
+      kind: "ex",
+      title: "Snowflake's bill as a separate engineering org's problem",
+      body: "Snowflake (and Databricks, BigQuery) bills can rival AWS bills at scale because they're priced per query. A single inefficient analytical query can cost hundreds of dollars. Mature data orgs have a 'cost cop' who reviews query plans the way an SRE reviews on-call alerts. PMs should know whose problem the data-warehouse bill is, because the answer is usually 'nobody, and that's why it doubled'.",
     },
     {
       kind: "h",
@@ -11606,6 +12001,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The invisible egress bill that crushes margins",
       body: "A team launches an AI feature that returns large PDFs and images to users. Usage explodes, and the AWS bill spikes — not from compute, but from bandwidth egress. The PM takeaway: you must know whether your feature is compute-heavy, storage-heavy, or bandwidth-heavy, because the optimisations (CDN, caching, region placement, compression) are different and the cost cliffs appear at different scales.",
+    },
+    {
+      kind: "ex",
+      title: "Vercel's pricing as a product surface",
+      body: "Vercel charges by bandwidth, function invocations, build minutes, and team seats — and the pricing page is itself a product surface that competitors copy. A PM choosing a vendor should read the pricing page as carefully as the docs, because the pricing model encodes the vendor's assumptions about your usage shape. Mismatched assumptions become surprise bills.",
     },
   ],
   quiz: [
@@ -11697,6 +12097,16 @@ export const concepts: Concept[] = [
       body: "Deploying a Rails app in 2010 might involve: ssh to the server, git pull the new code, run bundle install to fetch Ruby gems, run database migrations, restart the application server, hope nothing breaks. If a gem failed to compile against the server's specific OpenSSL version, you'd debug it at 2am. Multiply by every service the team ran. Containers compressed this whole ritual into 'docker run' with a single immutable image. The cycle time gain was measured in weeks per quarter for most teams.",
     },
     {
+      kind: "ex",
+      title: "The Heroku slug as the pre-Docker compromise",
+      body: "Before Docker, Heroku invented the 'slug' — a pre-built bundle of your app and its dependencies that could be deployed anywhere. It was a brilliant idea constrained to one platform's runtime. Docker generalised the idea: standardise the bundle, let it run on anyone's hardware, eliminate the vendor lock-in. Heroku's market share has been eroding ever since.",
+    },
+    {
+      kind: "ex",
+      title: "Why 'Dockerise it' became a verb",
+      body: "'Dockerise' entered engineering vernacular within two years of Docker's 2013 launch — as in 'let's just Dockerise the data scientist's notebook and ship it'. The verb encodes a workflow: take a thing that runs in one specific environment, wrap it so it runs anywhere. PMs hearing the word in standup are usually hearing 'we're going to skip a class of integration bugs'.",
+    },
+    {
       kind: "h",
       number: "6.2",
       title: "What a container actually is",
@@ -11722,6 +12132,21 @@ export const concepts: Concept[] = [
           "That difference shows up in startup time (seconds vs milliseconds), in size (gigabytes vs megabytes), and in how many you can run on one host (tens vs thousands). The trade-off is slightly weaker isolation — a container escape is more dangerous than a VM escape, which is why some compliance regimes still require VMs.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why a container is not a VM, and why it matters for cost",
+      body: "A VM virtualises hardware — every VM ships its own OS kernel, which costs gigabytes of memory and seconds of startup time. A container shares the host kernel — it costs megabytes and starts in milliseconds. The economic consequence: you can pack 10-50x more containers than VMs onto the same hardware. That density ratio is why container costs collapse compared to VM costs at scale.",
+    },
+    {
+      kind: "ex",
+      title: "The 'gcc on slim' problem",
+      body: "A common bug: someone builds a Docker image based on 'python:3.11-slim', and it works locally but the production build fails because a library needs a C compiler. The 'slim' variant strips out things you didn't know you needed. PMs reviewing 'why is the build broken?' should know that 99% of the time, the answer is a missing system dependency, not application code.",
+    },
+    {
+      kind: "ex",
+      title: "Multi-stage builds and the 2GB → 50MB compression",
+      body: "Modern Dockerfiles use 'multi-stage builds' — compile your app in a fat image, then copy only the binary into a tiny final image. The result: a Go application can ship as a 10MB container instead of 2GB. The PM-relevant outcome: smaller images mean faster deploys, faster rollbacks, and lower egress costs. Image size is a product KPI in disguise.",
     },
     {
       kind: "h",
@@ -11757,6 +12182,16 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "The Docker Inc. business that almost didn't survive",
+      body: "Docker Inc., the company, struggled to monetise the open-source tool that everyone used — eventually selling the enterprise business and pivoting to Docker Desktop subscriptions. The technology won; the company nearly didn't. PMs should distinguish 'is this technology the standard?' from 'is the vendor financially sustainable?' — they're independent questions, and you can get burned on either.",
+    },
+    {
+      kind: "ex",
+      title: "podman and the 'no daemon' alternative",
+      body: "Red Hat's podman is a drop-in replacement for Docker that doesn't require a running daemon. Most teams stay on Docker, but enterprise security teams sometimes mandate podman because the daemon's privileges are a security risk. The PM-useful fact: 'we use Docker' often means 'we use the Docker-compatible ecosystem', and the underlying tool may have already changed.",
+    },
+    {
       kind: "h",
       number: "6.4",
       title: "Container registries — where images live",
@@ -11785,6 +12220,16 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Why 'docker run' broke open data science",
       body: "Before containers, trying a new ML model often meant a day of installing CUDA, configuring Python environments, downloading model weights, and debugging mismatched library versions. After containers, papers ship with a Docker image — 'docker run author/paper-name' and the model runs. This isn't a tooling convenience; it's why the pace of AI research feels so much faster than ten years ago. Containers collapsed the cost of trying things.",
+    },
+    {
+      kind: "ex",
+      title: "Docker Hub's rate limit shocks",
+      body: "In 2020 Docker Hub started rate-limiting anonymous pulls, breaking CI pipelines around the world that had assumed pulls were free and unlimited. Teams discovered they were pulling base images thousands of times a day. The fix was caching, self-hosted registries, and authenticated pulls. PMs should expect 'we depend on a free public registry' to be a roadmap risk worth de-risking before it bites.",
+    },
+    {
+      kind: "ex",
+      title: "Why every cloud sells its own registry",
+      body: "AWS has ECR, Google has GCR/Artifact Registry, Azure has ACR — every cloud provider ships a container registry. The reason isn't market opportunity; it's that pulling images from a same-region registry is free (and fast), while pulling across networks costs egress fees. Registry choice is a hidden cost decision masquerading as a technical one.",
     },
     {
       kind: "h",
@@ -11822,6 +12267,21 @@ export const concepts: Concept[] = [
         "One container runs one process. Multiple containers form a service. Multiple services form an application. Orchestrators schedule containers across many machines, restart failures, and route traffic. Each layer adds capability and operational cost.",
     },
     {
+      kind: "ex",
+      title: "Why Kubernetes won, then made everyone miserable",
+      body: "Kubernetes won the orchestration wars (over Mesos, Docker Swarm, Nomad) by being the most flexible. The downside: it's enormous, complex, and requires a dedicated platform team to run well. The PM signal: a small team adopting Kubernetes is usually about to spend more time on the platform than on the product. Managed Kubernetes (EKS, GKE, AKS) softens this, but doesn't eliminate it.",
+    },
+    {
+      kind: "ex",
+      title: "'Kubernetes for a 3-person team' as an anti-pattern",
+      body: "Roughly half of all 'why is our team slow?' postmortems at small startups include a sentence like 'we set up Kubernetes too early'. The work to operate the cluster crowded out work on the product. The PM-mature reflex: ask 'what's the simplest deployment that works?' first, and only adopt orchestration when manual deploys actually hurt.",
+    },
+    {
+      kind: "ex",
+      title: "Stripe's homegrown orchestrator",
+      body: "Stripe famously runs its own internal orchestration system rather than Kubernetes, because their requirements (zero-downtime payment routing) didn't fit Kubernetes's defaults. Most companies are not Stripe, but the lesson generalises: 'industry standard' doesn't always mean 'right for our workload'. Knowing why a team chose against the default is more informative than knowing they chose it.",
+    },
+    {
       kind: "h",
       number: "6.6",
       title: "Containers and the path from prototype to production",
@@ -11852,6 +12312,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Hugging Face's Inference Endpoints as the 'container as a service' for ML",
+      body: "Hugging Face Inference Endpoints takes a model and gives you a containerised, auto-scaling HTTPS endpoint — no Dockerfile required. The PM signal: the path from notebook to production has been productised, and your team should know which managed option fits before they Dockerise from scratch.",
+    },
+    {
+      kind: "ex",
+      title: "Replicate, Modal, Beam: serverless containers for ML",
+      body: "Replicate, Modal, and Beam let data scientists ship containerised ML code without learning the deployment stack. They sit between 'notebook' and 'full production' and cover the 80% of use cases that don't need bespoke infra. PMs scoping AI features should evaluate these before committing to a from-scratch deployment plan.",
+    },
+    {
+      kind: "ex",
+      title: "Why 'it ran on my GPU' is the new 'it works on my machine'",
+      body: "Containers solved the dependency problem but not the hardware problem. A container that runs on an A100 GPU may not run on a T4, may need specific CUDA versions, may break on Apple Silicon. PMs shipping AI features should expect 'hardware drift' to be the new flavour of 'it works on my machine', and plan testing accordingly.",
+    },
+    {
       kind: "h",
       number: "6.7",
       title: "What container adoption signals about your team",
@@ -11880,6 +12355,21 @@ export const concepts: Concept[] = [
           "A team that can roll back in 30 seconds has invested heavily in CI/CD and container orchestration. A team that says 'a few hours' has deployment debt that will surface as outages.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Heroku's decline as the inverse signal",
+      body: "Heroku usage has been declining for years as more teams adopt containers — because containers gave them the same simplicity without the lock-in. The PM-relevant outcome: when a team is on Heroku in 2026, it's usually because they consciously chose simplicity over flexibility, not because they don't know better. That's a sign of mature trade-off-making, not naïveté.",
+    },
+    {
+      kind: "ex",
+      title: "'We have a Dockerfile' is a hiring signal",
+      body: "When a job posting mentions 'familiarity with Docker' for any non-infra role, the team is signalling that engineers are expected to own their own deployments, not throw code over the wall to an ops team. PMs in interviews can use this as a quick read on the engineering culture — and whether 'I shipped that feature' actually means what you think it means.",
+    },
+    {
+      kind: "ex",
+      title: "DevContainer files and the onboarding revolution",
+      body: "GitHub Codespaces and VS Code DevContainers use Docker to give every new engineer a perfectly-configured dev environment in two clicks. Teams that adopt this tend to cut new-hire time-to-first-PR from weeks to days. PMs sponsoring developer-productivity work should treat DevContainer adoption as a leading indicator of onboarding throughput.",
     },
     {
       kind: "h",
@@ -11918,6 +12408,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The vendor maturity question containers answer",
       body: "Ask a vendor: 'How do you deploy? Is your service containerised? How long does rollback take?' A vendor that can point to container images, automated rollouts, and rollbacks in minutes is operationally mature. A vendor that says 'we log into the server' is telling you they will be slow to ship fixes and risky to depend on. Containers are a proxy for the whole deployment discipline.",
+    },
+    {
+      kind: "ex",
+      title: "Static sites don't need containers",
+      body: "A marketing site built with Next.js or Astro should ship to Vercel or Cloudflare Pages, not a Docker container on Kubernetes. The container would add operational cost with no benefit. The PM mature question: 'what's the simplest thing that works for this workload?' — and the answer is almost never 'add more infrastructure'.",
     },
   ],
   quiz: [
@@ -12016,6 +12511,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Etsy as the deploy-frequency case study",
+      body: "Etsy popularised the 'deploy 50+ times a day' culture in the early 2010s and published their pipeline architecture openly. The result: every other startup started measuring deploy frequency, and 'deploys per day' became a CTO-level dashboard. The PM-useful framing: deploy frequency is a proxy for organisational courage, not just engineering capability.",
+    },
+    {
+      kind: "ex",
+      title: "Why CI without CD is half the value",
+      body: "Many teams have CI (tests run on every commit) but not CD (deploys happen automatically when tests pass). The gap is usually fear: 'we'll automate deploys once the tests are good enough'. The tests are rarely good enough; the gap is closed only by adopting CD and improving tests under deploy pressure. PMs can accelerate this by sponsoring the deploy automation rather than waiting for test coverage to be 'ready'.",
+    },
+    {
+      kind: "ex",
+      title: "How DORA's research turned CI/CD into board-level KPIs",
+      body: "Google's DORA research established four metrics — deploy frequency, lead time, change failure rate, time to restore — that correlate with high-performing engineering orgs. These metrics are now in board decks at companies that didn't measure them five years ago. PMs should be able to recite their team's DORA numbers; they're the closest thing to a universal language for engineering velocity.",
+    },
+    {
       kind: "h",
       number: "7.2",
       title: "The pipeline — what actually runs on a PR",
@@ -12051,6 +12561,16 @@ export const concepts: Concept[] = [
       body: "When CI takes 45 minutes, engineers stop opening small PRs. They batch changes — 'I'll just add one more thing while I'm waiting' — and end up with 1,500-line PRs that no one can review properly. The deploy frequency drops, regressions slip through, and the team feels slower without anyone naming why. The fix isn't a process change; it's making CI fast. Five-minute pipelines naturally produce small PRs and fast cycles. The pipeline runtime is the metric to watch.",
     },
     {
+      kind: "ex",
+      title: "GitHub Actions as the pipeline-as-YAML default",
+      body: "GitHub Actions wraps the CI pipeline in a YAML file in your repo. Every step of the pipeline is in version control alongside the code, which means pipeline changes are reviewable like code changes. The PM-relevant outcome: when 'who broke the build?' is a real question, you can answer it in the same place you answer 'who changed this line?'.",
+    },
+    {
+      kind: "ex",
+      title: "The flaky-test budget that wrecks a sprint",
+      body: "Flaky tests — tests that pass sometimes and fail other times — are the silent productivity killer. Engineers re-run them, sometimes the third run passes, the PR merges. Cumulatively, flaky tests can absorb 10-20% of engineering capacity. The PM intervention: treat flaky-test quarantine as a tracked work item, not as background ops.",
+    },
+    {
       kind: "h",
       number: "7.3",
       title: "Tests, coverage, and the trust problem",
@@ -12081,6 +12601,21 @@ export const concepts: Concept[] = [
           "This is sometimes called the 'broken windows' problem of CI. The fix isn't more tests; it's ruthless deletion or quarantine of flaky tests until trust is restored. PMs should support this — it looks like 'reducing test coverage' but it's actually 'increasing trust'.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The Knight Capital $440M loss as the no-tests cautionary tale",
+      body: "In 2012 Knight Capital lost $440M in 45 minutes when an untested deployment script left old code running on one server. The company didn't survive. The cost of not testing was nine figures and an entire enterprise. PMs should know this story by name; it's the most expensive automated-deployment failure in financial history.",
+    },
+    {
+      kind: "ex",
+      title: "Why 100% coverage is a trap",
+      body: "Code coverage measures 'what lines did the tests touch?', not 'what behaviour did the tests verify?'. A test suite at 100% coverage can still miss every important case. Pursuing 100% coverage as a goal often produces vacuous tests that pass without checking anything. PMs setting test-quality goals should ask for 'critical-path coverage', not 'line coverage'.",
+    },
+    {
+      kind: "ex",
+      title: "Snapshot tests and the false-confidence problem",
+      body: "Snapshot tests record a component's output once and fail if it changes. They're easy to write and catch real regressions — but they also fail on cosmetic changes, which trains engineers to re-snapshot without reading the diff. PMs reviewing testing strategy should ask 'are snapshot tests being re-snapshotted reflexively?', because the answer is often yes.",
     },
     {
       kind: "h",
@@ -12114,6 +12649,16 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "How Facebook ships code many times per day",
       body: "Facebook's mobile app reportedly ships changes to production multiple times per day, with feature flags controlling which features are enabled for which users. A buggy change can be flipped off in seconds without redeploying. The result: rollouts are graduated, not binary, and most user-visible incidents are resolved by flipping a flag, not pushing a fix. This isn't magic; it's CI/CD discipline plus feature flags applied at scale.",
+    },
+    {
+      kind: "ex",
+      title: "Why Facebook ships everything dark",
+      body: "Every new Facebook feature is deployed to production immediately but hidden behind a flag, then turned on for 1% of users, then 10%, then 50%, then all. The deploy and the release are completely decoupled. PMs at Facebook own the release ramp; engineers own the deploy. This separation is the single highest-leverage process change in modern release engineering.",
+    },
+    {
+      kind: "ex",
+      title: "Canary deployments at GitHub",
+      body: "GitHub rolls out new versions to a 'canary' set of internal users first — if errors spike, it auto-rolls-back before reaching customers. The canary catches roughly 70% of bad deploys with zero customer impact. PMs proposing risky features should ask 'do we have a canary stage?' — it's the cheapest way to de-risk a launch.",
     },
     {
       kind: "h",
@@ -12154,6 +12699,21 @@ export const concepts: Concept[] = [
         "PR opened → CI runs (lint, tests, build) → review and approval → merge to main → CD pipeline deploys to staging → automated checks → canary to production → ramp to 100%. Each gate can fail independently and trigger automatic rollback.",
     },
     {
+      kind: "ex",
+      title: "The British Airways outage of 2017",
+      body: "A botched deployment by British Airways in 2017 grounded flights, stranded 75,000 passengers, and cost £80M. The root cause was insufficient rollback testing — the team could deploy fast but couldn't recover fast. PMs treating 'time to rollback' as an engineering concern miss that it's directly a customer-impact concern.",
+    },
+    {
+      kind: "ex",
+      title: "Hotfix policy as a culture artefact",
+      body: "Every mature team has a hotfix policy — 'who can authorise an out-of-band deploy, under what conditions, with what review'. Teams without a written policy improvise during incidents and make bad calls. PMs should sponsor the writing of this document during a calm week, not during the next incident.",
+    },
+    {
+      kind: "ex",
+      title: "The 'rollback is just a deploy' philosophy",
+      body: "Mature CD pipelines treat rolling back as deploying the previous version, using the same pipeline. The opposite — 'rollback is a special operation' — means the rollback path is less tested than the forward path, which is exactly when you don't want surprises. Healthy teams say 'roll forward to last week's version' and mean it.",
+    },
+    {
       kind: "h",
       number: "7.6",
       title: "Observability — how you know if a deploy worked",
@@ -12190,6 +12750,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Why Datadog became a $40B company",
+      body: "Datadog grew to a $40B market cap by being the de facto observability platform — metrics, logs, traces, all in one place. The growth thesis is simple: deployment frequency is up, manual investigation doesn't scale, so observability is now a per-employee cost the way Salesforce is. PMs should know what the team uses, because incident response time is bounded by it.",
+    },
+    {
+      kind: "ex",
+      title: "Honeycomb and the high-cardinality bet",
+      body: "Honeycomb won a slice of the observability market by handling 'high-cardinality' data — millions of unique user IDs, request IDs, customer IDs — that traditional metrics tools collapse. The PM-relevant outcome: 'why is this user seeing slow responses?' is answerable in seconds with Honeycomb-style tools and impossible with old-school metrics tools.",
+    },
+    {
+      kind: "ex",
+      title: "OpenTelemetry as the new standard",
+      body: "OpenTelemetry is the open-source standard for emitting traces and metrics, supported by every major vendor. Teams adopting it can swap observability vendors without re-instrumenting their code. PMs negotiating observability spend should ask 'are we OpenTelemetry-native?' — if yes, you have negotiating leverage; if no, you're locked in to whoever you started with.",
+    },
+    {
       kind: "h",
       number: "7.7",
       title: "Common CI/CD tools and their differences",
@@ -12214,6 +12789,21 @@ export const concepts: Concept[] = [
         x("ArgoCD, Spinnaker, and the cloud-native deployment services", "Specialised deployment tools — ArgoCD for Kubernetes, Spinnaker for multi-cloud, plus PaaS-native flows from Vercel/Cloud Run/Render."),
         s(" handle the actual production rollouts. Modern teams increasingly use PaaS-native flows (Vercel, Cloud Run, Render) that bake CD into the platform itself."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Jenkins as the legacy you'll inherit",
+      body: "Jenkins, the original open-source CI tool, still runs at thousands of companies because migrating off it is genuinely hard — pipelines are encoded in plugins and Groovy scripts that don't translate cleanly. PMs joining a team running Jenkins should expect any 'modernise CI' initiative to be a 6-12 month project, not a sprint.",
+    },
+    {
+      kind: "ex",
+      title: "CircleCI vs GitHub Actions — the integration moat",
+      body: "CircleCI was the dominant managed CI before GitHub Actions arrived in 2019. GitHub Actions ate the market not by being technically superior but by being inside GitHub. The PM-relevant lesson: distribution beats features in dev tooling, the same way it does in consumer software.",
+    },
+    {
+      kind: "ex",
+      title: "Buildkite and the 'hybrid' approach",
+      body: "Buildkite runs the orchestration in their cloud but the actual build agents on your hardware — useful for teams that need to access private networks, GPUs, or specific compliance environments. The PM signal: when a team picks Buildkite over a pure-cloud option, they usually have a security or hardware constraint that's worth understanding before re-litigating the choice.",
     },
     {
       kind: "h",
@@ -12258,6 +12848,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "Feature flags as the release lever PMs can actually use",
       body: "A risky feature is merged behind a flag and shipped dark. The PM turns it on for internal users, then 1%, then 5%, watching metrics and error rates. If anything spikes, the flag turns off instantly with no redeploy. This is the practical bridge between product iteration speed and operational safety — and it is one of the clearest places PMs can drive CI/CD maturity.",
+    },
+    {
+      kind: "ex",
+      title: "Amazon's '23,000 deploys a day' as the upper bound",
+      body: "Amazon reportedly deploys to production every 11 seconds on average — that's the upper bound of what deploy frequency looks like at hyperscale. Most companies will never need this; almost all companies under-deploy relative to their actual capability. PMs benchmarking velocity should know that 'once a day' is mid-table, not impressive.",
     },
   ],
   quiz: [
@@ -12355,6 +12950,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Why every AI launch has a unit-economics meeting",
+      body: "A team launching a chat feature on GPT-4 quickly discovers the cost per conversation is $0.30, the projected free-tier abuse is 100K conversations a day, and the monthly bill is $900K against zero revenue. The unit-economics meeting either kills the launch or moves it behind a paywall. PMs who run this calculation before scoping save themselves and their CFO a quarter of pain.",
+    },
+    {
+      kind: "ex",
+      title: "Google's 100ms search-latency study",
+      body: "Google published a study showing that adding 100ms of latency to search reduced searches by 0.2-0.6% — at Google's scale, hundreds of millions in revenue. The number became a north-star benchmark across the industry. The PM-useful framing: latency isn't a 'nice to have' to be polished later; it's directly in your revenue equation.",
+    },
+    {
+      kind: "ex",
+      title: "The 'latency is the new accuracy' AI debate",
+      body: "For LLM features, a 200ms-faster response is often more valuable to users than a 1% accuracy bump on benchmarks. Anthropic, OpenAI, and Google all ship 'Haiku', 'Mini', and 'Flash' tier models specifically to trade quality for latency. PMs choosing models should weight first-token latency as heavily as quality scores — users feel latency every interaction.",
+    },
+    {
       kind: "h",
       number: "8.2",
       title: "Latency — what users actually feel",
@@ -12391,6 +13001,16 @@ export const concepts: Concept[] = [
       body: "Amazon's internal research, often quoted in performance circles, found that every 100ms of added latency on their site costs roughly 1% of revenue. The number itself isn't the point; the point is that latency has measurable conversion impact. Every product with a checkout funnel sees this effect. PMs who treat performance as 'engineering hygiene' are leaving revenue on the floor every quarter.",
     },
     {
+      kind: "ex",
+      title: "p50 vs p99: why 'average response time' lies",
+      body: "If your p50 (median) latency is 200ms but your p99 is 8 seconds, that means 1 in 100 users waits 8 seconds — and in a product with 10M daily users, that's 100K bad experiences per day. Reporting only 'average latency' hides this entirely. PMs reviewing performance metrics should always ask for p95 and p99, not just the average.",
+    },
+    {
+      kind: "ex",
+      title: "Streaming tokens as the perception hack",
+      body: "ChatGPT's streaming output — words appearing as they're generated — makes a 5-second response feel like a 1-second response, because the user sees the first word in 500ms. The underlying generation isn't faster; the perceived latency is. PMs designing AI features should treat 'time to first token' as the latency metric users actually feel.",
+    },
+    {
       kind: "h",
       number: "8.3",
       title: "Cost — the unit economics that survive scale",
@@ -12420,6 +13040,21 @@ export const concepts: Concept[] = [
           "This math is unforgiving. Many AI products launched in 2023-2024 discovered exactly this dynamic and had to retroactively restrict free tiers. PMs who do the math upfront avoid the retroactive PR disaster.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why DALL-E 3 free tier is rate-limited, not quality-limited",
+      body: "OpenAI rate-limits free image generation rather than degrading quality because images are GPU-bound and each generation has a fixed marginal cost. Free-with-rate-limit is the only viable economic model. PMs designing AI features with unbounded usage should expect to copy this pattern; 'unlimited free' for any GPU workload is a path to insolvency.",
+    },
+    {
+      kind: "ex",
+      title: "Mistral's open-weights pricing pressure",
+      body: "Mistral's open-weights models can be self-hosted, putting downward pressure on closed-API pricing across the industry. The PM-relevant outcome: 'what would it cost us to self-host the equivalent?' is now a credible BATNA in every API negotiation, and pricing pages reflect that. Knowing your self-host alternative gives you real leverage.",
+    },
+    {
+      kind: "ex",
+      title: "The 80/20 split between training and inference cost",
+      body: "Across most LLM products, inference cost (running the model) dwarfs training cost (building it) within months of launch — sometimes by 10x or more. PMs anchoring on the 'we spent $5M training' number miss that the real bill is the next 12 months of inference. Roadmap decisions should be made against inference economics, not training sunk cost.",
     },
     {
       kind: "h",
@@ -12457,6 +13092,21 @@ export const concepts: Concept[] = [
         "Larger, slower, more expensive models sit at one corner; smaller, faster, cheaper models at another. Every product picks a position. Mature products use routing to put different requests in different positions.",
     },
     {
+      kind: "ex",
+      title: "Why 'small model + RAG' beats 'big model alone' on cost",
+      body: "A 70B-parameter model with retrieval-augmented generation often matches a 400B-parameter model's quality on real tasks, at one-fifth the inference cost. PMs scoping AI features should evaluate small-model-plus-retrieval before defaulting to the frontier model — the cost delta compounds quickly at scale.",
+    },
+    {
+      kind: "ex",
+      title: "Anthropic's prompt caching as a 90% discount",
+      body: "Anthropic's prompt caching lets you cache the static portion of a prompt (system instructions, document context) and pay 10% of the normal price for cached tokens on subsequent calls. For RAG and agent workflows where the same context is reused, the bill can drop 70-90%. PMs running expensive AI features should ask 'are we using prompt caching?' as a first cost lever.",
+    },
+    {
+      kind: "ex",
+      title: "Batch APIs for the 50% discount everyone misses",
+      body: "OpenAI and Anthropic both offer batch APIs that process requests within 24 hours for roughly half the price. For any workload that isn't user-facing — summaries, embeddings, evaluation runs — batching is free money. PMs running offline AI workloads should make batch-API adoption a quarterly target.",
+    },
+    {
       kind: "h",
       number: "8.5",
       title: "Caching — the universal cheat code",
@@ -12485,6 +13135,21 @@ export const concepts: Concept[] = [
         x("prompt caching", "Caching the model's processing of repeated prompt prefixes. Major providers (Anthropic, OpenAI) now offer this; can reduce both cost and latency for long context-heavy prompts by 50%+."),
         s(" is increasingly important: if your prompts share a long preamble, the cost of processing that preamble can be paid once instead of every request."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Cloudflare's 250+ POPs as the cache layer",
+      body: "Cloudflare runs over 250 points of presence globally, caching static assets within milliseconds of every user. For products with global users, putting a CDN in front cuts both latency and origin-server cost. PMs measuring page-load times for global audiences should know what their CDN coverage looks like — it's often the largest single performance lever available.",
+    },
+    {
+      kind: "ex",
+      title: "Why Redis is the default for app-level caching",
+      body: "Redis dominates the in-memory caching market because it's fast, simple, and battle-tested. Teams that aren't using something Redis-shaped are usually either too small to need caching or paying database costs they shouldn't be. The PM-useful read: 'how much of our database load is cacheable?' is often 80%+, and the win is large.",
+    },
+    {
+      kind: "ex",
+      title: "Caching LLM responses by semantic key",
+      body: "Standard caches use exact-match keys; semantic caches (using embeddings) cache 'similar enough' questions to the same answer. For FAQ-style LLM features, semantic caching can cut inference cost 60-80% with no quality loss. PMs scoping support-bot economics should ask whether the team has evaluated semantic caching before scaling raw inference spend.",
     },
     {
       kind: "h",
@@ -12519,6 +13184,21 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Why GitHub Actions runs async, not real-time",
+      body: "GitHub Actions runs your CI in the background and emails you when done, instead of making you wait synchronously. The architecture choice is what lets them scale to millions of jobs cheaply — synchronous waiting would require holding open millions of connections. PMs designing long-running workflows should default to async patterns; the UX work is in making 'come back later' feel deliberate, not broken.",
+    },
+    {
+      kind: "ex",
+      title: "Stripe's webhook architecture as the canonical async pattern",
+      body: "Stripe processes a payment synchronously but pushes secondary events (subscription renewals, dispute notifications) via webhooks. This decoupling lets Stripe's checkout stay fast while pushing the slow stuff into a queue. Most B2B SaaS products eventually adopt this exact pattern; the PM intervention is recognising when to introduce it instead of expanding the synchronous path.",
+    },
+    {
+      kind: "ex",
+      title: "Optimistic UI as the universal 'feels instant' trick",
+      body: "Linear, Notion, and Figma all use optimistic UI — the UI updates the moment you click, before the server confirms. If the server later rejects the change, the UI quietly reverts. The latency improvement is enormous and the engineering cost is modest. PMs spec'ing 'fast' interactions should specify optimistic behaviour explicitly, not assume engineering will add it.",
+    },
+    {
       kind: "h",
       number: "8.7",
       title: "Pricing as a product surface for unit economics",
@@ -12545,6 +13225,21 @@ export const concepts: Concept[] = [
           "The fix is some form of usage caps, fair-use limits, or explicit usage-based pricing. PMs who avoid the conversation watch their gross margin compress quarter over quarter until it becomes a board-level issue.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Cursor's per-request pricing for AI coding",
+      body: "Cursor moved from a flat $20/month subscription to per-request pricing for premium models, because the cost of heavy users was destroying margins. The pricing-page change was the product change. PMs running AI products should expect their pricing model to evolve from 'subscription' to 'usage-based' as cost variance becomes the dominant economic factor.",
+    },
+    {
+      kind: "ex",
+      title: "Why Vercel charges by bandwidth and function-invocation",
+      body: "Vercel's pricing model exposes the underlying cloud cost drivers (bandwidth, compute time) directly to customers. The benefit: customers can optimise their own bills, and Vercel's margins are protected against pathological workloads. PMs designing pricing for infrastructure products should consider 'pass through the variable costs' as a legitimate model, not a cop-out.",
+    },
+    {
+      kind: "ex",
+      title: "Notion AI's separate-line-item pricing",
+      body: "Notion charges $10/month extra for the AI add-on, separate from the base subscription. The reason is unit economics: AI cost varies wildly per user, and bundling it into the base price would penalise light AI users to subsidise heavy ones. PMs adding AI features to existing SaaS should expect to separate the line item or risk margin erosion across the customer base.",
     },
     {
       kind: "h",
@@ -12590,6 +13285,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "When 'make it faster' is the wrong goal",
       body: "Generating an image or processing a long document is fundamentally slow. Spending weeks chasing 15% latency reduction is often lower ROI than changing the UX: make it async, stream partial progress, or batch work. The PM lesson: perceived latency is a product surface. If you can't make it fast, make it feel fast — and reserve deep engineering optimisation for the paths users hit constantly.",
+    },
+    {
+      kind: "ex",
+      title: "The Klarna AI assistant unit-economics story",
+      body: "Klarna reported that their AI customer-service assistant handled work equivalent to 700 full-time agents, with measurable cost savings disclosed publicly. The number lands because they did the unit-economics work upfront — cost per conversation, deflection rate, cost vs human baseline. PMs proposing AI features should produce a comparable one-page back-of-envelope; without it, the launch decision is essentially vibes.",
     },
   ],
   quiz: [
