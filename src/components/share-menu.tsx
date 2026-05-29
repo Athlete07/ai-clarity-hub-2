@@ -6,7 +6,7 @@ type Props = {
   summary: string;
   slug?: string;
   url?: string;
-  variant?: "pill" | "ghost";
+  variant?: "pill" | "ghost" | "icon";
 };
 
 export function ShareMenu({ title, summary, slug, url: urlProp, variant = "pill" }: Props) {
@@ -63,7 +63,9 @@ export function ShareMenu({ title, summary, slug, url: urlProp, variant = "pill"
   const triggerCls =
     variant === "pill"
       ? "hairline inline-flex items-center gap-1.5 rounded-full bg-card px-3 py-1 text-[12px] text-muted-foreground transition-colors hover:text-foreground"
-      : "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[12px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground";
+      : variant === "icon"
+        ? "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
+        : "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[12px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground";
 
   return (
     <div ref={ref} className="relative inline-block">
@@ -73,10 +75,10 @@ export function ShareMenu({ title, summary, slug, url: urlProp, variant = "pill"
         className={triggerCls}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Share this page"
+        aria-label={variant === "icon" ? `Share ${title}` : "Share this page"}
       >
-        <Share2 size={12} />
-        Share
+        <Share2 size={variant === "icon" ? 14 : 12} />
+        {variant !== "icon" && "Share"}
       </button>
 
       {open && (

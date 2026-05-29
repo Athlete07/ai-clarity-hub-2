@@ -9766,6 +9766,11 @@ export const concepts: Concept[] = [
       body: "Designers, lawyers, and academics work without version control and the file-naming pattern is identical everywhere: contract_final.docx, contract_final_v2.docx, contract_final_REAL.docx, contract_final_REAL_use_this.docx. It's funny because it's the failure mode software teams escaped in the 2000s. Watching it persist outside engineering tells you exactly what version control is worth: it's the difference between a team that can answer 'what did we ship last Tuesday?' in 10 seconds and a team that can't answer it at all.",
     },
     {
+      kind: "ex",
+      title: "Reverting is the hidden feature every PM depends on",
+      body: "A PM ships an onboarding change that unexpectedly tanks activation. The team doesn't debate whether to roll back — they revert the commit (or PR) and restore yesterday's behaviour in minutes. Without version control, rollback is a manual scramble: hunt down the changed files, hope you remember what was touched, and pray you didn't miss one. Version control turns 'we made a mistake' into 'we can undo it safely', which is why teams can move fast without betting the company on every deploy.",
+    },
+    {
       kind: "h",
       number: "1.2",
       title: "What Git is, specifically",
@@ -9798,6 +9803,16 @@ export const concepts: Concept[] = [
         ),
         s(" The exec-readable version of the project history is something the team curates, not something the tool dictates."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "GitHub outage, team still ships",
+      body: "GitHub going down makes it harder to collaborate, but it doesn't stop local work. Engineers can still commit, branch, diff, and test because Git is local-first. This is the practical meaning of 'distributed': the central host is a collaboration layer, not the single point of failure for saving work. PMs feel this as resilience — less 'everyone is blocked' time when vendor services wobble.",
+    },
+    {
+      kind: "ex",
+      title: "Why 'squash and merge' exists",
+      body: "A feature branch has 23 commits: experiments, fixes, typo corrections, 'wip', and one final clean change. Many teams squash them into a single commit when merging the PR so main stays readable and incident-friendly. Other teams keep the full chain for traceability. Both are valid; the point is that Git gives you the choice, and the choice affects how easy it is to debug production later.",
     },
     {
       kind: "h",
@@ -9877,6 +9892,11 @@ export const concepts: Concept[] = [
       body: "GitLab's entire product is developed in the open, with merge requests visible to anyone on the internet. PMs at other companies study these MRs to see how a mature engineering org reasons about trade-offs in real time. You can literally watch decisions get made — scope cuts, edge cases discovered mid-review, performance regressions caught before merge. It's the most accessible PM education on the internet, and it's free.",
     },
     {
+      kind: "ex",
+      title: "The PR description as a mini-PRD",
+      body: "High-performing teams treat the PR description as a mini spec: what changed, why, screenshots, rollout plan, and how to test. This is why PRs are a PM artefact too — the description is often the only durable documentation of intent. A team with empty PR descriptions and giant diffs is a team where review quality will be inconsistent, no matter how many Jira tickets exist.",
+    },
+    {
       kind: "diagram",
       id: "ch1-git-flow",
       type: "flow",
@@ -9917,6 +9937,16 @@ export const concepts: Concept[] = [
       ],
     },
     {
+      kind: "ex",
+      title: "Why conflicts cluster around a few files",
+      body: "In many codebases, 80% of merge conflicts happen in 20% of files: shared config, core routing, permission logic, and a few giant 'utils' modules. The PM insight is that these are ownership failures in the architecture. If every feature touches the same files, teams can't move in parallel. Reducing conflicts is often not a 'Git training' problem — it's a modularity and ownership problem.",
+    },
+    {
+      kind: "ex",
+      title: "The rebase week that silently kills a sprint",
+      body: "A feature branch stays open for two weeks. Meanwhile, main evolves. When the engineer finally tries to merge, they hit a cascade of conflicts and spend 2–3 days rebasing instead of shipping. The PM lesson: long-lived branches are an economic cost. Smaller PRs and shorter branch lifetimes are not process theatre — they are direct velocity multipliers.",
+    },
+    {
       kind: "h",
       number: "1.6",
       title: "GitHub vs Git — the platform vs the protocol",
@@ -9946,6 +9976,16 @@ export const concepts: Concept[] = [
           "A real integration with the GitHub API can read PRs, comment on them, set required status checks, and gate merges. A 'Git integration' that just clones the repo can do almost none of that.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Why 'we support Git' can be meaningless",
+      body: "A vendor claims 'Git integration'. In reality they only clone the repo to read files — they can't see PR comments, can't post status checks, can't enforce approvals, and can't link work to review artifacts. A GitHub App integration, by contrast, can participate in the workflow: comment on PRs, request changes, read CI status, and block merges. For PMs, these are entirely different product capabilities hidden behind the same phrase.",
+    },
+    {
+      kind: "ex",
+      title: "GitLab vs GitHub vs Bitbucket — why enterprise cares",
+      body: "Many enterprises use GitLab or Bitbucket for compliance, SSO, and on-prem hosting requirements. If your tool only supports GitHub, you've cut off a large portion of the market. This isn't an 'engineering edge case' — it's go-to-market. Knowing the platform vs protocol distinction is what lets a PM scope 'supports Git' correctly as either a quick win or a major multi-platform effort.",
     },
     {
       kind: "h",
@@ -9984,6 +10024,11 @@ export const concepts: Concept[] = [
       body: "Browse any popular npm package and check its GitHub: when was the last commit on main, how many PRs are open, how old is the oldest one? A package with the last commit 18 months ago, 200 open PRs, and an issue tracker full of unanswered bug reports is a package you should not adopt as a dependency — even if its README is great. The dependency decision is a PM decision, and the repo gives you the data to make it.",
     },
     {
+      kind: "ex",
+      title: "The 15-minute repo scan a PM can do solo",
+      body: "Open the README (is it current?), scan the last 20 commits on main (is there steady cadence?), click 'Pull requests' and sort by oldest (is review a bottleneck?), then scan open issues (is the tracker maintained or a graveyard?). You don't need to read a line of code to get a high-confidence picture of team health. Doing this weekly makes you the PM with the best situational awareness in the room.",
+    },
+    {
       kind: "h",
       number: "1.8",
       title: "PM decision lens: GitHub as a velocity instrument",
@@ -10013,6 +10058,16 @@ export const concepts: Concept[] = [
           "Fifteen minutes a week. It will make you the PM in your org with the most accurate model of what is actually happening — because you'll be looking at evidence the rest of the company doesn't even know is accessible.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The fastest way to sanity-check 'we're moving fast'",
+      body: "A team says they're moving fast. You check: main moved yesterday, 28 PRs merged last week, median PR age is under 2 days, and CI is mostly green. That is real velocity. If main hasn't moved in 12 days and PRs sit open for two weeks, the standup optimism is noise. Repo data is the anti-spin instrument.",
+    },
+    {
+      kind: "ex",
+      title: "Hotspot files as roadmap signals",
+      body: "If 60% of PRs touch the same handful of files, those files are organizational bottlenecks. The fix might be refactoring, modularization, or creating clearer ownership boundaries. This is one of the cleanest cases where a PM can justify 'platform work' in roadmap terms: it directly reduces queueing and merge-conflict tax, which increases delivery rate.",
     },
   ],
   quiz: [
@@ -10057,6 +10112,53 @@ export const concepts: Concept[] = [
       ],
       correctFeedback: "Right. Small frequent merges, fresh main, and a maintained issue tracker are the boring signs of a healthy team. Stale PRs, hotspot files, and a frozen main are the signs of one in trouble — regardless of what status meetings say.",
       wrongFeedback: "The pattern is: velocity is many small reviewed changes reaching production fast. The opposite — big stale unmerged work — is what unhealthy looks like, even when activity feels high. Re-read sections 1.7 and 1.8.",
+    },
+    {
+      kind: "mcq",
+      q: "You keep hearing 'we're just rebasing' and merges regularly slip by 2–3 days. Which diagnosis is most accurate?",
+      options: [
+        "Git is buggy; the team should switch version control systems.",
+        "Long-lived branches and architectural hotspots are creating conflict/queueing tax; the fix is smaller PRs, shorter branch lifetimes, and reducing shared-file bottlenecks.",
+        "The PM dashboard needs better statuses.",
+        "CI is irrelevant; rebasing happens after tests.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Exactly. 'Rebasing' is usually a symptom of parallel work colliding in the same files over too long a window. The high-ROI fixes are workflow + architecture: smaller PRs, faster review, and fewer shared hotspots.",
+      wrongFeedback:
+        "Switching tools won't remove the underlying collision. The pattern is: long-lived branches + shared files = rebase pain. The fix is to compress cycle time and reduce hotspots. Re-read sections 1.5 and 1.8.",
+    },
+    {
+      kind: "order",
+      q: "Order the fastest PM triage path when a PR is blocked, from first check to last.",
+      prompt: "Assume you want to identify the bottleneck in under 2 minutes.",
+      items: [
+        "Open the PR and read the status checks (CI) summary.",
+        "Scan for unresolved review comments or requested changes.",
+        "Check whether the branch is behind main and needs an update/rebase.",
+        "If everything is green, ask: is it waiting on deploy/release cadence or a feature-flag rollout?",
+      ],
+      correctFeedback:
+        "Right. CI status and review comments are the two most common blockers; 'behind main' is the next; if all gates are green, the bottleneck is usually release/rollout mechanics, not coding.",
+      wrongFeedback:
+        "Start with the cheapest signals: CI + review state. Then check divergence from main. If all is green, the remaining bottleneck is usually deployment/rollout. Re-read sections 1.4 and 1.5.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each artefact into the layer it belongs to: Git (the protocol) vs GitHub (the platform).",
+      categories: ["Git (protocol)", "GitHub (platform)"],
+      items: [
+        { text: "Commit history and branches stored locally.", category: 0 },
+        { text: "A pull request UI with line-by-line comments.", category: 1 },
+        { text: "Cloning a repository and running `git diff` locally.", category: 0 },
+        { text: "Required status checks that block merges.", category: 1 },
+        { text: "Merging branches and resolving conflicts.", category: 0 },
+        { text: "An issue tracker attached to a repo.", category: 1 },
+      ],
+      correctFeedback:
+        "Exactly. Git is the distributed version-control engine; GitHub is the hosted collaboration layer. Mixing them up causes bad scoping when vendors say 'we integrate with Git'.",
+      wrongFeedback:
+        "Git = commits/branches/diffs/conflicts. GitHub = PR UI, reviews, status checks, issues, integrations. Re-read section 1.6.",
     },
   ],
   examples: [],
@@ -10116,6 +10218,11 @@ export const concepts: Concept[] = [
       body: "Stripe's entire business is an API. A merchant doesn't go to a Stripe office to take a payment; their code makes an HTTP call to api.stripe.com/v1/charges with an amount, a currency, and a card token. Stripe responds with a JSON object saying 'charged' or 'declined'. The reason Stripe is worth tens of billions of dollars isn't the payment processing itself — that's a commodity. It's the quality of the API: the developer docs, the error messages, the consistency, the SDK ergonomics. The contract is the product.",
     },
     {
+      kind: "ex",
+      title: "Why 'just call their API' is rarely 'just'",
+      body: "A PM asks for a simple integration: 'sync customers to HubSpot'. The first demo works in an afternoon. Then production reality hits: auth token refresh, rate limits, partial failures, retries, idempotency, pagination, and mapping edge cases when schemas differ. The original 'just call their API' statement wasn't wrong — it was incomplete. The PM lesson is to scope the *operational wrapper* around the API call, not the call itself.",
+    },
+    {
       kind: "h",
       number: "2.2",
       title: "What REST is, and why it's everywhere",
@@ -10153,6 +10260,16 @@ export const concepts: Concept[] = [
         ),
         s(" But for almost any third-party integration you'll touch as a PM, REST is the default and the safe assumption."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "REST makes APIs guessable",
+      body: "If you've used one clean REST API, you can often guess another: GET /customers lists, GET /customers/{id} retrieves, POST /customers creates. That guessability is the payoff: faster integration, fewer surprises, less back-and-forth with vendor support. When an API breaks these conventions, your team pays the tax in docs-reading time and bug-triage time.",
+    },
+    {
+      kind: "ex",
+      title: "GraphQL isn't 'better' — it's a different trade-off",
+      body: "A team adopts GraphQL to avoid over-fetching on mobile. It works — and they also inherit a more complex backend, caching challenges, and a schema governance problem. REST is simpler and more predictable for public integrations; GraphQL can be better for product clients that need flexible queries. The PM takeaway: choosing the API style is choosing *where* complexity lives.",
     },
     {
       kind: "h",
@@ -10197,6 +10314,11 @@ export const concepts: Concept[] = [
       body: "Open stripe.com/docs/api and scan the left sidebar. Every entry is a resource: customers, charges, payment intents, subscriptions, invoices. Click any one and you see GET (list), GET (retrieve one), POST (create), POST (update), DELETE. In five minutes, with zero code, you've learned the full set of things Stripe can do. Almost every well-designed REST API offers this same reading experience. If a vendor's API docs don't, that's the first warning sign about the integration.",
     },
     {
+      kind: "ex",
+      title: "The 'POST for everything' integration smell",
+      body: "Some vendor APIs use POST for every action — create, update, fetch, even list — because they didn't adopt REST conventions. It still works, but it removes the 'method as documentation' benefit and often correlates with weaker error handling and versioning. As a PM, treat it as an estimate multiplier: you will spend more time debugging and supporting the integration.",
+    },
+    {
       kind: "h",
       number: "2.4",
       title: "Request and response anatomy",
@@ -10228,6 +10350,11 @@ export const concepts: Concept[] = [
       kind: "ex",
       title: "The 404 error you've seen a thousand times",
       body: "Every '404 Not Found' page on the web is literally a server responding with HTTP status 404 to a GET request for a URL that doesn't exist. The same code shows up in API responses. When a PM hears 'we're getting 404s from the third-party API', it usually means one of two things: the resource was deleted, or the URL the integration was built against has changed (often because the vendor reorganised). Both are fixable. The pattern in those error responses is your first diagnostic.",
+    },
+    {
+      kind: "ex",
+      title: "429 Too Many Requests — the scaling cliff in one number",
+      body: "An integration works perfectly at 50 users and then starts failing at launch with 429s. That doesn't mean the feature is buggy — it means you've outgrown the vendor's quota. The fix is architectural (queue, backoff, cache, batch) and commercial (negotiate higher limits). Treat 429 as an expected growth stage, not a surprise.",
     },
     {
       kind: "diagram",
@@ -10305,6 +10432,11 @@ export const concepts: Concept[] = [
       body: "OpenAI's API has tight rate limits on new accounts — measured in requests per minute and tokens per minute, varying by model. A PM scoping an LLM feature who hasn't checked the limits will discover at launch that their 'small experiment' is throttled at 10 requests per minute, which means their product feels broken for any user past the tenth. The fix isn't engineering heroism; it's filing for higher limits weeks before launch, paying the right tier, or designing the feature to batch and queue. Knowing this in week one of scoping is the entire point of reading API docs as a PM.",
     },
     {
+      kind: "ex",
+      title: "Batching turns 1,000 calls into 10",
+      body: "A product needs to update 1,000 records in a third-party system. Naively calling the API 1,000 times hits rate limits and takes minutes. Mature APIs offer bulk endpoints (or you build a batcher) so you can send 100 updates per call and do it in 10 calls. The PM lesson: ask 'is there a bulk endpoint?' before committing to an integration design that doesn't scale.",
+    },
+    {
       kind: "h",
       number: "2.7",
       title: "Webhooks vs polling — push vs pull",
@@ -10337,6 +10469,16 @@ export const concepts: Concept[] = [
         ),
         s(" When done right, webhooks are dramatically more efficient and more responsive than polling. When done lazily, they silently lose events and the bug doesn't surface for weeks."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "Stripe payment succeeded — webhook is the product requirement",
+      body: "If access to a paid feature must unlock within seconds of a card charge, polling every 10 seconds is a product bug: it adds arbitrary delay and wastes quota. Stripe’s webhook events exist specifically to make 'unlock access' near-instant and reliable. For PMs, 'we need a webhook' is a functional requirement, not a backend detail.",
+    },
+    {
+      kind: "ex",
+      title: "The two webhook rules teams learn the hard way",
+      body: "(1) Verify signatures so attackers can't spoof events. (2) Make handlers idempotent so retries don't double-charge or double-provision. Most real webhook bugs are violations of one of these two rules. PMs who know them can spot risky designs in PRDs before launch.",
     },
     {
       kind: "h",
@@ -10372,6 +10514,11 @@ export const concepts: Concept[] = [
       body: "Twilio and Stripe are routinely cited as having the best API docs in the industry, and the reason matters: they treat docs as product. They have dedicated technical writers, code examples in every major language, interactive try-it consoles, and clearly versioned changelogs. PMs at companies whose vendors have docs this good can scope integrations in an afternoon. PMs at companies whose vendors have screenshot-only PDFs need to triple their estimates. Doc quality is a leading indicator of integration cost.",
     },
     {
+      kind: "ex",
+      title: "Docs as a vendor-quality signal",
+      body: "If the docs clearly explain pagination, retries, error codes, and versioning, the vendor has probably lived through real production incidents and hardened the interface. If the docs are a PDF with screenshots and no error formats, expect slow support and surprise breakage. PMs can treat doc quality as a procurement input, not an afterthought.",
+    },
+    {
       kind: "h",
       number: "2.9",
       title: "PM decision lens: every API dependency is a permanent commitment",
@@ -10402,6 +10549,16 @@ export const concepts: Concept[] = [
         ),
         s(" A good engineering org will do this abstraction without being asked; if yours doesn't, naming it explicitly in the PRD is a high-leverage PM move."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The hidden maintenance tax of 'one more vendor'",
+      body: "A team integrates five SaaS vendors in year one. In year two, two change pricing, one deprecates a version, and one has a week-long incident. None of this shows up in the original feature ROI spreadsheet — and it consumes meaningful engineering time. The PM lesson: every new API dependency is not just shipping work; it's a permanent maintenance stream.",
+    },
+    {
+      kind: "ex",
+      title: "Abstract tactical dependencies early",
+      body: "If you integrate a niche enrichment vendor for a tactical use case, put it behind your own internal interface from day one. Then switching vendors is 'swap adapters', not 'rewrite product flows'. Strategic dependencies like Stripe can be direct; tactical dependencies should be swappable. This is a simple design choice that prevents expensive migrations later.",
     },
   ],
   quiz: [
@@ -10448,6 +10605,53 @@ export const concepts: Concept[] = [
       ],
       correctFeedback: "Right. Rate limits and auth are the two that most often kill an integration outright; webhooks vs polling and pagination determine the shape of the feature; versioning and errors are the long-tail tax. This is roughly the order a senior PM scans docs in.",
       wrongFeedback: "Rate limits and auth are the cliffs; pagination and webhooks shape the design; versioning and errors are ongoing costs. Re-read section 2.8.",
+    },
+    {
+      kind: "mcq",
+      q: "A vendor's API only supports a single all-powerful API key with no scopes (read-only vs write) and no per-resource restrictions. What is the most accurate PM read?",
+      options: [
+        "Great — it will make the integration faster to build.",
+        "This is a security risk: any leak is maximum blast radius; prefer scoped keys or OAuth-style delegated tokens.",
+        "It doesn't matter because HTTPS encrypts traffic.",
+        "It only matters for very large enterprises.",
+      ],
+      correct: 1,
+      correctFeedback:
+        "Right. Lack of scoped auth turns every credential leak into a worst-case incident. This is both a security and compliance problem, and it should affect vendor choice and integration scope.",
+      wrongFeedback:
+        "HTTPS doesn't prevent credential misuse if a key leaks. The issue is blast radius. Mature APIs offer scoping so leaks are containable. Re-read section 2.5.",
+    },
+    {
+      kind: "categorize",
+      q: "Sort each mitigation into the primary problem it addresses: rate-limit resilience vs webhook reliability.",
+      categories: ["Rate-limit resilience", "Webhook reliability"],
+      items: [
+        { text: "Exponential backoff retries on 429 responses.", category: 0 },
+        { text: "Queue requests and drain at the allowed rate.", category: 0 },
+        { text: "Signature verification of incoming events.", category: 1 },
+        { text: "Idempotency keys / idempotent handlers.", category: 1 },
+        { text: "Batching 100 operations into one request.", category: 0 },
+        { text: "Fallback 'list events since X' reconciliation job.", category: 1 },
+      ],
+      correctFeedback:
+        "Exactly. Rate-limit work is about shaping request volume; webhook work is about correctness under retries, drops, and spoofing. Mixing them up produces fragile integrations.",
+      wrongFeedback:
+        "Retries/queues/batching address rate-limit cliffs. Signatures/idempotency/reconciliation address webhook correctness. Re-read sections 2.6 and 2.7.",
+    },
+    {
+      kind: "order",
+      q: "Order the minimal steps to ship a safe webhook integration.",
+      prompt: "From first implementation to production hardening.",
+      items: [
+        "Expose a public endpoint to receive webhook events.",
+        "Verify webhook signatures to prevent spoofing.",
+        "Make the handler idempotent so retries are safe.",
+        "Store events and add a reconciliation job to recover missed deliveries.",
+      ],
+      correctFeedback:
+        "Right. Endpoint first, then authenticity, then safety-under-retry, then recovery for the inevitable drops. This is the baseline for production-grade webhooks.",
+      wrongFeedback:
+        "Webhooks fail in predictable ways: spoofing, retries, and drops. The production ordering is endpoint → signatures → idempotency → reconciliation. Re-read section 2.7.",
     },
   ],
   examples: [],
@@ -11049,6 +11253,16 @@ export const concepts: Concept[] = [
         ),
       ],
     },
+    {
+      kind: "ex",
+      title: "The 'runs on my laptop' notebook that can't ship",
+      body: "A data scientist demos a notebook that downloads data from a personal Google Drive link, uses a local CSV path hard-coded to their machine, and relies on a GPU runtime that only exists in Colab. The demo is real — and still not shippable. The PM move is to ask: where will the data come from in production, how will auth work, what runtime will run it, and how will we monitor failures? Those questions convert a convincing demo into an actual delivery plan.",
+    },
+    {
+      kind: "ex",
+      title: "The fastest notebook credibility check",
+      body: "Open the notebook, click 'Restart kernel', then 'Run all'. If the results change, the notebook is not evidence — it's a story. This single ritual catches out-of-order execution, hidden global state, missing dependencies, and data leakage. PMs who make this a standard expectation stop getting surprised by 'it worked yesterday' prototypes.",
+    },
   ],
   quiz: [
     {
@@ -11383,6 +11597,16 @@ export const concepts: Concept[] = [
         ),
       ],
     },
+    {
+      kind: "ex",
+      title: "The EU deal that dies on region support",
+      body: "A German enterprise buyer asks for EU-only data residency, and your product runs in a single US region. The feature is 'done' from a product perspective, but the sale is blocked. This is the PM lesson: cloud regions are not infrastructure trivia — they gate which markets you can enter and which contracts you can sign. A multi-region plan (even if phased) is a go-to-market dependency.",
+    },
+    {
+      kind: "ex",
+      title: "The invisible egress bill that crushes margins",
+      body: "A team launches an AI feature that returns large PDFs and images to users. Usage explodes, and the AWS bill spikes — not from compute, but from bandwidth egress. The PM takeaway: you must know whether your feature is compute-heavy, storage-heavy, or bandwidth-heavy, because the optimisations (CDN, caching, region placement, compression) are different and the cost cliffs appear at different scales.",
+    },
   ],
   quiz: [
     {
@@ -11684,6 +11908,16 @@ export const concepts: Concept[] = [
           "Pushing engineering to invest in deployment tooling is one of the most leveraged things a PM can do, because it accelerates every future shipment. It's also the least visible work, so it rarely gets prioritised without explicit PM support.",
         ),
       ],
+    },
+    {
+      kind: "ex",
+      title: "From notebook to API: the 'FastAPI + Docker' default",
+      body: "A data scientist has a working notebook. The production path most teams take in 2026 is: refactor into a Python module, wrap it in a small web server (FastAPI), package it into a Docker image with pinned dependencies, then deploy it behind an internal API gateway. This pattern is popular because it preserves what works and makes the runtime reproducible — which removes the most common source of last-mile delays.",
+    },
+    {
+      kind: "ex",
+      title: "The vendor maturity question containers answer",
+      body: "Ask a vendor: 'How do you deploy? Is your service containerised? How long does rollback take?' A vendor that can point to container images, automated rollouts, and rollbacks in minutes is operationally mature. A vendor that says 'we log into the server' is telling you they will be slow to ship fixes and risky to depend on. Containers are a proxy for the whole deployment discipline.",
     },
   ],
   quiz: [
@@ -12015,6 +12249,16 @@ export const concepts: Concept[] = [
         ),
       ],
     },
+    {
+      kind: "ex",
+      title: "The 'change window' trap",
+      body: "A team ships once a month during a 4-hour change window with three approvals, a checklist, and a rollback plan printed on paper. The process exists because failures are expensive — but the process is also why failures stay expensive. CI/CD flips it: invest in automated tests, fast pipelines, feature flags, and automatic rollback so deploys become cheap. Once deploys are cheap, shipping more often becomes safer, not riskier.",
+    },
+    {
+      kind: "ex",
+      title: "Feature flags as the release lever PMs can actually use",
+      body: "A risky feature is merged behind a flag and shipped dark. The PM turns it on for internal users, then 1%, then 5%, watching metrics and error rates. If anything spikes, the flag turns off instantly with no redeploy. This is the practical bridge between product iteration speed and operational safety — and it is one of the clearest places PMs can drive CI/CD maturity.",
+    },
   ],
   quiz: [
     {
@@ -12336,6 +12580,16 @@ export const concepts: Concept[] = [
         ),
         s(" The math isn't hard. The discipline of doing it before commitment is what's rare."),
       ],
+    },
+    {
+      kind: "ex",
+      title: "The unit-economics back-of-envelope that saves a quarter",
+      body: "A team proposes an LLM feature that costs $0.08 per user action. At a projected 30 actions per user per month, that's $2.40 cost per active user. If the plan is $10/month with 70% gross margin target, the feature alone consumes the entire margin. This isn't a finance exercise — it's a scoping decision. The PM move is to either route most traffic to a smaller model, cap usage, charge per use, or narrow the feature so it fits the economics before it ships.",
+    },
+    {
+      kind: "ex",
+      title: "When 'make it faster' is the wrong goal",
+      body: "Generating an image or processing a long document is fundamentally slow. Spending weeks chasing 15% latency reduction is often lower ROI than changing the UX: make it async, stream partial progress, or batch work. The PM lesson: perceived latency is a product surface. If you can't make it fast, make it feel fast — and reserve deep engineering optimisation for the paths users hit constantly.",
     },
   ],
   quiz: [

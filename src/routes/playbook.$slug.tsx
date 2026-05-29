@@ -147,6 +147,15 @@ function ConceptPage() {
   const articleRef = useRef<HTMLElement | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Examples are authored inline as `kind: "ex"` blocks in `concept.body`.
+  // Some concepts may also ship a separate `concept.examples` array; render both.
+  const tabExamples = useMemo(() => {
+    const fromBody = concept.body
+      .filter((b) => b.kind === "ex")
+      .map((b) => ({ title: b.title, body: b.body }));
+    return [...(concept.examples ?? []), ...fromBody];
+  }, [concept.body, concept.examples]);
+
   // Layered reading contract:
   //  - skip "trans" blocks (the Next button implies sequence)
   //  - first <p> in each section stays inline (the "Core")
@@ -375,7 +384,7 @@ function ConceptPage() {
             </div>
 
             {/* Examples */}
-            {concept.examples.length > 0 && (
+            {tabExamples.length > 0 && (
               <section id="examples" className="mt-14">
                 <p className="section-label">Examples</p>
 
@@ -387,7 +396,7 @@ function ConceptPage() {
                 </div>
 
                 <div className="mt-5">
-                  <ExampleTabs examples={concept.examples} />
+                  <ExampleTabs examples={tabExamples} />
                 </div>
               </section>
             )}
@@ -853,7 +862,8 @@ function TableOfContents({
         });
       }
     });
-    if (concept.examples.length > 0) {
+    const bodyExamplesCount = concept.body.filter((b) => b.kind === "ex").length;
+    if ((concept.examples?.length ?? 0) + bodyExamplesCount > 0) {
       list.push({ id: "examples", title: "Examples", kind: "h" });
     }
     list.push({ id: "quiz", title: "Quiz", kind: "h" });

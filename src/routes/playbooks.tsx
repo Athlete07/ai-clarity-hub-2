@@ -204,32 +204,24 @@ function PlaybooksPage() {
 
             {/* Playbooks Vertical Stack */}
             <div className="mt-10 flex flex-col gap-4">
-              <div className="flex items-center justify-between pl-1">
+              <div className="flex items-center justify-between pl-1 pr-1">
                 <h2 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                   Available Playbooks
                 </h2>
-                <div className="flex items-center gap-2">
-                  <ShareMenu
-                    title="AI Playbooks for Product Managers"
-                    summary="Plain-English AI playbooks sequenced for product managers — from foundations to LLMs to developer toolchain."
-                    url={typeof window !== "undefined" ? `${window.location.origin}/playbooks` : "/playbooks"}
-                    variant="pill"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setRole(null);
-                      try {
-                        window.localStorage.removeItem(ROLE_KEY);
-                      } catch {
-                        // ignore
-                      }
-                    }}
-                    className="text-[11px] text-purple hover:underline font-medium cursor-pointer"
-                  >
-                    View all roles
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRole(null);
+                    try {
+                      window.localStorage.removeItem(ROLE_KEY);
+                    } catch {
+                      // ignore
+                    }
+                  }}
+                  className="text-[11px] text-purple hover:underline font-medium cursor-pointer"
+                >
+                  View all roles
+                </button>
               </div>
               {playbooks.map((p, index) => {
                 const pDoneCount = p.sequence.filter((s) => progress[s.slug] === "done").length;
@@ -277,20 +269,30 @@ function PlaybooksPage() {
                       </span>
                     )}
 
-                    <div className="flex flex-col gap-3">
-                      {/* Top Row: Badges */}
-                      <div className="flex flex-wrap items-center gap-2 pr-[120px] sm:pr-[140px]">
-                        <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
-                        >
-                          {p.difficulty}
-                        </span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          ~{p.readingMinutes} min read
-                        </span>
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          {p.sequence.length} Modules
-                        </span>
+                    <div className="flex flex-col gap-2.5">
+                      {/* Metadata row: chips + share (no extra footer row) */}
+                      <div className="flex items-center gap-2 pr-[120px] sm:pr-[140px]">
+                        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
+                          >
+                            {p.difficulty}
+                          </span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            ~{p.readingMinutes} min read
+                          </span>
+                          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            {p.sequence.length} Modules
+                          </span>
+                        </div>
+                        {p.sequence.length > 0 && (
+                          <ShareMenu
+                            title={p.title}
+                            summary={p.description}
+                            slug={nextIncompleteSlug}
+                            variant="icon"
+                          />
+                        )}
                       </div>
 
                       {/* Title & Description */}
