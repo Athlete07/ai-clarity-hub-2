@@ -12192,6 +12192,11 @@ export const concepts: Concept[] = [
       body: "Red Hat's podman is a drop-in replacement for Docker that doesn't require a running daemon. Most teams stay on Docker, but enterprise security teams sometimes mandate podman because the daemon's privileges are a security risk. The PM-useful fact: 'we use Docker' often means 'we use the Docker-compatible ecosystem', and the underlying tool may have already changed.",
     },
     {
+      kind: "ex",
+      title: "Why 'OCI' matters even though no one says it out loud",
+      body: "The Open Container Initiative (OCI) standardised the container image format and runtime spec around 2017, which is why a container built with Docker runs on podman, on Kubernetes, on Fly.io, on Cloud Run, with no changes. The standardisation is invisible when it works, which is most of the time. The PM consequence: vendor switching costs at the container layer are genuinely low, and that's a negotiating lever worth keeping in mind during procurement.",
+    },
+    {
       kind: "h",
       number: "6.4",
       title: "Container registries — where images live",
