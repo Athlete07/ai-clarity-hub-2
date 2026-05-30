@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { CookieConsent } from "@/components/cookie-consent";
+import { useAdsenseLoader } from "@/lib/adsense";
 
 function NotFoundComponent() {
   return (
@@ -133,6 +134,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useAdsenseLoader();
 
   return (
     <QueryClientProvider client={queryClient}>
