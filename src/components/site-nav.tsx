@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useStreak } from "@/lib/storage";
 import { useTheme } from "@/lib/theme";
 import { Flame, Moon, Sun } from "lucide-react";
+import { CookiePreferencesLink } from "@/components/cookie-consent";
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
@@ -88,7 +89,10 @@ export function Footer() {
     <footer className="hairline-t mt-24 py-6">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 text-[12px] text-muted-foreground sm:flex-row sm:items-center">
         <span>FactorBeam · 2026</span>
-        <span>Built for curious minds, not engineers.</span>
+        <div className="flex items-center gap-4">
+          <CookiePreferencesLink />
+          <span>Built for curious minds, not engineers.</span>
+        </div>
       </div>
     </footer>
   );
