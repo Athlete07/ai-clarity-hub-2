@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PlaybooksRouteImport } from './routes/playbooks'
 import { Route as PlaybookRouteImport } from './routes/playbook'
+import { Route as CreatorRouteImport } from './routes/creator'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
@@ -29,6 +30,11 @@ const PlaybooksRoute = PlaybooksRouteImport.update({
 const PlaybookRoute = PlaybookRouteImport.update({
   id: '/playbook',
   path: '/playbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreatorRoute = CreatorRouteImport.update({
+  id: '/creator',
+  path: '/creator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -50,6 +56,7 @@ const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/creator'
     | '/playbook'
     | '/playbooks'
     | '/sitemap.xml'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/creator'
     | '/playbook'
     | '/playbooks'
     | '/sitemap.xml'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/creator'
     | '/playbook'
     | '/playbooks'
     | '/sitemap.xml'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CreatorRoute: typeof CreatorRoute
   PlaybookRoute: typeof PlaybookRouteWithChildren
   PlaybooksRoute: typeof PlaybooksRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/playbook'
       fullPath: '/playbook'
       preLoaderRoute: typeof PlaybookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creator': {
+      id: '/creator'
+      path: '/creator'
+      fullPath: '/creator'
+      preLoaderRoute: typeof CreatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -169,6 +189,7 @@ const PlaybookRouteWithChildren = PlaybookRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CreatorRoute: CreatorRoute,
   PlaybookRoute: PlaybookRouteWithChildren,
   PlaybooksRoute: PlaybooksRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
