@@ -5,6 +5,8 @@ import { ExampleTabs } from "@/components/example-tabs";
 import { HighlightExplainer } from "@/components/highlight-explainer";
 import { Quiz } from "@/components/quiz";
 import { DiagramBlock } from "@/components/diagrams";
+import { CreatorAttribution } from "@/components/creator-attribution";
+import { CREATOR } from "@/lib/creator";
 import {
   conceptBySlug,
   type ConceptBodyBlock,
