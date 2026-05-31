@@ -67,6 +67,12 @@ export function Nav({ slim = false }: { slim?: boolean }) {
             >
               About
             </Link>
+            <Link
+              to="/creator"
+              className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Creator
+            </Link>
           </nav>
         )}
 
