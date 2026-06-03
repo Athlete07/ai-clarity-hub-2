@@ -149,7 +149,6 @@ function About() {
           </div>
         </section>
 
-
         {/* ── Footer CTA ──────────────────────────────────────────── */}
         <section className="mx-auto max-w-[680px] px-5 pb-32 sm:px-6">
           <div className="text-center hairline bg-card p-10 sm:p-14 rounded-2xl flex flex-col items-center">
