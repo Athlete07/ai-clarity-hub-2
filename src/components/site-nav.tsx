@@ -1,8 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useStreak } from "@/lib/storage";
 import { useTheme } from "@/lib/theme";
-import { Flame, Moon, Sun } from "lucide-react";
+import { Flame, Moon, Sun, Menu } from "lucide-react";
 import { CookiePreferencesLink } from "@/components/cookie-consent";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import * as React from "react";
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
@@ -30,6 +32,63 @@ export function Logo({ size = 15 }: { size?: number }) {
       />
       <span style={{ fontSize: size, fontWeight: 500, letterSpacing: "-0.01em" }}>FactorBeam</span>
     </Link>
+  );
+}
+
+function MobileMenu({ slim = false }: { slim?: boolean }) {
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const unsubscribe = router.subscribe("onResolved", () => setOpen(false));
+    return () => unsubscribe();
+  }, [router]);
+
+  if (slim) return null;
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <button
+          type="button"
+          aria-label="Open menu"
+          className="hairline inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+        >
+          <Menu size={18} />
+        </button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[280px] border-l bg-background/95 backdrop-blur p-0">
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <div className="flex h-full flex-col">
+          <div className="hairline-b flex items-center gap-3 px-5 py-4">
+            <Logo size={14} />
+          </div>
+          <nav className="flex flex-col gap-1 p-3">
+            <Link
+              to="/playbooks"
+              className="rounded-md px-3 py-2.5 text-[14px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              Playbooks
+            </Link>
+            <Link
+              to="/about"
+              className="rounded-md px-3 py-2.5 text-[14px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              About
+            </Link>
+            <Link
+              to="/creator"
+              className="rounded-md px-3 py-2.5 text-[14px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              Creator
+            </Link>
+          </nav>
+          <div className="mt-auto hairline-t p-4">
+            <CookiePreferencesLink />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -76,7 +135,7 @@ export function Nav({ slim = false }: { slim?: boolean }) {
           </nav>
         )}
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {streak > 1 && (
             <span className="hidden items-center gap-1 text-[12px] text-muted-foreground md:inline-flex">
               <Flame size={13} />
@@ -84,6 +143,7 @@ export function Nav({ slim = false }: { slim?: boolean }) {
             </span>
           )}
           <ThemeToggle />
+          <MobileMenu slim={slim} />
         </div>
       </div>
     </header>
