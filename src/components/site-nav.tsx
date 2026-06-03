@@ -82,6 +82,12 @@ function MobileMenu({ slim = false }: { slim?: boolean }) {
             >
               Creator
             </Link>
+            <Link
+              to="/contact"
+              className="rounded-md px-3 py-2.5 text-[14px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              Contact
+            </Link>
           </nav>
           <div className="mt-auto hairline-t p-4">
             <CookiePreferencesLink />
@@ -131,6 +137,12 @@ export function Nav({ slim = false }: { slim?: boolean }) {
               className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
             >
               Creator
+            </Link>
+            <Link
+              to="/contact"
+              className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Contact
             </Link>
           </nav>
         )}

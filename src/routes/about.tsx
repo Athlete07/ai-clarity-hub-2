@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
-import { ArrowRight, Mail, MessageSquareText } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -149,40 +149,6 @@ function About() {
           </div>
         </section>
 
-        {/* ── Feedback & Contact ──────────────────────────────────── */}
-        <section className="mx-auto max-w-[680px] px-5 pb-24 sm:px-6 sm:pb-32">
-          <div className="hairline bg-card rounded-2xl p-8 sm:p-10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple/10 text-purple">
-                <MessageSquareText size={18} />
-              </div>
-              <div>
-                <div className="section-label">Feedback</div>
-                <h2 className="text-[20px] font-medium tracking-tight sm:text-[24px]">
-                  Spot something off?
-                </h2>
-              </div>
-            </div>
-            <p className="text-[14.5px] sm:text-[15px] text-muted-foreground leading-relaxed mb-6">
-              Every concept here is held to a high bar — but mistakes slip through, examples age, and explanations can always be sharper. If a section confused you, an example felt off, or you have a clearer way to explain an idea, we want to hear it.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="mailto:hello@factorbeam.dev?subject=Playbook%20Feedback%20%E2%80%94%20Suggested%20Edit&body=Hi%20FactorBeam%20team%2C%0A%0AI%20was%20reading%20%5Bchapter%20name%5D%20and%20noticed%20something%3A%0A%0A-%20Concept%3A%20%5Bwhich%20concept%5D%0A-%20Issue%3A%20%5Bwhat%20felt%20unclear%2C%20wrong%2C%20or%20missing%5D%0A-%20Suggestion%3A%20%5Bhow%20you%27d%20rephrase%20or%20improve%20it%5D%0A%0AKeep%20up%20the%20great%20work.%0A"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-purple px-5 py-2.5 text-[14px] font-medium text-white transition-colors hover:bg-purple-dark"
-              >
-                <Mail size={15} />
-                Suggest an edit
-              </a>
-              <a
-                href="mailto:hello@factorbeam.dev?subject=General%20Feedback&body=Hi%20FactorBeam%20team%2C%0A%0A"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-border px-5 py-2.5 text-[14px] font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                Send general feedback
-              </a>
-            </div>
-          </div>
-        </section>
 
         {/* ── Footer CTA ──────────────────────────────────────────── */}
         <section className="mx-auto max-w-[680px] px-5 pb-32 sm:px-6">
