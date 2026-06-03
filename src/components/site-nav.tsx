@@ -1,8 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useStreak } from "@/lib/storage";
 import { useTheme } from "@/lib/theme";
-import { Flame, Moon, Sun } from "lucide-react";
+import { Flame, Moon, Sun, Menu } from "lucide-react";
 import { CookiePreferencesLink } from "@/components/cookie-consent";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import * as React from "react";
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
