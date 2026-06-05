@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import * as React from "react";
 
 function ThemeToggle() {
-  const { theme, toggle } = useTheme();
+  const { theme, toggle, mounted } = useTheme();
   const isDark = theme === "dark";
   return (
     <button
@@ -17,7 +17,7 @@ function ThemeToggle() {
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className="hairline inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
     >
-      {isDark ? <Sun size={14} /> : <Moon size={14} />}
+      {!mounted ? <Sun size={14} /> : isDark ? <Sun size={14} /> : <Moon size={14} />}
     </button>
   );
 }
@@ -167,12 +167,18 @@ export function Footer() {
     <footer className="hairline-t mt-24 py-6">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 text-[12px] text-muted-foreground sm:flex-row sm:items-center">
         <span>FactorBeam · 2026</span>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Link
             to="/privacy-policy"
             className="hover:text-foreground transition-colors"
           >
             Privacy
+          </Link>
+          <Link
+            to="/terms-of-service"
+            className="hover:text-foreground transition-colors"
+          >
+            Terms
           </Link>
           <CookiePreferencesLink />
           <span>Built for curious minds, not engineers.</span>
