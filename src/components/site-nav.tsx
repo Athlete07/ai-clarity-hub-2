@@ -168,6 +168,12 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-2 px-6 text-[12px] text-muted-foreground sm:flex-row sm:items-center">
         <span>FactorBeam · 2026</span>
         <div className="flex items-center gap-4">
+          <Link
+            to="/privacy-policy"
+            className="hover:text-foreground transition-colors"
+          >
+            Privacy
+          </Link>
           <CookiePreferencesLink />
           <span>Built for curious minds, not engineers.</span>
         </div>
