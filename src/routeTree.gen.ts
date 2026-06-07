@@ -21,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GamesIndexRouteImport } from './routes/games.index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
+import { Route as GamesSlugRouteImport } from './routes/games.$slug'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -82,6 +83,11 @@ const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PlaybookRoute,
 } as any)
+const GamesSlugRoute = GamesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => GamesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games/$slug': typeof GamesSlugRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/games/': typeof GamesIndexRoute
 }
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games/$slug': typeof GamesSlugRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/games': typeof GamesIndexRoute
 }
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games/$slug': typeof GamesSlugRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/games/': typeof GamesIndexRoute
 }
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games/$slug'
     | '/playbook/$slug'
     | '/games/'
   fileRoutesByTo: FileRoutesByTo
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games/$slug'
     | '/playbook/$slug'
     | '/games'
   id:
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games/$slug'
     | '/playbook/$slug'
     | '/games/'
   fileRoutesById: FileRoutesById
@@ -268,14 +280,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaybookSlugRouteImport
       parentRoute: typeof PlaybookRoute
     }
+    '/games/$slug': {
+      id: '/games/$slug'
+      path: '/$slug'
+      fullPath: '/games/$slug'
+      preLoaderRoute: typeof GamesSlugRouteImport
+      parentRoute: typeof GamesRoute
+    }
   }
 }
 
 interface GamesRouteChildren {
+  GamesSlugRoute: typeof GamesSlugRoute
   GamesIndexRoute: typeof GamesIndexRoute
 }
 
 const GamesRouteChildren: GamesRouteChildren = {
+  GamesSlugRoute: GamesSlugRoute,
   GamesIndexRoute: GamesIndexRoute,
 }
 
