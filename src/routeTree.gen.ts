@@ -14,10 +14,12 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PlaybooksRouteImport } from './routes/playbooks'
 import { Route as PlaybookRouteImport } from './routes/playbook'
+import { Route as GamesRouteImport } from './routes/games'
 import { Route as CreatorRouteImport } from './routes/creator'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GamesIndexRouteImport } from './routes/games.index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
@@ -45,6 +47,11 @@ const PlaybookRoute = PlaybookRouteImport.update({
   path: '/playbook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorRoute = CreatorRouteImport.update({
   id: '/creator',
   path: '/creator',
@@ -65,6 +72,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GamesIndexRoute = GamesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GamesRoute,
+} as any)
 const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -76,12 +88,14 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
+  '/games': typeof GamesRouteWithChildren
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/games/': typeof GamesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +108,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/games': typeof GamesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,12 +116,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
+  '/games': typeof GamesRouteWithChildren
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/games/': typeof GamesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,12 +132,14 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creator'
+    | '/games'
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/games/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,18 +152,21 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/games'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
     | '/creator'
+    | '/games'
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/games/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -152,6 +174,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   CreatorRoute: typeof CreatorRoute
+  GamesRoute: typeof GamesRouteWithChildren
   PlaybookRoute: typeof PlaybookRouteWithChildren
   PlaybooksRoute: typeof PlaybooksRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
@@ -196,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaybookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/creator': {
       id: '/creator'
       path: '/creator'
@@ -224,6 +254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/games/': {
+      id: '/games/'
+      path: '/'
+      fullPath: '/games/'
+      preLoaderRoute: typeof GamesIndexRouteImport
+      parentRoute: typeof GamesRoute
+    }
     '/playbook/$slug': {
       id: '/playbook/$slug'
       path: '/$slug'
@@ -233,6 +270,16 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface GamesRouteChildren {
+  GamesIndexRoute: typeof GamesIndexRoute
+}
+
+const GamesRouteChildren: GamesRouteChildren = {
+  GamesIndexRoute: GamesIndexRoute,
+}
+
+const GamesRouteWithChildren = GamesRoute._addFileChildren(GamesRouteChildren)
 
 interface PlaybookRouteChildren {
   PlaybookSlugRoute: typeof PlaybookSlugRoute
@@ -251,6 +298,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   CreatorRoute: CreatorRoute,
+  GamesRoute: GamesRouteWithChildren,
   PlaybookRoute: PlaybookRouteWithChildren,
   PlaybooksRoute: PlaybooksRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
