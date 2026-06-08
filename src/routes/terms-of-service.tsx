@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
-import { FileText, Globe, Lock, AlertTriangle, ArrowRight } from "lucide-react";
+import { FileText, Globe, Lock, AlertTriangle, Shield, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/terms-of-service")({
   head: () => ({
@@ -109,6 +109,42 @@ function TermsOfService() {
                 <li>Create derivative works (e.g., courses, books, paid newsletters) based on our playbooks without a licence</li>
                 <li>Scrape, mirror, or systematically download the site</li>
               </ul>
+            </PolicySection>
+
+            {/* DMCA / Copyright takedown */}
+            <PolicySection icon={Shield} title="Copyright & DMCA takedown">
+              <p>
+                FactorBeam respects the intellectual-property rights of others. If you
+                believe that material on our Service infringes your copyright, please
+                notify us in writing with the following information:
+              </p>
+              <ul>
+                <li>A physical or electronic signature of the copyright owner or a person authorised to act on their behalf</li>
+                <li>Identification of the copyrighted work claimed to have been infringed</li>
+                <li>Identification of the infringing material and its location on our Service (URL or specific page)</li>
+                <li>Your contact information, including address, telephone number, and email address</li>
+                <li>A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent, or the law</li>
+                <li>A statement, under penalty of perjury, that the information in your notice is accurate and that you are the copyright owner or authorised to act on their behalf</li>
+              </ul>
+              <p>
+                Send takedown notices to:{" "}
+                <a
+                  href="mailto:dmca@factorbeam.com"
+                  className="text-purple hover:underline"
+                >
+                  dmca@factorbeam.com
+                </a>
+              </p>
+              <p>
+                We will review all notices promptly and remove or disable access to
+                infringing material where appropriate. We may terminate the accounts of
+                repeat infringers.
+              </p>
+              <p>
+                If you believe your content was removed in error, you may submit a
+                counter-notice to the same email address with the required details under
+                applicable law.
+              </p>
             </PolicySection>
 
             {/* User conduct */}
