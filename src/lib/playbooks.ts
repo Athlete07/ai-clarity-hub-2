@@ -12,7 +12,15 @@ export type PlaybookId =
   | "agents-multi-agent-systems"
   | "ai-product-strategy-decisions"
   | "multimodal-emerging-ai"
-  | "seo-content-strategy-ai";
+  | "seo-content-strategy-ai"
+  | "ai-fundamentals-for-founders"
+  | "building-ai-native-company"
+  | "ai-strategy-competitive-positioning"
+  | "funding-valuation-ai-premium"
+  | "ai-team-building-org-design"
+  | "ai-vendor-build-buy-decisions"
+  | "ai-risk-governance-founders"
+  | "scaling-ai-product";
 
 export type PlaybookChapter = {
   slug: string;
@@ -21,6 +29,8 @@ export type PlaybookChapter = {
 
 export type Playbook = {
   id: PlaybookId;
+  /** 1-based sequence within this role track (PM or Founder). */
+  order: number;
   title: string;
   subtitle: string;
   description: string;
@@ -30,7 +40,22 @@ export type Playbook = {
   sequence: PlaybookChapter[];
 };
 
-export const PLAYBOOKS: Playbook[] = [
+/** Assign 1-based order from array position — single source of truth for track sequencing. */
+export function withTrackOrder<T extends Omit<Playbook, "order">>(playbooks: T[]): Playbook[] {
+  return playbooks.map((p, i) => ({ ...p, order: i + 1 }));
+}
+
+/** Display label for a playbook within its role track, e.g. "Playbook 01". */
+export function formatPlaybookLabel(order: number): string {
+  return `Playbook ${String(order).padStart(2, "0")}`;
+}
+
+/** Position within a track, e.g. "Playbook 01 of 08". */
+export function formatPlaybookTrackPosition(order: number, trackSize: number): string {
+  return `${formatPlaybookLabel(order)} of ${String(trackSize).padStart(2, "0")}`;
+}
+
+const PM_PLAYBOOKS: Omit<Playbook, "order">[] = [
   {
     id: "pm-foundations",
     title: "AI Foundations for PMs",
@@ -512,7 +537,10 @@ export const PLAYBOOKS: Playbook[] = [
   },
 ];
 
+export const PLAYBOOKS: Playbook[] = withTrackOrder(PM_PLAYBOOKS);
+
 import { canonicalChapterSlug } from "./chapter-slug-migrations";
+import { FOUNDER_PLAYBOOKS } from "./playbooks-founder";
 
 /** Legacy playbook URL segments → canonical playbook id (no pb-N- prefix). */
 export const LEGACY_PLAYBOOK_IDS: Record<string, PlaybookId> = {
@@ -533,8 +561,13 @@ export const playbookForSlug = (slug: string): Playbook | undefined => {
   return PLAYBOOKS.find((p) => p.sequence.some((c) => c.slug === canonical));
 };
 
-export const playbookById = (id: string): Playbook | undefined =>
-  PLAYBOOKS.find((p) => p.id === canonicalPlaybookId(id));
+export const playbookById = (id: string): Playbook | undefined => {
+  const canonical = canonicalPlaybookId(id);
+  return (
+    PLAYBOOKS.find((p) => p.id === canonical) ??
+    FOUNDER_PLAYBOOKS.find((p) => p.id === canonical)
+  );
+};
 
 /** Canonical chapter URL: /playbooks/{playbookId}/{chapterSlug} */
 export function chapterPath(playbookId: string, chapterSlug: string): string {

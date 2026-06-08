@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
 import { FaqItem } from "@/components/faq-item";
 import { useProgress } from "@/lib/storage";
-import { PLAYBOOKS, chapterRouteParams } from "@/lib/playbooks";
+import { PLAYBOOKS, chapterRouteParams, formatPlaybookLabel } from "@/lib/playbooks";
 import { conceptBySlug } from "@/lib/concepts";
 import {
   ArrowRight,
@@ -151,7 +151,7 @@ function Home() {
           </div>
 
           <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5">
-            {PLAYBOOKS.map((p, i) => {
+            {PLAYBOOKS.map((p) => {
               const pDone = p.sequence.filter((s) => progress[s.slug] === "done").length;
               const pPct = p.sequence.length
                 ? Math.round((pDone / p.sequence.length) * 100)
@@ -176,7 +176,7 @@ function Home() {
                 >
                   <div className="flex items-center gap-2">
                     <span className="rounded-full bg-purple-light px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-purple-dark">
-                      Playbook {String(i + 1).padStart(2, "0")}
+                      {formatPlaybookLabel(p.order)}
                     </span>
                     <span className="text-[11px] text-muted-foreground">
                       {p.difficulty} · ~{p.readingMinutes} min

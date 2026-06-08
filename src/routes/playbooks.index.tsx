@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { Nav, Footer } from "@/components/site-nav";
 import { ShareMenu } from "@/components/share-menu";
 import { useProgress } from "@/lib/storage";
-import { Briefcase, ArrowRight } from "lucide-react";
-import { PLAYBOOKS, type Playbook } from "@/lib/playbooks";
+import { Briefcase, Crown, ArrowRight } from "lucide-react";
+import { PLAYBOOKS, formatPlaybookLabel, type Playbook } from "@/lib/playbooks";
+import { FOUNDER_PLAYBOOKS } from "@/lib/playbooks-founder";
 
 export const Route = createFileRoute("/playbooks/")({
   head: () => ({
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/playbooks/")({
   component: PlaybooksPage,
 });
 
-type RoleId = "pm";
+type RoleId = "pm" | "founder";
 
 type Role = {
   id: RoleId;
@@ -52,6 +53,15 @@ const ROLES: Role[] = [
     iconColor: "#534AB7",
     popular: true,
   },
+  {
+    id: "founder",
+    title: "Founder/CEO",
+    description:
+      "Make AI strategy, vendor, and roadmap calls with confidence — without needing to become an engineer first.",
+    icon: Crown,
+    iconBg: "#FEF3E2",
+    iconColor: "#B45309",
+  },
 ];
 
 const THEMES = {
@@ -61,17 +71,30 @@ const THEMES = {
     badge: "bg-purple-light text-purple-dark border border-purple/10",
     progress: "bg-purple",
     textHover: "group-hover/card:text-purple",
+    pillActive: "bg-purple text-white border-purple",
+    cardHover: "hover:border-purple/40",
+  },
+  founder: {
+    border: "border-amber",
+    glow: "from-amber-bg/30",
+    badge: "bg-amber-bg text-amber border border-amber/10",
+    progress: "bg-amber",
+    textHover: "group-hover/card:text-amber",
+    pillActive: "bg-amber text-white border-amber",
+    cardHover: "hover:border-amber/40",
   },
 } as const;
 
 const PLAYBOOKS_BY_ROLE: Record<RoleId, Playbook[]> = {
   pm: PLAYBOOKS,
+  founder: FOUNDER_PLAYBOOKS,
 };
 
 const ROLE_KEY = "factorbeam_selected_role";
 
 const HOVER_BORDERS: Record<RoleId, string> = {
   pm: "hover:border-purple/50 dark:hover:border-purple-dark/50",
+  founder: "hover:border-amber/50 dark:hover:border-amber/50",
 };
 
 function PlaybooksPage() {
@@ -172,6 +195,7 @@ function PlaybooksPage() {
                 {ROLES.map((r) => {
                   const Icon = r.icon;
                   const active = r.id === role;
+                  const theme = THEMES[r.id];
                   return (
                     <button
                       key={r.id}
@@ -180,7 +204,7 @@ function PlaybooksPage() {
                       aria-pressed={active}
                       className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
                         active
-                          ? "bg-purple text-white border-purple"
+                          ? theme.pillActive
                           : "bg-muted/40 hover:bg-muted text-muted-foreground border-border/40"
                       }`}
                     >
@@ -223,9 +247,21 @@ function PlaybooksPage() {
                   View all roles
                 </button>
               </div>
-              {playbooks.map((p, index) => {
+              {playbooks.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 px-6 py-12 text-center">
+                  <p className="text-[15px] font-medium text-foreground">No playbooks yet</p>
+                  <p className="mx-auto mt-2 max-w-[360px] text-[13px] leading-relaxed text-muted-foreground">
+                    {ROLES.find((r) => r.id === role)?.title} playbooks are on the way. Switch to
+                    Product Manager to browse what&apos;s available today.
+                  </p>
+                </div>
+              ) : (
+              playbooks.map((p, index) => {
+                const moduleCount = p.sequence.length || p.topics.length;
                 const pDoneCount = p.sequence.filter((s) => progress[s.slug] === "done").length;
-                const pPct = Math.round((pDoneCount / p.sequence.length) * 100);
+                const pPct = p.sequence.length
+                  ? Math.round((pDoneCount / p.sequence.length) * 100)
+                  : 0;
                 const theme = THEMES[role];
                 const nextIncompleteSlug =
                   p.sequence.find((s) => progress[s.slug] !== "done")?.slug || p.sequence[0]?.slug;
@@ -233,7 +269,7 @@ function PlaybooksPage() {
                 return (
                   <div
                     key={p.id}
-                    className="rounded-2xl border p-4 sm:p-5 bg-card relative transition-all duration-300 border-border/60 hover:border-purple/40 animate-fade-in-up"
+                    className={`rounded-2xl border p-4 sm:p-5 bg-card relative transition-all duration-300 border-border/60 ${theme.cardHover} animate-fade-in-up`}
                     style={{
                       animationDelay: `${index * 120}ms`,
                       animationFillMode: "both",
@@ -276,13 +312,18 @@ function PlaybooksPage() {
                           <span
                             className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
                           >
+                            {formatPlaybookLabel(p.order)}
+                          </span>
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
+                          >
                             {p.difficulty}
                           </span>
                           <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                             ~{p.readingMinutes} min read
                           </span>
                           <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            {p.sequence.length} Modules
+                            {moduleCount} Modules
                           </span>
                         </div>
                         {p.sequence.length > 0 && (
@@ -344,7 +385,8 @@ function PlaybooksPage() {
                     </div>
                   </div>
                 );
-              })}
+              })
+              )}
             </div>
           </div>
         )}
