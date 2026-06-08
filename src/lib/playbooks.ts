@@ -404,9 +404,9 @@ export const PLAYBOOKS: Playbook[] = [
     title: "Multimodal & Emerging AI",
     subtitle: "New",
     description:
-      "The practical product and technical landscape of multimodal systems — and what’s likely coming next.",
+      "Beyond text — the models that see, hear, speak, and generate across every medium — and what they mean for the products you'll build next.",
     difficulty: "Intermediate",
-    readingMinutes: 30,
+    readingMinutes: 256,
     topics: [
       "Vision transformers (ViT)",
       "Diffusion models & image generation",
@@ -418,16 +418,53 @@ export const PLAYBOOKS: Playbook[] = [
       "On-device AI",
       "What's coming: world models, reasoning models",
     ],
-    sequence: [],
+    sequence: [
+      {
+        slug: "pb8-vision-transformers",
+        note: "How transformers moved from language to images — and why the same architecture that reads text now understands what it sees.",
+      },
+      {
+        slug: "pb8-diffusion-image-generation",
+        note: "How modern image generation actually works — the probabilistic process behind Midjourney, DALL-E, and Stable Diffusion.",
+      },
+      {
+        slug: "pb8-speech-to-text-tts",
+        note: "The voice layer of AI products — how machines listen and speak, and what production-grade audio AI actually requires.",
+      },
+      {
+        slug: "pb8-video-ai",
+        note: "The hardest modality — what models can do with moving images today and where the capability frontier actually sits.",
+      },
+      {
+        slug: "pb8-voice-interfaces",
+        note: "Designing AI products people talk to — the interaction model, UX patterns, and reliability constraints that make voice hard to ship well.",
+      },
+      {
+        slug: "pb8-multimodal-product-design",
+        note: "The UX and architecture patterns that work when your product takes in or produces more than one modality at once.",
+      },
+      {
+        slug: "pb8-ai-video-generation",
+        note: "The frontier capability reshaping content creation — what it can do now, what it can't, and how to build products around it responsibly.",
+      },
+      {
+        slug: "pb8-on-device-ai",
+        note: "Bringing models to the hardware — the technical and product shift that moves AI off the cloud and onto the device in your user's pocket.",
+      },
+      {
+        slug: "pb8-emerging-ai-frontier",
+        note: "The frontier that will define the next generation of AI products — world models, reasoning models, and how to build strategy around deep uncertainty.",
+      },
+    ],
   },
   {
     id: "pb-9-seo-content-strategy-ai",
     title: "SEO & Content Strategy for AI",
     subtitle: "Unchanged",
     description:
-      "How search works now (and where it’s heading) — topic clusters, entities, schema, and optimization for AI search surfaces.",
+      "How search is being reinvented by AI — and how PMs build content strategies that win in a world where the answer appears before the link.",
     difficulty: "Beginner",
-    readingMinutes: 25,
+    readingMinutes: 225,
     topics: [
       "Semantic SEO",
       "Topic clusters & pillar pages",
@@ -438,7 +475,40 @@ export const PLAYBOOKS: Playbook[] = [
       "Search intent mapping",
       "AIO (AI search optimization)",
     ],
-    sequence: [],
+    sequence: [
+      {
+        slug: "pb9-semantic-seo",
+        note: "Beyond keywords — how search engines moved from matching strings to understanding meaning, and what that demands from your content.",
+      },
+      {
+        slug: "pb9-topic-clusters-pillar-pages",
+        note: "The content architecture that signals expertise to search engines — and organises knowledge in a way users actually navigate.",
+      },
+      {
+        slug: "pb9-ai-overviews-optimisation",
+        note: "Ranking in the answer, not just below it — how to structure content that gets selected as source material for AI-generated search summaries.",
+      },
+      {
+        slug: "pb9-structured-data-schema",
+        note: "Speaking the language search engines prefer — the markup that makes your content machine-readable and eligible for rich results.",
+      },
+      {
+        slug: "pb9-entity-based-seo",
+        note: "How search engines understand the world through named things — and how to make your brand, products, and content part of that knowledge graph.",
+      },
+      {
+        slug: "pb9-content-architecture",
+        note: "The structural decisions that determine whether your content compounds in value or collapses under its own weight.",
+      },
+      {
+        slug: "pb9-search-intent-mapping",
+        note: "Matching content to what people actually want when they search — the analytical practice that prevents ranking for the wrong thing.",
+      },
+      {
+        slug: "pb9-aio-ai-search-optimisation",
+        note: "The emerging discipline of optimising for AI-powered search — how to stay visible when the interface between users and content is an AI that summarises, answers, and cites.",
+      },
+    ],
   },
 ];
 
