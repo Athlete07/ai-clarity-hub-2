@@ -315,6 +315,11 @@ function PlaybooksPage() {
                             </div>
                           )}
                         </div>
+                        {p.subtitle && (
+                          <p className="mt-1 text-[12px] font-medium text-muted-foreground">
+                            {p.subtitle}
+                          </p>
+                        )}
                         <p className="mt-1 text-[13px] text-muted-foreground leading-relaxed">
                           {p.description}
                         </p>

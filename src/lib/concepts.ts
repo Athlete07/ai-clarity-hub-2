@@ -1,3 +1,5 @@
+import { pb4Concepts } from "./concepts-pb4";
+
 export type ExplainSpan = { text: string; explain: string };
 export type ConceptBodyBlock =
   | { kind: "p"; parts: (string | ExplainSpan)[] }
@@ -13343,6 +13345,7 @@ export const concepts: Concept[] = [
   ],
   examples: [],
 },
+  ...pb4Concepts,
 ];
 
 export const conceptBySlug = (slug: string): Concept | undefined =>

@@ -35,6 +35,7 @@ export function DiagramBlock({ block }: { block: Extract<ConceptBodyBlock, { kin
         {block.id === "ch6-orchestration" && <OrchestrationTree />}
         {block.id === "ch7-deploy-flow" && <DeployFlow />}
         {block.id === "ch8-cost-latency-frontier" && <CostLatencyFrontier />}
+        {block.id === "pb4-rag-pipeline" && <RagPipelineFlow />}
       </div>
     </div>
   );
@@ -88,6 +89,21 @@ function GitFlow() {
         { title: "Review + CI", desc: "Tests, lint, approval" },
         { title: "Merge to main", desc: "Squash or merge commit" },
         { title: "Deploy", desc: "CD pipeline to prod" },
+      ]}
+    />
+  );
+}
+
+function RagPipelineFlow() {
+  return (
+    <StepRow
+      steps={[
+        { title: "Ingest", desc: "Load docs, PDFs, APIs" },
+        { title: "Chunk", desc: "Split into passages" },
+        { title: "Embed", desc: "Vectors per chunk" },
+        { title: "Index", desc: "Store in vector DB" },
+        { title: "Retrieve", desc: "Top-N at query time" },
+        { title: "Generate", desc: "LLM + grounded context" },
       ]}
     />
   );

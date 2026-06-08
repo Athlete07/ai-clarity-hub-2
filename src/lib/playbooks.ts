@@ -3,7 +3,16 @@
 // Keeping chapters scoped to their playbook prevents cross-playbook bleed
 // in sidebar, prev/next nav, progress %, and chapter numbering.
 
-export type PlaybookId = "pm-foundations" | "pm-llms-prompting" | "pm-dev-toolchain";
+export type PlaybookId =
+  | "pm-foundations"
+  | "pm-llms-prompting"
+  | "pm-dev-toolchain"
+  | "pb-4-ai-systems-design"
+  | "pb-5-ai-infrastructure-deployment"
+  | "pb-6-agents-multi-agent-systems"
+  | "pb-7-ai-product-strategy-decisions"
+  | "pb-8-multimodal-emerging-ai"
+  | "pb-9-seo-content-strategy-ai";
 
 export type PlaybookChapter = {
   slug: string;
@@ -162,6 +171,167 @@ export const PLAYBOOKS: Playbook[] = [
         note: "The constraint every technical product decision lives inside, and why you must calculate unit economics before writing a Jira ticket.",
       }
     ],
+  },
+  {
+    id: "pb-4-ai-systems-design",
+    title: "AI Systems Design",
+    subtitle: "Expanded",
+    description:
+      "A deeper systems-level view of how modern AI products are built, tuned, evaluated, and monitored in production.",
+    difficulty: "Advanced",
+    readingMinutes: 247,
+    topics: [
+      "RAG architecture",
+      "Vector databases",
+      "Chunking & retrieval",
+      "Reranking",
+      "LangChain",
+      "Fine-tuning (LoRA, QLoRA, DPO, RLHF)",
+      "Evals & benchmarks",
+      "Guardrails & safety layers",
+      "Observability & tracing",
+    ],
+    sequence: [
+      {
+        slug: "pb4-rag-architecture",
+        note: "The most important pattern in applied AI — giving your model knowledge it wasn't trained on.",
+      },
+      {
+        slug: "pb4-vector-databases",
+        note: "The specialised index that makes million-scale semantic search possible — and the vendor choice that locks in your RAG economics.",
+      },
+      {
+        slug: "pb4-chunking-retrieval",
+        note: "How you split knowledge determines what can be found — chunking and retrieval strategy are the highest-leverage quality knobs in any RAG system.",
+      },
+      {
+        slug: "pb4-reranking",
+        note: "First-pass retrieval gets you in the ballpark; reranking decides what actually reaches the model.",
+      },
+      {
+        slug: "pb4-langchain-orchestration",
+        note: "LangChain is the duct tape of LLM applications — chains, agents, tools, memory, and observability hooks in one ecosystem.",
+      },
+      {
+        slug: "pb4-fine-tuning-deep-dive",
+        note: "Full fine-tuning, LoRA, QLoRA, instruction tuning, DPO, and RLHF — the adaptation stack PMs navigate when prompting and RAG stop being enough.",
+      },
+      {
+        slug: "pb4-evals-benchmarks",
+        note: "How to measure whether your AI feature actually works — and why defining what 'better' means is a product decision, not an engineering one.",
+      },
+      {
+        slug: "pb4-guardrails-safety",
+        note: "Input and output guardrails, moderation APIs, and regulatory context — how PMs ship capable AI without shipping liability.",
+      },
+      {
+        slug: "pb4-observability-tracing",
+        note: "Why you can't iterate on an AI feature you can't see — tracing, cost monitoring, and production feedback loops.",
+      },
+    ],
+  },
+  {
+    id: "pb-5-ai-infrastructure-deployment",
+    title: "AI Infrastructure & Deployment",
+    subtitle: "New",
+    description:
+      "Serving, deploying, and operating models reliably — from inference architecture choices to MLOps rollout patterns.",
+    difficulty: "Advanced",
+    readingMinutes: 35,
+    topics: [
+      "Model serving architectures",
+      "GPU vs CPU inference",
+      "Batch vs streaming",
+      "Quantization & distillation",
+      "Edge vs cloud",
+      "MLOps pipelines",
+      "Model versioning",
+      "Canary & shadow deployments",
+      "Latency/cost/quality triangle",
+    ],
+    sequence: [],
+  },
+  {
+    id: "pb-6-agents-multi-agent-systems",
+    title: "Agents & Multi-agent Systems",
+    subtitle: "New — was buried in PB5",
+    description:
+      "Agent design patterns, tool use, memory, and reliability — plus how to coordinate multiple agents safely.",
+    difficulty: "Advanced",
+    readingMinutes: 35,
+    topics: [
+      "Agent fundamentals & architectures",
+      "Tool use & function calling",
+      "ReAct & planning patterns",
+      "Memory types (in-context, episodic, semantic)",
+      "LangGraph deep dive",
+      "Multi-agent coordination & supervision",
+      "MCP protocol",
+      "Agent reliability & failure modes",
+      "Human-in-the-loop design",
+    ],
+    sequence: [],
+  },
+  {
+    id: "pb-7-ai-product-strategy-decisions",
+    title: "AI Product Strategy & Decisions",
+    subtitle: "Expanded",
+    description:
+      "How to make (and defend) product decisions in AI: metrics, discovery, data flywheels, and responsible AI constraints.",
+    difficulty: "Intermediate",
+    readingMinutes: 30,
+    topics: [
+      "Build vs buy vs fine-tune",
+      "AI metrics (task completion, drift, online evals, RLHF loops)",
+      "AI discovery methods",
+      "Data strategy & flywheels",
+      "AI safety, ethics & regulation (EU AI Act, red-teaming, constitutional AI)",
+      "AI PRDs & specs",
+      "Roadmap for AI features",
+      "Responsible AI frameworks",
+    ],
+    sequence: [],
+  },
+  {
+    id: "pb-8-multimodal-emerging-ai",
+    title: "Multimodal & Emerging AI",
+    subtitle: "New",
+    description:
+      "The practical product and technical landscape of multimodal systems — and what’s likely coming next.",
+    difficulty: "Intermediate",
+    readingMinutes: 30,
+    topics: [
+      "Vision transformers (ViT)",
+      "Diffusion models & image generation",
+      "Speech-to-text & TTS",
+      "Video AI",
+      "Voice interfaces",
+      "Multimodal product design patterns",
+      "AI video generation",
+      "On-device AI",
+      "What's coming: world models, reasoning models",
+    ],
+    sequence: [],
+  },
+  {
+    id: "pb-9-seo-content-strategy-ai",
+    title: "SEO & Content Strategy for AI",
+    subtitle: "Unchanged",
+    description:
+      "How search works now (and where it’s heading) — topic clusters, entities, schema, and optimization for AI search surfaces.",
+    difficulty: "Beginner",
+    readingMinutes: 25,
+    topics: [
+      "Semantic SEO",
+      "Topic clusters & pillar pages",
+      "AI Overviews optimization",
+      "Structured data & schema",
+      "Entity-based SEO",
+      "Content architecture",
+      "Search intent mapping",
+      "AIO (AI search optimization)",
+    ],
+    sequence: [],
   },
 ];
 
