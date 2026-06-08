@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { CookieConsent } from "@/components/cookie-consent";
 import { useAdsenseLoader } from "@/lib/adsense";
+import { CREATOR } from "@/lib/creator";
 
 function NotFoundComponent() {
   return (
@@ -45,7 +46,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Something went wrong loading this page. Try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -80,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Plain-English AI playbooks for product managers. Highlight any sentence to get an instant, in-place explanation. Free, no signup.",
       },
-      { name: "author", content: "FactorBeam" },
+      { name: "author", content: CREATOR.name },
       { property: "og:site_name", content: "FactorBeam" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -99,9 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "WebSite",
           name: "FactorBeam",
           description: "Plain-English AI playbooks for product managers.",
-          publisher: {
-            "@type": "Organization",
-            name: "FactorBeam",
+          author: {
+            "@type": "Person",
+            name: CREATOR.name,
+            url: "/creator",
           },
         }),
       },

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
 import { FileText, Globe, Lock, AlertTriangle, Shield, ArrowRight } from "lucide-react";
+import { CREATOR } from "@/lib/creator";
 
 export const Route = createFileRoute("/terms-of-service")({
   head: () => ({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/terms-of-service")({
       {
         name: "description",
         content:
-          "FactorBeam's Terms of Service. Read the rules for using our website, playbooks, and content.",
+          "FactorBeam's Terms of Service. Read the rules for using this website, its playbooks, and content.",
       },
       { property: "og:title", content: "Terms of Service — FactorBeam" },
       {
@@ -56,11 +57,12 @@ function TermsOfService() {
             {/* Overview */}
             <PolicySection icon={FileText} title="Overview">
               <p>
-                These Terms of Service ("Terms") govern your access to and use of
-                FactorBeam ("we", "us", "our") — the website, playbooks, quizzes,
-                and all related content (collectively, the "Service"). By using the
-                Service, you agree to these Terms. If you do not agree, please do
-                not use the Service.
+                FactorBeam is a free educational website and open playbook project,
+                operated by {CREATOR.name}. These Terms of Service (&quot;Terms&quot;)
+                govern your access to and use of FactorBeam — the website, playbooks,
+                quizzes, and all related content (collectively, the &quot;Service&quot;).
+                By using the Service, you agree to these Terms. If you do not agree,
+                please do not use the Service.
               </p>
             </PolicySection>
 
@@ -77,9 +79,15 @@ function TermsOfService() {
             {/* Accounts */}
             <PolicySection icon={Lock} title="Accounts & registration">
               <p>
-                FactorBeam does not currently require user accounts. If we introduce
-                accounts in the future, you will be responsible for safeguarding
-                your credentials and for all activity under your account. Notify us
+                FactorBeam does not currently require user accounts. If accounts are
+                introduced in the future, you will be responsible for safeguarding
+                your credentials and for all activity under your account. Notify{" "}
+                <a
+                  href="mailto:hello@factorbeam.dev"
+                  className="text-purple hover:underline"
+                >
+                  hello@factorbeam.dev
+                </a>{" "}
                 immediately of any unauthorised use.
               </p>
             </PolicySection>
@@ -88,14 +96,14 @@ function TermsOfService() {
             <PolicySection icon={FileText} title="Content & intellectual property">
               <p>
                 All playbooks, text, diagrams, quizzes, and code examples on
-                FactorBeam are our original work unless otherwise noted, and are
-                protected by copyright and other intellectual-property laws.
+                FactorBeam are original work published on the site unless otherwise noted,
+                and are protected by copyright and other intellectual-property laws.
               </p>
               <p>
                 <strong>You may:</strong>
               </p>
               <ul>
-                <li>Read, bookmark, and share links to our content</li>
+                <li>Read, bookmark, and share links to FactorBeam content</li>
                 <li>Quote short excerpts with proper attribution</li>
                 <li>Print or save copies for personal, non-commercial study</li>
               </ul>
@@ -103,10 +111,10 @@ function TermsOfService() {
                 <strong>You may not:</strong>
               </p>
               <ul>
-                <li>Republish, redistribute, or sell our content in whole or in substantial part</li>
+                <li>Republish, redistribute, or sell FactorBeam content in whole or in substantial part</li>
                 <li>Remove copyright notices or author attribution</li>
-                <li>Use our content to train machine-learning models without written permission</li>
-                <li>Create derivative works (e.g., courses, books, paid newsletters) based on our playbooks without a licence</li>
+                <li>Use FactorBeam content to train machine-learning models without written permission</li>
+                <li>Create derivative works (e.g., courses, books, paid newsletters) based on the playbooks without a licence</li>
                 <li>Scrape, mirror, or systematically download the site</li>
               </ul>
             </PolicySection>
@@ -115,13 +123,13 @@ function TermsOfService() {
             <PolicySection icon={Shield} title="Copyright & DMCA takedown">
               <p>
                 FactorBeam respects the intellectual-property rights of others. If you
-                believe that material on our Service infringes your copyright, please
-                notify us in writing with the following information:
+                believe that material on the Service infringes your copyright, please
+                notify {CREATOR.name} in writing with the following information:
               </p>
               <ul>
                 <li>A physical or electronic signature of the copyright owner or a person authorised to act on their behalf</li>
                 <li>Identification of the copyrighted work claimed to have been infringed</li>
-                <li>Identification of the infringing material and its location on our Service (URL or specific page)</li>
+                <li>Identification of the infringing material and its location on the Service (URL or specific page)</li>
                 <li>Your contact information, including address, telephone number, and email address</li>
                 <li>A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent, or the law</li>
                 <li>A statement, under penalty of perjury, that the information in your notice is accurate and that you are the copyright owner or authorised to act on their behalf</li>
@@ -136,9 +144,8 @@ function TermsOfService() {
                 </a>
               </p>
               <p>
-                We will review all notices promptly and remove or disable access to
-                infringing material where appropriate. We may terminate the accounts of
-                repeat infringers.
+                Notices will be reviewed promptly and infringing material will be removed
+                or disabled where appropriate. Repeat infringers may have access terminated.
               </p>
               <p>
                 If you believe your content was removed in error, you may submit a
@@ -152,14 +159,14 @@ function TermsOfService() {
               <p>You agree not to:</p>
               <ul>
                 <li>Use the Service for any unlawful purpose</li>
-                <li>Attempt to gain unauthorised access to our systems or data</li>
+                <li>Attempt to gain unauthorised access to the site&apos;s systems or data</li>
                 <li>Interfere with the proper working of the Service (e.g., DDoS, scraping bots)</li>
                 <li>Upload or transmit viruses, malware, or harmful code</li>
                 <li>Harass, abuse, or harm another person through the Service</li>
                 <li>Circumvent any security or access controls</li>
               </ul>
               <p>
-                We reserve the right to suspend or block access for violations.
+                Access may be suspended or blocked for violations.
               </p>
             </PolicySection>
 
@@ -168,8 +175,8 @@ function TermsOfService() {
               <p>
                 FactorBeam uses third-party services including Google AdSense for
                 advertising and analytics providers for usage statistics. These
-                services are governed by their own terms and privacy policies. We are
-                not responsible for the practices of third-party services.
+                services are governed by their own terms and privacy policies. FactorBeam
+                is not responsible for the practices of third-party services.
               </p>
             </PolicySection>
 
@@ -177,44 +184,44 @@ function TermsOfService() {
             <PolicySection icon={AlertTriangle} title="Disclaimers">
               <p>
                 The Service is provided "as is" and "as available" without warranties
-                of any kind, either express or implied. We do not warrant that the
+                of any kind, either express or implied. No warranty is given that the
                 Service will be uninterrupted, error-free, secure, or that any defects
                 will be corrected.
               </p>
               <p>
-                The playbooks reflect our best understanding of AI and product-management
-                concepts at the time of writing, but the field evolves rapidly. We make no
-                guarantee that any strategy, technique, or example will produce specific
-                results in your context.
+                The playbooks reflect the author&apos;s best understanding of AI and
+                product-management concepts at the time of writing, but the field evolves
+                rapidly. No guarantee is made that any strategy, technique, or example
+                will produce specific results in your context.
               </p>
             </PolicySection>
 
             {/* Limitation of liability */}
             <PolicySection icon={AlertTriangle} title="Limitation of liability">
               <p>
-                To the fullest extent permitted by law, FactorBeam and its operators
-                shall not be liable for any indirect, incidental, special,
+                To the fullest extent permitted by law, {CREATOR.name}, as operator of
+                FactorBeam, shall not be liable for any indirect, incidental, special,
                 consequential, or punitive damages arising out of or relating to your
                 use of the Service, even if advised of the possibility of such damages.
-                Our total liability for any claim shall not exceed the amount you paid
-                us to use the Service (which, for the free tier, is zero).
+                Total liability for any claim shall not exceed the amount paid to use
+                the Service (which, for the free tier, is zero).
               </p>
             </PolicySection>
 
             {/* Indemnification */}
             <PolicySection icon={Lock} title="Indemnification">
               <p>
-                You agree to indemnify and hold harmless FactorBeam and its operators
-                from any claims, damages, losses, or expenses (including reasonable
-                legal fees) arising out of your use of the Service, your violation of
-                these Terms, or your infringement of any third-party rights.
+                You agree to indemnify and hold harmless {CREATOR.name}, as operator of
+                FactorBeam, from any claims, damages, losses, or expenses (including
+                reasonable legal fees) arising out of your use of the Service, your
+                violation of these Terms, or your infringement of any third-party rights.
               </p>
             </PolicySection>
 
             {/* Termination */}
             <PolicySection icon={FileText} title="Termination">
               <p>
-                We may suspend or terminate your access to the Service at any time,
+                Access to the Service may be suspended or terminated at any time,
                 with or without notice, for any reason, including violation of these
                 Terms. Upon termination, all licences granted to you under these Terms
                 will cease immediately.
@@ -234,8 +241,8 @@ function TermsOfService() {
             {/* Changes */}
             <PolicySection icon={FileText} title="Changes to these terms">
               <p>
-                We may update these Terms from time to time. Material changes will be
-                posted on this page with an updated "Last updated" date. Continued use
+                These Terms may be updated from time to time. Material changes will be
+                posted on this page with an updated &quot;Last updated&quot; date. Continued use
                 of the Service after changes constitutes acceptance of the revised Terms.
               </p>
             </PolicySection>

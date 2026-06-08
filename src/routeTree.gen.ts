@@ -19,6 +19,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
+import { Route as PlaybooksPlaybookIdChapterSlugRouteImport } from './routes/playbooks.$playbookId.$chapterSlug'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
@@ -70,6 +71,12 @@ const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PlaybookRoute,
 } as any)
+const PlaybooksPlaybookIdChapterSlugRoute =
+  PlaybooksPlaybookIdChapterSlugRouteImport.update({
+    id: '/$playbookId/$chapterSlug',
+    path: '/$playbookId/$chapterSlug',
+    getParentRoute: () => PlaybooksRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,11 +84,12 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
-  '/playbooks': typeof PlaybooksRoute
+  '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,11 +97,12 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
-  '/playbooks': typeof PlaybooksRoute
+  '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +111,12 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
   '/playbook': typeof PlaybookRouteWithChildren
-  '/playbooks': typeof PlaybooksRoute
+  '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/playbooks/$playbookId/$chapterSlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/playbooks/$playbookId/$chapterSlug'
   id:
     | '__root__'
     | '/'
@@ -145,6 +157,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/playbook/$slug'
+    | '/playbooks/$playbookId/$chapterSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,7 +166,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CreatorRoute: typeof CreatorRoute
   PlaybookRoute: typeof PlaybookRouteWithChildren
-  PlaybooksRoute: typeof PlaybooksRoute
+  PlaybooksRoute: typeof PlaybooksRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaybookSlugRouteImport
       parentRoute: typeof PlaybookRoute
     }
+    '/playbooks/$playbookId/$chapterSlug': {
+      id: '/playbooks/$playbookId/$chapterSlug'
+      path: '/$playbookId/$chapterSlug'
+      fullPath: '/playbooks/$playbookId/$chapterSlug'
+      preLoaderRoute: typeof PlaybooksPlaybookIdChapterSlugRouteImport
+      parentRoute: typeof PlaybooksRoute
+    }
   }
 }
 
@@ -246,13 +266,25 @@ const PlaybookRouteWithChildren = PlaybookRoute._addFileChildren(
   PlaybookRouteChildren,
 )
 
+interface PlaybooksRouteChildren {
+  PlaybooksPlaybookIdChapterSlugRoute: typeof PlaybooksPlaybookIdChapterSlugRoute
+}
+
+const PlaybooksRouteChildren: PlaybooksRouteChildren = {
+  PlaybooksPlaybookIdChapterSlugRoute: PlaybooksPlaybookIdChapterSlugRoute,
+}
+
+const PlaybooksRouteWithChildren = PlaybooksRoute._addFileChildren(
+  PlaybooksRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   CreatorRoute: CreatorRoute,
   PlaybookRoute: PlaybookRouteWithChildren,
-  PlaybooksRoute: PlaybooksRoute,
+  PlaybooksRoute: PlaybooksRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,

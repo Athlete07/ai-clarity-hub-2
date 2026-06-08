@@ -20,16 +20,16 @@ const CONTACT_EMAIL = "hello@factorbeam.dev";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact FactorBeam — Email us" },
+      { title: "Contact FactorBeam — Email" },
       {
         name: "description",
         content:
-          "Reach the FactorBeam team at hello@factorbeam.dev. Copy our address and write from your email client — edits, feedback, bugs, or partnerships.",
+          "Email hello@factorbeam.dev for edits, feedback, bugs, or partnerships. Copy the address and write from your email client.",
       },
       { property: "og:title", content: "Contact — FactorBeam" },
       {
         property: "og:description",
-        content: "Email hello@factorbeam.dev — we read every message.",
+        content: "Email hello@factorbeam.dev — every message is read personally.",
       },
       { property: "og:url", content: "/contact" },
       { property: "og:type", content: "website" },
@@ -102,11 +102,11 @@ function Contact() {
               Contact
             </div>
             <h1 className="text-[36px] font-medium leading-[1.08] tracking-[-0.025em] sm:text-[56px] sm:leading-[1.02]">
-              Write to us by <span className="text-purple">email</span>.
+              Write by <span className="text-purple">email</span>.
             </h1>
             <p className="mx-auto mt-5 max-w-[520px] text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
-              No form, no ticket queue. Copy our address, open your mail app, and send
-              a note — we read everything.
+              No form, no ticket queue. Copy the address, open your mail app, and send
+              a note — every message is read personally.
             </p>
           </div>
         </section>
@@ -161,7 +161,7 @@ function Contact() {
 
               <p className="mt-6 text-[13.5px] leading-relaxed text-muted-foreground">
                 Paste the address into Gmail, Outlook, Apple Mail, or whatever you use.
-                Add a clear subject line and we&apos;ll reply from the same thread.
+                Add a clear subject line and you&apos;ll get a reply from the same thread.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-border/60 pt-6 text-[12.5px] text-muted-foreground">
@@ -175,7 +175,7 @@ function Contact() {
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Shield size={13} className="text-purple" />
-                  We never share your address
+                  Your address is never shared
                 </span>
               </div>
             </div>
@@ -200,7 +200,7 @@ function Contact() {
               A helpful subject line is enough
             </h2>
             <p className="mx-auto mt-3 max-w-[480px] text-[14px] text-muted-foreground">
-              Pick the bucket that fits — it helps us route your note faster.
+              Pick the bucket that fits — it helps route your note faster.
             </p>
           </div>
 
@@ -255,15 +255,15 @@ function Contact() {
               usually merged or declined within a week.
             </Faq>
             <Faq q="Will my edit suggestion be credited?">
-              If your suggestion meaningfully improves a chapter, we&apos;ll credit you
-              by name (or handle) in the change log unless you ask us not to.
+              If your suggestion meaningfully improves a chapter, you&apos;ll be credited
+              by name (or handle) in the change log unless you ask otherwise.
             </Faq>
             <Faq q="Do you accept guest writers?">
               Occasionally. Pitch the topic, your angle, and a short writing sample.
-              We&apos;re selective — depth and originality matter more than credentials.
+              Depth and originality matter more than credentials.
             </Faq>
             <Faq q="Is FactorBeam open to sponsorship?">
-              Not yet. We&apos;re keeping the surface clean while the audience grows.
+              Not yet. The surface stays clean while the audience grows.
               Reach out anyway if you have a relevant offer.
             </Faq>
           </div>

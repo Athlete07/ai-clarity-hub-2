@@ -82,13 +82,13 @@ function MobileMenu({ slim = false }: { slim?: boolean }) {
           <div className="mt-auto hairline-t p-4 space-y-3">
             <div className="flex flex-col gap-1">
               <span className="px-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                Company
+                Connect
               </span>
               <Link
                 to="/creator"
                 className="rounded-md px-3 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                Creator
+                Author
               </Link>
               <Link
                 to="/contact"
@@ -97,7 +97,7 @@ function MobileMenu({ slim = false }: { slim?: boolean }) {
                 Contact
               </Link>
             </div>
-            <CookiePreferencesLink />
+            <CookiePreferencesLink className="rounded-md px-3 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" />
           </div>
         </div>
       </SheetContent>
@@ -211,8 +211,8 @@ export function Footer() {
             <FooterLink to="/playbooks">Playbooks</FooterLink>
             <FooterLink to="/about">About</FooterLink>
           </FooterColumn>
-          <FooterColumn title="Company">
-            <FooterLink to="/creator">Creator</FooterLink>
+          <FooterColumn title="Connect">
+            <FooterLink to="/creator">Author</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
             <FooterLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</FooterLink>
           </FooterColumn>

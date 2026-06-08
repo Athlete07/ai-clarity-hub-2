@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
 import { ArrowRight } from "lucide-react";
+import { CREATOR } from "@/lib/creator";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -50,7 +51,7 @@ function About() {
             Every resource on AI is either impossibly technical or dangerously vague.
           </p>
           <p>
-            FactorBeam exists to close that gap. We translate mathematical complexity into product strategy so you can ship with confidence.
+            FactorBeam exists to close that gap. It translates mathematical complexity into product strategy so you can ship with confidence.
           </p>
           <p className="text-foreground">
             No PhD required. No vendor pitch. Just the concepts that actually matter when you're building AI-powered products.
@@ -84,7 +85,7 @@ function About() {
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Three real examples per concept.</h3>
                 <p className="text-[14px] sm:text-[15px] text-muted-foreground leading-relaxed">
-                  Every section includes three concrete product examples drawn from real-world scenarios. Theory without application is trivia. We anchor every concept to a situation you'll actually face in a roadmap review.
+                  Every section includes three concrete product examples drawn from real-world scenarios. Theory without application is trivia. Each concept is anchored to a situation you'll actually face in a roadmap review.
                 </p>
               </div>
             </div>
@@ -95,7 +96,7 @@ function About() {
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Highlight anything you don't get.</h3>
                 <p className="text-[14px] sm:text-[15px] text-muted-foreground leading-relaxed">
-                  Stuck on a jargon word? Highlight it for an instant, in-place explanation. No tab-switching, no guessing. If a sentence isn't perfectly clear, we've failed — and we want to know about it.
+                  Stuck on a jargon word? Highlight it for an instant, in-place explanation. No tab-switching, no guessing. If a sentence isn't perfectly clear, that's a signal to improve it — and feedback is welcome.
                 </p>
               </div>
             </div>
@@ -138,14 +139,15 @@ function About() {
               Every chapter starts with a single question: <em>"Would a non-technical PM feel confident defending this in a roadmap review?"</em> If the answer is no, it gets rewritten.
             </p>
             <p>
-              We avoid filler. No long histories of AI research, no celebrity founder stories, no hype about AGI timelines. Every paragraph exists to make you a sharper product decision-maker.
+              The playbooks avoid filler. No long histories of AI research, no celebrity founder stories, no hype about AGI timelines. Every paragraph exists to make you a sharper product decision-maker.
             </p>
             <p>
               Concepts are introduced with a real product scenario, explained in plain language, and reinforced with three examples from different domains — consumer, B2B, and infrastructure. This cross-domain repetition is deliberate: it trains pattern recognition, not memorization.
             </p>
             <p>
-              The playbooks are living documents. As models, APIs, and best practices evolve, chapters are updated. What's accurate today may need a footnote tomorrow — and we welcome corrections from the community.
+              The playbooks are living documents. As models, APIs, and best practices evolve, chapters are updated. What's accurate today may need a footnote tomorrow — and corrections from readers are welcome.
             </p>
+            <p>{CREATOR.aiDisclosure}</p>
           </div>
         </section>
 

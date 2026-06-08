@@ -1,44 +1,56 @@
 import { Link } from "@tanstack/react-router";
 import { CREATOR } from "@/lib/creator";
-import { ArrowRight } from "lucide-react";
 
-/**
- * Compact author attribution for the bottom of article pages.
- * Links to the full /creator page. Keep it minimal — photo, name,
- * one-line bio, and a CTA.
- */
-export function CreatorAttribution() {
+function AuthorByline({ className = "text-[13px]" }: { className?: string }) {
   return (
-    <div className="hairline flex items-start gap-4 rounded-2xl bg-card p-5 sm:items-center sm:gap-5 sm:p-6">
-      <img
-        src={CREATOR.photo}
-        alt={`Portrait of ${CREATOR.name}`}
-        width={64}
-        height={64}
-        loading="lazy"
-        className="h-14 w-14 shrink-0 rounded-xl object-cover hairline sm:h-16 sm:w-16"
-      />
-      <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-purple">
-          Written by
-        </p>
-        <p className="mt-0.5 text-[15px] font-medium text-foreground sm:text-[16px]">
-          {CREATOR.name}
-        </p>
-        <p className="mt-0.5 text-[13px] text-muted-foreground">
-          {CREATOR.role}
-        </p>
-        <p className="mt-1 hidden text-[13px] text-foreground/70 sm:block">
-          {CREATOR.shortBio}
-        </p>
-      </div>
+    <p className={`${className} text-muted-foreground`}>
+      By{" "}
       <Link
         to="/creator"
-        className="shrink-0 inline-flex items-center gap-1 rounded-md bg-purple px-3 py-2 text-[13px] font-medium text-white transition-colors hover:bg-purple-dark"
+        className="font-medium text-foreground transition-colors hover:text-purple"
       >
-        Profile
-        <ArrowRight size={13} />
+        {CREATOR.name}
       </Link>
-    </div>
+      <span aria-hidden className="text-muted-foreground/50">
+        {" "}
+        ·{" "}
+      </span>
+      {CREATOR.role}
+    </p>
   );
+}
+
+/**
+ * Author attribution for chapter pages.
+ * Compact byline by default; a slightly expanded card on the first chapter of each playbook only.
+ */
+export function CreatorAttribution({ expanded = false }: { expanded?: boolean }) {
+  if (expanded) {
+    return (
+      <div className="hairline flex items-start gap-5 rounded-xl bg-card/60 p-5 sm:gap-6 sm:p-6">
+        <Link
+          to="/creator"
+          aria-label={`View ${CREATOR.name}'s profile`}
+          className="shrink-0 transition-opacity hover:opacity-90"
+        >
+          <img
+            src={CREATOR.photo}
+            alt={`Portrait of ${CREATOR.name}`}
+            width={96}
+            height={96}
+            loading="lazy"
+            className="h-20 w-20 rounded-xl object-cover hairline sm:h-24 sm:w-24"
+          />
+        </Link>
+        <div className="min-w-0 pt-0.5">
+          <AuthorByline className="text-[15px] sm:text-[16px]" />
+          <p className="mt-2 text-[13px] leading-relaxed text-foreground/75 sm:text-[14px]">
+            {CREATOR.shortBio}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return <AuthorByline />;
 }

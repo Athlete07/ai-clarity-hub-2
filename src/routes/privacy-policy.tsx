@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
 import { Shield, Cookie, Eye, UserCheck, ArrowRight } from "lucide-react";
+import { CREATOR } from "@/lib/creator";
 
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
@@ -9,7 +10,7 @@ export const Route = createFileRoute("/privacy-policy")({
       {
         name: "description",
         content:
-          "FactorBeam's privacy policy explains how we use cookies, analytics, and third-party ads (Google AdSense). Learn about your data rights.",
+          "FactorBeam's privacy policy explains how this site uses cookies, analytics, and third-party ads (Google AdSense). Learn about your data rights.",
       },
       { property: "og:title", content: "Privacy Policy — FactorBeam" },
       {
@@ -57,18 +58,18 @@ function PrivacyPolicy() {
             {/* Overview */}
             <PolicySection icon={Shield} title="Overview">
               <p>
-                FactorBeam respects your privacy. This policy explains what data we
-                collect, how we use it, and your rights. We keep things minimal:
-                we only collect what is necessary to run the site, improve the
-                experience, and serve relevant ads.
+                FactorBeam is a free educational website. This policy explains what data
+                is collected, how it is used, and your rights. Collection is kept minimal:
+                only what is necessary to run the site, improve the experience, and serve
+                relevant ads.
               </p>
             </PolicySection>
 
-            {/* What we collect */}
-            <PolicySection icon={UserCheck} title="Data we collect">
+            {/* Data collected */}
+            <PolicySection icon={UserCheck} title="Data collected">
               <p>
-                <strong>Automatically</strong> — when you visit FactorBeam, our server
-                and analytics providers may collect:
+                <strong>Automatically</strong> — when you visit FactorBeam, the hosting
+                provider and analytics services may collect:
               </p>
               <ul>
                 <li>IP address (anonymised in analytics)</li>
@@ -79,12 +80,18 @@ function PrivacyPolicy() {
                 <li>Approximate location (country/region-level only)</li>
               </ul>
               <p>
-                <strong>From you directly</strong> — when you use the contact form,
-                you may provide your name, email, and message. We do not store this
-                on our servers; it is handled by your email client.
+                <strong>From you directly</strong> — when you email{" "}
+                <a
+                  href="mailto:hello@factorbeam.dev"
+                  className="text-purple hover:underline"
+                >
+                  hello@factorbeam.dev
+                </a>
+                , you may provide your name, email, and message. Messages are handled
+                through your email provider and are not stored on this site&apos;s servers.
               </p>
               <p>
-                We do <strong>not</strong> collect: phone numbers, physical addresses,
+                FactorBeam does <strong>not</strong> collect: phone numbers, physical addresses,
                 payment details, or any sensitive personal information.
               </p>
             </PolicySection>
@@ -92,7 +99,7 @@ function PrivacyPolicy() {
             {/* Cookies */}
             <PolicySection icon={Cookie} title="Cookies & similar technologies">
               <p>
-                Cookies are small text files stored on your browser. We use them for:
+                Cookies are small text files stored on your browser. This site uses them for:
               </p>
               <ul>
                 <li>
@@ -175,12 +182,12 @@ function PrivacyPolicy() {
                   className="text-purple hover:underline"
                 >
                   Your Online Choices
-                </a>. You can also reject advertising cookies in our cookie banner.
+                </a>. You can also reject advertising cookies in the cookie banner.
               </p>
             </PolicySection>
 
-            {/* How we use data */}
-            <PolicySection icon={Shield} title="How we use your data">
+            {/* How data is used */}
+            <PolicySection icon={Shield} title="How your data is used">
               <ul>
                 <li>Operate and secure the website</li>
                 <li>Remember your preferences (theme, reading progress)</li>
@@ -189,10 +196,9 @@ function PrivacyPolicy() {
                 <li>Respond to your messages and feedback</li>
               </ul>
               <p>
-                We do <strong>not</strong> sell your personal data. We do not share
-                individual-level data with advertisers. We do not use your data for
-                automated decision-making or profiling beyond ad personalisation
-                (which you can disable).
+                Personal data is <strong>not</strong> sold. Individual-level data is not
+                shared with advertisers. Data is not used for automated decision-making
+                or profiling beyond ad personalisation (which you can disable).
               </p>
             </PolicySection>
 
@@ -200,14 +206,14 @@ function PrivacyPolicy() {
             <PolicySection icon={UserCheck} title="Your rights">
               <p>Depending on your jurisdiction, you may have the right to:</p>
               <ul>
-                <li>Access the personal data we hold about you</li>
+                <li>Access the personal data held about you</li>
                 <li>Request correction or deletion of your data</li>
                 <li>Withdraw consent for cookies or analytics at any time</li>
                 <li>Object to processing for direct marketing</li>
                 <li>Lodge a complaint with your local data-protection authority</li>
               </ul>
               <p>
-                To exercise any of these rights, contact us at{" "}
+                To exercise any of these rights, contact {CREATOR.name} at{" "}
                 <a
                   href="mailto:hello@factorbeam.dev"
                   className="text-purple hover:underline"
@@ -221,16 +227,16 @@ function PrivacyPolicy() {
             <PolicySection icon={Shield} title="Data retention">
               <p>
                 Analytics data is retained for up to 26 months, after which it is
-                automatically deleted. Contact-form messages (sent via email) are not
-                stored on our servers. Cookie consent records are retained for as
-                long as necessary to respect your choices.
+                automatically deleted. Email messages are not stored on this site&apos;s
+                servers. Cookie consent records are retained for as long as necessary
+                to respect your choices.
               </p>
             </PolicySection>
 
             {/* Changes */}
             <PolicySection icon={Shield} title="Changes to this policy">
               <p>
-                We may update this policy to reflect changes in our practices or legal
+                This policy may be updated to reflect changes in practices or legal
                 requirements. Material changes will be announced on the site. The
                 "Last updated" date at the top of this page reflects the most recent
                 revision.
@@ -257,7 +263,7 @@ function PrivacyPolicy() {
               Transparency builds trust.
             </h2>
             <p className="mb-8 text-[14.5px] text-muted-foreground sm:text-[15.5px]">
-              Your data stays yours. We only use what you consent to.
+              Your data stays yours. Only what you consent to is used.
             </p>
             <Link
               to="/playbooks"

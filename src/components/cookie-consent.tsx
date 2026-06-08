@@ -37,7 +37,7 @@ export function CookieConsent() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="text-[14px] font-medium text-foreground">We value your privacy</h2>
+              <h2 className="text-[14px] font-medium text-foreground">Your privacy matters</h2>
               <button
                 aria-label="Close"
                 onClick={() => { rejectAll(); setOpen(false); }}
@@ -47,7 +47,7 @@ export function CookieConsent() {
               </button>
             </div>
             <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-              We use cookies for essential site functions, and — only with your permission —
+              This site uses cookies for essential functions, and — only with your permission —
               for analytics and personalised ads. You can change your choice anytime in the
               footer.
             </p>
@@ -131,12 +131,16 @@ function Row({
   );
 }
 
-export function CookiePreferencesLink() {
+export function CookiePreferencesLink({ className }: { className?: string }) {
   const { reopen } = useConsent();
   return (
     <button
+      type="button"
       onClick={reopen}
-      className="text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+      className={
+        className ??
+        "text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+      }
     >
       Cookie preferences
     </button>

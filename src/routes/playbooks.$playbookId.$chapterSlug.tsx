@@ -66,7 +66,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createFileRoute("/playbook/$slug")({
+export const Route = createFileRoute("/playbooks/$playbookId/$chapterSlug")({
   loader: ({ params }) => {
     const concept = conceptBySlug(params.slug);
     if (!concept) throw notFound();

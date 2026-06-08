@@ -45,7 +45,7 @@ export const Route = createFileRoute("/")({
               name: "Do I need a technical background?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "None at all. Every chapter is written for operators, founders, and curious people — not engineers. Where math would normally appear, we use product analogies and real examples instead.",
+                text: "None at all. Every chapter is written for operators, founders, and curious people — not engineers. Where math would normally appear, chapters use product analogies and real examples instead.",
               },
             },
             {
@@ -294,7 +294,7 @@ function Home() {
           <div className="hairline-t mt-8">
             <FaqItem
               q="Do I need a technical background?"
-              a="None at all. Every chapter is written for operators, founders, and curious people — not engineers. Where math would normally appear, we use product analogies and real examples instead."
+              a="None at all. Every chapter is written for operators, founders, and curious people — not engineers. Where math would normally appear, chapters use product analogies and real examples instead."
             />
             <FaqItem
               q="How long does each chapter take?"

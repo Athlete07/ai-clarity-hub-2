@@ -23,8 +23,8 @@ export const Route = createFileRoute("/creator")({
       email: `mailto:${CREATOR.socials.email}`,
       knowsAbout: CREATOR.expertise,
       sameAs,
-      worksFor: {
-        "@type": "Organization",
+      creator: {
+        "@type": "WebSite",
         name: "FactorBeam",
         url: "/",
       },
@@ -32,13 +32,13 @@ export const Route = createFileRoute("/creator")({
 
     return {
       meta: [
-        { title: `${CREATOR.name} — Creator of FactorBeam` },
+        { title: `${CREATOR.name} — Author of FactorBeam` },
         {
           name: "description",
           content: `${CREATOR.name} is the ${CREATOR.role}. ${CREATOR.shortBio}`,
         },
         { name: "author", content: CREATOR.name },
-        { property: "og:title", content: `${CREATOR.name} — Creator of FactorBeam` },
+        { property: "og:title", content: `${CREATOR.name} — Author of FactorBeam` },
         { property: "og:description", content: CREATOR.shortBio },
         { property: "og:url", content: "/creator" },
         { property: "og:type", content: "profile" },
@@ -73,7 +73,7 @@ function CreatorPage() {
           </div>
 
           <div className="mx-auto max-w-[880px] px-5 pt-16 pb-10 sm:px-6 sm:pt-24 sm:pb-14">
-            <div className="section-label mb-6">Creator</div>
+            <div className="section-label mb-6">Author</div>
             <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-10">
               <div className="shrink-0">
                 <img
@@ -123,6 +123,9 @@ function CreatorPage() {
             {CREATOR.longBio.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
+            <p className="hairline rounded-xl bg-muted/30 px-4 py-3 text-[14px] leading-relaxed text-muted-foreground sm:px-5 sm:py-4 sm:text-[15px]">
+              {CREATOR.aiDisclosure}
+            </p>
           </div>
         </section>
 
@@ -166,7 +169,7 @@ function CreatorPage() {
               Read what I've been writing.
             </h2>
             <p className="mt-3 text-[14.5px] text-muted-foreground sm:text-[15.5px]">
-              Every playbook is written and edited by me, in public.
+              Every playbook is researched, structured, and edited in public.
             </p>
             <Link
               to="/playbooks"
