@@ -1,4 +1,7 @@
 import { pb4Concepts } from "./concepts-pb4";
+import { pb5Concepts } from "./concepts-pb5";
+import { pb6Concepts } from "./concepts-pb6";
+import { pb7Concepts } from "./concepts-pb7";
 
 export type ExplainSpan = { text: string; explain: string };
 export type ConceptBodyBlock =
@@ -13346,6 +13349,9 @@ export const concepts: Concept[] = [
   examples: [],
 },
   ...pb4Concepts,
+  ...pb5Concepts,
+  ...pb6Concepts,
+  ...pb7Concepts,
 ];
 
 export const conceptBySlug = (slug: string): Concept | undefined =>

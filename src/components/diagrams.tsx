@@ -36,6 +36,7 @@ export function DiagramBlock({ block }: { block: Extract<ConceptBodyBlock, { kin
         {block.id === "ch7-deploy-flow" && <DeployFlow />}
         {block.id === "ch8-cost-latency-frontier" && <CostLatencyFrontier />}
         {block.id === "pb4-rag-pipeline" && <RagPipelineFlow />}
+        {block.id === "pb5-serving-stack" && <ServingStackFlow />}
       </div>
     </div>
   );
@@ -104,6 +105,20 @@ function RagPipelineFlow() {
         { title: "Index", desc: "Store in vector DB" },
         { title: "Retrieve", desc: "Top-N at query time" },
         { title: "Generate", desc: "LLM + grounded context" },
+      ]}
+    />
+  );
+}
+
+function ServingStackFlow() {
+  return (
+    <StepRow
+      steps={[
+        { title: "Client", desc: "App, API consumer" },
+        { title: "Load balancer", desc: "Distribute traffic" },
+        { title: "API gateway", desc: "Auth, rate limits" },
+        { title: "Inference server", desc: "vLLM, Triton, TGI" },
+        { title: "Model", desc: "Weights on GPU/CPU" },
       ]}
     />
   );

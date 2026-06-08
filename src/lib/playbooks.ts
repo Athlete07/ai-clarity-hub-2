@@ -235,9 +235,9 @@ export const PLAYBOOKS: Playbook[] = [
     title: "AI Infrastructure & Deployment",
     subtitle: "New",
     description:
-      "Serving, deploying, and operating models reliably — from inference architecture choices to MLOps rollout patterns.",
+      "How AI models go from research to reality — the engineering layer that determines whether your product scales, costs less, and stays alive in production.",
     difficulty: "Advanced",
-    readingMinutes: 35,
+    readingMinutes: 244,
     topics: [
       "Model serving architectures",
       "GPU vs CPU inference",
@@ -249,16 +249,53 @@ export const PLAYBOOKS: Playbook[] = [
       "Canary & shadow deployments",
       "Latency/cost/quality triangle",
     ],
-    sequence: [],
+    sequence: [
+      {
+        slug: "pb5-model-serving-architectures",
+        note: "The systems between your model and your users — design choices that determine latency, cost, and reliability.",
+      },
+      {
+        slug: "pb5-gpu-vs-cpu-inference",
+        note: "The hardware decision that determines your cost floor and latency ceiling — parallel GPUs vs general-purpose CPUs.",
+      },
+      {
+        slug: "pb5-batch-vs-streaming",
+        note: "Two fundamentally different ways to run models — and how the choice shapes your product's user experience.",
+      },
+      {
+        slug: "pb5-quantisation-distillation",
+        note: "The techniques that make large models smaller, faster, and cheaper — without much loss of quality.",
+      },
+      {
+        slug: "pb5-edge-vs-cloud",
+        note: "Deciding where the model runs — privacy, latency, update cadence, and the device fragmentation problem.",
+      },
+      {
+        slug: "pb5-mlops-pipelines",
+        note: "The operational discipline that turns one-off model experiments into repeatable, reliable production systems.",
+      },
+      {
+        slug: "pb5-model-versioning",
+        note: "Managing the lifecycle of models in production — so you always know what's running, why, and how to change it.",
+      },
+      {
+        slug: "pb5-canary-shadow-deployments",
+        note: "Release techniques that let you ship new models safely — without betting your entire user base on an untested change.",
+      },
+      {
+        slug: "pb5-latency-cost-quality-triangle",
+        note: "The inescapable constraint at the centre of every AI infrastructure decision — and how to make it work for your product.",
+      },
+    ],
   },
   {
     id: "pb-6-agents-multi-agent-systems",
     title: "Agents & Multi-agent Systems",
     subtitle: "New — was buried in PB5",
     description:
-      "Agent design patterns, tool use, memory, and reliability — plus how to coordinate multiple agents safely.",
+      "From single-turn responses to autonomous reasoning — the architecture shift that defines the next generation of AI products.",
     difficulty: "Advanced",
-    readingMinutes: 35,
+    readingMinutes: 249,
     topics: [
       "Agent fundamentals & architectures",
       "Tool use & function calling",
@@ -270,16 +307,53 @@ export const PLAYBOOKS: Playbook[] = [
       "Agent reliability & failure modes",
       "Human-in-the-loop design",
     ],
-    sequence: [],
+    sequence: [
+      {
+        slug: "pb6-agent-fundamentals",
+        note: "From single-turn responses to autonomous reasoning — what makes a system an agent and the architectures that determine trust.",
+      },
+      {
+        slug: "pb6-tool-use-function-calling",
+        note: "How agents reach beyond language into the real world — the mechanism that makes agents actually useful.",
+      },
+      {
+        slug: "pb6-react-planning-patterns",
+        note: "The reasoning strategies that let agents tackle complex, multi-step tasks without losing the plot.",
+      },
+      {
+        slug: "pb6-memory-types",
+        note: "How agents remember — the four memory systems that determine how much context an agent can carry across time.",
+      },
+      {
+        slug: "pb6-langgraph-deep-dive",
+        note: "The framework that brought graph-based control flow to agent systems — and why it became the production standard.",
+      },
+      {
+        slug: "pb6-multi-agent-coordination",
+        note: "When one agent isn't enough — how systems of agents collaborate, divide work, and stay under control.",
+      },
+      {
+        slug: "pb6-mcp-protocol",
+        note: "The emerging standard that lets agents connect to tools and data sources without custom integration for each one.",
+      },
+      {
+        slug: "pb6-agent-reliability",
+        note: "Why agents fail in production — and the design patterns that turn brittle prototypes into trustworthy systems.",
+      },
+      {
+        slug: "pb6-human-in-the-loop",
+        note: "Keeping humans in control of autonomous systems — the design patterns that make agents safe to deploy in the real world.",
+      },
+    ],
   },
   {
     id: "pb-7-ai-product-strategy-decisions",
     title: "AI Product Strategy & Decisions",
     subtitle: "Expanded",
     description:
-      "How to make (and defend) product decisions in AI: metrics, discovery, data flywheels, and responsible AI constraints.",
+      "The strategic layer above the technical — where PMs make the calls that determine whether AI features create durable value or expensive debt.",
     difficulty: "Intermediate",
-    readingMinutes: 30,
+    readingMinutes: 225,
     topics: [
       "Build vs buy vs fine-tune",
       "AI metrics (task completion, drift, online evals, RLHF loops)",
@@ -290,7 +364,40 @@ export const PLAYBOOKS: Playbook[] = [
       "Roadmap for AI features",
       "Responsible AI frameworks",
     ],
-    sequence: [],
+    sequence: [
+      {
+        slug: "pb7-build-buy-fine-tune",
+        note: "The most consequential architectural decision a PM makes — and the framework for making it well.",
+      },
+      {
+        slug: "pb7-ai-metrics-depth",
+        note: "Measuring AI products is different from measuring conventional software — the metrics layer that separates mature AI teams from ones flying blind.",
+      },
+      {
+        slug: "pb7-ai-discovery-methods",
+        note: "Finding the right AI problems to solve — the research and discovery practices that prevent building impressive solutions to unimportant problems.",
+      },
+      {
+        slug: "pb7-data-strategy-flywheels",
+        note: "Your data is your moat — how proprietary signal, feedback loops, and governance determine whether your AI product compounds in value.",
+      },
+      {
+        slug: "pb7-ai-safety-ethics-regulation",
+        note: "The layer every PM now owns — understanding the risks, the rules, and the practices that make AI products trustworthy.",
+      },
+      {
+        slug: "pb7-ai-prds-specs",
+        note: "Writing product requirements for features that are probabilistic, non-deterministic, and dependent on data.",
+      },
+      {
+        slug: "pb7-roadmap-ai-features",
+        note: "Planning under uncertainty — the roadmapping practices that work when timelines are unpredictable and quality is probabilistic.",
+      },
+      {
+        slug: "pb7-responsible-ai-frameworks",
+        note: "The operational structures that make ethical AI a practice, not a principle — what leading teams actually do.",
+      },
+    ],
   },
   {
     id: "pb-8-multimodal-emerging-ai",
