@@ -1,31 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { Nav, Footer } from "@/components/site-nav";
-import { Clock, Hexagon } from "lucide-react";
-import { AgentOverseerGuideTip } from "@/components/agent-overseer-guide-tip";
 import {
-  GAMES,
+  Hexagon,
+  Cpu,
+  Network,
+  ShieldAlert,
+  Keyboard,
+  Activity,
+  Zap,
+} from "lucide-react";
+import {
   FEATURED_GAME,
-  DIFFICULTY_STYLES,
+  AGENT_OVERSEER_GUIDE,
   getWeeklyPlayCount,
   recordGamePlay,
-  type Game,
 } from "@/lib/games";
 
 export const Route = createFileRoute("/games")({
   head: () => ({
     meta: [
-      { title: "AI instinct games — FactorBeam" },
+      { title: "Agent Overseer — an AI orchestration simulation | FactorBeam" },
       {
         name: "description",
         content:
-          "Five quick games that turn AI concepts into decisions and judgments — no theory, just thinking. Free, no login required.",
+          "Schedule two AI agents across a live task graph, resolve livelocks with mutex locks, and clear 10 escalating waves. Free, no login.",
       },
-      { property: "og:title", content: "AI instinct games — FactorBeam" },
+      { property: "og:title", content: "Agent Overseer — FactorBeam" },
       {
         property: "og:description",
         content:
-          "Test your AI instincts with five short games — decisions, judgments, and challenges in 2–5 minutes each.",
+          "An 8-minute simulation that builds real instincts for agent orchestration, contention, and recovery.",
       },
       { property: "og:url", content: "/games" },
       { property: "og:type", content: "website" },
@@ -35,13 +40,12 @@ export const Route = createFileRoute("/games")({
   component: GamesPage,
 });
 
-function useWeeklyPlayCounts() {
-  const [counts, setCounts] = useState<Record<string, number>>({});
+function useWeeklyPlayCount(gameId: string) {
+  const [count, setCount] = useState(0);
 
   const refresh = useCallback(() => {
-    const ids = [...GAMES.map((g) => g.id), FEATURED_GAME.id];
-    setCounts(Object.fromEntries(ids.map((id) => [id, getWeeklyPlayCount(id)])));
-  }, []);
+    setCount(getWeeklyPlayCount(gameId));
+  }, [gameId]);
 
   useEffect(() => {
     refresh();
@@ -54,170 +58,282 @@ function useWeeklyPlayCounts() {
     };
   }, [refresh]);
 
-  const recordPlay = useCallback(
-    (gameId: string) => {
-      const next = recordGamePlay(gameId);
-      setCounts((prev) => ({ ...prev, [gameId]: next }));
-    },
-    [],
-  );
+  const recordPlay = useCallback(() => {
+    const next = recordGamePlay(gameId);
+    setCount(next);
+  }, [gameId]);
 
-  return { counts, recordPlay };
+  return { count, recordPlay };
 }
 
-function GameCard({
-  game,
-  playCount,
-  onPlay,
+function StatTile({
+  label,
+  value,
+  hint,
 }: {
-  game: Game;
-  playCount: number;
-  onPlay: (gameId: string) => void;
+  label: string;
+  value: string;
+  hint?: string;
 }) {
-  const Icon = game.icon;
-  const diff = DIFFICULTY_STYLES[game.difficulty];
-  const playersLabel =
-    playCount === 1 ? "1 player this week" : `${playCount.toLocaleString()} players this week`;
-
   return (
-    <article className="hairline group flex flex-col rounded-xl bg-card p-6 transition-colors hover:border-[#7F77DD] hover:bg-[#EEEDFE] dark:hover:bg-purple-light/10">
-      <div className="flex items-start justify-between gap-3">
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-          style={{ background: game.iconBg, color: game.iconColor }}
-        >
-          <Icon size={20} />
-        </div>
-        <span
-          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${diff.badge}`}
-        >
-          {diff.label}
-        </span>
+    <div className="border-l border-[#00F5FF]/30 pl-4">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#4A7FA5]">
+        {label}
       </div>
-
-      <h2 className="mt-3 text-[16px] font-medium tracking-tight text-foreground">{game.title}</h2>
-      <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{game.description}</p>
-      <p className="mt-2 flex items-center gap-1 text-[12px] text-muted-foreground">
-        <Clock size={12} className="opacity-70" />
-        ~{game.minutes} min
-      </p>
-
-      <div className="mt-4 flex flex-col gap-2">
-        <button
-          type="button"
-          onClick={() => onPlay(game.id)}
-          className="w-full rounded-lg bg-purple px-4 py-2.5 text-[13px] font-medium text-white transition-colors hover:bg-purple-dark"
-        >
-          Play now →
-        </button>
-        <p className="text-center text-[11px] text-muted-foreground">{playersLabel}</p>
+      <div className="mt-1 font-mono text-[22px] leading-none text-[#E8F4FD]">
+        {value}
       </div>
-    </article>
+      {hint && (
+        <div className="mt-1 text-[11px] text-[#4A7FA5]">{hint}</div>
+      )}
+    </div>
   );
 }
 
-function FeaturedGameCard({
-  playCount,
-  onPlay,
+function BriefingBlock({
+  index,
+  icon: Icon,
+  title,
+  body,
 }: {
-  playCount: number;
-  onPlay: (gameId: string) => void;
+  index: string;
+  icon: typeof Cpu;
+  title: string;
+  body: string;
 }) {
-  const playersLabel =
-    playCount === 1 ? "1 player this week" : `${playCount.toLocaleString()} players this week`;
-
   return (
-    <article className="group mb-5 rounded-xl border border-[#1E3A5F] bg-[#050A14] p-6 transition-colors hover:border-[#00F5FF]/60">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#0D1B2A] text-[#00F5FF]">
-          <Hexagon size={24} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-[#00F5FF]/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00F5FF]">
-              Featured simulation
-            </span>
-            <span className="rounded-full bg-[#FF3864]/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#FF3864]">
-              {FEATURED_GAME.difficulty}
-            </span>
-          </div>
-          <div className="mt-2 flex items-center gap-2">
-            <h2 className="text-[18px] font-medium tracking-tight text-[#E8F4FD]">
-              {FEATURED_GAME.title}
-            </h2>
-            <AgentOverseerGuideTip />
-          </div>
-          <p className="mt-1 text-[13px] leading-snug text-[#4A7FA5]">
-            {FEATURED_GAME.description}
-          </p>
-          <p className="mt-2 flex items-center gap-3 text-[12px] text-[#4A7FA5]">
-            <span className="flex items-center gap-1">
-              <Clock size={12} className="opacity-70" />~{FEATURED_GAME.minutes} min
-            </span>
-            <span>{playersLabel}</span>
-          </p>
-        </div>
-        <Link
-          to={FEATURED_GAME.route}
-          onClick={() => onPlay(FEATURED_GAME.id)}
-          className="shrink-0 rounded-lg bg-[#00F5FF] px-5 py-2.5 text-center text-[13px] font-medium text-[#050A14] transition-opacity hover:opacity-85"
-        >
-          Play now →
-        </Link>
+    <div className="relative rounded-lg border border-[#1E3A5F] bg-[#070E1A] p-5 transition-colors hover:border-[#00F5FF]/40">
+      <div className="absolute -top-3 left-4 bg-[#070E1A] px-2 font-mono text-[10px] tracking-[0.2em] text-[#00F5FF]/80">
+        {index}
       </div>
-    </article>
+      <div className="flex items-center gap-2 text-[#00F5FF]">
+        <Icon size={16} />
+        <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#E8F4FD]">
+          {title}
+        </h3>
+      </div>
+      <p className="mt-2 text-[13.5px] leading-relaxed text-[#9FB8D1]">{body}</p>
+    </div>
   );
 }
 
 function GamesPage() {
-  const { counts, recordPlay } = useWeeklyPlayCounts();
-  const topFour = GAMES.slice(0, 4);
-  const fifth = GAMES[4];
+  const { count, recordPlay } = useWeeklyPlayCount(FEATURED_GAME.id);
+  const playersLabel =
+    count === 1 ? "1 player this week" : `${count.toLocaleString()} players this week`;
 
   return (
     <>
       <Nav />
-      <main className="pb-24">
-        <header className="mx-auto max-w-[720px] px-6 pt-16 pb-10 text-center">
-          <h1 className="text-[32px] font-medium leading-tight tracking-tight text-foreground">
-            Test your AI instincts
-          </h1>
-          <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">
-            Five games that turn AI concepts into decisions, judgments and challenges — no theory,
-            just thinking. Free, no login required.
-          </p>
-          <p className="mt-3 text-[13px] text-muted-foreground">
-            Each game takes 2–5 minutes. Your scores are saved automatically.
-          </p>
-        </header>
-
-        <div className="mx-auto max-w-[800px] px-6">
-          <FeaturedGameCard
-            playCount={counts[FEATURED_GAME.id] ?? 0}
-            onPlay={recordPlay}
+      <main className="bg-background pb-24">
+        {/* HERO — terminal / HUD aesthetic */}
+        <section className="relative overflow-hidden bg-[#050A14] text-[#E8F4FD]">
+          {/* animated grid backdrop */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.18]"
+            style={{
+              backgroundImage:
+                "linear-gradient(#00F5FF22 1px, transparent 1px), linear-gradient(90deg, #00F5FF22 1px, transparent 1px)",
+              backgroundSize: "48px 48px",
+              maskImage:
+                "radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%)",
+            }}
           />
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {topFour.map((game) => (
-              <GameCard
-                key={game.id}
-                game={game}
-                playCount={counts[game.id] ?? 0}
-                onPlay={recordPlay}
-              />
-            ))}
-          </div>
-          {fifth && (
-            <div className="mt-5 flex justify-center">
-              <div className="w-full sm:max-w-[calc(50%-10px)]">
-                <GameCard
-                  game={fifth}
-                  playCount={counts[fifth.id] ?? 0}
-                  onPlay={recordPlay}
-                />
+          {/* glow */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 rounded-full blur-3xl"
+            style={{
+              background:
+                "radial-gradient(closest-side, #00F5FF33, transparent 70%)",
+            }}
+          />
+
+          <div className="relative mx-auto max-w-[1080px] px-6 pt-20 pb-16 sm:pt-28 sm:pb-20">
+            {/* eyebrow */}
+            <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-[#00F5FF]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00F5FF] opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00F5FF]" />
+              </span>
+              FACTORBEAM // SIMULATION 001
+              <span className="text-[#4A7FA5]">— LIVE</span>
+            </div>
+
+            <h1 className="mt-6 max-w-[820px] font-mono text-[44px] font-medium leading-[1.05] tracking-tight text-[#E8F4FD] sm:text-[64px]">
+              Agent{" "}
+              <span className="text-[#00F5FF]">Overseer</span>
+              <span className="text-[#FF3864]">.</span>
+            </h1>
+
+            <p className="mt-5 max-w-[640px] text-[17px] leading-relaxed text-[#9FB8D1] sm:text-[19px]">
+              {FEATURED_GAME.tagline} Resolve livelocks, hold the line through{" "}
+              <span className="text-[#E8F4FD]">10 escalating waves</span>, and
+              build the orchestration instincts no whitepaper can teach.
+            </p>
+
+            {/* stat bar */}
+            <div className="mt-10 grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-x-2">
+              <StatTile label="Duration" value="~8" hint="minutes" />
+              <StatTile label="Difficulty" value="HARD" hint="no hand-holding" />
+              <StatTile label="Waves" value="10" hint="escalating contention" />
+              <StatTile label="Agents" value="02" hint="ALPHA · BETA" />
+            </div>
+
+            {/* CTA row */}
+            <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+              <Link
+                to={FEATURED_GAME.route}
+                onClick={recordPlay}
+                className="group inline-flex items-center gap-3 rounded-md bg-[#00F5FF] px-7 py-3.5 font-mono text-[14px] font-semibold tracking-wider text-[#050A14] shadow-[0_0_40px_-4px_#00F5FF80] transition-all hover:shadow-[0_0_60px_-2px_#00F5FFcc]"
+              >
+                <Hexagon size={16} className="transition-transform group-hover:rotate-60" />
+                LAUNCH SIMULATION
+                <span className="opacity-70">→</span>
+              </Link>
+              <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-[#4A7FA5]">
+                <Activity size={12} className="text-[#00F5FF]" />
+                {playersLabel.toUpperCase()}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        </section>
+
+        {/* MISSION BRIEFING */}
+        <section className="bg-[#040813] py-20 text-[#E8F4FD]">
+          <div className="mx-auto max-w-[1080px] px-6">
+            <div className="mb-10 flex items-end justify-between gap-4 border-b border-[#1E3A5F] pb-4">
+              <div>
+                <div className="font-mono text-[11px] tracking-[0.24em] text-[#00F5FF]">
+                  // MISSION BRIEFING
+                </div>
+                <h2 className="mt-2 text-[28px] font-medium tracking-tight sm:text-[34px]">
+                  What you'll actually do
+                </h2>
+              </div>
+              <div className="hidden font-mono text-[11px] tracking-[0.18em] text-[#4A7FA5] sm:block">
+                SECTOR 01 / 03
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              <BriefingBlock
+                index="01 / WHAT"
+                icon={Network}
+                title="The simulation"
+                body={AGENT_OVERSEER_GUIDE.what}
+              />
+              <BriefingBlock
+                index="02 / WHY"
+                icon={Cpu}
+                title="The instinct"
+                body={AGENT_OVERSEER_GUIDE.why}
+              />
+              <BriefingBlock
+                index="03 / HOW"
+                icon={ShieldAlert}
+                title="The loop"
+                body="Dispatch agents, watch dependencies unfold, then break livelocks with mutex locks before the wave timer runs out."
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* PLAYBOOK + CONTROLS */}
+        <section className="bg-[#050A14] py-20 text-[#E8F4FD]">
+          <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-10 px-6 lg:grid-cols-5">
+            {/* steps */}
+            <div className="lg:col-span-3">
+              <div className="font-mono text-[11px] tracking-[0.24em] text-[#00F5FF]">
+                // PROTOCOL
+              </div>
+              <h2 className="mt-2 text-[28px] font-medium tracking-tight sm:text-[34px]">
+                How to survive 10 waves
+              </h2>
+              <ol className="mt-8 space-y-5">
+                {AGENT_OVERSEER_GUIDE.steps.map((step, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-4 rounded-lg border border-[#1E3A5F] bg-[#070E1A] p-4 transition-colors hover:border-[#00F5FF]/40"
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-[#00F5FF]/40 bg-[#00F5FF]/5 font-mono text-[13px] text-[#00F5FF]">
+                      {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <p className="pt-1 text-[14px] leading-relaxed text-[#9FB8D1]">
+                      {step}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* controls panel */}
+            <aside className="lg:col-span-2">
+              <div className="sticky top-24 rounded-lg border border-[#1E3A5F] bg-[#070E1A] p-6">
+                <div className="flex items-center gap-2 text-[#00F5FF]">
+                  <Keyboard size={16} />
+                  <h3 className="font-mono text-[11px] tracking-[0.2em]">
+                    CONTROL REFERENCE
+                  </h3>
+                </div>
+                <ul className="mt-5 space-y-3 font-mono text-[12.5px]">
+                  {[
+                    { k: "CLICK", d: "Select node" },
+                    { k: "1 / 2", d: "Dispatch ALPHA / BETA" },
+                    { k: "SPACE", d: "Mutex · path · release" },
+                    { k: "P", d: "Pause" },
+                  ].map((row) => (
+                    <li
+                      key={row.k}
+                      className="flex items-center justify-between gap-3 border-b border-dashed border-[#1E3A5F] pb-3 last:border-0 last:pb-0"
+                    >
+                      <span className="rounded border border-[#1E3A5F] bg-[#050A14] px-2 py-1 text-[#00F5FF]">
+                        {row.k}
+                      </span>
+                      <span className="text-right text-[#9FB8D1]">{row.d}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 border-t border-[#1E3A5F] pt-5">
+                  <div className="font-mono text-[10px] tracking-[0.2em] text-[#4A7FA5]">
+                    BUILT FOR
+                  </div>
+                  <p className="mt-2 text-[13px] text-[#9FB8D1]">
+                    PMs, founders and engineers who want hands-on intuition for
+                    agent orchestration — not another LinkedIn post.
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="relative overflow-hidden bg-[#050A14] py-20 text-[#E8F4FD]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#00F5FF]/60 to-transparent"
+          />
+          <div className="mx-auto max-w-[820px] px-6 text-center">
+            <Zap size={28} className="mx-auto text-[#00F5FF]" />
+            <h2 className="mt-4 font-mono text-[28px] tracking-tight sm:text-[36px]">
+              Ready to take command?
+            </h2>
+            <p className="mt-3 text-[15px] text-[#9FB8D1]">
+              Eight minutes. No signup. Your runs save locally.
+            </p>
+            <Link
+              to={FEATURED_GAME.route}
+              onClick={recordPlay}
+              className="mt-8 inline-flex items-center gap-3 rounded-md border border-[#00F5FF] bg-[#00F5FF]/10 px-7 py-3.5 font-mono text-[14px] font-semibold tracking-wider text-[#00F5FF] transition-colors hover:bg-[#00F5FF] hover:text-[#050A14]"
+            >
+              <Hexagon size={16} />
+              ENTER THE CONSOLE
+              <span>→</span>
+            </Link>
+          </div>
+        </section>
       </main>
       <Footer />
     </>
