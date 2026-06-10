@@ -82,7 +82,3 @@ export const LEGACY_CHAPTER_SLUGS: Record<string, string> = {
 export function canonicalChapterSlug(slug: string): string {
   return LEGACY_CHAPTER_SLUGS[slug] ?? slug;
 }
-
-export function isLegacyChapterSlug(slug: string): boolean {
-  return slug in LEGACY_CHAPTER_SLUGS;
-}

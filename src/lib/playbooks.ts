@@ -50,11 +50,6 @@ export function formatPlaybookLabel(order: number): string {
   return `Playbook ${String(order).padStart(2, "0")}`;
 }
 
-/** Position within a track, e.g. "Playbook 01 of 08". */
-export function formatPlaybookTrackPosition(order: number, trackSize: number): string {
-  return `${formatPlaybookLabel(order)} of ${String(trackSize).padStart(2, "0")}`;
-}
-
 const PM_PLAYBOOKS: Omit<Playbook, "order">[] = [
   {
     id: "pm-foundations",
