@@ -14,12 +14,14 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PlaybooksRouteImport } from './routes/playbooks'
 import { Route as PlaybookRouteImport } from './routes/playbook'
+import { Route as GamesRouteImport } from './routes/games'
 import { Route as CreatorRouteImport } from './routes/creator'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaybooksIndexRouteImport } from './routes/playbooks.index'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
+import { Route as GamesAgentOverseerRouteImport } from './routes/games_.agent-overseer'
 import { Route as PlaybooksPlaybookIdChapterSlugRouteImport } from './routes/playbooks.$playbookId.$chapterSlug'
 
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
@@ -45,6 +47,11 @@ const PlaybooksRoute = PlaybooksRouteImport.update({
 const PlaybookRoute = PlaybookRouteImport.update({
   id: '/playbook',
   path: '/playbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreatorRoute = CreatorRouteImport.update({
@@ -77,6 +84,11 @@ const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => PlaybookRoute,
 } as any)
+const GamesAgentOverseerRoute = GamesAgentOverseerRouteImport.update({
+  id: '/games_/agent-overseer',
+  path: '/games/agent-overseer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaybooksPlaybookIdChapterSlugRoute =
   PlaybooksPlaybookIdChapterSlugRouteImport.update({
     id: '/$playbookId/$chapterSlug',
@@ -89,11 +101,13 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
+  '/games': typeof GamesRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/playbooks/': typeof PlaybooksIndexRoute
   '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
@@ -103,10 +117,12 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
+  '/games': typeof GamesRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/playbooks': typeof PlaybooksIndexRoute
   '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
@@ -117,11 +133,13 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creator': typeof CreatorRoute
+  '/games': typeof GamesRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/games_/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
   '/playbooks/': typeof PlaybooksIndexRoute
   '/playbooks/$playbookId/$chapterSlug': typeof PlaybooksPlaybookIdChapterSlugRoute
@@ -133,11 +151,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creator'
+    | '/games'
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games/agent-overseer'
     | '/playbook/$slug'
     | '/playbooks/'
     | '/playbooks/$playbookId/$chapterSlug'
@@ -147,10 +167,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creator'
+    | '/games'
     | '/playbook'
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games/agent-overseer'
     | '/playbook/$slug'
     | '/playbooks'
     | '/playbooks/$playbookId/$chapterSlug'
@@ -160,11 +182,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creator'
+    | '/games'
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
     | '/sitemap.xml'
     | '/terms-of-service'
+    | '/games_/agent-overseer'
     | '/playbook/$slug'
     | '/playbooks/'
     | '/playbooks/$playbookId/$chapterSlug'
@@ -175,11 +199,13 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   CreatorRoute: typeof CreatorRoute
+  GamesRoute: typeof GamesRoute
   PlaybookRoute: typeof PlaybookRouteWithChildren
   PlaybooksRoute: typeof PlaybooksRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  GamesAgentOverseerRoute: typeof GamesAgentOverseerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -217,6 +243,13 @@ declare module '@tanstack/react-router' {
       path: '/playbook'
       fullPath: '/playbook'
       preLoaderRoute: typeof PlaybookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/creator': {
@@ -261,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaybookSlugRouteImport
       parentRoute: typeof PlaybookRoute
     }
+    '/games_/agent-overseer': {
+      id: '/games_/agent-overseer'
+      path: '/games/agent-overseer'
+      fullPath: '/games/agent-overseer'
+      preLoaderRoute: typeof GamesAgentOverseerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playbooks/$playbookId/$chapterSlug': {
       id: '/playbooks/$playbookId/$chapterSlug'
       path: '/$playbookId/$chapterSlug'
@@ -302,11 +342,13 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   CreatorRoute: CreatorRoute,
+  GamesRoute: GamesRoute,
   PlaybookRoute: PlaybookRouteWithChildren,
   PlaybooksRoute: PlaybooksRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  GamesAgentOverseerRoute: GamesAgentOverseerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
