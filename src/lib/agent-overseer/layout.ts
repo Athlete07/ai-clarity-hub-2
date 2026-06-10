@@ -33,7 +33,7 @@ export function layoutDAG(
           y: margin + Math.random() * (H - margin * 2),
           tx,
         },
-      ] as const;
+      ] as [string, { x: number; y: number; tx: number }];
     }),
   );
 
