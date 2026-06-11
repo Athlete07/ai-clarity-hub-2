@@ -9,6 +9,7 @@ import {
   LegalSection,
 } from "@/components/legal-document";
 import { CookiePreferencesLink } from "@/components/cookie-consent";
+import { brandOgMeta } from "@/lib/brand";
 import { CREATOR } from "@/lib/creator";
 import { Cookie, Eye, Shield, UserCheck } from "lucide-react";
 
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/privacy-policy")({
       },
       { property: "og:url", content: "/privacy-policy" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/privacy-policy" }],
   }),

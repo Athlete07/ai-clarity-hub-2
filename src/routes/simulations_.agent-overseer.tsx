@@ -11,6 +11,7 @@ import { LeaderboardPanel } from "@/components/agent-overseer/LeaderboardPanel";
 import { disposeGameAudio } from "@/lib/agent-overseer/audio";
 import { initAgentOverseerSync } from "@/lib/agent-overseer/sync";
 import { loadSession } from "@/lib/agent-overseer/storage";
+import { brandOgMeta } from "@/lib/brand";
 
 export const Route = createFileRoute("/simulations_/agent-overseer")({
   head: () => ({
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/simulations_/agent-overseer")({
         content:
           "Schedule AI agents on a live task graph, resolve injected livelocks with mutex locks, and climb 10 waves.",
       },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/simulations/agent-overseer" }],
   }),

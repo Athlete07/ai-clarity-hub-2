@@ -9,14 +9,17 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { FactorBeamMark } from "@/components/factorbeam-logo";
 import { CookieConsent } from "@/components/cookie-consent";
 import { useAdsenseLoader } from "@/lib/adsense";
+import { BRAND, brandIconLinks, brandOgMeta } from "@/lib/brand";
 import { CREATOR } from "@/lib/creator";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
+        <FactorBeamMark size={48} className="mx-auto mb-6" />
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -42,6 +45,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
+        <FactorBeamMark size={48} className="mx-auto mb-6" />
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
@@ -82,15 +86,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Plain-English Executive KB for product leaders. Highlight any sentence to get an instant, in-place explanation. Free, no signup.",
       },
       { name: "author", content: CREATOR.name },
-      { property: "og:site_name", content: "FactorBeam" },
+      { property: "og:site_name", content: BRAND.name },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      ...brandOgMeta(),
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
       },
+      ...brandIconLinks(),
     ],
     scripts: [
       {
@@ -98,8 +110,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "FactorBeam",
+          name: BRAND.name,
           description: "Plain-English Executive KB for product leaders.",
+          logo: BRAND.logo.mark,
           author: {
             "@type": "Person",
             name: CREATOR.name,

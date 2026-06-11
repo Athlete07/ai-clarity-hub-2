@@ -2,6 +2,10 @@
 
 > Plain-English Executive KB for product leaders. Highlight any sentence to get an instant, in-place explanation. Free, no signup.
 
+Logo mark: /logo-mark.svg
+Favicon: /favicon.svg
+Brand colors: primary #534AB7, secondary #6B5FD4
+
 FactorBeam is a free reading site that teaches how modern AI actually works — written for product managers, founders, and operators rather than ML engineers. Each Executive KB is a sequenced set of chapters with three real product examples per concept and a short quiz at the end.
 
 ## Pages

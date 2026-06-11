@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FactorBeamLogo } from "@/components/factorbeam-logo";
 import { Nav, Footer } from "@/components/site-nav";
+import { brandOgMeta } from "@/lib/brand";
 import { FaqItem } from "@/components/faq-item";
 import { useProgress } from "@/lib/storage";
 import {
@@ -45,6 +47,7 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: "/" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/" }],
     scripts: [
@@ -134,6 +137,9 @@ function Home() {
 
           <div className="mx-auto max-w-6xl px-5 pt-14 pb-20 sm:px-6 sm:pt-20 sm:pb-28 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-24 lg:pb-32">
             <div className="text-center lg:text-left">
+              <div className="mb-6 flex justify-center lg:justify-start">
+                <FactorBeamLogo context="hero" />
+              </div>
               <div className="inline-flex flex-wrap items-center justify-center gap-2 lg:justify-start">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-purple/15 bg-purple-light/60 px-3 py-1 text-[11px] font-medium tracking-wide text-purple-dark dark:bg-purple-light/20 dark:text-purple">
                   <Sparkles size={12} aria-hidden />
@@ -247,16 +253,13 @@ function Home() {
 
         {/* ── Role tracks ─────────────────────────────────────────── */}
         <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
-          <div className="max-w-2xl">
+          <div>
             <p className="section-label">Built for how you work</p>
-            <h2 className="mt-3 text-[28px] font-medium tracking-[-0.02em] sm:text-[36px]">
-              Same AI concepts.
-              <br />
-              Sequenced for your role.
+            <h2 className="mt-3 text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium leading-[1.1] tracking-[-0.02em] text-balance sm:whitespace-nowrap sm:text-pretty">
+              Same AI concepts. Sequenced for your role.
             </h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]">
-              Pick a track on the Executive KB page — every chapter uses examples and framing
-              that match your day job.
+            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground text-balance sm:whitespace-nowrap sm:text-[16px] sm:text-pretty">
+              Pick a track on the Executive KB page — every chapter uses examples and framing that match your day job.
             </p>
           </div>
 
@@ -309,9 +312,8 @@ function Home() {
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
             <div className="text-center">
               <p className="section-label">The experience</p>
-              <h2 className="mx-auto mt-3 max-w-[560px] text-[28px] font-medium tracking-[-0.02em] sm:text-[36px]">
-                Designed for clarity,
-                <br className="hidden sm:block" /> not credential collecting.
+              <h2 className="mx-auto mt-3 text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium leading-[1.1] tracking-[-0.02em] text-balance sm:whitespace-nowrap sm:text-pretty">
+                Designed for clarity, not credential collecting.
               </h2>
             </div>
 

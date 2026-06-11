@@ -1,0 +1,22 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="4" y1="36" x2="36" y2="4" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3C3489"/>
+      <stop offset="100%" stop-color="#6B5FD4"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="8" y1="32" x2="34" y2="8" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3C3489"/>
+      <stop offset="45%" stop-color="#534AB7"/>
+      <stop offset="100%" stop-color="#6B5FD4"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="10" fill="url(#bg)"/>
+  <circle cx="6.5" cy="11" r="1.75" fill="#fff" fill-opacity="0.45"/>
+  <circle cx="4.75" cy="20" r="2" fill="#fff" fill-opacity="0.65"/>
+  <circle cx="6.5" cy="29" r="1.75" fill="#fff" fill-opacity="0.45"/>
+  <path d="M10 31L16.5 23L22 25.5L13.5 35.5L10 31Z" fill="#fff" fill-opacity="0.35"/>
+  <path d="M10 9.5L22.5 14L16.5 23L10 20.5L10 9.5Z" fill="#fff" fill-opacity="0.75"/>
+  <path d="M10 20.5L16.5 23L22.5 14L31 16.5L33.5 19L22 25.5L10 20.5Z" fill="#fff" fill-opacity="0.95"/>
+  <circle cx="34.5" cy="17.5" r="4" fill="#fff"/>
+  <circle cx="34.5" cy="17.5" r="1.85" fill="#534AB7"/>
+</svg>

@@ -19,6 +19,7 @@ import {
 } from "@/lib/executive-kb";
 import { FOUNDER_EXECUTIVE_KBS } from "@/lib/executive-kb-founder";
 import { BUSINESS_LEADER_EXECUTIVE_KBS } from "@/lib/executive-kb-business-leader";
+import { brandOgMeta } from "@/lib/brand";
 import { ROLES, ROLE_THEMES, type RoleId } from "@/lib/role-themes";
 
 export const Route = createFileRoute("/executive-kb/")({
@@ -42,6 +43,7 @@ export const Route = createFileRoute("/executive-kb/")({
       },
       { property: "og:url", content: "/executive-kb" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/executive-kb" }],
   }),
@@ -140,14 +142,14 @@ function ExecutiveKbPage() {
 
           <div className="mx-auto max-w-6xl px-5 pt-14 pb-12 sm:px-6 sm:pt-20 sm:pb-16">
             <p className="section-label">Executive KB</p>
-            <h1 className="mt-3 max-w-2xl text-[36px] font-medium leading-[1.05] tracking-[-0.035em] sm:text-[48px]">
-              AI concepts,{" "}
+            <h1 className="mt-3 text-[clamp(1.75rem,4.5vw,3rem)] font-medium leading-[1.1] tracking-[-0.035em] text-balance sm:text-pretty">
+              Same AI concepts,{" "}
               <span className="text-purple">sequenced for your role.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted-foreground sm:text-[17px]">
+            <p className="mt-5 text-[16px] leading-relaxed text-muted-foreground text-balance sm:text-[17px] sm:text-pretty">
               {role
-                ? `${executiveKbs.length} Executive KBs with plain-English chapters and quizzes — framed for ${activeRole?.title}s.`
-                : "Same AI concepts, framed for how you actually work. Select your role to browse sequenced chapters."}
+                ? `${executiveKbs.length} plain-English Executive KBs with chapters and quizzes — sequenced for ${activeRole?.title}s.`
+                : "Same AI concepts, framed for how you actually work — pick your track to browse sequenced chapters."}
             </p>
 
             <div className="mt-8">

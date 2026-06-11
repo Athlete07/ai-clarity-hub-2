@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound, redirect, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useMemo } from "react";
+import { FactorBeamLogo } from "@/components/factorbeam-logo";
 import { Nav, Footer } from "@/components/site-nav";
+import { BRAND, brandOgMeta } from "@/lib/brand";
 import { ExampleTabs } from "@/components/example-tabs";
 import { HighlightExplainer } from "@/components/highlight-explainer";
 import { Quiz } from "@/components/quiz";
@@ -140,7 +142,8 @@ export const Route = createFileRoute("/executive-kb/$kbId/$chapterSlug")({
         { property: "og:description", content: c.summary },
         { property: "og:url", content: canonical },
         { property: "og:type", content: "article" },
-        { property: "og:site_name", content: "FactorBeam" },
+        { property: "og:site_name", content: BRAND.name },
+        ...brandOgMeta(),
       ],
       links: [{ rel: "canonical", href: canonical }],
       scripts: [
@@ -159,9 +162,10 @@ export const Route = createFileRoute("/executive-kb/$kbId/$chapterSlug")({
               jobTitle: CREATOR.role,
             },
             publisher: {
-              "@type": "Person",
-              name: CREATOR.name,
-              url: "/creator",
+              "@type": "Organization",
+              name: BRAND.name,
+              url: "/",
+              logo: BRAND.logo.mark,
             },
             mainEntityOfPage: canonical,
           }),
@@ -319,34 +323,36 @@ function ConceptPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="site-header--slim mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <button
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted lg:hidden"
+              type="button"
+              className="nav-icon-btn text-muted-foreground transition-colors hover:bg-muted lg:hidden"
               onClick={() => setSidebarOpen(true)}
               aria-label="Open chapter menu"
             >
-              <Menu size={18} />
+              <Menu size={20} />
             </button>
             <Link
               to="/executive-kb"
               search={executiveKbTrackSearch(track)}
-              className="hidden items-center gap-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+              className="nav-link hidden items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
             >
               Executive KB
             </Link>
-            <span className="hidden text-muted-foreground/40 sm:inline">/</span>
-            <span className="truncate text-[13px] font-medium text-foreground">
+            <span className="hidden text-muted-foreground/40 sm:inline" aria-hidden>
+              /
+            </span>
+            <span className="nav-link truncate font-medium text-foreground">
               {executiveKb?.title ?? "Chapter"}
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-3">
-            <span className="hidden text-[12px] text-muted-foreground md:inline">
+            <span className="nav-link hidden text-muted-foreground md:inline">
               Ch. {displayNum}/{kbSlugs.length} · {pct}%
             </span>
-            <Link to="/" className="flex items-center gap-2 lg:hidden">
-              <span className="inline-block h-2 w-2 rounded-full bg-purple" aria-hidden />
-              <span className="text-[14px] font-medium">FactorBeam</span>
+            <Link to="/" className="lg:hidden" aria-label={BRAND.name}>
+              <FactorBeamLogo context="icon" />
             </Link>
           </div>
         </div>

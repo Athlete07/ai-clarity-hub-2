@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FactorBeamLogo } from "@/components/factorbeam-logo";
 import { Nav, Footer } from "@/components/site-nav";
+import { brandOgMeta } from "@/lib/brand";
 import { AuthorPortrait } from "@/components/author-portrait";
 import { CREATOR } from "@/lib/creator";
 import { EXECUTIVE_KBS } from "@/lib/executive-kb";
@@ -38,6 +40,7 @@ export const Route = createFileRoute("/about")({
       },
       { property: "og:url", content: "/about" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/about" }],
   }),
@@ -91,6 +94,9 @@ function About() {
 
           <div className="mx-auto max-w-6xl px-5 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:grid lg:grid-cols-2 lg:items-center lg:gap-16 lg:pt-24 lg:pb-28">
             <div>
+              <div className="mb-2">
+                <FactorBeamLogo context="hero" />
+              </div>
               <p className="section-label">About FactorBeam</p>
               <h1 className="mt-4 text-[38px] font-medium leading-[1.05] tracking-[-0.035em] sm:text-[48px] lg:text-[54px]">
                 Clarity is a
@@ -143,16 +149,13 @@ function About() {
 
         {/* ── What we build ──────────────────────────────────────── */}
         <section className="mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
-          <div className="max-w-2xl">
+          <div>
             <p className="section-label">What Executive KB is</p>
-            <h2 className="mt-3 text-[28px] font-medium tracking-[-0.02em] sm:text-[36px]">
-              Structured, sequenced,
-              <br />
-              and built to be used.
+            <h2 className="mt-3 text-[clamp(1.5rem,3.5vw,2.25rem)] font-medium leading-[1.1] tracking-[-0.02em] text-balance sm:whitespace-nowrap sm:text-pretty">
+              Structured, sequenced, and built to be used.
             </h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]">
-              Not a blog archive. A learning system designed for busy leaders who
-              need judgment, not jargon.
+            <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground text-balance sm:whitespace-nowrap sm:text-[16px] sm:text-pretty">
+              Not a blog archive. A learning system designed for busy leaders who need judgment, not jargon.
             </p>
           </div>
 
@@ -242,8 +245,11 @@ function About() {
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
             <div className="text-center">
               <p className="section-label">Who it&apos;s for</p>
-              <h2 className="mx-auto mt-3 max-w-[520px] text-[28px] font-medium tracking-[-0.02em] sm:text-[32px]">
-                Same AI concepts. Framed for how you actually work.
+              <h2 className="mx-auto mt-3 text-[clamp(1.5rem,3.5vw,2rem)] font-medium leading-[1.15] tracking-[-0.02em]">
+                Same AI concepts.
+                <span className="mt-1 block text-purple sm:mt-1.5">
+                  Framed for how you actually work.
+                </span>
               </h2>
             </div>
 

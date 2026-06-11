@@ -8,6 +8,7 @@ import {
   LegalProse,
   LegalSection,
 } from "@/components/legal-document";
+import { brandOgMeta } from "@/lib/brand";
 import { CREATOR } from "@/lib/creator";
 import { AlertTriangle, FileText, Globe, Lock, Shield } from "lucide-react";
 
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/terms-of-service")({
       },
       { property: "og:url", content: "/terms-of-service" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/terms-of-service" }],
   }),

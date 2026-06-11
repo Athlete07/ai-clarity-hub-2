@@ -13,6 +13,8 @@ import {
   Twitter,
 } from "lucide-react";
 import { AuthorPortrait } from "@/components/author-portrait";
+import { FactorBeamLogo } from "@/components/factorbeam-logo";
+import { BRAND } from "@/lib/brand";
 import { CREATOR } from "@/lib/creator";
 import { EXECUTIVE_KBS } from "@/lib/executive-kb";
 import { FOUNDER_EXECUTIVE_KBS } from "@/lib/executive-kb-founder";
@@ -40,8 +42,9 @@ export const Route = createFileRoute("/creator")({
       sameAs,
       creator: {
         "@type": "WebSite",
-        name: "FactorBeam",
+        name: BRAND.name,
         url: "/",
+        logo: BRAND.logo.mark,
       },
     };
 
@@ -122,7 +125,10 @@ function CreatorPage() {
               <p className="mt-2 text-[15px] font-medium text-purple sm:text-[16px]">
                 {CREATOR.role}
               </p>
-              <p className="mt-1 text-[13px] text-muted-foreground">{CREATOR.location}</p>
+              <div className="mt-4 flex justify-center lg:justify-start">
+                <FactorBeamLogo context="compact" />
+              </div>
+              <p className="mt-3 text-[13px] text-muted-foreground">{CREATOR.location}</p>
 
               <p className="mx-auto mt-6 max-w-[520px] text-[16px] leading-[1.65] text-foreground/90 sm:text-[17px] lg:mx-0">
                 {CREATOR.shortBio}

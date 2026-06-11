@@ -10,6 +10,7 @@ import {
   Activity,
   Zap,
 } from "lucide-react";
+import { brandOgMeta } from "@/lib/brand";
 import {
   FEATURED_GAME,
   AGENT_OVERSEER_GUIDE,
@@ -34,6 +35,7 @@ export const Route = createFileRoute("/simulations")({
       },
       { property: "og:url", content: "/simulations" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/simulations" }],
   }),

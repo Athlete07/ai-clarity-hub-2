@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FactorBeamMark } from "@/components/factorbeam-logo";
 import { Nav, Footer } from "@/components/site-nav";
+import { brandOgMeta } from "@/lib/brand";
 import {
   ArrowRight,
   Bug,
@@ -9,7 +11,6 @@ import {
   Globe2,
   Handshake,
   Lightbulb,
-  Mail,
   PencilLine,
   Shield,
 } from "lucide-react";
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/contact")({
       },
       { property: "og:url", content: "/contact" },
       { property: "og:type", content: "website" },
+      ...brandOgMeta(),
     ],
     links: [{ rel: "canonical", href: "/contact" }],
   }),
@@ -126,8 +128,8 @@ function Contact() {
                   href={`mailto:${CONTACT_EMAIL}`}
                   className="group inline-flex items-center gap-3 text-left"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-purple-light/70 text-purple dark:bg-purple-light/15">
-                    <Mail size={20} />
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-purple-light/70 p-1.5 dark:bg-purple-light/15">
+                    <FactorBeamMark size={36} />
                   </span>
                   <span>
                     <span className="block text-[11px] font-medium uppercase tracking-wider text-muted-foreground">

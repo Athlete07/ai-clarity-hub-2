@@ -1,0 +1,17 @@
+{
+  "name": "FactorBeam",
+  "short_name": "FactorBeam",
+  "description": "Plain-English Executive KB for product leaders. Understand AI enough to ship.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#534AB7",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
