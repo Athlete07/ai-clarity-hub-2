@@ -159,7 +159,7 @@ export const Route = createFileRoute("/executive-kb/$kbId/$chapterSlug")({
               name: CREATOR.name,
               url: "/creator",
               image: CREATOR.photo,
-              jobTitle: CREATOR.role,
+              jobTitle: CREATOR.title,
             },
             publisher: {
               "@type": "Organization",

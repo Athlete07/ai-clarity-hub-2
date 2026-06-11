@@ -515,7 +515,7 @@ function Home() {
             to="/about"
             className="mt-8 inline-flex items-center gap-1.5 text-[14px] font-medium text-purple hover:underline"
           >
-            Read our story
+            About the platform
             <ArrowRight size={14} />
           </Link>
         </section>

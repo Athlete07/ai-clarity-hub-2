@@ -70,7 +70,7 @@ function MobileMenu({ slim = false }: { slim?: boolean }) {
               Executive KB
             </Link>
             <Link to="/about" className={cn(navLinkClass, "rounded-md px-3 py-3")}>
-              About
+              About the Platform
             </Link>
           </nav>
           <div className="mt-auto hairline-t space-y-3 p-4">
@@ -82,7 +82,7 @@ function MobileMenu({ slim = false }: { slim?: boolean }) {
                 to="/creator"
                 className={cn(navLinkClass, "rounded-md px-3 py-3")}
               >
-                Author
+                Curator Box
               </Link>
               <Link
                 to="/contact"
@@ -129,7 +129,7 @@ export function Nav({ slim = false }: { slim?: boolean }) {
               Executive KB
             </Link>
             <Link to="/about" className={navLinkClass}>
-              About
+              About the Platform
             </Link>
           </nav>
         )}
@@ -201,7 +201,7 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
           <FooterColumn title="Product">
             <FooterLink to="/executive-kb">Executive KB</FooterLink>
-            <FooterLink to="/about">About</FooterLink>
+            <FooterLink to="/about">About the Platform</FooterLink>
             <FooterLink to="/simulations">
               <span className="inline-flex items-center gap-2">
                 Simulations
@@ -212,7 +212,7 @@ export function Footer() {
             </FooterLink>
           </FooterColumn>
           <FooterColumn title="Connect">
-            <FooterLink to="/creator">Author</FooterLink>
+            <FooterLink to="/creator">Curator Box</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
             <FooterLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</FooterLink>
           </FooterColumn>

@@ -1,37 +1,33 @@
-// Shared author data used across the site (author page, chapter attribution, schema markup).
+// Shared curator data — Curator Box, chapter attribution, schema markup.
 
 export const CREATOR = {
-  name: "Jane Doe",
-  role: "Author, FactorBeam",
+  name: "Krishna Kumar",
+  /** Page name — not "Author" */
+  pageName: "Curator Box",
+  /** Professional title — not Author or Founder */
+  title: "Curator",
+  brand: "FactorBeam",
+  /** Shown at the bottom of every chapter */
+  chapterCredit: "Curator, FactorBeam",
   location: "Bengaluru, India",
   photo: "/author.png",
-  shortBio:
-    "Product manager turned AI educator. I write the FactorBeam Executive KB product leaders actually use to ship.",
-  aiDisclosure:
-    "Executive KB chapters are researched, structured, and edited by me. I use AI as a drafting and editing tool; all content is reviewed before publication.",
-  longBio: [
-    "I'm a product manager with 8+ years of experience shipping AI-powered features at consumer and B2B companies. I've led 0→1 launches, scaled ML platforms, and sat in the room where vendor pitches went sideways because nobody could translate the math.",
-    "FactorBeam is the resource I wish I had when I started. Every Executive KB chapter is researched, structured, and rewritten until a non-technical PM can defend it in a roadmap review.",
-    "I write in public, learn in public, and welcome corrections. If something in the Executive KB is wrong, I want to hear about it.",
-  ],
-  credentials: [
-    "8+ years shipping AI/ML products at scale",
-    "Ex-Product Lead at two YC-backed startups",
-    "MBA, IIM Bangalore · B.Tech, IIT Delhi",
-    "Speaker at ProductCon, Mind the Product",
-  ],
-  expertise: [
-    "AI product strategy",
-    "LLM application design",
-    "Embeddings & retrieval",
-    "Evals & quality",
-    "Vendor due diligence",
-  ],
-  socials: {
-    website: "https://example.com",
-    linkedin: "https://www.linkedin.com/in/janedoe",
-    twitter: "https://twitter.com/janedoe",
-    github: "https://github.com/janedoe",
-    email: "jane@factorbeam.com",
+  /** Two-sentence hook — time saved for the reader, not curator passion */
+  hook: [
+    "The AI landscape moves too fast for operators to keep up.",
+    "FactorBeam spends each week testing, breaking, and refining how AI shows up in real work — so you can read a chapter instead of rebuilding the research from scratch.",
+  ] as const,
+  /** Brief authority block on About the Platform — after methodology only */
+  curatorBrief: [
+    "Krishna Kumar leads curation at FactorBeam — stress-testing AI concepts against how product and business teams actually ship, negotiate, and govern.",
+    "Every chapter is researched, structured, and held to a roadmap-review bar before it goes live. AI assists drafting; the curation team owns the judgment.",
+  ] as const,
+  methodologyCta: {
+    label: "See our editorial & testing methodology",
+    href: "/about#editorial-methodology",
   },
-};
+  aiDisclosure:
+    "Chapters are researched, structured, and edited by our curation team. AI assists drafting and editing; everything is reviewed before it goes live.",
+  socials: {
+    email: "hello@factorbeam.dev",
+  },
+} as const;

@@ -2,44 +2,37 @@ import { Link } from "@tanstack/react-router";
 import { AuthorPortrait } from "@/components/author-portrait";
 import { CREATOR } from "@/lib/creator";
 
-function AuthorByline({ className = "text-[13px]" }: { className?: string }) {
-  return (
-    <p className={`${className} text-muted-foreground`}>
-      By{" "}
-      <Link
-        to="/creator"
-        className="font-medium text-foreground transition-colors hover:text-purple"
-      >
-        {CREATOR.name}
-      </Link>
-      <span aria-hidden className="text-muted-foreground/50">
-        {" "}
-        ·{" "}
-      </span>
-      {CREATOR.role}
-    </p>
-  );
-}
-
 /**
- * Author attribution for chapter pages — same flex card on every chapter.
+ * Chapter footer — vetted-by line with portrait.
  */
 export function CreatorAttribution() {
+  const [role, brand] = CREATOR.chapterCredit.split(", ");
+
   return (
-    <div className="hairline flex items-center gap-5 rounded-xl bg-card/60 p-5 sm:gap-6 sm:p-6">
+    <div className="hairline flex items-center gap-4 rounded-xl bg-muted/20 px-5 py-4 sm:gap-5 sm:px-6 sm:py-5">
       <Link
         to="/creator"
         aria-label={`View ${CREATOR.name}'s profile`}
-        className="transition-opacity hover:opacity-90"
+        className="shrink-0 transition-opacity hover:opacity-90"
       >
         <AuthorPortrait size="card" />
       </Link>
-      <div className="min-w-0">
-        <AuthorByline className="text-[15px] sm:text-[16px]" />
-        <p className="mt-2 text-[13px] leading-relaxed text-foreground/75 sm:text-[14px]">
-          {CREATOR.shortBio}
-        </p>
-      </div>
+
+      <p className="min-w-0 text-[15px] leading-snug sm:text-[16px]">
+        <span className="text-muted-foreground">Vetted by </span>
+        <Link
+          to="/creator"
+          className="font-medium text-foreground transition-colors hover:text-purple"
+        >
+          {CREATOR.name}
+        </Link>
+        <span aria-hidden className="text-muted-foreground/40">
+          {" "}
+          ·{" "}
+        </span>
+        <span className="text-muted-foreground">{role}, </span>
+        <span className="font-medium text-purple">{brand}</span>
+      </p>
     </div>
   );
 }
