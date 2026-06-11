@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlAiRolesFunctionLeaders = buildChapter({
   slug: "bl-ai-roles-function-leaders",
@@ -12,7 +12,7 @@ export const chapter03BlAiRolesFunctionLeaders = buildChapter({
     "Every function needs at minimum three AI role types: an AI workflow owner (manages how AI tools are embedded in function processes), AI output reviewers (check AI outputs before they affect decisions), and an AI champion (drives adoption and surfaces improvement opportunities). These roles can be held by existing employees with targeted development — they do not require new headcount in most functions.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The new AI roles every function leader needs to know",
       subtitle: "From prompt engineers to AI product owners — the roles reshaping how functions operate",
@@ -58,8 +58,15 @@ export const chapter03BlAiRolesFunctionLeaders = buildChapter({
           body: "A hospital trust deployed an AI diagnostic support tool without designing an output reviewer role. Clinical staff used AI diagnostic suggestions without a structured evaluation protocol. An audit three months post-deployment found that AI recommendations were being actioned without clinician review in 34% of cases — because there was no role or protocol for review. The trust created a Senior Clinician AI Reviewer role (20% time allocation for 8 senior clinicians) and an output review protocol. The 34% fell to 4% within six weeks.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy Sequence",
+      caption:
+        "Assess skills gap → upskill vs hire → prove pilot → scale team. Talent strategy follows use-case maturity.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Prompt engineers and AI workflow designers",
       subtitle: "The two operational AI roles that most directly determine function-level AI value",
@@ -105,6 +112,13 @@ export const chapter03BlAiRolesFunctionLeaders = buildChapter({
           body: "An HR function with 80 people created a paired AI workflow owner model: a senior HR business partner (domain expertise) and a digital HR analyst (technical affinity) worked as a formal pair with 30% combined time for AI workflow ownership. The pair designed the prompt library for AI job description generation and built the workflow integration that made the tool accessible from within the ATS. A standalone AI specialist hired before the pair was established had produced a technically functional tool used by 3 of 80 HR staff. The pair's integrated approach achieved 64% adoption in 12 weeks.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
     buildSection({
       number: "3.3",

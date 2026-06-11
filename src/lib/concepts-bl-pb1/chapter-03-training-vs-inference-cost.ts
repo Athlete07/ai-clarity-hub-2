@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlTrainingVsInferenceCost = buildChapter({
   slug: "bl-training-vs-inference-cost",
@@ -12,7 +12,7 @@ export const chapter03BlTrainingVsInferenceCost = buildChapter({
     "Inference cost is your AI variable cost of goods sold — it scales with usage in ways pilot budgets routinely underestimate. Training cost is a capital expenditure that most organisations should not incur directly. TCO analysis, tier selection, and latency-cost trade-offs are the CFO levers that make AI economics work.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Training Cost as Capital Expenditure",
       subtitle: "Why training is a one-time cost you probably should not bear — and what it means when vendors do",
@@ -58,6 +58,13 @@ export const chapter03BlTrainingVsInferenceCost = buildChapter({
           body: "Anthropic's Claude enterprise pricing reflects the enormous training investment in Claude models. Enterprise customers paying significant annual contracts are partially financing Anthropic's training infrastructure for future model generations. Leaders should understand that vendor AI pricing is not purely based on inference cost — it includes amortised training investment and R&D. This is relevant to make-vs-buy decisions for high-volume AI use cases.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-training-inference-split",
+      type: "comparison",
+      title: "Training CapEx vs Inference OpEx",
+      caption:
+        "Most organisations should rent pre-trained models. Inference is the variable COGS line that scales with every API call.",
     }),
     buildSection({
       number: "3.2",
@@ -106,7 +113,7 @@ export const chapter03BlTrainingVsInferenceCost = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.3",
       title: "Scale Economics — How AI Unit Cost Behaves at Volume",
       subtitle: "Why AI economics improve dramatically with scale — and why that changes your investment case",
@@ -152,6 +159,13 @@ export const chapter03BlTrainingVsInferenceCost = buildChapter({
           body: "A tier-2 UK bank committed to a three-year AWS GPU reserved capacity agreement to support its self-hosted AI model deployment. The upfront commitment was £4M versus £11M at on-demand rates over the same period — a £7M saving conditional on utilisation targets. Finance structured the commitment with a 60% reserved, 40% on-demand split, providing cost efficiency without full commitment risk. AI infrastructure is a capital allocation decision that finance should lead, not IT should discover.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-unit-economics-trap",
+      type: "flow",
+      title: "The Unit Economics Trap",
+      caption:
+        "Pilot budgets routinely underestimate inference at production volume. Model 10× usage before signing usage-based contracts.",
     }),
     buildSection({
       number: "3.4",

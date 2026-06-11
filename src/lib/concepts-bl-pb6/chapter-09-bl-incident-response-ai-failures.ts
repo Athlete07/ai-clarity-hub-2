@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter09BlIncidentResponseAiFailures = buildChapter({
   slug: "bl-incident-response-ai-failures",
@@ -12,7 +12,7 @@ export const chapter09BlIncidentResponseAiFailures = buildChapter({
     "AI incident response requires classification (severity determines response speed), detection (monitoring that catches failures before customers do), escalation (defined pathways from operational team to board), investigation (root cause before remediation), remediation (fix and verify), and notification (regulators and affected individuals where required). Business leaders own the escalation decision — not the technical investigation.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "How AI Incidents Differ From Standard IT Incidents",
       subtitle: "The distinctive characteristics of AI failures — and why standard incident response frameworks need AI-specific extensions",
@@ -58,8 +58,15 @@ export const chapter09BlIncidentResponseAiFailures = buildChapter({
           body: "Amazon's recommendation engine experienced an error in 2023 that caused adult products to be recommended to unrelated product pages — visible to all users browsing affected categories. Detection was near-immediate (social media reports within minutes); remediation took 4 hours. The incident scale: estimated millions of customer interactions affected. The Amazon response illustrated the communication speed required for high-visibility AI failures: public acknowledgement within hours, technical explanation within 24 hours. Slow public communication of visible AI failures amplifies reputational damage.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "AI Incident Classification",
       subtitle: "A severity classification system that determines response speed, escalation level, and notification obligations",
@@ -105,6 +112,13 @@ export const chapter09BlIncidentResponseAiFailures = buildChapter({
           body: "An AI pipeline monitoring alert detected a 3% data freshness degradation in a non-critical recommendation AI — below the Severity 3 threshold but above the logging trigger. Severity 4 classification: alert logged in incident register, technical team investigation commenced, vendor ticket opened. Resolution: data pipeline configuration issue resolved within 4 days. No customer impact. The Severity 4 processing consumed 2 hours of technical team time and generated a single incident register entry — appropriate proportionate response to a low-severity issue. Without a classification system, the same alert might have generated an unnecessary senior management escalation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

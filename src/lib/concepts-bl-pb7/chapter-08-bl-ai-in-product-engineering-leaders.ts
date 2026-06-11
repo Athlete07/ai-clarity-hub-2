@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlAiInProductEngineeringLeaders = buildChapter({
   slug: "bl-ai-in-product-engineering-leaders",
@@ -12,7 +12,7 @@ export const chapter08BlAiInProductEngineeringLeaders = buildChapter({
     "Product and engineering AI leadership requires managing two parallel agendas: AI-assisted development (code generation, testing, documentation) and AI-powered products (ML features, LLM integration, agent capabilities). The CPO and CTO who govern both with equal rigour build faster teams and better products.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "The Product and Engineering AI Landscape",
       subtitle: "Two parallel transformations — and why leaders must manage both simultaneously",
@@ -58,8 +58,15 @@ export const chapter08BlAiInProductEngineeringLeaders = buildChapter({
           body: "A research study found that GitHub Copilot and equivalent tools generate code with security vulnerabilities at a higher rate than experienced human developers writing equivalent code — particularly for cryptography, authentication, and input validation. CTO-level governance: AI-generated code requires the same security review process as human-written code. Security scanning tools should be configured to review AI-generated code, and security-sensitive areas (authentication, data handling, encryption) should have elevated review requirements regardless of authorship.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "AI-Assisted Engineering — Productivity Without Technical Debt",
       subtitle: "Governing code generation for quality, security, and long-term maintainability",
@@ -105,6 +112,13 @@ export const chapter08BlAiInProductEngineeringLeaders = buildChapter({
           body: "An engineering organisation adopted AI code generation broadly without documentation standards. AI-generated code was typically underdocumented — AI tools generate working code more reliably than they generate accurate documentation. Within 12 months, the codebase had a significant documentation debt: the code worked but was increasingly difficult for new engineers to understand and maintain. CTOs should establish documentation standards specifically for AI-generated code — either requiring AI tools to generate documentation alongside code, or making documentation a required step in the AI-assisted development workflow.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

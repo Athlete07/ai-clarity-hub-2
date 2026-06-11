@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter09BlPresentingAiRoiCfo = buildChapter({
   slug: "bl-presenting-ai-roi-cfo",
@@ -12,7 +12,7 @@ export const chapter09BlPresentingAiRoiCfo = buildChapter({
     "CFOs approve AI investments when they trust the financial model, understand the risk structure, and believe the sponsor has considered what could go wrong. The path to CFO approval is not through enthusiasm for AI — it is through financial rigour, honest uncertainty, and specific answers to predictable challenges.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "How CFOs think about AI investments",
       subtitle: "The CFO's mental model — four questions they are always asking",
@@ -58,8 +58,15 @@ export const chapter09BlPresentingAiRoiCfo = buildChapter({
           body: "A consulting firm's AI research platform business case named the Head of Knowledge Management as 'accountable for delivering the productivity ROI target of £1.8M by month 12.' The CFO had a brief conversation with the Head of Knowledge Management before the approval meeting — confirming she understood and accepted the accountability. 'I've never had a business case sponsor own the ROI target this explicitly,' the CFO said. 'It changes how I think about the risk.' The investment was approved. Named accountability had converted the presentation from a proposal to a commitment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "The financial language of AI ROI",
       subtitle: "Speaking the CFO's language — the ten financial terms every AI sponsor must use correctly",
@@ -105,6 +112,13 @@ export const chapter09BlPresentingAiRoiCfo = buildChapter({
           body: "A manufacturer's AI investment presentation stated: 'The investment generates a 28% IRR against our 12% hurdle rate — providing 16 percentage points of return above the minimum threshold.' The CFO followed up: 'And our next competing capital project?' The sponsor answered: 'A facility expansion at 19% IRR. The AI investment generates 9 points more return than the next alternative.' The IRR comparison in hurdle rate language resolved the capital competition question in two sentences.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

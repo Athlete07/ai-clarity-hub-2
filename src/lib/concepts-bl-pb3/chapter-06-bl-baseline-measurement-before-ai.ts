@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlBaselineMeasurementBeforeAi = buildChapter({
   slug: "bl-baseline-measurement-before-ai",
@@ -12,7 +12,7 @@ export const chapter06BlBaselineMeasurementBeforeAi = buildChapter({
     "A baseline measured after deployment is not a baseline — it is a post-hoc benchmark. Business leaders who insist on pre-deployment baseline measurement and Finance sign-off are the ones whose post-deployment ROI reports survive scrutiny without revision.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "Why baselines determine business case credibility",
       subtitle: "The three ways a weak baseline destroys an otherwise strong ROI claim",
@@ -58,8 +58,15 @@ export const chapter06BlBaselineMeasurementBeforeAi = buildChapter({
           body: "A hospital's AI diagnostic support tool was subjected to a clinical governance audit 18 months post-deployment. The auditors requested the pre-deployment baseline. The programme team produced a six-page baseline documentation pack: the diagnostic accuracy metric, the measurement methodology (audit of 300 cases by two independent reviewers), the data source (clinical records system), the measurement period (four months pre-deployment), the resulting figure (87.4% accuracy), and Finance sign-off date. The audit took 20 minutes. The baseline was accepted without revision.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "What to measure before deploying AI",
       subtitle: "The metric categories that form a complete baseline — and how to prioritise when time is limited",
@@ -105,6 +112,13 @@ export const chapter06BlBaselineMeasurementBeforeAi = buildChapter({
           body: "Before deploying AI research tools, a consulting firm commissioned a 4-week time allocation study for 80 analysts. Method: weekly structured time logs by category (client research, proposal writing, internal administration, business development, direct billable work). Baseline result: 34% of analyst time spent on research and document tasks within AI scope. This established the denominator for every productivity claim: if AI reduces research time, the saving is a fraction of the 34% — not of total analyst time.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

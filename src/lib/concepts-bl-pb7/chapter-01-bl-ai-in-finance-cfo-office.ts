@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlAiInFinanceCfoOffice = buildChapter({
   slug: "bl-ai-in-finance-cfo-office",
@@ -59,7 +59,7 @@ export const chapter01BlAiInFinanceCfoOffice = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "AI-Powered Forecasting and FP&A",
       subtitle: "How ML transforms financial planning — and what CFOs must govern to capture the benefit safely",
@@ -105,8 +105,15 @@ export const chapter01BlAiInFinanceCfoOffice = buildChapter({
           body: "Shell uses ML to generate multiple probabilistic demand and price scenarios for capital planning across a 10-year horizon. Rather than a single forecast, the system produces a probability distribution. The CFO team makes capital allocation decisions against scenario distributions rather than point estimates. This architecture — probabilistic ranges rather than single numbers — is more honest and more useful for long-horizon planning.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "AI in Audit and Internal Controls",
       subtitle: "From sampling to continuous monitoring — what this means for the CFO's control environment",
@@ -152,6 +159,13 @@ export const chapter01BlAiInFinanceCfoOffice = buildChapter({
           body: "A global manufacturer deployed AI-powered AP audit analysis as a retrospective exercise before a system migration. The analysis of five years of payment history identified £2.3M in duplicate payments and erroneous vendor credits that periodic audit had not surfaced. Recovery projects of this type — powered by ML anomaly detection on historical data — often pay for the AI deployment many times over in year one.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
     buildSection({
       number: "1.4",

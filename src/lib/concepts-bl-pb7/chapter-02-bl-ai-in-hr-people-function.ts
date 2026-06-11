@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlAiInHrPeopleFunction = buildChapter({
   slug: "bl-ai-in-hr-people-function",
@@ -12,7 +12,7 @@ export const chapter02BlAiInHrPeopleFunction = buildChapter({
     "HR AI delivers measurable value in three zones: talent acquisition efficiency, learning personalisation, and workforce analytics. The CHRO's governance mandate is ensuring every AI-assisted people decision maintains human accountability, meets anti-discrimination law, and earns employee trust rather than eroding it.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "The HR AI Landscape — Opportunity and Obligation",
       subtitle: "What AI actually does in HR, where the real returns are, and where the regulatory exposure concentrates",
@@ -58,8 +58,15 @@ export const chapter02BlAiInHrPeopleFunction = buildChapter({
           body: "When New York City's bias audit requirement for AI employment tools took effect in 2023, several major HR tech vendors could not immediately produce compliant audit documentation. Enterprises using those tools in NYC faced legal exposure. CHROs who had contractually required compliance documentation as a condition of deployment had protection; those who had not faced urgent vendor management issues. Contractual compliance requirements protect the employer when the vendor is non-compliant.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "AI in Talent Acquisition",
       subtitle: "Accelerating hiring without automating discrimination",
@@ -105,6 +112,13 @@ export const chapter02BlAiInHrPeopleFunction = buildChapter({
           body: "A professional services firm's AI screening tool assigned higher scores to candidates from a specific set of universities. Investigation revealed the scoring proxy was not university name directly but a combination of degree classification, extracurricular activity type, and graduation year — which correlated strongly with university selectivity. The tool was producing indirect socioeconomic discrimination that did not appear in single-variable testing. CHROs must require intersectional and proxy-variable testing, not just protected characteristic analysis.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

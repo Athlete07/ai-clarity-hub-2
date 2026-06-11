@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlAiInCustomerService = buildChapter({
   slug: "bl-ai-in-customer-service",
@@ -12,7 +12,7 @@ export const chapter06BlAiInCustomerService = buildChapter({
     "AI in customer service delivers measurable value in automated resolution, agent assistance, and analytics. The service leader's governance task is ensuring AI escalates correctly to humans, maintains honesty about its AI nature, and never creates the perception that the organisation is hiding humans behind automation to avoid service costs.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "The Customer Service AI Landscape",
       subtitle: "What AI handles well, where humans are irreplaceable, and the architecture that combines both",
@@ -58,8 +58,15 @@ export const chapter06BlAiInCustomerService = buildChapter({
           body: "A UK utility company's AI customer service system achieved an 85% containment rate by making human escalation difficult — requiring customers to repeat personal verification, go through multiple AI redirect loops, and select from menu trees that did not include their actual issue. Customer satisfaction dropped 18 points over six months despite the efficiency gains. The Ofgem investigation found the system was specifically designed to deter escalation. Regulators increasingly view deliberate escalation obstruction as a consumer protection violation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Conversational AI and Chatbots",
       subtitle: "Designing AI interactions that customers trust — and that honestly represent AI capability",
@@ -105,6 +112,13 @@ export const chapter06BlAiInCustomerService = buildChapter({
           body: "A telecommunications company deployed an LLM-powered chatbot with a broad service scope and no explicit knowledge boundaries. Within two weeks, customers were receiving confidently-stated incorrect information about contract terms, billing disputes, and regulatory rights. The company faced regulatory enquiry from Ofcom and a wave of customer complaints. The correction required taking the chatbot offline, rebuilding with explicit knowledge boundaries and confidence thresholds, and a customer communication about the errors. Scoped deployment with clear boundaries is safer than broad deployment with LLM confidence.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

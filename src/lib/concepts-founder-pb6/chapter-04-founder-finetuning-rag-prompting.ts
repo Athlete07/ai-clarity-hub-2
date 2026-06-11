@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04FounderFinetuningRagPrompting = buildChapter({
   slug: "founder-finetuning-rag-prompting",
@@ -13,7 +13,7 @@ export const chapter04FounderFinetuningRagPrompting = buildChapter({
   pmCallout:
     "As a founder: if your team says 'we need to fine-tune' before they have exhausted prompts and RAG on a golden eval set, you are funding engineering preference, not product evidence. Ask for the eval numbers, not the architecture diagram.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The three customisation options — a plain language overview",
       subtitle: "What each one does, what it costs, and what it produces",
@@ -59,6 +59,13 @@ export const chapter04FounderFinetuningRagPrompting = buildChapter({
           body: "Team requested $60K fine-tune budget. Founder required 200-case prompt eval first — hit 83% with structured output mode. Shipped without fine-tune; saved budget for RAG infrastructure. Escalation ladder worked.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "prompting-vs-finetuning-ladder",
+      type: "flow",
+      title: "Prompt Before Fine-Tune Ladder",
+      caption:
+        "Climb the ladder only when eval proves the rung beneath has hit its ceiling — better prompts and RAG before expensive fine-tunes.",
     }),
     buildSection({
       number: "4.2",
@@ -107,7 +114,7 @@ export const chapter04FounderFinetuningRagPrompting = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.3",
       title: "RAG — the knowledge option",
       subtitle: "When your problem is that the model doesn't know your content, not that it behaves wrong",
@@ -153,6 +160,13 @@ export const chapter04FounderFinetuningRagPrompting = buildChapter({
           body: "Enterprise SaaS needed document retrieval respecting per-customer ACLs. Metadata filters in vector query — without them, RAG leaked cross-tenant snippets. Architecture requirement, not optional.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "pb4-rag-pipeline",
+      type: "flow",
+      title: "The RAG Pipeline",
+      caption:
+        "Ingest → chunk → embed → index → retrieve → generate. RAG is the default architecture for knowledge-grounded AI products.",
     }),
     buildSection({
       number: "4.4",

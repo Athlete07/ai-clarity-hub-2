@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05FounderUnitEconomicsInflection = buildChapter({
   slug: "founder-unit-economics-inflection",
@@ -13,7 +13,7 @@ export const chapter05FounderUnitEconomicsInflection = buildChapter({
   pmCallout:
     "As a founder: map your four inflection points — API negotiation, build-vs-buy crossover, fine-tuning ROI, and margin floor — on a single timeline before your Series B. Investors fund founders who understand when their economics change, not founders surprised by them.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "The four unit economics inflection points in AI product scaling",
       subtitle: "The revenue and usage thresholds where your cost structure changes",
@@ -59,8 +59,15 @@ export const chapter05FounderUnitEconomicsInflection = buildChapter({
           body: "A founder included an inflection timeline in the Series A deck: current state, negotiation at 300M tokens, routing ROI now, fine-tuning at 600M, self-host evaluation at $100K monthly spend. Investors cited 'cost structure literacy' in the memo.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Scaling Inflection Points",
+      caption:
+        "Cost and architecture choices compound at each order-of-magnitude in usage.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "The model negotiation threshold",
       subtitle: "When your usage volume gives you leverage to renegotiate API pricing",
@@ -106,6 +113,13 @@ export const chapter05FounderUnitEconomicsInflection = buildChapter({
           body: "A company committed annual volume on a flagship model tier. A cheaper model launched mid-contract with better task fit. Partial commit flexibility clause limited damage. Founders should negotiate model-flexibility terms in enterprise agreements.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

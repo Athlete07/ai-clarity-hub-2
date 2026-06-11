@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter10BlSustainingAiMomentum = buildChapter({
@@ -13,7 +13,7 @@ export const chapter10BlSustainingAiMomentum = buildChapter({
     "Sustained AI momentum is not a leadership personality trait — it is an institutional design achievement. Organisations that sustain AI momentum have built the governance, the culture, and the capability development systems that advance AI transformation without requiring heroic individual leadership energy at every stage. The leader's job is to build those systems, not to be the system.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "The momentum trap: why AI transformations stall after year one",
       subtitle: "Understanding the predictable momentum loss that follows early AI programme success",
@@ -59,8 +59,15 @@ export const chapter10BlSustainingAiMomentum = buildChapter({
           body: "A hospital's AI programme achieved sustained momentum through two AI programme manager transitions — which would typically have caused significant momentum loss. The sustainability was attributable to the institutional structures that had been built before the first transition: the standing AI governance forum had its own momentum and membership, the AI innovation pipeline had department-level ownership, and the AI community of practice had self-organising leadership from clinical champions. The structures had become self-sustaining, and the leadership transition created only minor disruption rather than the programme restarts that had characterised previous change leadership transitions.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "Building institutional AI memory",
       subtitle: "How to capture and leverage what the organisation has learned from AI transformation",
@@ -106,6 +113,13 @@ export const chapter10BlSustainingAiMomentum = buildChapter({
           body: "A manufacturer's second AI deployment — in a different plant — used the learning log from the first deployment as its design input. The log documented that the first deployment had failed to achieve adoption in the night shift due to a workflow friction the change management team had not identified until month four. The second deployment built a specific night shift workflow adaptation into its pre-deployment design. Second deployment night shift adoption was 71% — compared to 18% at the equivalent point in the first deployment. The learning log had converted a costly first deployment mistake into a second deployment design advantage.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

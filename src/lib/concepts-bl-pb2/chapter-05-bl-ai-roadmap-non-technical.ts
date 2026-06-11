@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlAiRoadmapNonTechnical = buildChapter({
   slug: "bl-ai-roadmap-non-technical",
@@ -13,7 +13,7 @@ export const chapter05BlAiRoadmapNonTechnical = buildChapter({
   pmCallout:
     "As a business leader: your job is to own the roadmap's business logic — the sequence of bets, the outcome gates, the dependency order, and the board narrative. The technology team owns the technical delivery. That division of labour is how AI roadmaps succeed.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Why AI Roadmaps Are Different from Software Roadmaps",
       subtitle: "The four differences that change how you plan",
@@ -67,8 +67,15 @@ export const chapter05BlAiRoadmapNonTechnical = buildChapter({
           body: "A retailer's AI personalisation roadmap included a change management milestone: 'Buying team using AI product recommendations in >70% of weekly range reviews by month 4 post-deployment.' When the milestone was missed at month 4 (actual: 28% usage), the roadmap governance triggered an adoption intervention — workflow redesign and training — before the ROI assessment at month 6. Without the change management milestone, the adoption problem would not have been diagnosed until the ROI review, three months after the intervention window.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "The Initiative Lifecycle",
       subtitle: "The phases every AI initiative goes through — and where each one can fail",
@@ -114,6 +121,13 @@ export const chapter05BlAiRoadmapNonTechnical = buildChapter({
           body: "A bank's AI fraud detection model was assigned a named model owner responsible for: monthly performance review against the evaluation benchmark, quarterly retraining trigger assessment, annual governance review, and continuous monitoring alert management. The model owner was a role in the operations team, budgeted as part of the programme from deployment. When fraud pattern changes caused accuracy to drop from 94% to 88% in month 14, the model owner identified it within the monthly review cycle and triggered retraining within three weeks. Without the steady-state role, the degradation would have persisted until a business impact was noticed — typically three to six months later.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

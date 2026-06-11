@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlBoardReportingAiRisk = buildChapter({
   slug: "bl-board-reporting-ai-risk",
@@ -12,7 +12,7 @@ export const chapter08BlBoardReportingAiRisk = buildChapter({
     "Effective board AI risk reporting has three purposes: enabling oversight (the board can assess whether AI risk is being managed), enabling decisions (the board can make resource and strategy decisions about AI risk), and enabling accountability (the board can hold management accountable for AI governance commitments). Reports that serve all three purposes in under 10 pages are the standard.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "Why Boards Need AI Risk Oversight",
       subtitle: "The regulatory, investor, and governance case for board-level AI risk accountability",
@@ -58,8 +58,15 @@ export const chapter08BlBoardReportingAiRisk = buildChapter({
           body: "Following Samsung's 2023 employee data leak via ChatGPT, analyst reports questioned whether Samsung's board had been informed of the AI usage risk before the incident, and what AI governance oversight the board had exercised. Samsung's response included a board-level AI governance review and the establishment of a board AI committee. The post-incident board governance response is significantly more expensive and reputationally damaging than the pre-incident board oversight programme that would have prevented the event.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "What Boards Need to Understand About AI Risk",
       subtitle: "The minimum AI literacy required for effective board oversight — and what board members should be able to answer after a good report",
@@ -105,6 +112,13 @@ export const chapter08BlBoardReportingAiRisk = buildChapter({
           body: "A technology company appointed a non-executive director with AI governance expertise to chair a new board AI committee in 2024. The committee's remit: oversight of the AI governance programme, review of major AI deployments, and approval of AI risk acceptance above the defined threshold. The AI NED's presence changed management preparation for board AI discussions: the quality of AI risk reports improved significantly because management knew the reports would face substantive expert review. Board-level AI expertise raises the standard of management governance throughout the AI programme.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

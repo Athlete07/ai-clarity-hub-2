@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05FounderRetainingAiTalent = buildChapter({
   slug: "founder-retaining-ai-talent",
@@ -13,7 +13,7 @@ export const chapter05FounderRetainingAiTalent = buildChapter({
   pmCallout:
     "As a founder: losing your founding AI lead costs 12–18 months of capability. Retention conversations belong in your calendar quarterly — not in panic when LinkedIn updates appear.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Why AI talent leaves startups",
       subtitle: "The real reasons — not the ones people say in exit interviews",
@@ -59,8 +59,15 @@ export const chapter05FounderRetainingAiTalent = buildChapter({
           body: "Company pivoted from AI-native to services; AI team reduced to support role. Three AI engineers left within two months. Mission alignment is retention foundation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Technical challenge as retention",
       subtitle: "Why the quality of the problems you give AI engineers matters more than the perks you offer",
@@ -106,6 +113,13 @@ export const chapter05FounderRetainingAiTalent = buildChapter({
           body: "Solo AI engineer on call 24/7 for six months; quit with no counter-offer. Next hire paired with contract MLOps for on-call rotation. Cheap retention fix ignored too long.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

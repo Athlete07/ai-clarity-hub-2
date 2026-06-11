@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter01BlWhyAiTransformationsFail = buildChapter({
@@ -60,7 +60,7 @@ export const chapter01BlWhyAiTransformationsFail = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "Why leadership misalignment kills AI projects",
       subtitle: "How conflicting executive goals create competing programme mandates that destroy execution",
@@ -106,8 +106,15 @@ export const chapter01BlWhyAiTransformationsFail = buildChapter({
           body: "A retailer's three functional leaders had each shortlisted a different AI vendor before an enterprise platform decision was made. The CTO escalated the conflict to the CEO, who convened a two-hour executive session. The outcome: a shared data platform decision (Microsoft Azure AI) with a 6-month evaluation period for functional tools. All three functional leaders participated in the platform selection. The subsequent functional tool evaluations were faster because the architecture constraint eliminated 60% of vendors immediately.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "The technology-first trap",
       subtitle: "Why deploying AI before redesigning the workflow produces tools nobody uses",
@@ -153,6 +160,13 @@ export const chapter01BlWhyAiTransformationsFail = buildChapter({
           body: "A telecom company ran two parallel AI customer service deployments in two regions. Region A deployed the AI tool first and then adjusted workflows in response to usage data. Region B redesigned workflows first and then deployed the tool. At six months, Region A had 31% agent adoption. Region B had 74%. The technology was identical. Region B's process-first sequencing produced 2.4× the adoption rate, which translated into 2.1× the productivity gain.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
     buildSection({
       number: "1.4",

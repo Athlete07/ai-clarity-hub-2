@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter10BlEthicalAiPolicyDesign = buildChapter({
   slug: "bl-ethical-ai-policy-design",
@@ -12,7 +12,7 @@ export const chapter10BlEthicalAiPolicyDesign = buildChapter({
     "Ethical AI policy has three tiers: principles (aspirational values that define what you stand for), standards (specific rules that operationalise the principles), and procedures (the processes that embed the standards in daily decisions). All three tiers are required. Principles without standards are aspirational; standards without procedures are unenforced.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "Why Most Ethical AI Policies Fail",
       subtitle: "The five failure modes of AI ethics statements — and how to avoid them in policy design",
@@ -58,8 +58,15 @@ export const chapter10BlEthicalAiPolicyDesign = buildChapter({
           body: "A UK fintech published a one-page AI ethics statement in 2022 with five principles (fair, transparent, accountable, privacy-respecting, human-centred). In 2024, a journalist investigation revealed the firm's AI loan pricing tool produced systematically higher rates for applicants in areas correlated with minority ethnic communities. The firm's CEO cited the ethics principles in public statements. The principles had no enforcement mechanism, no fairness testing standard, and no connection to the deployment process. The gap between published principles and operational practice was exposed publicly. An ethics statement that does not change deployment behaviour is a reputational liability, not a protection.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "The Three-Tier Policy Architecture",
       subtitle: "Principles, standards, and procedures — the structure that makes ethical AI policy operational",
@@ -105,6 +112,13 @@ export const chapter10BlEthicalAiPolicyDesign = buildChapter({
           body: "A European insurer's ethical AI policy included a transparency standard: 'All AI decisions affecting customers must include an explanation available on request.' The standard had no procedure — no process, template, or system requirement that made explanation capability a deployment prerequisite. An FCA Consumer Duty review two years after policy publication found that six AI systems used in customer decisions had no explanation capability. The standard was known; the procedure to enforce it had never been built. Procedure gaps produce compliance failures even when standards are well-designed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

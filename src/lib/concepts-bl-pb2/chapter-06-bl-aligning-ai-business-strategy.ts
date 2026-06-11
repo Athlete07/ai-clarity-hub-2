@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlAligningAiBusinessStrategy = buildChapter({
   slug: "bl-aligning-ai-business-strategy",
@@ -13,7 +13,7 @@ export const chapter06BlAligningAiBusinessStrategy = buildChapter({
   pmCallout:
     "As a business leader: strategic alignment is your responsibility, not the technology team's. They will solve the problem you give them — the question is whether you gave them the right problem. Set the strategic anchor before the initiative is designed.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "Why AI Programmes Fail to Connect to Strategy",
       subtitle: "The four disconnects that produce technically impressive drift",
@@ -67,8 +67,15 @@ export const chapter06BlAligningAiBusinessStrategy = buildChapter({
           body: "A bank's AI programme adopted a reporting standard: every update to the executive committee must include a one-sentence strategic alignment statement for each initiative. 'This initiative supports our strategy objective of reducing the cost-to-serve for mass market customers by 20% in three years — current trajectory: 12% reduction achieved.' The format initially required additional work from programme managers. Within two quarters, the format improved — and executive committee members reported that they could, for the first time, assess AI progress against strategic goals.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Mapping AI to Strategic Priorities",
       subtitle: "The discipline that converts a technology wish list into a strategic portfolio",
@@ -114,6 +121,13 @@ export const chapter06BlAligningAiBusinessStrategy = buildChapter({
           body: "A retailer's annual strategic alignment mapping found that its top strategic priority — profitable growth in the premium segment — had £180K of AI investment support, while its fourth-ranked priority — supply chain cost reduction — had £2.1M. The mapping made explicit what individual initiative reviews had not: the portfolio was heavily weighted toward cost reduction relative to the strategic priority hierarchy. The rebalancing that followed moved £800K from lower-priority supply chain initiatives to customer intelligence investments supporting premium growth.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

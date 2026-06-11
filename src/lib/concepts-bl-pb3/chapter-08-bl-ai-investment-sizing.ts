@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlAiInvestmentSizing = buildChapter({
   slug: "bl-ai-investment-sizing",
@@ -12,7 +12,7 @@ export const chapter08BlAiInvestmentSizing = buildChapter({
     "AI investment size should be determined by organisational absorptive capacity, not by technology ambition or vendor proposal. The right AI investment is the largest amount the organisation can deploy, adopt, and measure effectively — and no larger.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "How to size an AI investment correctly",
       subtitle: "The four inputs that determine the right investment level for any AI project",
@@ -58,8 +58,15 @@ export const chapter08BlAiInvestmentSizing = buildChapter({
           body: "A consulting firm evaluated three capital investments: AI knowledge platform (IRR 24%), office technology upgrade (IRR 31%), and geographic expansion (IRR 19%). Portfolio capital was £2M. The AI investment at £800K had the lowest IRR but the highest strategic optionality (enabling capability that the office upgrade could not). The firm allocated £800K to AI, £1.2M to office technology, and deferred geographic expansion — based on explicit IRR comparison plus a stated strategic rationale for the AI premium over the IRR differential.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Portfolio approach to AI investments",
       subtitle: "Managing AI as a portfolio rather than as individual projects — the governance advantage",
@@ -105,6 +112,13 @@ export const chapter08BlAiInvestmentSizing = buildChapter({
           body: "An insurer's quarterly AI portfolio review showed consistent underperformance in AI customer onboarding (6-month actual ROI 32% below target) and consistent outperformance in AI claims triage (6-month actual ROI 40% above target). The investment committee reallocated £400K from AI onboarding Phase 2 to claims triage Phase 3. The reallocation decision was made in 20 minutes using a four-column portfolio summary. The committee noted that the same decision would have required a three-month business case process if AI was managed as individual projects.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

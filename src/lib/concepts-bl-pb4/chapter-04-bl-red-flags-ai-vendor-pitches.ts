@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter04BlRedFlagsAiVendorPitches = buildChapter({
   slug: "bl-red-flags-ai-vendor-pitches",
@@ -13,7 +13,7 @@ export const chapter04BlRedFlagsAiVendorPitches = buildChapter({
   pmCallout:
     "As a business leader: an AI vendor's pitch is designed to maximise your confidence in their technology and urgency toward a contract commitment. Every question you ask that exposes a red flag is a moment where you protect your organisation. Ask the uncomfortable questions while you still have negotiating leverage.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The demo-to-production gap",
       subtitle: "Why AI demos reliably outperform production deployments and how to test for this in the room",
@@ -59,8 +59,15 @@ export const chapter04BlRedFlagsAiVendorPitches = buildChapter({
           body: "After an impressive AI clinical documentation demo, a hospital's IT director requested a reference architecture walkthrough with the vendor's solution engineering team. The solution engineer's architecture for a 500-bed hospital — the hospital's size — included a proprietary data ingestion layer that required replacing the hospital's existing data warehouse. This was not mentioned in the demo or the sales materials. The replacement requirement added $800,000 and 14 months to the vendor's quoted implementation — converting a compelling demo into an uneconomic deployment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "Benchmark manipulation and statistical red flags",
       subtitle: "How AI vendors misuse benchmarks and statistics, and the questions that expose it",
@@ -106,6 +113,13 @@ export const chapter04BlRedFlagsAiVendorPitches = buildChapter({
           body: "An AI diagnostic tool claimed 96% diagnostic agreement with physician consensus. The evaluation team asked for the metric definition. The vendor's 'diagnostic agreement' counted any diagnosis within the same disease category as agreement — so 'Type 2 diabetes' and 'pre-diabetic insulin resistance' counted as an agreement, not a disagreement. Using standard clinical diagnostic accuracy definitions (exact diagnosis match), agreement was 81%. The proprietary metric inflated apparent performance by 15 percentage points. Asking for metric definitions before accepting headline accuracy figures is non-negotiable.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlModelEvaluationLeaders = buildChapter({
   slug: "bl-model-evaluation-leaders",
@@ -12,7 +12,7 @@ export const chapter06BlModelEvaluationLeaders = buildChapter({
     "Accuracy is the least useful AI evaluation metric in most business contexts. Precision, recall, and business-outcome metrics — calibrated against relevant baselines — are the numbers that tell you whether an AI system will actually improve your operation.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "Why Accuracy Is the Wrong Metric",
       subtitle: "The performance number most vendors lead with — and why it tells you almost nothing",
@@ -58,8 +58,15 @@ export const chapter06BlModelEvaluationLeaders = buildChapter({
           body: "A payments company evaluated fraud detection AI with 99.85% reported accuracy against its 0.15% fraud rate. Detailed analysis showed the model caught 43% of fraud cases — a recall of 0.43. The 0.57% of missed fraud was costing £2.3M annually. A competitor model with 99.72% accuracy (lower) caught 91% of fraud — recall of 0.91 — reducing annual fraud losses to under £400K. The accuracy-focussed evaluation would have selected the inferior model. Precision and recall were the relevant metrics.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "Investor Diligence Stack",
+      caption:
+        "Team → data moat → unit economics → timing → risk. The five lenses on every AI term sheet.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Precision and Recall in Business Language",
       subtitle: "Two metrics that replace accuracy — translated for operational decision-making",
@@ -105,6 +112,13 @@ export const chapter06BlModelEvaluationLeaders = buildChapter({
           body: "A manufacturer's defect detection AI had to balance two costs: passing defective products (recall failure, warranty cost) versus scrapping acceptable products (precision failure, waste cost). Engineering quantified: a missed defect cost £250 in warranty; a false reject cost £40 in scrap. The cost asymmetry favoured high recall over high precision — accepting more false rejects to reduce missed defects. The threshold setting reflected the manufacturer's known unit economics. The precision-recall decision was a finance decision, not an engineering decision.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Before Launch",
+      caption:
+        "Golden sets, ship gates, and drift monitoring — the minimum evaluation discipline business leaders should require from vendors.",
     }),
     buildSection({
       number: "6.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05StressTestingAiStrategy = buildChapter({
   slug: "founder-stress-testing-ai-strategy",
@@ -13,7 +13,7 @@ export const chapter05StressTestingAiStrategy = buildChapter({
   pmCallout:
     "As a founder: if you are not embarrassed by the weaknesses your red team finds, you are not red-teaming hard enough. The goal is to break the strategy in a conference room, not in the market.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Why founders need to attack their own strategy",
       subtitle: "The arguments your best-funded competitor will make against you — in your absence",
@@ -59,8 +59,15 @@ export const chapter05StressTestingAiStrategy = buildChapter({
           body: "CEO skipped red team for three quarters citing morale. Competitor launch validated exact weakness board had raised. Emergency pivot with 40% team reduction. Attack late is restructuring.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "The three killer questions for any AI strategy",
       subtitle: "What if the model gets commoditised? What if the data advantage never materialises? What if the incumbent builds it?",
@@ -106,6 +113,13 @@ export const chapter05StressTestingAiStrategy = buildChapter({
           body: "Incumbent CMMS added generic AI assist. Startup won on OEM-specific manuals, union safety rules, and offline plant floor deployment. Incumbent question answered with segments, not denial.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",
@@ -274,9 +288,8 @@ export const chapter05StressTestingAiStrategy = buildChapter({
         [
           s("Emergency triggers — non-negotiable. "),
           x(
-            "Provider native feature overlap >50% of core value.",
-            "NRR drop >10 points in embedded cohort.",
-            "Regulatory reclassification of your use case.",
+            "Provider native feature overlap >50% of core value, NRR drop >10 points in embedded cohort, or regulatory reclassification of your use case.",
+            "These emergency triggers demand immediate strategy review — output is hold, pivot, or double-down with a dated decision.",
           ),
           s(" Emergency review output: hold, pivot, or double-down with dated decision."),
         ],

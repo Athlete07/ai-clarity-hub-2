@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02FounderModelPerformanceAtScale = buildChapter({
   slug: "founder-model-performance-at-scale",
@@ -13,7 +13,7 @@ export const chapter02FounderModelPerformanceAtScale = buildChapter({
   pmCallout:
     "As a founder: assume your model is degrading right now and you cannot see it yet. Install production monitoring before you scale marketing — the 1% long-tail inputs that cause 80% of incidents only appear at volume.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "Why model performance degrades at scale",
       subtitle: "Distribution shift, edge cases, adversarial inputs — the failure modes that only appear with real users",
@@ -59,8 +59,15 @@ export const chapter02FounderModelPerformanceAtScale = buildChapter({
           body: "A coding assistant's perceived quality dropped during a Product Hunt spike. p95 latency went from 1.2s to 8s. Users blamed the model. Autoscaling and request queuing fixed it without changing the model weights. Infrastructure degradation mimics model degradation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Scaling Inflection Points",
+      caption:
+        "Cost and architecture choices compound at each order-of-magnitude in usage.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "Distribution shift — the silent killer",
       subtitle: "When your production users behave differently from your test set users",
@@ -106,6 +113,13 @@ export const chapter02FounderModelPerformanceAtScale = buildChapter({
           body: "A horizontal sales-email AI expanded into healthcare. Medical terminology inputs were 4% of traffic but 31% of failures. Aggregate metrics barely moved. Vertical-specific eval and fine-tuning became a prerequisite for the vertical GTM motion.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter07BlPsychologicalSafetyAi = buildChapter({
@@ -13,7 +13,7 @@ export const chapter07BlPsychologicalSafetyAi = buildChapter({
     "In the context of AI transformation, psychological safety means: it is safe to try AI, safe to fail with AI, safe to express concerns about AI, and safe to be a beginner with AI. Leaders create this safety through consistent behaviour — not through values statements. Every time a leader responds to an AI failure with curiosity rather than blame, the safety increases. Every time they respond with blame, the safety decreases.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "Why psychological safety is the prerequisite for AI adoption",
       subtitle: "How the absence of psychological safety produces the adoption failure patterns that leaders misdiagnose",
@@ -59,8 +59,15 @@ export const chapter07BlPsychologicalSafetyAi = buildChapter({
           body: "A retail operations director was in a team meeting when a store manager's AI forecasting demonstration produced a clearly wrong recommendation. The director's response: 'That's a great example — what data did you give it? Let's understand why it got that wrong. Can we debug this together?' The response took 8 minutes. The next week, the number of AI questions and error reports from that region's store managers increased 4× — because the response had demonstrated that mistakes were worth sharing, not hiding. One observed response to failure had more safety impact than six months of communications about the value of learning.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "How AI erodes psychological safety — and how to prevent it",
       subtitle: "The five ways AI deployment can damage the safety conditions that make adoption work",
@@ -106,6 +113,13 @@ export const chapter07BlPsychologicalSafetyAi = buildChapter({
           body: "A hospital's AI documentation deployment identified early that nurses with prior EHR AI experience were adopting the new tool 3× faster than nurses without such experience. Rather than allowing this differential to become a visible performance comparison, the charge nurse programme paired experienced adopters as mentors with slower adopters — and measured and celebrated team AI documentation completion rates rather than individual rates. The team framing prevented the performance differential from becoming a safety threat for slower learners.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

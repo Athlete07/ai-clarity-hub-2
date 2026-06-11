@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlAiInLegalCompliance = buildChapter({
   slug: "bl-ai-in-legal-compliance",
@@ -12,7 +12,7 @@ export const chapter07BlAiInLegalCompliance = buildChapter({
     "AI in legal and compliance delivers value in contract intelligence, regulatory monitoring, legal research, and compliance management. The General Counsel's dual mandate is deploying AI to accelerate the function's work — while providing the governance framework that makes every other function's AI deployment legally defensible.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "The Legal and Compliance AI Landscape",
       subtitle: "Where AI accelerates legal work and where it creates liability the function must manage",
@@ -58,8 +58,15 @@ export const chapter07BlAiInLegalCompliance = buildChapter({
           body: "In Mata v. Avianca, US attorneys filed briefs citing cases that did not exist — hallucinated by ChatGPT. The court imposed sanctions. The lesson for General Counsels: AI legal research requires citation verification as a mandatory step, not an optional quality check. Every AI-generated case citation must be independently verified in an authoritative legal database before use in any legal submission. This is not a practise recommendation — it is a professional liability standard.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "AI in Contract Management and Review",
       subtitle: "The highest-volume, highest-ROI legal AI use case",
@@ -105,6 +112,13 @@ export const chapter07BlAiInLegalCompliance = buildChapter({
           body: "A technology company deployed an AI contract drafting tool as self-service for business development teams, intending to accelerate NDA and supplier agreement drafting. Without clear governance, non-lawyers began using AI-generated contracts as execution-ready documents without legal review. Several AI-generated agreements contained non-standard IP ownership clauses and absent limitation of liability provisions. When discovered in an M&A due diligence review, 34 contracts required remediation. The governance lesson: AI contract tools deployed without qualified attorney review requirements create a document portfolio that may not reflect the company's intended legal position.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

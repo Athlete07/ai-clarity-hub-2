@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter09BlCrossFunctionalAiDependencies = buildChapter({
   slug: "bl-cross-functional-ai-dependencies",
@@ -12,7 +12,7 @@ export const chapter09BlCrossFunctionalAiDependencies = buildChapter({
     "AI transformation is not a function-by-function activity — it is an enterprise coordination challenge. The most expensive AI transformation failures result not from poor technology choices but from unmanaged cross-functional dependencies in data, infrastructure, governance, and change management.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "Why AI Creates Cross-Functional Dependencies",
       subtitle: "The structural reasons why AI transformation cannot be done function by function",
@@ -58,8 +58,15 @@ export const chapter09BlCrossFunctionalAiDependencies = buildChapter({
           body: "A technology company's Marketing team used a personalisation AI tool that stored customer behavioural data. IT maintained the data infrastructure. Neither team had clarity on who was the GDPR data controller for the behavioural data — Marketing used it but IT stored it. When a subject access request arrived, two weeks of cross-functional confusion over data ownership delayed the response past the 30-day limit. The ICO investigation noted the absence of clear data ownership governance. Cross-functional AI data governance requires explicit ownership assignment, not assumed defaults.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "Shared Data Infrastructure and the Customer Data Foundation",
       subtitle: "Building the enterprise data platform that all AI deployments depend on",
@@ -105,6 +112,13 @@ export const chapter09BlCrossFunctionalAiDependencies = buildChapter({
           body: "A financial services company designed its customer data consent framework before building its AI analytics platform, explicitly mapping every intended cross-functional data use to a consent basis. Six months after launch, the company received a regulatory request to demonstrate the consent basis for a specific Marketing Analytics use of Payment Processing data. The pre-designed consent architecture provided an immediate, auditable response. Companies that design consent architecture post-launch face the same request with significantly less prepared documentation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

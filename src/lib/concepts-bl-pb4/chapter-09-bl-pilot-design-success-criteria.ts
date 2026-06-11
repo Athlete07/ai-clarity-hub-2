@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter09BlPilotDesignSuccessCriteria = buildChapter({
   slug: "bl-pilot-design-success-criteria",
@@ -13,7 +13,7 @@ export const chapter09BlPilotDesignSuccessCriteria = buildChapter({
   pmCallout:
     "As a business leader: a pilot that cannot produce a clear go/no-go decision is not a pilot — it is a vendor relationship you have not yet formalised. Design the success criteria before the pilot begins, or the vendor will define success after the pilot ends.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "What a pilot is and what it is not",
       subtitle: "The distinction between a structured experiment and an extended evaluation",
@@ -59,8 +59,15 @@ export const chapter09BlPilotDesignSuccessCriteria = buildChapter({
           body: "A bank communicated its pilot framing to an AI fraud detection vendor at pilot kickoff: 'This pilot will determine whether your AI meets three specific performance criteria at our production data volume and in our integration environment. We are not evaluating your team's responsiveness, your company's market position, or your product roadmap. We are testing three performance claims against defined thresholds. The outcome will be a go or no-go decision.' The vendor's technical team responded positively: the clear framing focused their effort on the three performance claims rather than account management. The pilot produced go/no-go evidence in 8 weeks rather than the 16 weeks the bank's previous AI pilot had consumed without an outcome.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "Pilot to Scale Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "Defining success criteria before the pilot begins",
       subtitle: "How to write success criteria that produce go/no-go evidence rather than interpretation",
@@ -106,6 +113,13 @@ export const chapter09BlPilotDesignSuccessCriteria = buildChapter({
           body: "A bank's AI document processing pilot used joint measurement: both the bank's operations team and the vendor's customer success team measured processing accuracy independently on the same 500-document sample. Bank measurement: 89.2% accuracy. Vendor measurement: 91.4% accuracy. The 2.2-percentage-point discrepancy was traced to different handling of edge cases — the vendor excluded ambiguous documents from their accuracy calculation while the bank included them. The joint measurement surfaced the methodology difference before a dispute arose. The parties agreed on the bank's methodology (inclusive of ambiguous documents) as the standard for the pilot outcome. The joint measurement produced a single agreed figure (89.2%) that both parties could use for the contract decision.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

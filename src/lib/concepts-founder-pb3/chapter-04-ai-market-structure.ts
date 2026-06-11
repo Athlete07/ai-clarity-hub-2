@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04AiMarketStructure = buildChapter({
   slug: "founder-ai-market-structure",
@@ -13,7 +13,7 @@ export const chapter04AiMarketStructure = buildChapter({
   pmCallout:
     "As a founder: your market structure choice is as consequential as your model choice. Pick the layer and competitive game you can win — not the layer that looks biggest on a slide.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The AI value chain — where the money flows and where it doesn't",
       subtitle: "Foundation layer, infrastructure layer, application layer — where startups win and where they get crushed",
@@ -59,8 +59,15 @@ export const chapter04AiMarketStructure = buildChapter({
           body: "Field service AI scheduling sells to ops leaders, not ML researchers. Value chain position is application; moat is workflow + signal. Clear layer positioning focused GTM and investor narrative.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "Why the application layer is both the opportunity and the danger zone",
       subtitle: "High revenue potential, low defensibility — the tension every application-layer founder must manage",
@@ -106,6 +113,13 @@ export const chapter04AiMarketStructure = buildChapter({
           body: "Claims AI for specialty insurance lines embedded in adjusters' daily tools with regulatory audit trails. Revenue at application layer; moat via workflow + proprietary loss data — danger zone acknowledged and mitigated.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",
@@ -258,9 +272,8 @@ export const chapter04AiMarketStructure = buildChapter({
         [
           s("Diagnose the threat: capability, distribution, or capital? "),
           x(
-            "Better model alone: deepen workflow moat, not benchmark wars.",
-            "Better distribution: partnership or vertical niche they will not serve.",
-            "More capital: avoid land-grab markets; focus retention and unit economics.",
+            "Better model alone means deepen workflow moat, not benchmark wars. Better distribution means partnership or vertical niche. More capital means avoid land-grab markets and focus retention.",
+            "Diagnose whether the threat is capability, distribution, or capital — response must match threat type.",
           ),
           s(" Response must match threat type."),
         ],

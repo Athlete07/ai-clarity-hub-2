@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04AiStoryWithoutOverpromising = buildChapter({
   slug: "founder-ai-story-without-overpromising",
@@ -13,7 +13,7 @@ export const chapter04AiStoryWithoutOverpromising = buildChapter({
   pmCallout:
     "As a founder: read your pitch deck and ask — if the AI does not work as promised, what exactly did I commit to? If you cannot answer precisely, you are overpromising.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "Why AI founders overpromise — and the long-term cost",
       subtitle: "The reputation damage that follows a founder who oversold the technology",
@@ -59,8 +59,15 @@ export const chapter04AiStoryWithoutOverpromising = buildChapter({
           body: "A legal AI founder opened enterprise sales calls with: 'We draft; attorneys review. Here is our override rate and escalation UX.' Honesty shortened security review and won three Fortune 500 logos competitors lost on overclaiming.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "Investor Diligence Stack",
+      caption:
+        "Team → data moat → unit economics → timing → risk. The five lenses on every AI term sheet.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The components of a credible AI narrative",
       subtitle: "Problem, data advantage, feedback loop, defensibility, team — the structure that sophisticated investors trust",
@@ -106,6 +113,13 @@ export const chapter04AiStoryWithoutOverpromising = buildChapter({
           body: "One seed founder replaced a 20-slide deck with a five-component one-pager plus metrics appendix. Meeting-to-memo conversion doubled. Structure reduced investor cognitive load.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

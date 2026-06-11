@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05ProbabilityConfidence = buildChapter({
   slug: "founder-probability-confidence",
@@ -13,7 +13,7 @@ export const chapter05ProbabilityConfidence = buildChapter({
   pmCallout:
     "As a founder: you own what your product promises. If you leave decision thresholds to engineering defaults, you inherit an arbitrary risk profile that assumes false positives and false negatives cost the same — and your churn, liability, and fundraising story will reflect it.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "AI outputs are probability distributions, not facts",
       subtitle: "The mental shift that changes what you can promise investors and customers",
@@ -59,6 +59,13 @@ export const chapter05ProbabilityConfidence = buildChapter({
           body: "Alexa says 'I'm not sure I understood' instead of executing wrong commands aggressively. Exposing uncertainty salvages trust. Founders building voice or chat products should budget UX for graceful 'I don't know' — not confident wrong answers.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
     buildSection({
       number: "5.2",
@@ -154,7 +161,7 @@ export const chapter05ProbabilityConfidence = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.4",
       title: "Overconfident models",
       subtitle: "Why hallucinating at 98% confidence is a company-ending event",
@@ -200,6 +207,13 @@ export const chapter05ProbabilityConfidence = buildChapter({
           body: "Copilot never auto-inserts code — grey ghost text requires Tab acceptance. UI treats every output as suggestion, neutering internal 99% confidence. Founders should default to suggest-don't-assert patterns for generative features.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch1-paradigm-shift",
+      type: "comparison",
+      title: "Deterministic Rules vs Probabilistic Outputs",
+      caption:
+        "Traditional software returns the same answer every time; ML returns confidence scores. Product and legal design must account for uncertainty.",
     }),
     buildSection({
       number: "5.5",

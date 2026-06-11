@@ -1,7 +1,18 @@
+import type { ReactNode } from "react";
 import { Layers, Box, Maximize, ArrowRight, Activity, Cpu, CheckCircle2 } from "lucide-react";
 import type { ConceptBodyBlock } from "@/lib/concepts";
+import {
+  DIAGRAM_REGISTRY,
+  type ComparisonDiagramDef,
+  type FlowDiagramDef,
+  type NestedDiagramDef,
+  type TreeBranch,
+  type TreeDiagramDef,
+} from "@/lib/diagram-registry";
 
 export function DiagramBlock({ block }: { block: Extract<ConceptBodyBlock, { kind: "diagram" }> }) {
+  const registryDef = DIAGRAM_REGISTRY[block.id];
+
   return (
     <div className="my-10 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <div className="border-b border-border bg-muted/20 px-5 py-3">
@@ -16,27 +27,218 @@ export function DiagramBlock({ block }: { block: Extract<ConceptBodyBlock, { kin
       </div>
 
       <div className="overflow-x-auto p-6">
-        {block.id === "ch1-dl-flow" && <FlowDiagram />}
-        {block.id === "ch1-ai-hierarchy" && <NestedDiagram />}
-        {block.id === "ch1-paradigm-shift" && <ComparisonDiagram />}
-        {(block.id === "ch1-ml-decision-tree" || block.title === "Is it actually ML?") && (
-          <TreeDiagram />
+        {registryDef ? (
+          <RegistryDiagram def={registryDef} />
+        ) : (
+          <>
+            {block.id === "ch1-dl-flow" && <FlowDiagram />}
+            {block.id === "ch1-ai-hierarchy" && <NestedDiagram />}
+            {block.id === "ch1-paradigm-shift" && <ComparisonDiagram />}
+            {(block.id === "ch1-ml-decision-tree" || block.title === "Is it actually ML?") && (
+              <TreeDiagram />
+            )}
+
+            {block.id === "ch2-training-loop" && <TrainingLoopFlow />}
+            {block.id === "ch2-epochs-nested" && <EpochsNested />}
+            {block.id === "ch2-fitting-comparison" && <FittingComparison />}
+
+            {block.id === "ch1-git-flow" && <GitFlow />}
+            {block.id === "ch2-api-flow" && <ApiFlow />}
+            {block.id === "ch3-python-stack" && <PythonStack />}
+            {block.id === "ch4-notebook-lifecycle" && <NotebookLifecycle />}
+            {block.id === "ch5-runtime-spectrum" && <RuntimeSpectrum />}
+            {block.id === "ch6-orchestration" && <OrchestrationTree />}
+            {block.id === "ch7-deploy-flow" && <DeployFlow />}
+            {block.id === "ch8-cost-latency-frontier" && <CostLatencyFrontier />}
+            {block.id === "pb4-rag-pipeline" && <RagPipelineFlow />}
+            {block.id === "pb5-serving-stack" && <ServingStackFlow />}
+          </>
         )}
+      </div>
+    </div>
+  );
+}
 
-        {block.id === "ch2-training-loop" && <TrainingLoopFlow />}
-        {block.id === "ch2-epochs-nested" && <EpochsNested />}
-        {block.id === "ch2-fitting-comparison" && <FittingComparison />}
+function RegistryDiagram({
+  def,
+}: {
+  def: FlowDiagramDef | NestedDiagramDef | ComparisonDiagramDef | TreeDiagramDef;
+}) {
+  switch (def.type) {
+    case "flow":
+      return <StepRow steps={def.steps} highlightLast={def.highlightLast} />;
+    case "nested":
+      return <RegistryNested layers={def.layers} />;
+    case "comparison":
+      if (def.cards) return <RegistryComparisonCards cards={def.cards} />;
+      if (def.rows) return <RegistryComparisonRows rows={def.rows} />;
+      return null;
+    case "tree":
+      return <RegistryTree def={def} />;
+    default:
+      return null;
+  }
+}
 
-        {block.id === "ch1-git-flow" && <GitFlow />}
-        {block.id === "ch2-api-flow" && <ApiFlow />}
-        {block.id === "ch3-python-stack" && <PythonStack />}
-        {block.id === "ch4-notebook-lifecycle" && <NotebookLifecycle />}
-        {block.id === "ch5-runtime-spectrum" && <RuntimeSpectrum />}
-        {block.id === "ch6-orchestration" && <OrchestrationTree />}
-        {block.id === "ch7-deploy-flow" && <DeployFlow />}
-        {block.id === "ch8-cost-latency-frontier" && <CostLatencyFrontier />}
-        {block.id === "pb4-rag-pipeline" && <RagPipelineFlow />}
-        {block.id === "pb5-serving-stack" && <ServingStackFlow />}
+function RegistryNested({ layers }: { layers: NestedDiagramDef["layers"] }) {
+  const renderLayer = (index: number): ReactNode => {
+    const layer = layers[index];
+    const isInnermost = index === layers.length - 1;
+    const inner = !isInnermost ? renderLayer(index + 1) : null;
+
+    return (
+      <div
+        className={`relative rounded-xl border p-5 pt-8 ${
+          isInnermost
+            ? "rounded-md border-purple bg-purple-light/40 shadow-sm"
+            : index === 0
+              ? "border-border bg-muted/10"
+              : "rounded-lg border-border bg-muted/20"
+        }`}
+      >
+        <div
+          className={`absolute left-5 top-3 text-[13px] font-bold ${
+            isInnermost ? "text-purple-dark" : index === 0 ? "text-foreground/80" : "text-foreground"
+          }`}
+        >
+          {layer.title}
+        </div>
+        <div
+          className={`mb-4 mt-1 pl-1 text-[11px] ${
+            isInnermost ? "text-purple-dark/80" : "text-muted-foreground"
+          }`}
+        >
+          {layer.desc}
+        </div>
+        {layer.items && (
+          <div
+            className={`mb-4 pl-1 text-[11px] ${
+              isInnermost ? "text-purple-dark/70" : "text-muted-foreground"
+            }`}
+          >
+            {layer.items}
+          </div>
+        )}
+        {inner}
+      </div>
+    );
+  };
+
+  return <div className="relative mx-auto w-full max-w-[520px]">{renderLayer(0)}</div>;
+}
+
+function RegistryComparisonCards({ cards }: { cards: NonNullable<ComparisonDiagramDef["cards"]> }) {
+  return (
+    <div className="flex w-full flex-col gap-4 lg:flex-row">
+      {cards.map((c) => (
+        <div
+          key={c.label}
+          className={`flex-1 rounded-xl border p-5 ${
+            c.accent ? "border-purple bg-purple-light/20" : "border-border bg-transparent"
+          }`}
+        >
+          <div
+            className={`mb-3 text-[12px] font-semibold uppercase tracking-wider ${
+              c.accent ? "text-purple-dark" : "text-muted-foreground"
+            }`}
+          >
+            {c.label}
+          </div>
+          <div
+            className={`rounded border p-4 text-[13px] shadow-sm ${
+              c.accent ? "border-purple bg-purple-light/50" : "border-border bg-card"
+            }`}
+          >
+            <div className={`font-medium ${c.accent ? "text-purple-dark" : "text-foreground"}`}>
+              {c.title}
+            </div>
+            <div
+              className={`mt-2 text-[12px] ${c.accent ? "text-purple-dark/80" : "text-muted-foreground"}`}
+            >
+              {c.desc}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RegistryComparisonRows({ rows }: { rows: NonNullable<ComparisonDiagramDef["rows"]> }) {
+  return (
+    <div className="flex flex-col gap-6">
+      {rows.map((row) => (
+        <div key={row.label} className="rounded-xl border border-border bg-transparent p-5">
+          <div className="mb-4 text-[12px] font-semibold uppercase tracking-wider text-muted-foreground">
+            {row.label}
+          </div>
+          <div className="flex flex-wrap items-center gap-3 text-[13px]">
+            {row.steps.map((step, i) => (
+              <div key={step} className="flex items-center gap-3">
+                <div className="rounded border border-border bg-card px-3 py-2 font-medium text-foreground shadow-sm">
+                  {step}
+                </div>
+                {i < row.steps.length - 1 && (
+                  <ArrowRight size={16} className="text-muted-foreground/50" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RegistryTree({ def }: { def: TreeDiagramDef }) {
+  return (
+    <div className="w-full text-[13px] font-medium">
+      <div className="rounded-md border border-border bg-muted/30 px-4 py-2 text-foreground">
+        {def.root}
+      </div>
+      <div className="relative mt-4 pl-6">
+        <div className="absolute bottom-0 left-3 top-0 w-px bg-border" />
+        {def.branches.map((branch, i) => (
+          <TreeBranchNode key={i} branch={branch} depth={0} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TreeBranchNode({ branch, depth }: { branch: TreeBranch; depth: number }) {
+  const hasChildren = branch.children && branch.children.length > 0;
+  return (
+    <div className={`relative ${depth > 0 ? "mb-4" : "mb-6"}`}>
+      <div className="absolute -left-3 top-3 w-4 border-t border-border" />
+      <div className="flex items-start gap-2 pl-4">
+        <span className="mt-0.5 rounded border border-border bg-card px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground shadow-sm">
+          {branch.answer}
+        </span>
+        <div className="w-full">
+          <div className="text-foreground">{branch.label}</div>
+          {branch.action && (
+            <div className="mt-1 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+              <ArrowRight size={12} /> {branch.action}
+            </div>
+          )}
+          {branch.conclusion && (
+            <div className="mt-3 rounded-lg border border-purple bg-purple-light/40 p-3">
+              <div className="flex items-center gap-2 font-semibold text-purple-dark">
+                <CheckCircle2 size={14} /> {branch.conclusion.title}
+              </div>
+              <div className="mt-1 text-[12px] text-purple-dark/80">{branch.conclusion.action}</div>
+            </div>
+          )}
+          {hasChildren && (
+            <div className="relative mt-4 pl-4">
+              <div className="absolute bottom-0 left-2 top-0 w-px bg-border" />
+              {branch.children!.map((child, i) => (
+                <TreeBranchNode key={i} branch={child} depth={depth + 1} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

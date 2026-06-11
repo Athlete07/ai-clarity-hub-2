@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlHardVsSoftRoiAi = buildChapter({
   slug: "bl-hard-vs-soft-roi-ai",
@@ -12,7 +12,7 @@ export const chapter04BlHardVsSoftRoiAi = buildChapter({
     "Soft ROI is not weak ROI — it is unquantified ROI waiting for a conversion methodology. Business leaders who dismiss it leave significant value off the table; leaders who overclaim it lose Finance credibility. The discipline is in the conversion, not the category.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "Defining hard ROI in the AI context",
       subtitle: "What qualifies as hard ROI, how it is measured, and why the standard is higher than it seems",
@@ -58,8 +58,15 @@ export const chapter04BlHardVsSoftRoiAi = buildChapter({
           body: "A hospital's AI appointment scheduling claimed hard ROI on 'no-show reduction.' Finance signed off on the baseline: 18.4% no-show rate averaged over 14 months pre-deployment. Post-deployment rate: 11.2%. Attribution: no other scheduling changes occurred in the same period (documented in the change log). Hard ROI: 7.2 percentage point no-show reduction × visit value. No post-deployment dispute was possible — the baseline was locked before deployment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "Defining soft ROI and strategic value",
       subtitle: "The categories of AI value that do not appear immediately on the P&L — and why they are worth quantifying",
@@ -105,6 +112,13 @@ export const chapter04BlHardVsSoftRoiAi = buildChapter({
           body: "A retailer's AI customer data platform named a strategic option: 'The platform creates the option to deploy AI personalisation across all digital channels within 12 months, at an incremental cost of £180K, versus building new infrastructure at an estimated £740K if the platform does not exist.' The option value was £560K in infrastructure cost avoidance if the option was exercised. The option was highlighted as a soft benefit in the business case summary — and exercised 14 months after the platform went live.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

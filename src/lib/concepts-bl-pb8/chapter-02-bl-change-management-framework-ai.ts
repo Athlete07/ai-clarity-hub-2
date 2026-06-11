@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter02BlChangeManagementFrameworkAi = buildChapter({
@@ -13,7 +13,7 @@ export const chapter02BlChangeManagementFrameworkAi = buildChapter({
     "AI change management requires three elements that standard change frameworks omit: explicit work on the identity implications of AI augmentation, a structure for managing continuous learning as the technology evolves, and a multi-year change architecture rather than a single-deployment change plan. Leaders who apply ERP-style change management to AI transformation are using the wrong tool.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "Why AI change is different from past technology change",
       subtitle: "The three dimensions where AI transformation exceeds prior technology change in complexity",
@@ -59,8 +59,15 @@ export const chapter02BlChangeManagementFrameworkAi = buildChapter({
           body: "A law firm's legal AI change programme was designed from the start for a three-year horizon with quarterly capability updates. Associates were enrolled in ongoing AI capability development as a structured professional development stream, not a one-time training event. Each quarterly update was presented as the next module in a programme they were already enrolled in, not as a new change requiring new adaptation. Adoption of each capability update was 15–20 percentage points higher than the firm's previous technology change initiatives, because the change was experienced as progression rather than disruption.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Executive sponsor → honest communication → training → champions → adoption metrics.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "The three-horizon AI change model",
       subtitle: "How to structure AI transformation across a three-year horizon without losing momentum or coherence",
@@ -106,6 +113,13 @@ export const chapter02BlChangeManagementFrameworkAi = buildChapter({
           body: "A consulting firm reached Horizon 3 when its AI research and knowledge management tools were embedded across all practice areas. The Horizon 3 change objective was helping the firm describe its AI capability to clients and recruits as a genuine differentiator — not just a tool set, but an organisational capability. The firm integrated AI proficiency into its career framework, embedded AI tool demonstration into client pitches, and published its AI capability story in its annual report. AI had become part of the firm's identity, not just its technology stack.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
     buildSection({
       number: "2.3",

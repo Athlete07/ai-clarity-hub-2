@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02FounderApiDependencyRisk = buildChapter({
   slug: "founder-api-dependency-risk",
@@ -13,7 +13,7 @@ export const chapter02FounderApiDependencyRisk = buildChapter({
   pmCallout:
     "As a founder: if a single vendor pricing email could wipe out your gross margin, you do not have a product strategy — you have a vendor subsidy strategy. Map dependencies before investors map them for you in diligence.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "What API dependency actually means for your business",
       subtitle: "You do not own the capability. You rent it. Here is what that means.",
@@ -59,8 +59,15 @@ export const chapter02FounderApiDependencyRisk = buildChapter({
           body: "Support AI startup modelled 55% gross margin. Vendor price increase plus traffic growth compressed margin to 22% in one quarter. Founder renegotiated enterprise tier and added usage-based customer pricing — survival required treating API as COGS driver.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "The four vendor risk scenarios",
       subtitle: "Price increase, deprecation, terms change, and the vendor becoming your competitor",
@@ -106,6 +113,13 @@ export const chapter02FounderApiDependencyRisk = buildChapter({
           body: "Email AI plugins lost distribution when incumbents embedded native AI in Gmail and Outlook. Vendor platform risk plus competitive entry compressed TAM overnight. Founders needed workflow depth APIs alone could not provide.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

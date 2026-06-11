@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter05BlRedefiningRolesAiAugmented = buildChapter({
@@ -13,7 +13,7 @@ export const chapter05BlRedefiningRolesAiAugmented = buildChapter({
     "Role redefinition in the AI-augmented organisation is not a job description update exercise. It is a fundamental redesign of what humans contribute alongside AI — shifting from task execution to outcome ownership, from information retrieval to judgement application, and from individual expertise to collaborative intelligence. Leaders who design this shift create roles that are more rewarding and more productive. Leaders who allow it to happen by default create roles that are less clear and less valued.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "The augmentation versus replacement spectrum",
       subtitle: "How to map every role on the spectrum from full augmentation to partial replacement",
@@ -59,8 +59,15 @@ export const chapter05BlRedefiningRolesAiAugmented = buildChapter({
           body: "A manufacturer's task-level assessment of production line roles found a wide spectrum: some roles were 70% AI-replaceable (making them candidates for significant redeployment), while others were 15% AI-replaceable (requiring minimal role change). The spectrum data allowed the manufacturer to target retraining investment precisely: heavy retraining for high-replacement roles, targeted skill additions for low-replacement roles. Total retraining investment was 40% lower than the programme team had initially estimated because the mapping eliminated unnecessary retraining for roles that required minimal change.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Role anatomy: what AI can do versus what humans must do",
       subtitle: "A structured approach to understanding human advantage in an AI-augmented role",
@@ -106,6 +113,13 @@ export const chapter05BlRedefiningRolesAiAugmented = buildChapter({
           body: "A hospital's nursing role anatomy workshop identified four human-essential capability areas: patient comfort and emotional support during procedures (trust relationship), clinical deterioration recognition from subtle behavioural cues the AI monitoring system could not detect (contextual judgement), family communication during stressful situations (trust relationship), and care plan advocacy in multidisciplinary team meetings (ethical navigation). The workshop documented these capabilities explicitly and built the AI documentation and monitoring tools around preserving — not replacing — the nursing time available for these four areas. Documentation tool design was changed specifically to reduce time burden so nursing presence in the four human-essential areas could increase.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

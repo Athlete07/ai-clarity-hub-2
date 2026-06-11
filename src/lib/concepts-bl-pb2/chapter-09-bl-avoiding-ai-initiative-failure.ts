@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter09BlAvoidingAiInitiativeFailure = buildChapter({
   slug: "bl-avoiding-ai-initiative-failure",
@@ -13,7 +13,7 @@ export const chapter09BlAvoidingAiInitiativeFailure = buildChapter({
   pmCallout:
     "As a business leader: your job is to be the early warning system for the failure patterns that technology teams cannot see — change resistance, strategic drift, vendor dependency, and leadership disengagement. These are the failures only you can prevent.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "The AI Initiative Failure Rate",
       subtitle: "Why the numbers are high and what business leaders can do about it",
@@ -59,8 +59,15 @@ export const chapter09BlAvoidingAiInitiativeFailure = buildChapter({
           body: "A retail bank with six completed AI deployments applied failure cause analysis to its failure history. Data quality had been the primary cause of its first two failures; adoption failures had caused the next two; the most recent two had been governance failures — the models were performing and being used, but nobody was monitoring drift and the governance oversight had lapsed. The bank redirected its programme management investment: from data quality controls (largely in place) to AI performance monitoring and governance cadence (the current failure frontier).",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "The Pilot Trap",
       subtitle: "Why AI programmes that succeed in pilot fail at scale",
@@ -106,6 +113,13 @@ export const chapter09BlAvoidingAiInitiativeFailure = buildChapter({
           body: "A logistics company's AI route optimisation pilot ran for 12 weeks. In week 7, the programme manager deliberately reduced governance intensity: the dedicated project manager became part-time on the programme, vendor support reverted to standard SLA, and driver check-in frequency was reduced to the planned production cadence. Weeks 7-12 performance: route efficiency 6.2% below weeks 1-6 performance. The reduction was caused by a dispatch coordinator workflow issue that had been caught and corrected quickly in weeks 1-6 with dedicated programme support, and which recurred in weeks 7-12 without it. The workflow issue was fixed before production deployment — a fix that would have been discovered in production without the mid-pilot governance reduction.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

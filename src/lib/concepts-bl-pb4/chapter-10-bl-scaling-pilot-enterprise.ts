@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter10BlScalingPilotEnterprise = buildChapter({
   slug: "bl-scaling-pilot-enterprise",
@@ -13,7 +13,7 @@ export const chapter10BlScalingPilotEnterprise = buildChapter({
   pmCallout:
     "As a business leader: a successful pilot is evidence that the AI can work in a controlled environment. Enterprise scaling is the programme that makes the AI work in an uncontrolled environment — across functions, geographies, and user populations that the pilot never encountered. Budget, plan, and govern the scale as a separate initiative from the pilot.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "Why pilot success does not guarantee enterprise success",
       subtitle: "The six failure modes that transform pilot winners into enterprise disappointments",
@@ -59,8 +59,15 @@ export const chapter10BlScalingPilotEnterprise = buildChapter({
           body: "A bank's AI document processing pilot agreement specified: 5,000 documents per month, dedicated implementation engineer, 4-hour P1 response. Enterprise deployment: 180,000 documents per month. The pilot contract's pricing was volume-tiered — at 180,000 documents, the monthly cost was 23× the pilot cost (not 36× as linear scaling would suggest, but still 23× — outside the enterprise budget model). The support terms were not volume-tiered — the dedicated implementation engineer was not available at enterprise volume under the pilot contract. Contract renegotiation before enterprise scaling would have addressed both the pricing model and the support tier before the gap became a post-deployment surprise.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Scaling Inflection Points",
+      caption:
+        "Cost and architecture choices compound at each order-of-magnitude in usage.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "Technical scaling: infrastructure, integration, and performance at volume",
       subtitle: "What must change technically when an AI pilot becomes an enterprise deployment",
@@ -106,6 +113,13 @@ export const chapter10BlScalingPilotEnterprise = buildChapter({
           body: "A law firm's enterprise AI contract review deployment included monitoring infrastructure designed and tested before go-live: daily accuracy sampling (50 randomly selected contracts reviewed by a senior associate and compared to AI outputs), weekly latency reports (P50, P95, P99 by document type), and automated Slack alerts when accuracy sampling fell below 90% or P95 latency exceeded 3 seconds. In month two, the accuracy alert fired: 4 of 50 sampled contracts (8%) showed hallucinated clause identifications — above the alert threshold of 5%. The alert triggered a vendor investigation that identified a data quality issue in a new document source. The monitoring infrastructure detected a developing accuracy problem before it affected 3,000 contracts per month at scale.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04FounderHallucinationBiasLiability = buildChapter({
   slug: "founder-hallucination-bias-liability",
@@ -13,7 +13,7 @@ export const chapter04FounderHallucinationBiasLiability = buildChapter({
   pmCallout:
     "As a founder: 'the model hallucinated' is not a legal defence. 'We took reasonable care and here is the documentation' is. Build the documentation before you need it in court.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "When hallucination becomes legal liability",
       subtitle: "The verticals and use cases where a wrong AI output creates real legal exposure",
@@ -59,8 +59,15 @@ export const chapter04FounderHallucinationBiasLiability = buildChapter({
           body: "A wellness app's AI chatbot suggested a medication dosage contraindicated for the user's stated conditions. FDA and FTC inquiry followed. Founder killed the feature, restricted AI to general wellness content with mandatory 'not medical advice' framing, and added human escalation for any health query.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "Real cases — what has happened to companies already",
       subtitle: "The lawsuits, settlements, and regulatory actions that have already resulted from AI failures",
@@ -106,6 +113,13 @@ export const chapter04FounderHallucinationBiasLiability = buildChapter({
           body: "After hallucinated case citations became public, multiple law firms suspended AI research tool accounts pending verification features. The AI company lost 30% of enterprise accounts in one quarter. Recovery required building citation verification and publishing third-party accuracy audits.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

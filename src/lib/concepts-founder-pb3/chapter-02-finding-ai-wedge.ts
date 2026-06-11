@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02FindingAiWedge = buildChapter({
   slug: "founder-finding-ai-wedge",
@@ -13,7 +13,7 @@ export const chapter02FindingAiWedge = buildChapter({
   pmCallout:
     "As a founder: if you cannot name the one workflow you make 10x better in one sentence, you are not ready to fundraise on AI — you are ready to experiment. Find the wedge before you find the engineers.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "What is a wedge in an AI context",
       subtitle: "The specific, narrow use case where AI creates a step-change improvement — not an incremental one",
@@ -59,8 +59,15 @@ export const chapter02FindingAiWedge = buildChapter({
           body: "AI triage in radiology wins where false-negative cost is catastrophic and volume is high. The wedge is not 'AI reads scans' broadly — it is prioritising urgent cases in a specific modality with measurable sensitivity. Narrow, high-stakes, step-change.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "How to identify your wedge",
       subtitle: "The workflow analysis that finds the highest-pain, highest-frequency, AI-solvable problem",
@@ -106,6 +113,13 @@ export const chapter02FindingAiWedge = buildChapter({
           body: "Pain was real but budget sat with IT, not payroll owner. Wedge failed commercial test despite technical fit. Reframing around CFO fraud exposure unlocked budget. Wedge discovery includes who signs, not just what hurts.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03AiCompetitiveMoats = buildChapter({
   slug: "founder-ai-competitive-moats",
@@ -60,7 +60,7 @@ export const chapter03AiCompetitiveMoats = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "The five real moats in AI businesses",
       subtitle: "Proprietary data, distribution, switching costs, workflow integration depth, and brand trust",
@@ -106,8 +106,15 @@ export const chapter03AiCompetitiveMoats = buildChapter({
           body: "Seed company named primary moat: switching costs via ERP-embedded approvals. Secondary: data moat in 18 months if override labels hit volume. Investor appreciated staged honesty over pretending data moat existed day one.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Competitive Moat Layers",
+      caption:
+        "Distribution, proprietary data, and model advantage — the three layers investors underwrite in AI diligence.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.3",
       title: "Data moats — the strongest and the slowest",
       subtitle: "Why data moats take years to build and why that is actually the point",
@@ -153,6 +160,13 @@ export const chapter03AiCompetitiveMoats = buildChapter({
           body: "Legal AI startup used attorney accept/reject on clauses as labels. Year one economics were ugly; year two override rate dropped 40% on firm-specific style. Data moat emerged from operations design, not from launching earlier.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
     buildSection({
       number: "3.4",
@@ -360,9 +374,8 @@ export const chapter03AiCompetitiveMoats = buildChapter({
         [
           s("If the map is weak, choose a strategic response — do not hope. "),
           x(
-            "Deepen vertical workflow and switching costs.",
-            "Accelerate proprietary data acquisition via partnerships.",
-            "Pivot wedge to where you have distribution advantage.",
+            "Deepen vertical workflow and switching costs, accelerate proprietary data via partnerships, or pivot wedge to where you have distribution advantage.",
+            "If the moat map is weak, choose a strategic response — do not hope the competitor stalls.",
           ),
           s(" Weak moat plus great model is a temporary state, not a plan."),
         ],

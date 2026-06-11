@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter04BlManagingFearResistance = buildChapter({
@@ -13,7 +13,7 @@ export const chapter04BlManagingFearResistance = buildChapter({
     "Fear of AI is not irrational — it is a rational response to genuinely uncertain consequences. The leader's job is not to eliminate fear but to address the specific concerns underneath it with honesty, tangible support, and demonstrated respect. Resistance that is dismissed will intensify. Resistance that is understood often converts to the most valuable kind of advocacy.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "Understanding where resistance actually comes from",
       subtitle: "The five root sources of AI resistance — and why generic reassurance addresses none of them",
@@ -59,8 +59,15 @@ export const chapter04BlManagingFearResistance = buildChapter({
           body: "A manufacturing plant's AI quality inspection pilot had 67% adoption resistance. An analysis revealed the dominant driver was competence anxiety among experienced quality technicians who feared looking incompetent with the new technology. The programme added a 90-minute hands-on session where technicians practised using the AI tool on historical inspection data with no performance consequences. Every technician in the session successfully identified a defect that the AI had flagged. Post-session resistance dropped to 24% — before a single communication change was made. The success experience was more powerful than any communication.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The fear spectrum in AI transformation",
       subtitle: "Mapping fears from existential to practical — and matching response intensity to concern level",
@@ -106,6 +113,13 @@ export const chapter04BlManagingFearResistance = buildChapter({
           body: "A bank offered every employee in AI-affected functions a 30-minute career conversation with their manager within 60 days of AI deployment — a structured conversation using a pre-designed guide covering: how the AI would change their current role, what new skills the bank would invest in developing, and what career pathways were available in the AI-augmented organisation. Of 440 employees who had career conversations, 87% reported reduced long-term career anxiety. The 60 employees who declined the offer had 3× the anxiety level of those who participated.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

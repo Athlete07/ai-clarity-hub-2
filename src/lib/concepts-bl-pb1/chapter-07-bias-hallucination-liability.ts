@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlBiasHallucinationLiability = buildChapter({
   slug: "bl-bias-hallucination-liability",
@@ -12,7 +12,7 @@ export const chapter07BlBiasHallucinationLiability = buildChapter({
     "Bias is not a technical accident — it is a structural property of models trained on historical data that reflects historical inequality. Hallucination is not a bug — it is a structural property of generative models that produce plausible outputs without a truth-checking mechanism. Both risks require governance architecture, not technical fixes alone.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "What AI Bias Means for Business Leaders",
       subtitle: "A practical definition with financial, legal, and operational consequences",
@@ -58,8 +58,15 @@ export const chapter07BlBiasHallucinationLiability = buildChapter({
           body: "Multiple FDA-cleared dermatology AI tools were found in peer-reviewed research to perform significantly worse on darker skin tones — a training data representation failure with clinical consequences. Hospital leaders who deployed these tools without demographic performance breakdown testing created clinical governance failures. The lesson applies beyond healthcare: any AI tool affecting individuals requires demographic performance breakdown before deployment, regardless of FDA or regulatory clearance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "How Bias Enters AI Systems",
       subtitle: "The four pathways that introduce unfairness — and what leaders can do about each",
@@ -105,6 +112,13 @@ export const chapter07BlBiasHallucinationLiability = buildChapter({
           body: "A UK lender's mortgage risk AI was trained predominantly on metropolitan applications where historical data was dense. Applications from rural areas and post-industrial regions were underrepresented in training. Performance analysis revealed the model had significantly higher false decline rates in rural areas — a demographic proxy with income and ethnicity correlations. The sampling gap was not intentional but had discriminatory impact. Geographic disaggregation of performance data was the detection mechanism.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

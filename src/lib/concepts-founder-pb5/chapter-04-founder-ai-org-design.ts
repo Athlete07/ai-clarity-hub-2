@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04FounderAiOrgDesign = buildChapter({
   slug: "founder-ai-org-design",
@@ -60,7 +60,7 @@ export const chapter04FounderAiOrgDesign = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The AI centre of excellence model",
       subtitle: "When it works, when it creates bottlenecks, and when to dismantle it",
@@ -106,8 +106,15 @@ export const chapter04FounderAiOrgDesign = buildChapter({
           body: "Founder titled solo AI hire 'Head of AI CoE' with three-person company. Signalled bureaucracy to next hire. Retitled 'Founding AI Engineer', pipeline improved. Names matter at small scale.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-org-design-stages",
+      type: "flow",
+      title: "AI Org Design by Stage",
+      caption:
+        "Seed generalist → Series A application stack → Series B platform team → scale governance. Org design follows product maturity.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.3",
       title: "How AI teams interface with product teams",
       subtitle: "The collaboration model that produces good AI products vs the one that produces AI features nobody uses",
@@ -153,6 +160,13 @@ export const chapter04FounderAiOrgDesign = buildChapter({
           body: "Weekly 30-minute eval review: PM, AI lead, one engineer. Added 5 user failure cases to suite per week. Regression rate dropped 60% over quarter. Cheap ritual, high leverage.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-org-design-stages",
+      type: "flow",
+      title: "AI Org by Stage",
+      caption:
+        "Generalist → application stack → platform → governance as the company scales.",
     }),
     buildSection({
       number: "4.4",

@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter09BlResistanceToAi = buildChapter({
   slug: "bl-resistance-to-ai",
@@ -12,7 +12,7 @@ export const chapter09BlResistanceToAi = buildChapter({
     "AI resistance has three distinct sources — fear-based, capability-based, and values-based — and each requires a different response. Fear-based resistance requires honest communication about job impact. Capability-based resistance requires targeted training and supervised practice. Values-based resistance requires genuine dialogue about AI ethics, bias, and the limits of AI in high-stakes decisions. Conflating the three sources and applying a single solution produces responses that are effective for one type and counterproductive for the others.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "The sources of AI resistance in organisations",
       subtitle: "Why employees resist AI and why their reasons are usually rational",
@@ -58,8 +58,15 @@ export const chapter09BlResistanceToAi = buildChapter({
           body: "A buying team's senior manager resisted AI demand forecasting, expressing scepticism about model accuracy. The change team suspected fear-based resistance related to the manager's longstanding mastery in manual forecasting. The manager was invited to a direct conversation about the AI programme's intent: 'We are not replacing your forecasting judgement — we are trying to reduce the data preparation work that takes 8 hours of your week so you can apply your experience to the decisions that matter most.' The manager disclosed that they had been concerned AI would make their 20 years of domain expertise irrelevant. The direct conversation, which took 45 minutes, produced more attitude change than 4 months of programme communications.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "Fear-based vs capability-based resistance",
       subtitle: "The diagnostic conversation that identifies which type of resistance you are dealing with",
@@ -105,6 +112,13 @@ export const chapter09BlResistanceToAi = buildChapter({
           body: "A production supervisor had both significant anxiety about AI in the quality inspection process (job security concern) and genuine inability to use the AI quality tool (had missed the training due to shift patterns). The change manager sequenced responses: first, a direct conversation with the plant manager about job impact (resolved the anxiety over 2 sessions), then a dedicated catch-up training session with a practitioner coach. The supervisor completed training in week 7 (3 weeks after the anxiety was resolved). Attempting training in week 4 (before the anxiety conversation) had produced a session where the supervisor could not retain basic tool navigation — confirmation that anxious employees cannot learn effectively.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

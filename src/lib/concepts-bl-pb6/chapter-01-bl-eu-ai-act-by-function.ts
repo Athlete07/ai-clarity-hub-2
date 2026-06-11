@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlEuAiActByFunction = buildChapter({
   slug: "bl-eu-ai-act-by-function",
@@ -59,7 +59,7 @@ export const chapter01BlEuAiActByFunction = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "The Four-Tier Risk Classification",
       subtitle: "Unacceptable, high-risk, limited-risk, minimal-risk — how to classify every AI system in your portfolio",
@@ -105,8 +105,15 @@ export const chapter01BlEuAiActByFunction = buildChapter({
           body: "A major EU telecoms provider deployed a conversational AI assistant without AI disclosure in the chat interface, relying on generic terms of service language. The national supervisory authority issued a corrective notice in Q1 2026. The fix: a mandatory disclosure statement at conversation start — two days' engineering work. The delay in compliance cost the company a public enforcement notice. Limited-risk disclosure obligations are low-effort to implement and high-risk to ignore.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "High-Risk AI — What Compliance Actually Requires",
       subtitle: "The six obligations that apply before a high-risk AI system goes live in the EU",
@@ -152,6 +159,13 @@ export const chapter01BlEuAiActByFunction = buildChapter({
           body: "An NHS Trust deploying an AI diagnostic support tool for radiology maintained its pre-deployment risk assessment but did not establish a cadence for post-deployment updates. When the tool's accuracy degraded following a software update by the vendor, no mechanism existed to trigger a risk management review. The Trust subsequently implemented quarterly risk reviews tied to vendor update releases — the continuous risk management architecture the Act requires.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
     buildSection({
       number: "1.4",

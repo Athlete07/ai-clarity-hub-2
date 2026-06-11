@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter02BlRfpProcessAiVendors = buildChapter({
   slug: "bl-rfp-process-ai-vendors",
@@ -13,7 +13,7 @@ export const chapter02BlRfpProcessAiVendors = buildChapter({
   pmCallout:
     "As a business leader: an AI vendor's written RFP response is a marketing document. The only signal that matters is what the vendor can demonstrate on your data, in your environment, with your use case. Design your RFP to force this demonstration.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "Why standard RFPs fail for AI vendors",
       subtitle: "The three assumptions standard procurement makes that break down for AI evaluation",
@@ -59,8 +59,15 @@ export const chapter02BlRfpProcessAiVendors = buildChapter({
           body: "A retail procurement team adopted three structured reference questions for all AI vendor references: 'What took longer than quoted?', 'What capabilities underperformed the demo?', 'What contract term do you wish you had negotiated?' Across four vendors and twelve references, these questions surfaced: one vendor's implementation timeline was 3× quoted; one vendor's accuracy dropped 18% in production vs demo; one vendor's auto-renewal clause had trapped a reference customer for two additional years. All three findings changed the final selection.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO model → contract. Same process for every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "The AI RFP structure: three stages",
       subtitle: "Functional brief, capability demonstration, and pilot commitment — the three stages of an AI RFP",
@@ -106,6 +113,13 @@ export const chapter02BlRfpProcessAiVendors = buildChapter({
           body: "A logistics company requested pilot commitments from two shortlisted AI route optimisation vendors. Vendor A signed pilot terms with a 12-week timeline and a minimum 8% fuel efficiency improvement threshold. Vendor B's legal team proposed a pilot 'letter of intent' with no performance commitments and a clause allowing extension at the vendor's discretion. Vendor B's response was treated as a red flag: confident vendors commit to measurable pilots. Vendor A's pilot delivered 11% fuel efficiency improvement in 10 weeks.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
     buildSection({
       number: "2.3",

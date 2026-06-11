@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlAiLiteracyProgrammeDesign = buildChapter({
   slug: "bl-ai-literacy-programme-design",
@@ -12,7 +12,7 @@ export const chapter07BlAiLiteracyProgrammeDesign = buildChapter({
     "The single most important AI literacy design decision is the choice between generic AI education (applicable to everyone, changes no one) and role-specific AI capability development (applicable to specific roles, changes their daily work). Generic programmes are cheaper and easier to commission; role-specific programmes are 3–4× more expensive to design but 5–6× more effective at producing adoption. Design the programme you need, not the programme you can afford to run at scale.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "Why generic AI training programmes fail",
       subtitle: "The four design flaws that produce informed employees who do not change their behaviour",
@@ -58,8 +58,15 @@ export const chapter07BlAiLiteracyProgrammeDesign = buildChapter({
           body: "A bank's first AI literacy programme taught 'effective prompting' using generic examples (writing a poem, summarising a news article). Its deployed AI tools were a credit risk summariser, a regulatory reporting generator, and a client meeting note tool — none resembling the generic examples. Post-programme, employees rated their prompting confidence highly but could not translate the generic skill to tool-specific use. The programme was redesigned using real examples from the 3 deployed tools. Adoption of all 3 tools increased by an average of 42% in the first 8 weeks after the redesigned programme.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "Three tiers of AI literacy",
       subtitle: "Awareness, working knowledge, and practitioner — designing the right tier for each audience",
@@ -105,6 +112,13 @@ export const chapter07BlAiLiteracyProgrammeDesign = buildChapter({
           body: "A retailer delivered a 6-hour Tier 1 AI literacy programme to 8 board members before a board AI strategy presentation. Post-programme, board members could distinguish between AI capability claims and AI marketing claims, could ask about implementation risk in vendor proposals, and could challenge ROI projections with relevant questions. At the strategy presentation, 3 board members challenged AI vendor claims that the previous year's board had accepted without question. The CEO observed: 'The board is now a quality control layer for AI proposals rather than an approving audience.'",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter10BlTrackingRoiPostDeployment = buildChapter({
   slug: "bl-tracking-roi-post-deployment",
@@ -12,7 +12,7 @@ export const chapter10BlTrackingRoiPostDeployment = buildChapter({
     "Post-deployment ROI tracking is not a measurement exercise — it is a management tool. Leaders who use ROI data to make real-time decisions on adoption, programme design, and capital reallocation get more value from AI than leaders who produce ROI reports for historical record-keeping.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "Why post-deployment tracking fails",
       subtitle: "The five structural reasons most AI ROI tracking produces data but no decisions",
@@ -58,8 +58,15 @@ export const chapter10BlTrackingRoiPostDeployment = buildChapter({
           body: "A hospital aligned ROI report cadence to decision authority: daily operational dashboard (AI quality lead, authority: immediate deployment parameter changes), weekly adoption report (Head of Nursing, authority: change management interventions), monthly financial tracking (Operations Director, authority: budget reallocation), quarterly investment review (CEO and CFO, authority: continuation or suspension decisions). The alignment meant every report went to someone who could act on it immediately — not to someone who would forward it upward. The programme had zero unanswered anomalies at month six.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "Setting up the ROI tracking infrastructure",
       subtitle: "The technical and governance components of a tracking system that works",
@@ -105,6 +112,13 @@ export const chapter10BlTrackingRoiPostDeployment = buildChapter({
           body: "A hospital's AI surgical scheduling one-page reporting matrix: Daily (quality lead, AI quality alerts, authority: immediate parameter change), Weekly (Head of Scheduling, adoption report, authority: change management action), Monthly (COO, financial tracking, authority: budget reallocation), Quarterly (CFO, investment review, authority: continuation decision). At month four, an adoption alert at the weekly level triggered a change management action before the monthly financial report would have shown the impact. The alert was acted on eight weeks before it would have appeared in financial data.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

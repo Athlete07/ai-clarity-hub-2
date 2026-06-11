@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03FounderFirstAiHire = buildChapter({
   slug: "founder-first-ai-hire",
@@ -13,7 +13,7 @@ export const chapter03FounderFirstAiHire = buildChapter({
   pmCallout:
     "As a founder: the first AI hire sets your technical culture, architecture, and hiring bar for years. Rush this decision and you rebuild the team; get it right and you compound.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "When to make your first AI hire",
       subtitle: "The milestone that tells you it is time — not the calendar date",
@@ -59,8 +59,15 @@ export const chapter03FounderFirstAiHire = buildChapter({
           body: "B2B startup delayed AI hire six months while outsourcing. Competitor shipped compliant AI feature; lost three enterprise deals. Emergency hire at inflated comp. Delay cost more than early hire would have.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Generalist AI engineer vs specialist",
       subtitle: "Why your first AI hire should be able to do three jobs and why that narrows the field dramatically",
@@ -106,6 +113,13 @@ export const chapter03FounderFirstAiHire = buildChapter({
           body: "Candidate was strong backend engineer who self-taught RAG and evals via side project. Hired as first AI seat. Shipped faster than pure ML candidates because they owned deployment. Founders: adjacent generalists often outperform AI-only specialists at seed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

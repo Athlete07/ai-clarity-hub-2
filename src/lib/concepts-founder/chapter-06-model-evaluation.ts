@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter06ModelEvaluation = buildChapter({
   slug: "founder-model-evaluation",
@@ -60,7 +60,7 @@ export const chapter06ModelEvaluation = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Precision vs recall — a business decision disguised as a technical one",
       subtitle: "The threshold meeting is a strategy meeting — even if engineering scheduled it",
@@ -106,6 +106,13 @@ export const chapter06ModelEvaluation = buildChapter({
           body: "A recruiting AI startup had capacity to interview 50 candidates per role from 10,000 applicants. The founder set a high-precision threshold to surface only the top 50 — accepting low recall because interview bandwidth was the binding constraint. The strategy was coherent; a recall-optimized model would have overwhelmed customers and killed renewals.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "The Founder Evaluation Framework",
+      caption:
+        "Define the task, build a golden set, set a ship gate, and monitor drift — the minimum bar before any AI feature reaches users.",
     }),
     buildSection({
       number: "6.3",
@@ -201,7 +208,7 @@ export const chapter06ModelEvaluation = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.5",
       title: "Evaluation in production — what to measure after you ship",
       subtitle: "The metrics that show up in renewals, not in research papers",
@@ -247,6 +254,13 @@ export const chapter06ModelEvaluation = buildChapter({
           body: "Spotify validates recommendation changes through listening behavior — skips, saves, session length — not offline accuracy alone. Founders in consumer AI should tie model updates to cohort retention and feature usage. If offline ranking wins but skips rise, rollback beats celebrate.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-fitting-comparison",
+      type: "comparison",
+      title: "The Fitting Spectrum",
+      caption:
+        "Underfitting fails users; overfitting fails in production. Optimal fit is a product decision tied to business risk tolerance.",
     }),
     buildSection({
       number: "6.6",

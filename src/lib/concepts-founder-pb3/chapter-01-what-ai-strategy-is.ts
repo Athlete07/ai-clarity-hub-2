@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01WhatAiStrategyIs = buildChapter({
   slug: "founder-what-ai-strategy-is",
@@ -13,7 +13,7 @@ export const chapter01WhatAiStrategyIs = buildChapter({
   pmCallout:
     "As a founder: your AI strategy is not what you will ship next quarter — it is why you will still matter when every competitor has the same API access. Write it before you write the roadmap.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "1.1",
       title: "The difference between an AI feature list and an AI strategy",
       subtitle: "One is a product backlog. The other is a theory of how you win.",
@@ -59,6 +59,13 @@ export const chapter01WhatAiStrategyIs = buildChapter({
           body: "A founder presented twelve AI features across four quarters with no wedge, moat, or loop narrative. Investors passed quietly — not because the tech was bad, but because any well-funded competitor could replicate the backlog in six months. Strategy absence was the kill shot.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
     buildSection({
       number: "1.2",
@@ -107,7 +114,7 @@ export const chapter01WhatAiStrategyIs = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Why most startup AI strategies are just product roadmaps",
       subtitle: "The strategic questions most founders avoid because they're uncomfortable to answer",
@@ -125,9 +132,8 @@ export const chapter01WhatAiStrategyIs = buildChapter({
         [
           s("Three questions roadmaps skip — and killers ask anyway. "),
           x(
-            "What if the foundation model provider ships your feature natively?",
-            "What if your data advantage never materialises at the rate you assumed?",
-            "What if the incumbent bundles your capability at zero marginal cost?",
+            "What if the foundation model provider ships your feature natively? What if your data advantage never materialises? What if the incumbent bundles your capability at zero marginal cost?",
+            "These are the killer questions roadmaps skip — strategy documents must answer them before you commit engineering.",
           ),
           s(" Strategy documents answer these before you have fifty engineers committed to the wrong hill."),
         ],
@@ -154,6 +160,13 @@ export const chapter01WhatAiStrategyIs = buildChapter({
           body: "A board member asked for the feedback loop diagram; the CEO presented a Gantt chart. The gap was not execution — it was strategic architecture. The company paused two features to instrument usage signal. Painful quarter, stronger Series A narrative.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Strategy Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. Strategy without this sequence is a slide deck, not a company capability.",
     }),
     buildSection({
       number: "1.4",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlIdentifyingAiUseCases = buildChapter({
   slug: "bl-identifying-ai-use-cases",
@@ -13,7 +13,7 @@ export const chapter02BlIdentifyingAiUseCases = buildChapter({
   pmCallout:
     "As a business leader: use case identification is where you earn the right to a budget conversation. Walk into it with a structured inventory and you are managing a portfolio. Walk in with a technology wish list and you are funding experiments with no accountability.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "The Three Categories of AI Use Cases",
       subtitle: "Automation, augmentation, and insight — and why the mix matters",
@@ -59,8 +59,15 @@ export const chapter02BlIdentifyingAiUseCases = buildChapter({
           body: "Walmart's demand forecasting AI identifies restocking patterns at individual store level across 10,000+ locations — a volume no analyst team could manually review. The insight is consumed by automated replenishment orders, not human decisions. The value chain is: AI insight → automated procurement trigger → shelf availability. Each link in the chain was designed before the AI was built, which is why the insight produces business outcomes rather than reports.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "Running Discovery Workshops That Work",
       subtitle: "How to run a session that produces usable use cases, not hallway ideas",
@@ -106,6 +113,13 @@ export const chapter02BlIdentifyingAiUseCases = buildChapter({
           body: "A fashion retailer previously ended discovery workshops with unranked lists that sat in a slide deck for three months before anyone created a prioritised view. They introduced a dot-voting exercise in the final fifteen minutes of each workshop: participants allocated points to the candidates they believed had highest business value. The ranking from the workshop became the input to the effort-frequency analysis the following week. Time from workshop to funded pilot reduced from 4 months to 6 weeks.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

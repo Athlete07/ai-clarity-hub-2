@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlMeasuringAiAdoptionTeams = buildChapter({
   slug: "bl-measuring-ai-adoption-teams",
@@ -12,7 +12,7 @@ export const chapter08BlMeasuringAiAdoptionTeams = buildChapter({
     "The adoption metrics worth measuring are the ones that change when AI is genuinely integrated into how work gets done: decision quality improvement, workflow cycle time reduction, output quality uplift, and error rate reduction. Login rates and training completions are activity metrics — useful for diagnosing support needs but not for justifying continued AI investment or measuring AI programme success.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "Why most AI adoption metrics are vanity metrics",
       subtitle: "The metrics that look good in dashboards and tell you nothing about business value",
@@ -58,8 +58,15 @@ export const chapter08BlMeasuringAiAdoptionTeams = buildChapter({
           body: "A media company's AI content platform showed 12,000 monthly queries — a metric the programme director presented as evidence of strong adoption. A deeper analysis of query outcomes: 8,400 queries (70%) produced outputs that were not saved, shared, or incorporated into any content piece. 3,600 queries (30%) produced outputs that were used. The action rate was 30%, not the 70%+ that would indicate genuine integration. The programme director had been measuring curiosity as adoption.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Four categories of meaningful AI adoption metrics",
       subtitle: "The measurement framework that reveals whether AI is changing how work gets done",
@@ -105,6 +112,13 @@ export const chapter08BlMeasuringAiAdoptionTeams = buildChapter({
           body: "A CFO invested in 3 months of baseline quality measurement before deploying an AI financial commentary tool: tracked the percentage of board reports that required revision after first draft, the average number of revisions per report, and the average senior analyst time per report. Baseline: 68% required revision, 2.4 revisions average, 4.2 hours average. Post-AI at 6 months: 31% required revision, 1.1 revisions average, 2.8 hours average. The quality improvement evidence — only possible because of the baseline investment — was the primary justification for extending the AI programme to 3 additional finance functions.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter08BlLeadingByExampleAi = buildChapter({
@@ -13,7 +13,7 @@ export const chapter08BlLeadingByExampleAi = buildChapter({
     "Leader AI behaviour influences organisation-wide adoption more than any communications campaign, incentive programme, or training curriculum. The multiplication effect of leader modelling — one leader's visible AI behaviour influencing hundreds of others — makes personal AI practice the highest-ROI adoption investment a leader can make. It is also the most neglected.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "Why leader behaviour is the strongest adoption signal",
       subtitle: "The evidence for why what leaders do with AI matters more than what they say about it",
@@ -59,8 +59,15 @@ export const chapter08BlLeadingByExampleAi = buildChapter({
           body: "A consulting firm's AI research programme had achieved 72% associate adoption but only 31% partner adoption. Survey data showed that associate adoption was clustered in practices where at least one partner was a visible AI user. In practices where no partner used AI visibly, associate adoption was 18%. The correlation between partner AI use and associate adoption was 0.87. The programme team had been investing in associate training; the bottleneck was partner permission signalling. A focused partner AI adoption programme — personal coaching, peer community, and explicit AI practice time — moved partner adoption from 31% to 64% over six months, and associate adoption followed to 89%.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Visible AI use by leaders",
       subtitle: "What deliberate visible AI use looks like in practice — and how to build it into leadership routine",
@@ -106,6 +113,13 @@ export const chapter08BlLeadingByExampleAi = buildChapter({
           body: "A bank's CFO used AI financial scenario modelling in a monthly leadership team meeting. The AI produced a cash flow projection that the CFO immediately identified as using incorrect seasonal adjustment parameters. She corrected the parameters in real time — taking 90 seconds — and showed the corrected output. Her commentary: 'This is why AI doesn't replace your judgment — it requires it. The AI's output was plausible but wrong. If I hadn't reviewed it critically, this would have been in the board presentation.' The incident was cited by six direct reports in a subsequent survey as the single most useful AI demonstration they had observed, because it modelled the critical judgment the AI requires.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

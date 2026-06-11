@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05AiDueDiligence = buildChapter({
   slug: "founder-ai-due-diligence",
@@ -13,7 +13,7 @@ export const chapter05AiDueDiligence = buildChapter({
   pmCallout:
     "As a founder: run the same diligence on yourself that investors will run on you. If you would not invest given what you find, fix it before you pitch — not after the term sheet.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Technical due diligence for AI companies — what investors hire firms to find",
       subtitle: "Model architecture review, data provenance, infrastructure costs, team capability assessment",
@@ -59,8 +59,15 @@ export const chapter05AiDueDiligence = buildChapter({
           body: "Diligence modelled inference costs at 10x scale and found gross margin dropped to 38%. The company presented a routing roadmap that recovered margin to 65%. Transparency preserved the deal; hiding would have killed it.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Data due diligence — the questions about your data you must be able to answer",
       subtitle: "Where it came from, who owns it, whether consent exists, and what happens if it disappears",
@@ -106,6 +113,13 @@ export const chapter05AiDueDiligence = buildChapter({
           body: "A founder provided a spreadsheet: source, volume, legal basis, consent artifact, exclusivity, refresh cadence. Diligence passed in days. Operational documentation signaled maturity.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

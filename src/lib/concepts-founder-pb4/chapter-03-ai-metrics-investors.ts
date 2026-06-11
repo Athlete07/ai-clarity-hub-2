@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03AiMetricsInvestors = buildChapter({
   slug: "founder-ai-metrics-investors",
@@ -13,7 +13,7 @@ export const chapter03AiMetricsInvestors = buildChapter({
   pmCallout:
     "As a founder: build the AI metrics dashboard before the fundraise dashboard. If you enter Series A with only MRR and a demo, investors classify you as SaaS — regardless of your pitch deck adjectives.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Why standard SaaS metrics are insufficient for AI companies",
       subtitle: "Revenue and growth tell investors what happened. AI metrics tell them what will happen.",
@@ -59,8 +59,15 @@ export const chapter03AiMetricsInvestors = buildChapter({
           body: "One CEO added a dedicated 'AI compounding' slide to monthly board decks at seed. By month ten, the metrics told a story ARR alone could not. Investors cited the slide in diligence. Habit formed the fundraise narrative.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "Investor Diligence Stack",
+      caption:
+        "Team → data moat → unit economics → timing → risk. The five lenses on every AI term sheet.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Model improvement rate",
       subtitle: "How fast is your model getting better — and how do you prove it to someone outside your company",
@@ -106,6 +113,13 @@ export const chapter03AiMetricsInvestors = buildChapter({
           body: "One startup published internal monthly 'model release notes' with eval deltas and override impact. At Series A, these notes became diligence evidence of improvement cadence. Operational habit became fundraising asset.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

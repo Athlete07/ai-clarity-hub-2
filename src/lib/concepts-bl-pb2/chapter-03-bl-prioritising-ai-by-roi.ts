@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlPriorisingAiByRoi = buildChapter({
   slug: "bl-prioritising-ai-by-roi",
@@ -13,7 +13,7 @@ export const chapter03BlPriorisingAiByRoi = buildChapter({
   pmCallout:
     "As a business leader: ROI prioritisation is your most important AI governance tool. It converts 'should we do AI?' from a cultural debate to a resource allocation discipline. Own the model, apply it consistently, and defend the no's as vigorously as the yes's.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Why AI ROI Is Hard",
       subtitle: "The specific reasons conventional ROI tools underserve AI investment decisions",
@@ -59,8 +59,15 @@ export const chapter03BlPriorisingAiByRoi = buildChapter({
           body: "An insurance group's first AI deployment — claims document classification — included an explicit statement in the business case: 'This deployment creates the data labelling infrastructure and AI governance framework required by three subsequent initiatives in the AI roadmap, estimated to deliver £4.2M combined value over years 2 and 3.' The investment committee approved the first initiative partly on its direct ROI and partly on this named strategic option. The subsequent initiatives were approved faster because the infrastructure existed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI Business Case Flow",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Building a Scoring Model",
       subtitle: "A consistent framework that makes prioritisation repeatable and defensible",
@@ -106,6 +113,13 @@ export const chapter03BlPriorisingAiByRoi = buildChapter({
           body: "A European telecoms operator had approved an AI network planning initiative in isolation, scoring it against its own business case. When a scoring model was introduced and all candidate initiatives were evaluated simultaneously, the network planning initiative ranked fifth out of seven. Three operational AI candidates — call centre routing, churn prediction, and fault detection — ranked higher on value potential and time to value. The portfolio was rebuilt from the comparative scoring output, and the network planning initiative was deferred to a subsequent cycle.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
     buildSection({
       number: "3.3",

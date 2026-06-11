@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlBuildingAiCentreExcellence = buildChapter({
   slug: "bl-building-ai-centre-excellence",
@@ -12,7 +12,7 @@ export const chapter05BlBuildingAiCentreExcellence = buildChapter({
     "An AI Centre of Excellence is not an AI team — it is an enabling function. Its job is to make every business function's AI capability better than it would be alone: through shared standards, reusable infrastructure, vendor relationships, talent development, and governance. A CoE that tries to own and control AI across the organisation becomes a bottleneck. A CoE that enables and amplifies function-level AI becomes a multiplier.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "What a Centre of Excellence actually does",
       subtitle: "Four functions that distinguish a value-creating CoE from an AI bureaucracy",
@@ -58,8 +58,15 @@ export const chapter05BlBuildingAiCentreExcellence = buildChapter({
           body: "A bank's CoE negotiated enterprise agreements with 5 AI vendors. Each agreement included preferred pricing, security certification status, and standard contract terms pre-negotiated. When the commercial banking function needed an AI analytics vendor, it selected from the approved list in 2 weeks (versus a typical 12-week procurement for a new vendor). Pricing was 22% below what the function would have negotiated independently. The time saving alone — 10 weeks of a 3-person evaluation team — was valued at £65,000.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Centralise vs federate: CoE governance models",
       subtitle: "The three CoE governance models and when each is appropriate",
@@ -105,6 +112,13 @@ export const chapter05BlBuildingAiCentreExcellence = buildChapter({
           body: "A software company attempted a federated CoE model with minimal governance after its engineering teams resisted central oversight. Within 18 months: 6 functions had independently selected AI vendors, 3 of which overlapped (paying three times for similar capability), 2 functions had data handling practices that failed the annual security audit, and AI capability was concentrated in 2 of 6 functions with the other 4 underserved. The company implemented a hub-and-spoke model with a retrospective audit. The federated model had appeared faster in months 1–6 and was more expensive and riskier by month 18.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

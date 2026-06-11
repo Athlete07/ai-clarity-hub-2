@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlAiOpportunityAssessment = buildChapter({
   slug: "bl-ai-opportunity-assessment",
@@ -60,7 +60,7 @@ export const chapter01BlAiOpportunityAssessment = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "The Value-Feasibility Matrix",
       subtitle: "The 2×2 that separates strategic bets from expensive experiments",
@@ -106,8 +106,15 @@ export const chapter01BlAiOpportunityAssessment = buildChapter({
           body: "Rolls-Royce's predictive maintenance programme succeeded because jet engine sensor data had been collected and structured for decades before AI tools could exploit it. Their feasibility score was genuinely high. Competitors attempting similar programmes discovered their maintenance data was technician notes in free text — a labelling project measured in years, not months.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Process Mapping for AI",
       subtitle: "You cannot automate what you haven't drawn",
@@ -153,6 +160,13 @@ export const chapter01BlAiOpportunityAssessment = buildChapter({
           body: "Deutsche Telekom's digital operations team ran a decision frequency analysis across all candidate AI use cases. Their rule: AI investment is justified when decision frequency exceeds 500 instances per week per decision type. High-value but low-frequency decisions were deprioritised in favour of high-frequency routine decisions. The frequency criterion alone eliminated a third of the candidate list before any technical evaluation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
     buildSection({
       number: "1.4",

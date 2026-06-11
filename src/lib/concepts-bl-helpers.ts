@@ -1,5 +1,12 @@
 /** Shared helpers for Business Leader / Head of Function Executive KB chapters. */
-export { buildChapter, buildSection, s, x } from "./concepts-pb4-helpers";
+export {
+  buildChapter,
+  buildSection,
+  insertDiagram,
+  sectionWithDiagram,
+  s,
+  x,
+} from "./concepts-pb4-helpers";
 export type { SectionExample, SectionInput, ChapterInput } from "./concepts-pb4-helpers";
 
 export const BL_CALLOUT =

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03FounderUsAiRegulation = buildChapter({
   slug: "founder-us-ai-regulation",
@@ -13,7 +13,7 @@ export const chapter03FounderUsAiRegulation = buildChapter({
   pmCallout:
     "As a founder: there is no single US AI law coming to save you from complexity. Map federal + sector + state exposure per feature now — or discover it in an FTC inquiry, EEOC investigation, or Colorado compliance audit.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The federal AI landscape in 2025",
       subtitle: "Executive orders, NIST AI RMF, proposed legislation — the current state of play",
@@ -59,8 +59,15 @@ export const chapter03FounderUsAiRegulation = buildChapter({
           body: "A fintech founder deferred AI compliance investment saying 'there's no federal AI law yet.' FTC inquiry into deceptive AI claims arrived first. Settlement cost exceeded what proactive compliance would have cost by 5x. Federal legislation timeline was irrelevant to enforcement timeline.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "FTC scrutiny of AI companies",
       subtitle: "Deceptive AI claims, dark patterns, and the enforcement actions that have already happened",
@@ -106,6 +113,13 @@ export const chapter03FounderUsAiRegulation = buildChapter({
           body: "A legal AI startup's marketing claimed '99% accuracy on case law research.' General counsel flagged FTC substantiation risk — accuracy was measured on a curated test set, not production. Marketing revised to 'validated on [specific benchmark] with [specific limitations].' Avoided enforcement exposure before a single ad ran.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

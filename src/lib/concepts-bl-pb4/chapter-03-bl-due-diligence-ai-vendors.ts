@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter03BlDueDiligenceAiVendors = buildChapter({
   slug: "bl-due-diligence-ai-vendors",
@@ -13,7 +13,7 @@ export const chapter03BlDueDiligenceAiVendors = buildChapter({
   pmCallout:
     "As a business leader: when an AI vendor's output harms a customer, causes a regulatory violation, or generates a discriminatory decision, the question your board and regulator will ask is not 'did the vendor do due diligence?' — it is 'what due diligence did you do before signing?' Your due diligence record is your protection.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The five dimensions of AI vendor due diligence",
       subtitle: "Why standard software due diligence is necessary but insufficient for AI procurement",
@@ -59,8 +59,15 @@ export const chapter03BlDueDiligenceAiVendors = buildChapter({
           body: "A financial services firm deployed AI credit decisioning and a customer was wrongly declined due to a model error. The customer sued for $340,000 in consequential damages. The AI vendor's contract limited liability to $50,000 — the annual contract value. The firm absorbed $290,000 in unrecovered damages. Output liability negotiation before signature would have either required the vendor to increase liability caps or flagged that the vendor was not willing to stand behind their model's decisions — which is itself a due diligence signal.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Financial and operational stability checks",
       subtitle: "Vendor financial health signals that predict contract performance and service continuity",
@@ -106,6 +113,13 @@ export const chapter03BlDueDiligenceAiVendors = buildChapter({
           body: "A hospital system evaluated an AI clinical documentation vendor. Due diligence revealed that 80% of customer implementations were managed by a single senior implementation consultant. When asked what happens if this person leaves, the vendor could not provide a documented knowledge transfer plan. The hospital required the vendor to add two co-lead implementation engineers and document the implementation methodology before proceeding to pilot. The vendor complied. Six months later, the senior consultant left. The implementation continued without disruption because the methodology was documented and the team was redundant.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

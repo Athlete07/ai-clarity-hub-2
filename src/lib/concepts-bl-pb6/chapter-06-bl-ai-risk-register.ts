@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlAiRiskRegister = buildChapter({
   slug: "bl-ai-risk-register",
@@ -12,7 +12,7 @@ export const chapter06BlAiRiskRegister = buildChapter({
     "Every deployed AI system carries a distinct risk profile across six categories: technical failure, data quality, bias and discrimination, regulatory compliance, third-party dependency, and reputational risk. The AI risk register maps these risks per system, assigns owners, and tracks mitigation status — enabling leadership decisions about risk acceptance versus investment.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "What Makes AI Risk Different",
       subtitle: "Why standard enterprise risk frameworks need AI-specific extensions — and where the gaps are",
@@ -58,8 +58,15 @@ export const chapter06BlAiRiskRegister = buildChapter({
           body: "A false match by a facial recognition system resulted in Robert Williams being wrongfully arrested in Detroit in 2020. The opacity risk: the system produced a confident match output with no explanation of which facial features drove the match, no confidence interval for this specific comparison, and no flag for low-quality input image conditions. Reviewers accepted the output because they could not evaluate the specific decision's reliability. Opacity risk requires human review protocols that account for the reviewer's inability to verify the underlying decision logic.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "The Six AI Risk Categories",
       subtitle: "A taxonomy of AI risks that covers the full exposure landscape for business leaders",
@@ -105,6 +112,13 @@ export const chapter06BlAiRiskRegister = buildChapter({
           body: "A recruiting agency's AI shortlisting tool was featured in a journalist's investigation after a hiring manager shared (with the journalist's source) that the AI had ranked an identically qualified candidate lower based on factors the manager could not explain. The resulting media coverage — 'Opaque AI decides who gets interviews at [firm]' — generated over 200 candidate withdrawals and a social media debate about AI hiring fairness. The reputational risk was not in the risk register because the tool was considered low-risk from a technical and regulatory standpoint. Reputational risk assessment requires public perception scenarios, not just technical and legal risk views.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04FounderOrganisationalScalingAi = buildChapter({
   slug: "founder-organisational-scaling-ai",
@@ -13,7 +13,7 @@ export const chapter04FounderOrganisationalScalingAi = buildChapter({
   pmCallout:
     "As a founder: your org chart is a scaling constraint as real as your GPU budget. Map the transition from centralised AI team to embedded engineers before product complexity forces it chaotically — and hire MLOps and data quality before the pipeline breaks, not after.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The AI team structure that works at 10 people and fails at 50",
       subtitle: "The organisational failure modes that accompany rapid AI product scaling",
@@ -59,8 +59,15 @@ export const chapter04FounderOrganisationalScalingAi = buildChapter({
           body: "Three product teams each built retrieval pipelines with different vector DBs and eval methods. Total cost 2.4x a shared platform. The founder mandated a shared retrieval service with team-specific configs. Fragmentation was an org failure, not an engineering preference.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Scaling Inflection Points",
+      caption:
+        "Cost and architecture choices compound at each order-of-magnitude in usage.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "When to move from a centralised AI team to embedded AI engineers",
       subtitle: "The product complexity threshold that forces org structure change",
@@ -106,6 +113,13 @@ export const chapter04FounderOrganisationalScalingAi = buildChapter({
           body: "A 18-person company embedded AI engineers before platform eval existed. Each team measured quality differently. Board could not compare product lines. The founder recentralised eval and monitoring, then re-embedded. Sequence mattered.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

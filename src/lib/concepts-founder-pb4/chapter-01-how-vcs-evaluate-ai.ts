@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01HowVcsEvaluateAi = buildChapter({
   slug: "founder-how-vcs-evaluate-ai",
@@ -60,7 +60,7 @@ export const chapter01HowVcsEvaluateAi = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "What VCs look for that most founders don't talk about",
       subtitle: "Data strategy, feedback loop design, and model dependency risk — the three underweighted factors",
@@ -106,8 +106,15 @@ export const chapter01HowVcsEvaluateAi = buildChapter({
           body: "One founder opened the seed meeting with a vendor risk register: multi-model abstraction, cost ceilings, and fallback providers. Another hid 100% GPT-4 dependency until diligence. The first closed; the second got a conditional term sheet with a 20% lower valuation. Transparency on dependency is cheaper than discovery.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "How VCs Evaluate AI Startups",
+      caption:
+        "Team, data moat, unit economics, market timing, risk surface — the five diligence lenses on every AI term sheet.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "The questions every serious AI investor will ask",
       subtitle: "Not 'tell me about your technology' — the real questions that determine term sheets",
@@ -153,6 +160,13 @@ export const chapter01HowVcsEvaluateAi = buildChapter({
           body: "Top founders rehearse answers to twelve standard questions under two minutes each, without slides. One partner said yes to a seed round after the founder answered override rate, loop latency, and vendor portability cold. Preparation is indistinguishable from competence in AI fundraising.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "Investor Diligence Stack",
+      caption:
+        "Team → data moat → unit economics → timing → risk. The five lenses on every AI term sheet.",
     }),
     buildSection({
       number: "1.4",

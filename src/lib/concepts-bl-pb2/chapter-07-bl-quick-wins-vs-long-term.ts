@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlQuickWinsVsLongTerm = buildChapter({
   slug: "bl-quick-wins-vs-long-term",
@@ -13,7 +13,7 @@ export const chapter07BlQuickWinsVsLongTerm = buildChapter({
   pmCallout:
     "As a business leader: both horizons need you as an active sponsor. Quick wins will be deprioritised by technology teams in favour of interesting long-term problems. Long-term bets will be defunded by finance in favour of visible near-term returns. You are the counterpressure in both directions.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "Why Quick Wins Matter",
       subtitle: "The evidence cadence that keeps the programme alive",
@@ -59,8 +59,15 @@ export const chapter07BlQuickWinsVsLongTerm = buildChapter({
           body: "A bank's first AI deployment — document pre-processing for mortgage applications — took 16 weeks and cost £240K in integration engineering, against a vendor estimate of £80K. The actuals became the benchmark: all subsequent mortgage AI business cases used £240K as the integration estimate for comparable scope, not the vendor estimate. Two subsequent business cases that used the benchmark were approved without integration cost challenge; both came in within 15% of the benchmark. The quick win actuals produced credibility that vendor estimates never could.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "What Makes a Good Quick Win",
       subtitle: "The criteria that distinguish genuine quick wins from false starts",
@@ -106,6 +113,13 @@ export const chapter07BlQuickWinsVsLongTerm = buildChapter({
           body: "A bank's document pre-processing quick win used a data extraction pipeline that could be reused for three subsequent AI initiatives: mortgage application processing, commercial loan document review, and regulatory compliance filing analysis. The pipeline development — £180K of engineering — was justified in the quick win business case and reused at minimal marginal cost across the three subsequent initiatives. The quick win was an investment; the subsequent initiatives consumed the infrastructure it created.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

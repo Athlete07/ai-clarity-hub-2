@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05FounderAiVendorContracts = buildChapter({
   slug: "founder-ai-vendor-contracts",
@@ -13,7 +13,7 @@ export const chapter05FounderAiVendorContracts = buildChapter({
   pmCallout:
     "As a founder: signing default AI vendor terms is giving a counterparty optional rights to your data, your economics, and your migration path. Read the seven clauses with your lawyer before the pilot ends — leverage disappears after dependency.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Data ownership clauses — the non-negotiable",
       subtitle: "What your contract must say about who owns the data you feed into vendor systems",
@@ -59,8 +59,15 @@ export const chapter05FounderAiVendorContracts = buildChapter({
           body: "Fortune 500 customer required data ownership certification. Vendor standard terms failed audit. Founder renegotiated before losing $400K ACV — ownership is revenue gate, not legal footnote.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Training data opt-out",
       subtitle: "Whether the vendor can train their models on your data — and how to prohibit it",
@@ -106,6 +113,13 @@ export const chapter05FounderAiVendorContracts = buildChapter({
           body: "No-training clause covered primary vendor but not logging subprocessor. Counsel extended clause to subprocessors — closed GDPR diligence gap.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

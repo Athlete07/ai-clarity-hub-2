@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02FounderEuAiAct = buildChapter({
   slug: "founder-eu-ai-act",
@@ -13,7 +13,7 @@ export const chapter02FounderEuAiAct = buildChapter({
   pmCallout:
     "As a founder: EU revenue is often 25–40% of your TAM. The AI Act is not a legal footnote — it is a product architecture decision that determines whether you can sell in Europe at all.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "What the EU AI Act is and when it applies",
       subtitle: "Timeline, scope, and the critical question — does it apply to you even if you are not in Europe",
@@ -59,8 +59,15 @@ export const chapter02FounderEuAiAct = buildChapter({
           body: "An AI analytics platform sold to EU banks. The startup was the provider; each bank was a deployer for their use case. The founder packaged provider documentation (model card, logging spec, oversight UI) enabling banks to meet deployer obligations. Won three EU bank contracts because compliance artifacts existed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "The four risk tiers",
       subtitle: "Unacceptable risk, high risk, limited risk, minimal risk — and where common AI applications fall",
@@ -106,6 +113,13 @@ export const chapter02FounderEuAiAct = buildChapter({
           body: "A retail SaaS founder's demand forecasting AI for warehouse stocking classified as minimal risk. No conformity assessment. Still implemented logging and basic evals as good practice. Calibration saved compliance budget for the hiring module that actually needed high-risk treatment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

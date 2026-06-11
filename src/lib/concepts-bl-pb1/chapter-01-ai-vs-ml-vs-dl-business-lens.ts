@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlAiVsMlVsDlBusinessLens = buildChapter({
   slug: "bl-ai-vs-ml-vs-dl-business-lens",
@@ -106,7 +106,7 @@ export const chapter01BlAiVsMlVsDlBusinessLens = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Deep Learning — The Unlock and the Cost",
       subtitle: "Why DL changed what is possible — and what it costs your P&L",
@@ -152,8 +152,15 @@ export const chapter01BlAiVsMlVsDlBusinessLens = buildChapter({
           body: "A major UK retailer deployed a DL-powered product recommendation engine across its e-commerce platform. Pilot economics at 50,000 sessions/day looked healthy. At 3 million sessions/day post-rollout, inference costs added £280K/month to technology overhead — an item absent from the original business case. The lesson: pilot-to-production cost modelling is a CFO governance requirement, not an engineering detail.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch1-dl-flow",
+      type: "flow",
+      title: "Feature Extraction in Deep Learning",
+      caption:
+        "Deep learning builds complex concepts from simple layers — the capability behind generative AI and the cost class behind GPU budgets.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.4",
       title: "The Nested Hierarchy",
       subtitle: "AI ⊃ ML ⊃ Deep Learning — why precision here is a board-room advantage",
@@ -199,8 +206,15 @@ export const chapter01BlAiVsMlVsDlBusinessLens = buildChapter({
           body: "Copilot branding covers grammar suggestions (rules), meeting summaries (deep learning), and workflow automation triggers (rules + ML hybrid). Enterprise buyers who negotiate 'Copilot' as a monolith miss the ability to enable or disable tiers by risk appetite. Legal teams at large firms have disabled generative features while keeping rules-based suggestions — a negotiation only possible if the buyer understands the hierarchy.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch1-ai-hierarchy",
+      type: "nested",
+      title: "The AI, ML, and DL Hierarchy",
+      caption:
+        "Every deep learning system is ML; every ML system is AI. Precision here is a budget and risk conversation, not pedantry.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.5",
       title: "Rules-Based vs Learned Systems",
       subtitle: "One scales with headcount. The other scales with data. Knowing which you are buying changes the contract.",
@@ -246,6 +260,13 @@ export const chapter01BlAiVsMlVsDlBusinessLens = buildChapter({
           body: "A UK insurer evaluated an 'AI claims triage' platform at £180K/year. Due diligence: the system used 312 hand-maintained rules with a simple scoring formula. The vendor offered to 'add ML' at a future date. The insurer correctly evaluated the purchase as a rules platform — renegotiated to £45K — and kept a contractual option to migrate to ML when the vendor could demonstrate genuine training data and evaluation metrics.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch1-paradigm-shift",
+      type: "comparison",
+      title: "Rules vs Learned Systems",
+      caption:
+        "Rules scale with headcount; learned systems scale with data. Vendor diligence starts with which paradigm you are actually buying.",
     }),
     buildSection({
       number: "1.6",

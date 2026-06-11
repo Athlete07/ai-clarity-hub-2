@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlProductivityVsRevenueGains = buildChapter({
   slug: "bl-productivity-vs-revenue-gains",
@@ -12,7 +12,7 @@ export const chapter03BlProductivityVsRevenueGains = buildChapter({
     "Productivity ROI is earned through capacity redeployment, not just time savings — and revenue ROI requires clean attribution design before deployment. Business leaders who treat these as one measurement problem consistently underperform on both.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Why productivity and revenue ROI need different models",
       subtitle: "The structural differences that make a single AI ROI model misleading",
@@ -58,8 +58,15 @@ export const chapter03BlProductivityVsRevenueGains = buildChapter({
           body: "A consultancy deploying AI research tools assigned separate owners at approval: the Head of Delivery for productivity ROI (capacity redeployment) and the Head of Business Development for revenue ROI (faster proposal turnaround enabling higher win rates). Twelve months later, productivity ROI was on track (HoD had redesigned the delivery model) while revenue ROI had not materialised (HoBD had not changed the proposal process). The ownership separation made the success and failure visible — and actionable.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Measuring productivity gains precisely",
       subtitle: "The four-step measurement protocol that turns time savings into credible financial claims",
@@ -105,6 +112,13 @@ export const chapter03BlProductivityVsRevenueGains = buildChapter({
           body: "A hospital's AI clinical documentation tool did not reduce total documentation time but significantly improved documentation completeness. The productivity ROI was redefined: same time input, measurably better output quality. Finance accepted 'quality productivity' as a valid category when the metric was defined as 'clinical documentation completeness score' with a baseline and post-deployment measurement. Productivity is not only time — it is also quality of output per unit of input.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

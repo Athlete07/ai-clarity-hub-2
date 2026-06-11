@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlMinimumViableAiGovernance = buildChapter({
   slug: "bl-minimum-viable-ai-governance",
@@ -12,7 +12,7 @@ export const chapter05BlMinimumViableAiGovernance = buildChapter({
     "Minimum viable AI governance has five components: an AI inventory, a classification framework, a pre-deployment gate with legal and DPO review, an acceptable use policy, and a named accountability owner. These five components address the majority of regulatory exposure and can be operational within 60 days.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Why Most AI Governance Fails",
       subtitle: "The five failure patterns that prevent governance from working — and how minimum viable governance avoids them",
@@ -58,8 +58,15 @@ export const chapter05BlMinimumViableAiGovernance = buildChapter({
           body: "A retail group's quarterly shadow AI discovery sweep found 23 AI tools deployed by business teams outside IT governance in the first sweep — including a customer sentiment AI deployed by the marketing team, a pricing AI deployed by the category management team, and an HR scheduling AI deployed by store operations. All 23 were retrospectively classified and governed; 4 required immediate remediation (data processing issues). The discovery sweep became a permanent quarterly process. Shadow AI discovery is a minimum viable governance requirement.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-risk-governance",
+      type: "flow",
+      title: "AI Risk Management Flow",
+      caption:
+        "Inventory → classify → control → monitor → report. The governance sequence regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Component One: The AI Inventory",
       subtitle: "Building a complete, accurate, and maintained inventory of every AI system in your organisation",
@@ -105,6 +112,13 @@ export const chapter05BlMinimumViableAiGovernance = buildChapter({
           body: "A financial services group's AI inventory is maintained in a shared Confluence space with named owners for each entry. The change management trigger is embedded in the IT change management process — any new software procurement or development project with AI components automatically generates an AI inventory update ticket. Quarterly reviews by the AI Governance team include: completeness check against IT procurement records, ownership validation (contacting named owners to confirm still current), and classification review for any systems approaching a classification threshold change.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
     buildSection({
       number: "5.3",

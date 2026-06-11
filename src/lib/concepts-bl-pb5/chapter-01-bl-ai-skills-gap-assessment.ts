@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlAiSkillsGapAssessment = buildChapter({
   slug: "bl-ai-skills-gap-assessment",
@@ -59,7 +59,7 @@ export const chapter01BlAiSkillsGapAssessment = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "The four dimensions of AI literacy",
       subtitle: "Awareness, working knowledge, practitioner skill, and leadership decision-making — each requires different interventions",
@@ -105,8 +105,15 @@ export const chapter01BlAiSkillsGapAssessment = buildChapter({
           body: "An insurer's gap assessment revealed that its leadership team — all of whom had received AI awareness training — could not make sound AI investment decisions. They could describe AI concepts but could not evaluate an AI vendor proposal, assess implementation risk, or challenge engineering timelines. A six-session leadership decision-making programme focused on procurement, risk, and governance lifted leadership AI decision quality as measured in a post-programme structured evaluation exercise.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Skills gap assessment methods and tools",
       subtitle: "Surveys, role analyses, tool audits, and shadow sessions — when to use each",
@@ -152,6 +159,13 @@ export const chapter01BlAiSkillsGapAssessment = buildChapter({
           body: "A consulting firm supplemented its survey and tool audit with 12 one-hour shadow sessions observing consultants using an AI research tool. The shadow sessions revealed a gap that surveys and audits had missed: consultants did not know how to cite or acknowledge AI-generated content in client deliverables, and were avoiding the tool to prevent professional risk. A one-page citation protocol deployed via a 30-minute briefing increased tool adoption by 45% in two weeks — no training required.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
     buildSection({
       number: "1.4",

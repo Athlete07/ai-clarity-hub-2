@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlProbabilityConfidenceAiRisk = buildChapter({
   slug: "bl-probability-confidence-ai-risk",
@@ -12,7 +12,7 @@ export const chapter05BlProbabilityConfidenceAiRisk = buildChapter({
     "Every AI output is a probability, not a certainty. The threshold you set between accepting and rejecting AI outputs is a business decision — not a technical one — that determines your error rate, your human oversight cost, and your liability exposure. Leaders who own threshold decisions own AI risk.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "AI Outputs Are Probabilities, Not Facts",
       subtitle: "Why every AI answer is a bet — and what that means for how you use it",
@@ -58,8 +58,15 @@ export const chapter05BlProbabilityConfidenceAiRisk = buildChapter({
           body: "A UK bank's credit AI produces probability-of-default scores. The regulatory requirement (GDPR Article 22, consumer credit regulation) is to provide a meaningful explanation for automated decisions. Communicating 'our model estimated a 73% probability of default' is technically accurate but commercially and regulatorily insufficient. The bank developed a translation framework — converting model probabilities into customer-facing explanatory language — as a specific design requirement, not an afterthought.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-risk-governance",
+      type: "flow",
+      title: "AI Risk Management Flow",
+      caption:
+        "Inventory → classify → control → monitor → report. The governance sequence regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Confidence Scores — What They Mean and What They Don't",
       subtitle: "Why a high-confidence AI output can still be wrong — and how to use scores appropriately",
@@ -105,6 +112,13 @@ export const chapter05BlProbabilityConfidenceAiRisk = buildChapter({
           body: "A telecoms company deployed AI to route customer queries: high-confidence simple queries resolved automatically, low-confidence queries escalated to agents. After three months, agent feedback indicated AI was routing an unexpectedly high proportion of complex billing disputes to automated resolution. Calibration testing revealed the AI was overconfident on billing dispute queries — a category underrepresented in training. Recalibration on billing-specific test data corrected the routing. Calibration is an ongoing operational requirement, not a one-time deployment check.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
     buildSection({
       number: "5.3",

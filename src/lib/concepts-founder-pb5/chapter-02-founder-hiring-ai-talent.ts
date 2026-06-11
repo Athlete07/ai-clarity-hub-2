@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02FounderHiringAiTalent = buildChapter({
   slug: "founder-hiring-ai-talent",
@@ -13,7 +13,7 @@ export const chapter02FounderHiringAiTalent = buildChapter({
   pmCallout:
     "As a founder: every month without a hiring framework is a month your competitor hires the engineer you needed. Structure beats intuition in the AI talent war.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "The AI talent market in 2025",
       subtitle: "Where the talent is, what it costs, and what you are actually competing against",
@@ -59,8 +59,15 @@ export const chapter02FounderHiringAiTalent = buildChapter({
           body: "A Series A startup lost a lead AI Engineer to a Series B competitor offering 2x cash. The founder retained the next candidate by offering lead title, board visibility, and 0.75% equity. Lesson: know which lever you can pull.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "How to evaluate AI candidates as a non-technical founder",
       subtitle: "The interview framework that lets you assess AI engineers without being one",
@@ -106,6 +113,13 @@ export const chapter02FounderHiringAiTalent = buildChapter({
           body: "A candidate impressed the board with AI buzzwords but could not describe a single eval they had run. Hired anyway because 'we needed someone fast'. Three months, no production feature. Founder lesson: if they cannot explain failure modes, they cannot prevent them.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

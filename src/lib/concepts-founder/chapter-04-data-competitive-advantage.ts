@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter04DataCompetitiveAdvantage = buildChapter({
   slug: "founder-data-competitive-advantage",
@@ -13,7 +13,7 @@ export const chapter04DataCompetitiveAdvantage = buildChapter({
   pmCallout:
     "As a founder: when an investor asks 'what's your AI moat?' the honest answer is your data flywheel — not your prompt. Ask your eng lead on day one: does every user interaction generate labelled signal we can learn from?",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "Why data is the only durable moat in AI",
       subtitle: "Why algorithms commoditize and proprietary signal compounds",
@@ -59,6 +59,13 @@ export const chapter04DataCompetitiveAdvantage = buildChapter({
           body: "Reddit signed multi-million-dollar licensing deals for user conversations as LLM training fuel. The community feature became a balance-sheet asset. Founders with user-generated content should ask early: do we own training rights, and is that in our fundraising narrative?",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "The Data Moat Stack",
+      caption:
+        "Distribution generates proprietary data; data trains models competitors cannot replicate. Algorithms commoditize — signal compounds.",
     }),
     buildSection({
       number: "4.2",
@@ -107,7 +114,7 @@ export const chapter04DataCompetitiveAdvantage = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.3",
       title: "The data flywheel — and whether you actually have one",
       subtitle: "Usage → signal → better model → better product — or just a diagram on a slide",
@@ -153,6 +160,13 @@ export const chapter04DataCompetitiveAdvantage = buildChapter({
           body: "A Series A candidate showed a flywheel slide but admitted retraining happened manually every quarter from exported spreadsheets. Lead investor passed: no compounding loop, no moat. Founders must instrument capture before claiming flywheel defensibility.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-data-flywheel",
+      type: "flow",
+      title: "The Data Flywheel",
+      caption:
+        "More usage → more signal → better model → better product → more usage. Investors fund this loop when it is real, not imagined.",
     }),
     buildSection({
       number: "4.4",

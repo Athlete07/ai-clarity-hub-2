@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter07BlDataPrivacyClausesAi = buildChapter({
   slug: "bl-data-privacy-clauses-ai",
@@ -13,7 +13,7 @@ export const chapter07BlDataPrivacyClausesAi = buildChapter({
   pmCallout:
     "As a business leader: when your AI vendor processes personal data, you become a data controller and the vendor becomes a data processor. Every GDPR obligation that applies to you — data subject rights, breach notification, cross-border transfers — flows through the AI contract. The contract is your GDPR compliance mechanism.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "How AI changes the GDPR landscape",
       subtitle: "The three ways AI processing creates GDPR obligations that standard software contracts do not",
@@ -59,8 +59,15 @@ export const chapter07BlDataPrivacyClausesAi = buildChapter({
           body: "A hospital deployed a generative AI tool for patient discharge summary generation. Testing revealed the model occasionally incorporated specific patient details from similar prior cases in the training data into new discharge summaries — producing outputs that contained personal health information about identifiable patients other than the current case. The hospital implemented a contractual requirement for the vendor to deploy an output filtering system preventing the reproduction of training data in generated outputs, and added a breach notification clause specifically covering training data reproduction incidents.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "The Data Processing Agreement for AI vendors",
       subtitle: "What must be in a GDPR-compliant DPA for an AI vendor that processes personal data",
@@ -106,6 +113,13 @@ export const chapter07BlDataPrivacyClausesAi = buildChapter({
           body: "A retailer's AI personalisation vendor notified the retailer of a new sub-processor: a third-party AI model provider who would be used for product recommendation inference. The DPA provided a 30-day objection window. The retailer's data governance team reviewed the new sub-processor's data processing terms and found the sub-processor's standard contract allowed them to use inference data for their own model training. This conflicted with the retailer's DPA training data opt-out. The retailer objected within the 30-day window. The vendor negotiated a restricted processing addendum with the new sub-processor before proceeding with the integration.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

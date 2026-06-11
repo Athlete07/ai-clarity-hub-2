@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlGdprAiProjects = buildChapter({
   slug: "bl-gdpr-ai-projects",
@@ -12,7 +12,7 @@ export const chapter02BlGdprAiProjects = buildChapter({
     "GDPR's Article 22 creates a near-absolute right not to be subject to solely automated decisions with legal or significant effects. Any AI system making or significantly influencing decisions about EU individuals — in HR, credit, marketing, or operations — must have lawful basis, human oversight, and meaningful contestation rights in place before go-live.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "GDPR and AI — Why They Are Inseparable",
       subtitle: "Every AI system that processes personal data of EU residents triggers GDPR obligations — including those running on anonymised or aggregated data",
@@ -58,8 +58,15 @@ export const chapter02BlGdprAiProjects = buildChapter({
           body: "A Spanish retailer using AI facial recognition in stores for security purposes received a €250K AEPD fine for processing biometric data without explicit consent — a special category data violation under GDPR Article 9. Biometric AI systems are simultaneously GDPR special category and EU AI Act (potentially prohibited) obligations. Leaders deploying biometric AI need both GDPR and AI Act compliance architectures before go-live.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "Lawful Basis for AI Processing",
       subtitle: "The six GDPR lawful bases — which ones work for AI, which ones do not, and the consent trap",
@@ -105,6 +112,13 @@ export const chapter02BlGdprAiProjects = buildChapter({
           body: "A retailer's AI personalisation engine processed customer purchase data to generate individual product recommendations. The processing was documented under contractual necessity in ROPA. A GDPR complaint established that personalised recommendations were not necessary to fulfil the sales contract — they were a commercial benefit to the retailer. The DPA required re-documentation under legitimate interests with a completed LIA, plus retrospective customer notifications. The incorrect basis was identified and exploited in litigation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

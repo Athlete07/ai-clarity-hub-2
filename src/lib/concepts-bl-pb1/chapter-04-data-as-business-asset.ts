@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlDataAsBusinessAsset = buildChapter({
   slug: "bl-data-as-business-asset",
@@ -59,7 +59,7 @@ export const chapter04BlDataAsBusinessAsset = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "Five Dimensions of Data Value",
       subtitle: "Volume, velocity, variety, veracity, and value — a framework for assessing your data asset",
@@ -105,6 +105,13 @@ export const chapter04BlDataAsBusinessAsset = buildChapter({
           body: "A fashion retailer's demand-forecasting model performed well on its core product categories but failed on seasonal limited editions and collaborations. Investigation revealed the training data lacked sufficient examples of limited edition products — a variety gap. The model had never been trained on the patterns it needed to forecast. Filling the variety gap with synthetic data for rare event types improved forecast accuracy by 23% for the underrepresented categories.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-data-flywheel",
+      type: "flow",
+      title: "The Data Flywheel",
+      caption:
+        "Usage generates data; data improves models; better models drive adoption. Leaders who own data strategy own AI differentiation.",
     }),
     buildSection({
       number: "4.3",
@@ -153,7 +160,7 @@ export const chapter04BlDataAsBusinessAsset = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.4",
       title: "Data Quality is a Leadership Decision",
       subtitle: "Why data quality does not improve by itself — and what leaders must do to change that",
@@ -199,6 +206,13 @@ export const chapter04BlDataAsBusinessAsset = buildChapter({
           body: "A professional services firm's people analytics AI produced unreliable attrition predictions. Root cause analysis: job title inconsistency (87 variants of 'Senior Consultant' across the dataset), supervisor rating scale drift (scale anchors changed three times over the training period), and 23% of records missing performance history. The fix required a six-month HR data remediation programme before the AI model was re-deployed. Data quality was the AI bottleneck — not model sophistication.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Data as Strategic Asset",
+      caption:
+        "Proprietary, labelled, current, domain-specific data is the durable moat when algorithms commoditize.",
     }),
     buildSection({
       number: "4.5",

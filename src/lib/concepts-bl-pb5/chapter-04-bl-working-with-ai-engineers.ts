@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlWorkingWithAiEngineers = buildChapter({
   slug: "bl-working-with-ai-engineers",
@@ -12,7 +12,7 @@ export const chapter04BlWorkingWithAiEngineers = buildChapter({
     "Effective collaboration with AI engineers requires three skills that no technical background is needed to develop: writing business requirements in a format engineers can act on, giving feedback on AI outputs that distinguishes data problems from model problems from requirement problems, and knowing when to challenge engineering timelines based on business risk rather than technical preference.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "What AI engineers actually do",
       subtitle: "A non-technical guide to the work of the people building your AI systems",
@@ -58,8 +58,15 @@ export const chapter04BlWorkingWithAiEngineers = buildChapter({
           body: "A retailer's product team asked the engineering lead to break down effort for a new AI inventory recommendation feature. The breakdown: model selection and configuration 15%, data pipeline from 8 source systems 45%, integration into existing POS and ordering systems 35%, testing and monitoring setup 5%. The business leader immediately adjusted stakeholder timelines based on the real effort distribution. The feature was delivered on the revised timeline with no escalations — because the effort breakdown had set accurate expectations.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The language barrier: translating business need to technical spec",
       subtitle: "Why requirements written in business language produce systems that solve the wrong problem",
@@ -105,6 +112,13 @@ export const chapter04BlWorkingWithAiEngineers = buildChapter({
           body: "A law firm's AI contract review requirement included a 'must-not-do' section: must not produce final contract positions (only flagged issues for review), must not operate on non-English language contracts (insufficient training data), must not flag confidentiality clauses as standard (all require individual review). The third constraint — discovered during a structured 'what must this AI never do?' conversation — was not in the original brief. Without it, the system would have auto-classified 40% of confidentiality clauses as standard, removing them from the required review queue and creating a compliance gap.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

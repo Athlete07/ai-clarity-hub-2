@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlAiInSalesRevenue = buildChapter({
   slug: "bl-ai-in-sales-revenue",
@@ -12,7 +12,7 @@ export const chapter04BlAiInSalesRevenue = buildChapter({
     "AI in sales creates compounding value in three areas: lead scoring and prioritisation, pipeline forecasting accuracy, and sales rep enablement. The revenue leader's governance task is ensuring AI improves conversion quality — not just activity metrics — while maintaining the human relationship that closes complex deals.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The Sales AI Landscape — What Drives Revenue",
       subtitle: "Where AI creates real pipeline value and where it creates activity without conversion",
@@ -58,8 +58,15 @@ export const chapter04BlAiInSalesRevenue = buildChapter({
           body: "A B2B SaaS company deployed AI to generate personalised outreach sequences at 10x previous volume. Response rates dropped by 60% — prospects receiving AI-generated personalisation at scale identified it as automated and disengaged. The net result: more activity, fewer responses, lower pipeline quality. AI outreach volume without genuine personalisation signal degrades the channel. Revenue leaders should measure response and meeting rates, not just outreach volume.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "AI in Lead Generation and Prospecting",
       subtitle: "Intent data, signal monitoring, and the quality versus quantity trade-off",
@@ -105,6 +112,13 @@ export const chapter04BlAiInSalesRevenue = buildChapter({
           body: "A mid-market technology vendor deployed AI outreach to 50,000 prospects per month, sending personalised-looking templates with company name, industry, and a recent company news reference. Reply rates fell from 3.2% to 0.8% over six months as prospects became habituated to AI outreach patterns. The SDR team had 75% less pipeline from outbound despite 10x more outreach. Revenue leaders must measure outbound conversion quality — not volume — when assessing AI prospecting tool performance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

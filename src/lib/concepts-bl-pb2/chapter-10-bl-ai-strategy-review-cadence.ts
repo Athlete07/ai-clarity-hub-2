@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter10BlAiStrategyReviewCadence = buildChapter({
   slug: "bl-ai-strategy-review-cadence",
@@ -13,7 +13,7 @@ export const chapter10BlAiStrategyReviewCadence = buildChapter({
   pmCallout:
     "As a business leader: you own the quarterly portfolio review and the annual strategic alignment — these are the cadences that determine whether your AI programme stays connected to business strategy. The monthly operational reviews can be delegated; the quarterly and annual ones cannot.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "Why AI Needs a Faster Review Cadence",
       subtitle: "The four dynamics that make annual review insufficient",
@@ -67,8 +67,15 @@ export const chapter10BlAiStrategyReviewCadence = buildChapter({
           body: "A retailer's AI pricing tool was deployed under a governance framework designed before the EU AI Act's product liability provisions were finalised. When the finalised provisions were published, they required changes to the audit trail and explanation documentation. Quarterly review cadence detected the change in the next review cycle — 6 weeks after publication. The governance changes were made within 10 weeks of publication. An annual review cadence would have produced a 12-month gap before the change was addressed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "The Quarterly Review",
       subtitle: "The governance heartbeat of the AI programme",
@@ -114,6 +121,13 @@ export const chapter10BlAiStrategyReviewCadence = buildChapter({
           body: "A retailer's AI programme governance committee chair cancelled the second quarterly review when three of five committee members arrived without having read the pre-read package. 'We will reconvene when the pre-read has been read. I will reschedule for next week.' The cancelled review produced costs: rescheduled meeting time, programme delay, and a visible governance signal. It was the only review ever cancelled. All subsequent reviews had pre-read evidence of preparation in the form of pre-submitted written questions.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

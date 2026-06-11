@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter01BlAiVendorLandscapeByFunction = buildChapter({
   slug: "bl-ai-vendor-landscape-by-function",
@@ -60,7 +60,7 @@ export const chapter01BlAiVendorLandscapeByFunction = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "The eight AI vendor categories by function",
       subtitle: "Sales, marketing, finance, HR, operations, customer service, legal, and R&D — who leads each",
@@ -106,8 +106,15 @@ export const chapter01BlAiVendorLandscapeByFunction = buildChapter({
           body: "A pharmaceutical company evaluated AI tools for drug discovery literature review. The category was immature: only four vendors had more than 50 enterprise customers. The procurement team applied emerging-category criteria — financial stability, reference customer depth, and roadmap commitment — rather than mature-category ROI benchmarks. Two vendors failed financial stability checks that would have passed a standard procurement review.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Horizontal platforms vs vertical point solutions",
       subtitle: "When to buy a platform and when to buy a specialist — and why most leaders get this wrong",
@@ -153,6 +160,13 @@ export const chapter01BlAiVendorLandscapeByFunction = buildChapter({
           body: "A logistics company standardised on AWS as its AI data platform and then evaluated vertical solutions against a strict criterion: must have a certified AWS integration. This single criterion reduced the vendor field from 40 to 11, eliminated integration risk, and ensured data sovereignty. The evaluation took six weeks. Time-to-value for the first vertical solution was nine weeks from contract signature.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
     buildSection({
       number: "1.4",

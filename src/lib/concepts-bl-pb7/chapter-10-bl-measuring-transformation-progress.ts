@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter10BlMeasuringTransformationProgress = buildChapter({
   slug: "bl-measuring-transformation-progress",
@@ -12,7 +12,7 @@ export const chapter10BlMeasuringTransformationProgress = buildChapter({
     "AI transformation measurement requires four disciplines: baseline measurement before deployment, outcome metrics over activity metrics, attribution rigour that separates AI contribution from confounding factors, and portfolio-level governance that tracks progress across all functions simultaneously. Business leaders who apply all four build transformation programmes that boards can confidently invest in.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "Why AI Transformation Measurement Fails",
       subtitle: "The structural reasons why AI ROI is hard to measure — and how to address them",
@@ -58,8 +58,15 @@ export const chapter10BlMeasuringTransformationProgress = buildChapter({
           body: "A B2B technology company evaluated its AI sales coaching tool by assigning a matched group of 40 reps to use the tool and a matched control group of 40 reps to continue with standard coaching. After two quarters, the AI-coached group showed 22% higher win rate improvement than the control group. The controlled experiment design — not the absence of a control — allowed the company to attribute the 22% improvement to the AI coaching rather than to market conditions, management changes, or other concurrent factors.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "Measuring AI ROI by Function",
       subtitle: "The specific metrics that demonstrate AI value in each business function",
@@ -105,6 +112,13 @@ export const chapter10BlMeasuringTransformationProgress = buildChapter({
           body: "A bank's legal function deployed AI regulatory monitoring and calculated ROI as: staff hours saved on regulatory scanning (£180K/year) plus estimated penalty avoidance from earlier regulatory detection (3 incidents prevented in year one, average avoided penalty value £450K each). The combined ROI — £180K cost saving + £1.35M risk avoidance — was 6.5x the platform cost. ROI calculations that exclude risk avoidance systematically undervalue legal and compliance AI investment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

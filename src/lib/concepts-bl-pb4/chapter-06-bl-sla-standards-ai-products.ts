@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter06BlSlaStandardsAiProducts = buildChapter({
   slug: "bl-sla-standards-ai-products",
@@ -13,7 +13,7 @@ export const chapter06BlSlaStandardsAiProducts = buildChapter({
   pmCallout:
     "As a business leader: the SLA in your AI contract determines what you measure, what the vendor is accountable for, and what compensation you receive when the AI fails. An AI with an excellent uptime SLA and no accuracy SLA is a vendor who is accountable for the lights being on — not for the AI doing its job.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "Why standard SLAs fail for AI products",
       subtitle: "The three failure modes standard SLAs cannot detect in AI systems",
@@ -59,8 +59,15 @@ export const chapter06BlSlaStandardsAiProducts = buildChapter({
           body: "A hospital renegotiated its AI clinical documentation SLA before renewal. The original SLA: 99.5% uptime, 2-second response time, Tier 1 support response within 4 hours. The renegotiated SLA added: minimum accuracy of 88% on agreed clinical note sample (measured monthly), maximum hallucination rate of 0.5% on medication dosages (measured monthly), credit structure of 15% for accuracy breach and 8% for hallucination breach — larger than the 5% credit for uptime breach. The renegotiation reflected the hospital's actual risk profile: an inaccurate AI documentation tool that is always available is more dangerous than a temporarily unavailable tool.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Accuracy SLA: metrics, thresholds, and measurement",
       subtitle: "How to specify an enforceable accuracy SLA for an AI product",
@@ -106,6 +113,13 @@ export const chapter06BlSlaStandardsAiProducts = buildChapter({
           body: "A hospital's AI clinical documentation SLA included event-triggered accuracy measurement within 48 hours of any major model update. In month eight, the vendor pushed a model update and the 48-hour measurement found accuracy on specialist physician notes had dropped from 91% to 83% — below the 85% SLA threshold. The event-triggered measurement generated an automatic service credit and a 15-day remediation obligation. The remediation delivered a fix within 12 days. Without the event-triggered measurement, the degradation would have been detected at the next monthly review — 22 days later, with 22 additional days of degraded documentation quality.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

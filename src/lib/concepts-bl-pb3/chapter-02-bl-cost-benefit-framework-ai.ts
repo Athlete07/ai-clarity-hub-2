@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlCostBenefitFrameworkAi = buildChapter({
   slug: "bl-cost-benefit-framework-ai",
@@ -12,7 +12,7 @@ export const chapter02BlCostBenefitFrameworkAi = buildChapter({
     "A credible AI cost-benefit framework requires honest total cost of ownership — including change management, data preparation, and ongoing operations — balanced against rigorously categorised benefits with stated confidence levels. Leaders who build the full framework earn faster approvals and fewer post-deployment surprises.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "The full cost inventory for AI projects",
       subtitle: "Every cost category that belongs in the denominator — and why most business cases miss half of them",
@@ -58,8 +58,15 @@ export const chapter02BlCostBenefitFrameworkAi = buildChapter({
           body: "A consulting firm's AI document tool required 140 hours of senior partner time to validate the AI output quality during the first three months of deployment. At fully-loaded cost, this was £84K of senior capacity that was not in the business case. Opportunity cost — the time of skilled humans required to train, validate, and manage AI outputs — is a real project cost that belongs in the denominator.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "One-time vs recurring costs: building the multi-year model",
       subtitle: "How to correctly structure the cost timeline so the NPV calculation reflects reality",
@@ -105,6 +112,13 @@ export const chapter02BlCostBenefitFrameworkAi = buildChapter({
           body: "An AI diagnostic tool had a 28-month payback period — which looked unfavourable against a competitor software with a 14-month payback. The five-year NPV told a different story: the AI tool's compounding accuracy improvement generated 3.4× the competitor tool's NPV because it improved over time while the competitor tool was static. The NPV frame changed the investment decision.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

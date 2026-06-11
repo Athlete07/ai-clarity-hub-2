@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlBuildBuyPartner = buildChapter({
   slug: "bl-build-buy-partner",
@@ -13,7 +13,7 @@ export const chapter04BlBuildBuyPartner = buildChapter({
   pmCallout:
     "As a business leader: the build-buy-partner decision is a capital allocation decision, not a technology preference. Own the criteria, understand the cost structures, and make the call before the technology team makes it for you.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "The Three Paths Defined",
       subtitle: "What each option actually means in a 2026 enterprise AI context",
@@ -59,8 +59,15 @@ export const chapter04BlBuildBuyPartner = buildChapter({
           body: "An NHS trust needed AI clinical pathway support implemented within a regulatory-compliant framework. Neither pure build (no internal ML capability) nor pure buy (no off-the-shelf product met NHS-specific clinical governance requirements) was viable. A partnered approach with a healthcare AI specialist provided the clinical AI expertise and NHS regulatory knowledge that neither the trust's internal team nor a commercial vendor could supply independently.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-build-buy-partner",
+      type: "tree",
+      title: "Build vs Buy Decision",
+      caption:
+        "Data advantage and task shape determine build, buy, or partner — not engineering preference.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The True Cost of Building",
       subtitle: "What the internal build cost estimate is always missing",
@@ -106,6 +113,13 @@ export const chapter04BlBuildBuyPartner = buildChapter({
           body: "An insurer's proprietary AI pricing model was built by a team of three ML engineers over 18 months. Two engineers left for better-compensated roles within the following year. The remaining engineer and a new hire spent six months documenting and stabilising the system. When the regulator requested an explanation of a pricing anomaly, the team could not produce a clear answer — the model's logic had not been adequately documented during development. The regulatory inquiry cost £340K in consulting support.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

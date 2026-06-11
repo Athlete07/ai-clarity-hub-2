@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlHowModelsLearnForFunction = buildChapter({
   slug: "bl-how-models-learn-for-function",
@@ -106,7 +106,7 @@ export const chapter02BlHowModelsLearnForFunction = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.3",
       title: "Training Data is Destiny",
       subtitle: "Why the data the model learned from determines what your business can rely on it to do",
@@ -152,6 +152,13 @@ export const chapter02BlHowModelsLearnForFunction = buildChapter({
           body: "The FDA cleared dermatology AI tools trained predominantly on lighter skin tone images consistently underperform on darker skin tones — a training data representation failure with clinical consequences. Healthcare system leaders evaluating medical AI must require demographic performance breakdowns from vendors. Average accuracy is not sufficient evidence of safe deployment across your patient population.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-training-loop",
+      type: "flow",
+      title: "The Training Loop",
+      caption:
+        "Forward pass → loss → backpropagation → weight update. Understanding this loop explains why training is CapEx, not a feature toggle.",
     }),
     buildSection({
       number: "2.4",
@@ -200,7 +207,7 @@ export const chapter02BlHowModelsLearnForFunction = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.5",
       title: "Fine-Tuning — Making a General Model Specific",
       subtitle: "The practical mechanism behind most 'custom AI' offers — what it costs and what it delivers",
@@ -246,6 +253,13 @@ export const chapter02BlHowModelsLearnForFunction = buildChapter({
           body: "An NHS trust evaluated fine-tuning a general LLM on clinical coding data (ICD-10 assignment from discharge summaries). The base model had weak performance on clinical reasoning. Fine-tuning on 100,000 coded examples improved accuracy on common codes but did not solve failures on complex multi-morbidity cases. The trust concluded: a purpose-built clinical coding model (trained from domain-appropriate architecture, not fine-tuned from a general LLM) was required. Fine-tuning was the wrong tool for the depth of specialisation needed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-fitting-comparison",
+      type: "comparison",
+      title: "The Fitting Spectrum",
+      caption:
+        "Underfitting, optimal fit, and overfitting — why pilot accuracy does not guarantee production performance.",
     }),
     buildSection({
       number: "2.6",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlAiInMarketingGrowth = buildChapter({
   slug: "bl-ai-in-marketing-growth",
@@ -12,7 +12,7 @@ export const chapter03BlAiInMarketingGrowth = buildChapter({
     "AI in marketing creates value in three compounding areas: hyper-personalisation at scale, content production velocity, and predictive customer analytics. The CMO's governance task is ensuring AI amplifies brand differentiation rather than producing generic, algorithmically indistinguishable content.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The Marketing AI Landscape in 2026",
       subtitle: "What is transforming, what is hype, and where competitive advantage actually builds",
@@ -58,8 +58,15 @@ export const chapter03BlAiInMarketingGrowth = buildChapter({
           body: "Multiple brands deployed AI to scale blog content production, generating hundreds of articles per month. Initial traffic increases were followed by significant ranking declines when Google's algorithm updates devalued thin, AI-generated content. Recovery required removing or substantially rewriting thousands of articles. CMOs: AI content volume without quality governance produces short-term traffic and long-term brand and SEO damage.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "AI in Content Creation and Brand",
       subtitle: "Scaling content production without losing brand differentiation",
@@ -105,6 +112,13 @@ export const chapter03BlAiInMarketingGrowth = buildChapter({
           body: "A retail brand used AI image generation for a campaign featuring diverse models. The AI-generated images had demographic errors — inaccurate representation of skin tones, culturally inappropriate styling — that a human creative director would have caught. The campaign launched without adequate human review and generated significant negative social media coverage. Brand damage took six months to repair. The governance lesson: AI visual content requires human review by people with the lived expertise to identify representation errors that algorithmic generation misses.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

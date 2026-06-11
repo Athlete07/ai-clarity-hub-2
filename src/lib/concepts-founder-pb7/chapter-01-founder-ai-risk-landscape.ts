@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01FounderAiRiskLandscape = buildChapter({
   slug: "founder-ai-risk-landscape",
@@ -60,7 +60,7 @@ export const chapter01FounderAiRiskLandscape = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "How AI risk materialises for startups",
       subtitle: "The timeline of an AI incident — from model failure to press coverage to investor call",
@@ -106,6 +106,13 @@ export const chapter01FounderAiRiskLandscape = buildChapter({
           body: "A wellness app's AI chatbot gave eating-disorder-enabling advice to a teenager. Parents complained to regulators. FTC inquiry opened within three weeks. The founder's incident log — timestamped kill switch activation and user notification — became the difference between settlement and shutdown.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
     buildSection({
       number: "1.3",
@@ -154,7 +161,7 @@ export const chapter01FounderAiRiskLandscape = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.4",
       title: "The risk-reward calibration",
       subtitle: "Not avoiding AI risk — managing it proportionally to the potential harm",
@@ -200,6 +207,13 @@ export const chapter01FounderAiRiskLandscape = buildChapter({
           body: "A B2B SaaS founder added AI meeting summarisation for internal team use only. Harm surface: low — no external commitments, no regulated decisions. Mitigation: basic hallucination warnings and source citations. No conformity assessment needed. Calibration saved $200K in unnecessary compliance spend while focusing budget on the hiring AI feature that actually needed it.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-risk-governance",
+      type: "flow",
+      title: "AI Risk Governance Flow",
+      caption:
+        "Map use cases → classify risk tier → implement controls → monitor → report. Governance is a fundraising and enterprise sales requirement.",
     }),
     buildSection({
       number: "1.5",

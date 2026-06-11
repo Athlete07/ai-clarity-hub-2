@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter09BlAiTransformationMilestones = buildChapter({
@@ -13,7 +13,7 @@ export const chapter09BlAiTransformationMilestones = buildChapter({
     "Milestone-based AI transformation management replaces the two most common failure patterns: perpetual piloting (never leaving Stage 2) and premature scaling (moving to Stage 3 before Stage 2 milestones are met). The milestone framework creates the discipline to pause, assess, and commit — rather than the cultural pressure to appear to be moving fast.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "9.1",
       title: "Why milestone frameworks prevent transformation drift",
       subtitle: "How structured milestones create the discipline that prevents AI programmes from drifting indefinitely",
@@ -59,8 +59,15 @@ export const chapter09BlAiTransformationMilestones = buildChapter({
           body: "A hospital was about to approve a $1.8M scale of its AI patient deterioration early warning programme. A prospective milestone exercise — 'what criteria would this programme need to meet to justify this investment?' — revealed that the pilot had not yet demonstrated a reduction in rapid response team calls (the intended business outcome). The pilot had shown model accuracy and nursing adoption but not the downstream patient safety outcome. The scale decision was deferred for 60 days while the pilot collected deterioration outcome data. The data confirmed a 19% reduction in rapid response calls. The scale decision was made confidently. The 60-day deferral had converted a large investment from a hope into an evidence-based commitment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "9.2",
       title: "The five stages of enterprise AI transformation",
       subtitle: "An overview of the transformation progression from readiness to competitive differentiation",
@@ -106,6 +113,13 @@ export const chapter09BlAiTransformationMilestones = buildChapter({
           body: "A technology company achieved efficient AI operations (Stage 4) but struggled to differentiate competitively (Stage 5). An analysis revealed that their AI capability was built on general-purpose AI tools with no proprietary data advantage — any competitor could replicate the capability in 6 months. Stage 5 differentiation required combining their AI capability with their proprietary usage data — patterns of how their customers used the product that no competitor had access to. The Stage 5 programme was redesigned around AI models trained on proprietary usage data, creating differentiation that was demonstrably harder to replicate.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "9.3",

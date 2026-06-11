@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter02AiValuationPremium = buildChapter({
   slug: "founder-ai-valuation-premium",
@@ -13,7 +13,7 @@ export const chapter02AiValuationPremium = buildChapter({
   pmCallout:
     "As a founder: run the premium scorecard before you name a valuation. If you cannot credibly claim all four justification factors, you are pitching SaaS multiples — and should price the round accordingly to avoid a down round later.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "What the AI premium actually is",
       subtitle: "The additional multiple investors assign to companies with credible AI-native architectures",
@@ -59,6 +59,13 @@ export const chapter02AiValuationPremium = buildChapter({
           body: "An enterprise AI company maintained premium multiples at $20M ARR only after proving 70%+ gross margin through model routing and caching. Investors kept the premium because AI improved unit economics. Without margin proof, growth AI companies trade like expensive services businesses.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-vc-diligence-stack",
+      type: "flow",
+      title: "Investor Diligence Stack",
+      caption:
+        "Team → data moat → unit economics → timing → risk. The five lenses on every AI term sheet.",
     }),
     buildSection({
       number: "2.2",
@@ -107,7 +114,7 @@ export const chapter02AiValuationPremium = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.3",
       title: "What does not justify the premium",
       subtitle: "Using GPT-4 via API, adding an AI chatbot to a SaaS product, calling yourself AI-first",
@@ -153,6 +160,13 @@ export const chapter02AiValuationPremium = buildChapter({
           body: "A founder reframed from 'AI-native fraud detection' to 'AI-powered workflow with growing proprietary label corpus.' The honest tier set expectations at 15x ARR instead of 30x. The round closed quickly. Series A metrics later earned the premium they initially skipped.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-funding-valuation",
+      type: "comparison",
+      title: "AI Premium vs AI Discount",
+      caption:
+        "Compounding data loops earn premium multiples; API wrappers with negative unit economics trade at a discount.",
     }),
     buildSection({
       number: "2.4",

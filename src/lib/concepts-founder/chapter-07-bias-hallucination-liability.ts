@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter07BiasHallucinationLiability = buildChapter({
   slug: "founder-bias-hallucination-liability",
@@ -13,7 +13,7 @@ export const chapter07BiasHallucinationLiability = buildChapter({
   pmCallout:
     "As a founder: stop treating bias and hallucination as engineering bugs on a backlog. They are existential risks that belong in your board deck, your data room, and your first legal counsel call — not in a post-launch retro.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "What is model bias",
       subtitle: "Systematic performance gaps across groups — the risk hiding inside your accuracy slide",
@@ -67,6 +67,13 @@ export const chapter07BiasHallucinationLiability = buildChapter({
           body: "A viral video showed an airport soap dispenser working for lighter skin but not darker skin. The infrared sensor was calibrated on limited skin-tone data. Founders learned bias lives in sensors, rules, and models alike — anything not tested across diverse populations.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
     buildSection({
       number: "7.2",
@@ -123,7 +130,7 @@ export const chapter07BiasHallucinationLiability = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.3",
       title: "Types of bias to know",
       subtitle: "Representation, measurement, aggregation, deployment — each needs a different fix and budget",
@@ -177,6 +184,13 @@ export const chapter07BiasHallucinationLiability = buildChapter({
           body: "A pneumonia detector trained on high-resolution urban hospital X-rays failed completely at rural clinics with older equipment. The model was fair in its training context and useless in deployment context. The founder pivoted to a hardware-agnostic partnership model instead of direct SaaS deployment.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-risk-governance",
+      type: "flow",
+      title: "AI Risk Management Flow",
+      caption:
+        "Inventory use cases, classify risk, implement controls, monitor incidents — the founder's minimum viable governance path.",
     }),
     buildSection({
       number: "7.4",

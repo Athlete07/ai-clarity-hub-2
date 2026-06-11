@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter04BlAiAuditExplainability = buildChapter({
   slug: "bl-ai-audit-explainability",
@@ -12,7 +12,7 @@ export const chapter04BlAiAuditExplainability = buildChapter({
     "Explainability is not a technical nice-to-have — it is a legal requirement for AI systems making consequential decisions about individuals, and a prerequisite for meaningful human oversight. Business leaders who deploy unexplainable AI in high-stakes contexts own the liability for decisions they cannot audit, review, or defend.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "4.1",
       title: "What Explainability Means for Business Leaders",
       subtitle: "The difference between interpretable AI and explainability tools — and why only one satisfies regulatory requirements",
@@ -58,8 +58,15 @@ export const chapter04BlAiAuditExplainability = buildChapter({
           body: "Goldman Sachs' Marcus personal loans platform implemented SHAP attribution for credit decisions and discovered during internal audit that a proxy variable (geographic postcode) was contributing disproportionately to scores in specific markets — a bias signal that aggregate performance metrics had not detected. The explainability layer revealed a model quality issue that was then remediated. This illustrates the model auditing value of explainability tools beyond regulatory compliance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "4.2",
       title: "The Legal Explainability Requirements",
       subtitle: "GDPR, EU AI Act, and sector-specific laws — what each requires and where the obligations overlap",
@@ -105,6 +112,13 @@ export const chapter04BlAiAuditExplainability = buildChapter({
           body: "The European Banking Authority's guidelines on AI in banking require institutions to maintain explainability for AI models used in credit risk assessment, regardless of whether individual customers request explanations. Supervisors conducting model risk management reviews expect to receive explanations of how AI models reach their outputs, including in stress scenarios. Banks using black-box AI in credit risk models face supervisory scrutiny on explainability — not just at the point of customer interaction.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "4.3",

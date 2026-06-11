@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01FounderInfrastructureCostCurves = buildChapter({
   slug: "founder-infrastructure-cost-curves",
@@ -107,7 +107,7 @@ export const chapter01FounderInfrastructureCostCurves = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "The three cost levers at scale",
       subtitle: "Model selection, prompt compression, and caching — the toolkit before you renegotiate contracts",
@@ -153,6 +153,13 @@ export const chapter01FounderInfrastructureCostCurves = buildChapter({
           body: "A developer-docs assistant cached answers to semantically similar questions with 24-hour TTL. Cache hit rate reached 34% at scale, cutting effective cost per query by nearly a third. Accuracy tradeoffs were documented and monitored. Caching was a product feature with a cost SLA.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Infrastructure Cost Inflection Points",
+      caption:
+        "API defaults work at 1K users; routing and caching become mandatory at 100K. Model your cost curve at each order of magnitude.",
     }),
     buildSection({
       number: "1.4",
@@ -201,7 +208,7 @@ export const chapter01FounderInfrastructureCostCurves = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.5",
       title: "Caching strategies for AI products",
       subtitle: "What to cache, how long to cache it, and the accuracy tradeoffs",
@@ -247,6 +254,13 @@ export const chapter01FounderInfrastructureCostCurves = buildChapter({
           body: "A knowledge-base AI cached document embeddings and only recomputed on document change. Ingestion cost dropped 80% for a corpus with frequent reads and infrequent writes. Query latency improved 200ms. The founder presented embedding cache strategy in the Series A deck as margin infrastructure.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch8-cost-latency-frontier",
+      type: "comparison",
+      title: "Cost-Latency-Quality Trade-offs at Scale",
+      caption:
+        "Different request types belong at different points on the frontier. Routing is a margin strategy, not just an engineering optimisation.",
     }),
     buildSection({
       number: "1.6",

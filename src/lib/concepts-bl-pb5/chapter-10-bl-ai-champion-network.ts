@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter10BlAiChampionNetwork = buildChapter({
   slug: "bl-ai-champion-network",
@@ -12,7 +12,7 @@ export const chapter10BlAiChampionNetwork = buildChapter({
     "An AI champion network is not a volunteer enthusiasm programme — it is a formal, resourced capability that requires named role accountability, explicit time allocation, structured enablement, and regular governance. Champion networks that lack any of these four elements consistently burn out or drift from purpose within 6–12 months. Networks that have all four consistently sustain AI adoption above the organisational average for 3 years or more.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "10.1",
       title: "What an AI champion network is and why it works",
       subtitle: "The mechanism that makes peer influence a deliberate adoption strategy",
@@ -58,8 +58,15 @@ export const chapter10BlAiChampionNetwork = buildChapter({
           body: "A retailer compared two regions: Region A had an organic enthusiasm model (no formal champion designation, supporters helped informally). Region B had a structured champion network (12 champions, named roles, 20% time allocation, monthly champion meetings). At 12 months: Region A adoption 41%, Region B adoption 68%. The organic supporters in Region A had reduced their informal support activity by month 6 because there was no structure to sustain it. The structured champions in Region B maintained consistent activity because they had formal role accountability.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "10.2",
       title: "Identifying and recruiting AI champions",
       subtitle: "Who to look for and how to approach potential champions",
@@ -105,6 +112,13 @@ export const chapter10BlAiChampionNetwork = buildChapter({
           body: "A hospital trust used three identification sources for 24 clinical champion candidates: ward manager nominations (8 candidates), peer survey asking 'who would you ask for help with a new clinical tool?' (14 candidates, 7 not already nominated by managers), and capability island mapping from the training data (6 candidates, 4 not in either previous source). The 6 additional candidates from capability mapping included 2 of the most effective champions in the network — identified because they were already performing champion behaviours informally, not because anyone had thought to nominate them.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "10.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01FounderBuildBuyPartnerFramework = buildChapter({
   slug: "founder-build-buy-partner-framework",
@@ -13,7 +13,7 @@ export const chapter01FounderBuildBuyPartnerFramework = buildChapter({
   pmCallout:
     "As a founder: never let 'we'll use GPT' or 'we'll train our own model' be the first sentence in your strategy deck. Start with what must be differentiated, what data you own, what happens if the vendor doubles price, and which path you can undo in ninety days.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "1.1",
       title: "What build vs buy actually means in an AI context",
       subtitle: "Training your own model vs fine-tuning vs API vs white-label vs acqui-hire",
@@ -59,6 +59,13 @@ export const chapter01FounderBuildBuyPartnerFramework = buildChapter({
           body: "Seed startup needed production ML in six months; hiring market was brutal. Acqui-hired a three-person team with a working fraud classifier and labelled dataset. Cost: $1.2M vs 18 months of failed recruiting. Partner/acqui-hire bought time the build path could not afford.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-build-buy-partner",
+      type: "tree",
+      title: "Build vs Buy Decision",
+      caption:
+        "Data advantage and task shape determine build, buy, or partner — not engineering preference.",
     }),
     buildSection({
       number: "1.2",
@@ -107,7 +114,7 @@ export const chapter01FounderBuildBuyPartnerFramework = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "When building is the right answer",
       subtitle: "The conditions under which custom model development is worth the cost and risk",
@@ -153,6 +160,13 @@ export const chapter01FounderBuildBuyPartnerFramework = buildChapter({
           body: "At 2B classifications monthly, API quote exceeded $2M/year. Distilled in-house model projected $400K/year at 96% vs 97% accuracy. Founder accepted 1pp trade for margin survival — build won on spreadsheet, not ideology.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-build-buy-partner",
+      type: "tree",
+      title: "Build vs Buy vs Partner Decision Tree",
+      caption:
+        "Proprietary data advantage and task shape determine whether you build, buy APIs, or partner — not engineering preference.",
     }),
     buildSection({
       number: "1.4",

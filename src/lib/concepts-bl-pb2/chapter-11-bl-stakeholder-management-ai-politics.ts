@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter11BlStakeholderManagementAiPolitics = buildChapter({
   slug: "bl-stakeholder-management-ai-politics",
@@ -13,7 +13,7 @@ export const chapter11BlStakeholderManagementAiPolitics = buildChapter({
   pmCallout:
     "As a business leader: political capital for AI investment is earned through credibility, trust, and track record — and spent on the decisions that matter most. Manage it deliberately, spend it strategically, and replenish it continuously through transparent governance and delivered commitments.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "11.1",
       title: "Why AI Investment Is Inherently Political",
       subtitle: "Understanding the political dynamics before trying to navigate them",
@@ -59,8 +59,15 @@ export const chapter11BlStakeholderManagementAiPolitics = buildChapter({
           body: "A manufacturer's AI quality programme had two narratives: the board narrative ('AI will reduce quality rejection rates by 35%, contributing £3.2M in annual cost reduction') and the production floor narrative ('AI will help quality engineers focus on the complex cases where their expertise makes the biggest difference — the system handles the routine checks so you can focus on the quality challenges that matter'). Both narratives were true. The board narrative would have produced fear on the production floor ('AI is replacing us'); the floor narrative would have been unimpressive to the board ('AI helps engineers focus'). Both audiences received the narrative calibrated for their decision-making context.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "11.2",
       title: "Building the Stakeholder Map",
       subtitle: "Knowing who has influence over your AI programme before the critical vote",
@@ -106,6 +113,13 @@ export const chapter11BlStakeholderManagementAiPolitics = buildChapter({
           body: "A manufacturer's AI quality control programme manager believed the production supervisors were supportive based on a town hall where questions were positive. Direct one-on-one conversations with eight supervisors revealed: three were actively concerned that AI would reduce their authority over quality decisions (they had not said this publicly); two were worried about job security for their teams; three were genuinely supportive. The opposition — invisible in the town hall — was visible in the one-on-ones. The change management programme was redesigned to address the specific concerns before deployment, rather than discovering them post-deployment when they would manifest as adoption resistance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "11.3",

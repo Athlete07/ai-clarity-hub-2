@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter03BlCommunicatingAiHonestly = buildChapter({
@@ -13,7 +13,7 @@ export const chapter03BlCommunicatingAiHonestly = buildChapter({
     "The most effective AI communication is specific, honest about uncertainty, differentiated by audience, and consistent in cadence. Leaders who communicate AI progress with specific examples perform better on adoption metrics than leaders who communicate with general enthusiasm. Leaders who acknowledge uncertainty honestly build more durable trust than leaders who project false confidence.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The cost of AI overcommunication and undercommunication",
       subtitle: "Why both extremes of the communication spectrum damage AI programme trust",
@@ -59,8 +59,15 @@ export const chapter03BlCommunicatingAiHonestly = buildChapter({
           body: "A bank established a monthly AI Progress Update — a 500-word internal newsletter published on the first Monday of every month from day one of the programme. Each update included: what we deployed this month, what we measured, what is working, what is not working yet, and what is coming next month. The update was honest in month two ('deployment was delayed by data readiness issues we are resolving') and month five ('adoption in the compliance team is below target and here is what we are doing about it'). At programme month 12, employee trust in AI programme communications scored 4.1 out of 5 — higher than trust in the bank's standard communications (3.4).",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Structuring the initial AI announcement",
       subtitle: "What to include, what to leave out, and how to calibrate tone for maximum trust",
@@ -106,6 +113,13 @@ export const chapter03BlCommunicatingAiHonestly = buildChapter({
           body: "A bank's CEO delivered the initial AI announcement at a 90-minute all-hands with live Q&A. The CEO included a personal story about their own experience trying AI tools over the prior six months — what worked, what surprised them, what confused them. The personal story, which was unscripted and included acknowledgements of uncertainty, was cited by 67% of employees in the post-event survey as the most memorable and trust-building element of the session. The corporate slides were secondary. The human authenticity was primary.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

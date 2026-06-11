@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlAiStrategyBoardPresentation = buildChapter({
   slug: "bl-ai-strategy-board-presentation",
@@ -13,7 +13,7 @@ export const chapter08BlAiStrategyBoardPresentation = buildChapter({
   pmCallout:
     "As a business leader: the board presentation is your accountability moment. You are asking for sustained investment on the basis of your judgment about strategic priorities. Present with the specificity you would want if you were on the other side of the table.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "What the Board Actually Wants",
       subtitle: "Understanding the fiduciary lens before designing the presentation",
@@ -59,8 +59,15 @@ export const chapter08BlAiStrategyBoardPresentation = buildChapter({
           body: "A bank's AI fraud detection board presentation included a specific risk: 'Vendor API changes could require an integration rebuild at estimated cost of £280K. We have a contract clause that provides 90-day notice; we have allocated a contingency reserve of £350K.' Twelve months later, the vendor API changed and the integration rebuild was required. The board was informed; the £280K cost was drawn from the contingency reserve. No confidence was lost. The risk had been disclosed, quantified, and provisioned.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-data-moat-layers",
+      type: "nested",
+      title: "Strategic Moat Layers",
+      caption:
+        "Distribution → proprietary data → model advantage. Strategy lives in the data loop.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Presentation Structure",
       subtitle: "The sequence that earns approval from the first slide",
@@ -106,6 +113,13 @@ export const chapter08BlAiStrategyBoardPresentation = buildChapter({
           body: "A retailer's AI presentation ended with: 'We are seeking board support for our AI programme.' The board agreed 'in principle'. Over the following two months, the CDO and CFO had three disagreements about what 'in principle' meant for budget release. The next annual AI presentation ended with: 'We are requesting approval of a £3.2M three-year investment envelope, with year-one budget of £980K releasing today on this approval, and year-two and year-three tranches releasing on confirmation of the milestone conditions in Appendix B.' Zero post-approval ambiguity.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

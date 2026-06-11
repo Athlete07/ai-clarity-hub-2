@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlThirdPartyAiRisk = buildChapter({
   slug: "bl-third-party-ai-risk",
@@ -12,7 +12,7 @@ export const chapter07BlThirdPartyAiRisk = buildChapter({
     "Third-party AI risk has four dimensions: vendor compliance (are they meeting regulatory obligations on your behalf), concentration risk (how dependent is your operation on a single AI provider), supply chain risk (what AI is in the tools your vendors use), and contractual risk (does your contract protect you when the AI fails). All four require active management.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "Why Third-Party AI Risk Is Different",
       subtitle: "The specific risks that arise when AI capabilities are provided by external parties — and why standard vendor risk management misses them",
@@ -58,8 +58,15 @@ export const chapter07BlThirdPartyAiRisk = buildChapter({
           body: "A UK wealth management firm deployed a third-party AI model for client portfolio recommendations. The vendor's model was a black-box API — the firm received recommendation outputs without explanation of the contributing factors. An FCA Consumer Duty review found the firm could not demonstrate it understood how recommendations were generated or that they were in clients' interests. The firm was required to either obtain explainability documentation from the vendor or switch to an interpretable model. Vendor opacity is a regulatory risk for the deploying firm, not just a technical inconvenience.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "Third-Party AI Due Diligence",
       subtitle: "The seven due diligence questions that every AI vendor procurement requires — before contract signature",
@@ -105,6 +112,13 @@ export const chapter07BlThirdPartyAiRisk = buildChapter({
           body: "A professional services firm's legal team identified that its AI document management vendor's standard contract granted the vendor a perpetual licence to all interaction data, with no data export functionality. If the firm wanted to switch vendors, five years of AI-processed document metadata would remain with the vendor. Renegotiation achieved: (1) data export functionality within 30 days of request; (2) prohibition on vendor retaining data after contract termination; (3) no vendor right to train its general model on the firm's documents. The negotiation took three weeks — significantly less time than being locked into a vendor relationship with no practical exit.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

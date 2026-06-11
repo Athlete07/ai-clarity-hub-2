@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05FounderAiGovernanceFramework = buildChapter({
   slug: "founder-ai-governance-framework",
@@ -60,7 +60,7 @@ export const chapter05FounderAiGovernanceFramework = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "The minimum viable governance stack for a startup",
       subtitle: "The four components you need before you have a dedicated legal and compliance team",
@@ -106,8 +106,15 @@ export const chapter05FounderAiGovernanceFramework = buildChapter({
           body: "A founder ran a tabletop exercise: AI feature produces harmful output at scale. Team practised kill switch activation, user notification, and counsel call. Real incident two months later: kill switch activated in 4 minutes, users notified in 30 minutes. Drill made response reflexive.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "Minimum Viable AI Governance",
+      caption:
+        "Inventory → risk tier → minimum controls. Start here before building a 200-page policy nobody reads.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.3",
       title: "Red-teaming your own AI product",
       subtitle: "How to find failure modes before your users, the press, or regulators find them",
@@ -153,6 +160,13 @@ export const chapter05FounderAiGovernanceFramework = buildChapter({
           body: "A fintech AI company converted red-team findings into 200 automated regression tests run before every deploy. Model update in month six reintroduced a jailbreak — regression suite caught it in CI. Continuous red-team-as-code prevented regression.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-governance-mvg",
+      type: "nested",
+      title: "AI Governance Framework",
+      caption:
+        "Inventory → risk tier → minimum controls. The governance path regulators and boards expect.",
     }),
     buildSection({
       number: "5.4",

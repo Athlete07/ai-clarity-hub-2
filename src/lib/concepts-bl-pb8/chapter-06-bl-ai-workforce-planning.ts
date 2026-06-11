@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 import { BL_CALLOUT } from "../concepts-bl-helpers";
 
 export const chapter06BlAiWorkforcePlanning = buildChapter({
@@ -13,7 +13,7 @@ export const chapter06BlAiWorkforcePlanning = buildChapter({
     "AI workforce planning requires four strategic choices: which capabilities to build internally versus acquire externally, how to reskill versus redeploy versus restructure, what AI fluency baseline the entire organisation needs, and how to manage workforce transitions humanely. Leaders who make these choices proactively build resilient organisations. Leaders who make them reactively manage workforce crises.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "The strategic workforce planning imperative",
       subtitle: "Why AI workforce planning must run as a parallel programme to AI deployment — not a response to it",
@@ -59,8 +59,15 @@ export const chapter06BlAiWorkforcePlanning = buildChapter({
           body: "A hospital system that owned its AI workforce plan at the leadership team level secured three times more retraining budget than a peer system that had delegated its plan to HR. The difference was not in the quality of the plans — both were technically competent. The difference was in the advocacy: when the CEO, CMO, and CHRO co-presented the workforce plan to the board, the investment case was strategic. When the HR Director presented it alone, it was an operational budget request. Leadership ownership changed the nature of the investment conversation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "Skills inventory for an AI-augmented organisation",
       subtitle: "How to map what you have, identify what you need, and close the gap strategically",
@@ -106,6 +113,13 @@ export const chapter06BlAiWorkforcePlanning = buildChapter({
           body: "A retailer tracked skills quarterly for its AI supply chain analyst roles. The Q3 tracking identified that three of its seven analysts had not kept pace with updates to the AI platform's advanced analytics module — a skills gap that had opened in the prior quarter following a platform upgrade. Targeted development for the three analysts in Q4 prevented the gap from widening into a performance gap. An annual inventory would not have identified the gap until it had already affected operations.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",

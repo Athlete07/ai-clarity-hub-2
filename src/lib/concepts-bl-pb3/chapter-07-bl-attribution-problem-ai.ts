@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter07BlAttributionProblemAi = buildChapter({
   slug: "bl-attribution-problem-ai",
@@ -12,7 +12,7 @@ export const chapter07BlAttributionProblemAi = buildChapter({
     "Perfect attribution is impossible in most real-world AI deployments. Credible attribution — with stated methodology, honest confidence intervals, and transparent assumptions — is achievable and sufficient for decision-making. Leaders who demand perfect attribution delay decisions indefinitely; leaders who accept credible attribution make better investments faster.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "7.1",
       title: "Why attribution is the hardest AI ROI problem",
       subtitle: "The three structural reasons AI attribution is harder than standard investment evaluation",
@@ -58,8 +58,15 @@ export const chapter07BlAttributionProblemAi = buildChapter({
           body: "A consulting firm's AI proposal tool reduced proposal preparation time (direct attribution: measurable). It also changed how partners reviewed client opportunities — because AI insights made opportunities more comparable, partners began applying a more rigorous qualification process that reduced bids on marginal opportunities. Win rate improved beyond the tool's direct contribution. The behavioural change was documented as an additional attribution category: 'AI-induced qualification improvement' — estimated separately from the direct productivity saving.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "7.2",
       title: "Types of attribution challenges",
       subtitle: "Five attribution challenge patterns — and the diagnostic questions that identify each",
@@ -105,6 +112,13 @@ export const chapter07BlAttributionProblemAi = buildChapter({
           body: "A bank's AI analysis tool was used daily by 30% of analysts and occasionally by 50%. High-usage analysts showed 28% faster client report production; low-usage analysts showed 6% improvement. The attribution was exposure-dose based: 'AI contributes 28% improvement in highly adopted use cases; system-wide improvement depends on adoption distribution.' The dose-response attribution was presented to the investment committee as evidence that increasing adoption was the primary value lever — generating a change management investment decision.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "7.3",

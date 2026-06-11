@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter08BlAiLandscapeVendorStructure = buildChapter({
   slug: "bl-ai-landscape-vendor-structure",
@@ -12,7 +12,7 @@ export const chapter08BlAiLandscapeVendorStructure = buildChapter({
     "The AI vendor landscape has three layers: foundation model providers, cloud AI platforms, and application vendors. Your risk is concentrated differently at each layer. Understanding where your AI value chain is exposed — to pricing changes, vendor failure, or model deprecation — is the buyer's primary protection.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "The AI Value Chain",
       subtitle: "How AI capability flows from research labs to your operations — and where value is captured at each layer",
@@ -58,8 +58,15 @@ export const chapter08BlAiLandscapeVendorStructure = buildChapter({
           body: "Microsoft Azure integrates OpenAI's foundation models directly into its cloud platform, making GPT-4 and GPT-4o available through Azure API alongside Azure's existing enterprise tooling, security, and compliance infrastructure. For enterprise buyers, this creates a compelling bundle — but also deepens Azure cloud dependency. Procurement leaders evaluating Azure OpenAI should model the exit cost from the bundle, not just the entry price.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Foundation Model Providers",
       subtitle: "The companies whose models underlie most enterprise AI — and what their business models mean for buyers",
@@ -105,6 +112,13 @@ export const chapter08BlAiLandscapeVendorStructure = buildChapter({
           body: "OpenAI's deprecation of GPT-3.5 API access in 2024 required all GPT-3.5-dependent applications to migrate to newer models. Migration costs included: re-evaluation of performance on the new model (different behaviours required prompt redesign), regression testing across all use cases, and in some cases, significant re-engineering of application logic. Enterprise buyers who had not included deprecation provisions in their vendor contracts received insufficient notice for budget planning. The incident is the reference case for deprecation clause negotiation.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch8-cost-latency-frontier",
+      type: "comparison",
+      title: "Model Tier Trade-offs",
+      caption:
+        "Frontier, mid-tier, and small models sit on a cost-latency-quality curve. Procurement should match tier to use case, not default to largest.",
     }),
     buildSection({
       number: "8.3",

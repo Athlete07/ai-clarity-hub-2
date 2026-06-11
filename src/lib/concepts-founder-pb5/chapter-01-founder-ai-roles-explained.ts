@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter01FounderAiRolesExplained = buildChapter({
   slug: "founder-ai-roles-explained",
@@ -13,7 +13,7 @@ export const chapter01FounderAiRolesExplained = buildChapter({
   pmCallout:
     "As a founder: you cannot hire AI talent intelligently until you can explain what each role builds and where it sits. Confusing ML Engineer with AI Engineer costs you six months and $200K in misallocated salary.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "1.1",
       title: "ML Engineer vs AI Engineer vs Data Scientist",
       subtitle: "Three different roles, three different skill sets, three different places in your org",
@@ -59,6 +59,13 @@ export const chapter01FounderAiRolesExplained = buildChapter({
           body: "A health-tech founder hired a 'Senior AI Engineer' who was actually a computer vision researcher with no LLM or MLOps experience. Six months later they still had no production pipeline. Reframing the role as 'AI Engineer — RAG and evals' and re-hiring cut time-to-demo from six months to six weeks.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-ai-roles-map",
+      type: "comparison",
+      title: "ML Engineer vs AI Engineer vs Data Scientist",
+      caption:
+        "Three roles, three skill sets, three budgets. Role clarity is the first filter in a brutal AI talent market.",
     }),
     buildSection({
       number: "1.2",
@@ -248,7 +255,7 @@ export const chapter01FounderAiRolesExplained = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.6",
       title: "AI Research Scientist — only for late-stage companies",
       subtitle: "Why hiring a researcher before Series B is almost always the wrong allocation",
@@ -294,6 +301,13 @@ export const chapter01FounderAiRolesExplained = buildChapter({
           body: "Adept's bet was novel agent architectures — genuinely research-heavy. They raised accordingly and hired researchers early. The counter-example proves the rule: research hires require research-stage capital and timeline. Seed founders are rarely here.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Hiring Sequence by Stage",
+      caption:
+        "Define your bet → hire the right first role → prove the loop → specialise. Hire for today's problem, not Series B's org chart.",
     }),
     buildSection({
       number: "1.7",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter05AiCulture = buildChapter({
   slug: "founder-ai-culture",
@@ -60,7 +60,7 @@ export const chapter05AiCulture = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Experimentation as a core operating principle",
       subtitle: "Why AI-native companies ship experiments, not features, and what that means for your process",
@@ -106,8 +106,15 @@ export const chapter05AiCulture = buildChapter({
           body: "Single launch of new model without canary; CSAT crashed 48 hours. Culture changed to mandatory experiment gate — CEO enforced in product review.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "Building AI Culture",
+      caption:
+        "Sponsor → communicate honestly → train → empower champions → measure adoption. Culture is how strategy becomes behaviour.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.3",
       title: "Failure tolerance in AI development",
       subtitle: "Why 80% of AI experiments fail and how to build an org that is okay with that",
@@ -153,6 +160,13 @@ export const chapter05AiCulture = buildChapter({
           body: "Amazon's experiment culture extends to AI teams at scale. Founders at seed can copy mechanism: written kill criteria before experiment starts.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch2-data-flywheel",
+      type: "flow",
+      title: "The Data Flywheel",
+      caption:
+        "Usage → signal → better model → better product → more usage.",
     }),
     buildSection({
       number: "5.4",

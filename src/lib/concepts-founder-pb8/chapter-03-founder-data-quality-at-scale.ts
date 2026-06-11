@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03FounderDataQualityAtScale = buildChapter({
   slug: "founder-data-quality-at-scale",
@@ -13,7 +13,7 @@ export const chapter03FounderDataQualityAtScale = buildChapter({
   pmCallout:
     "As a founder: your feedback loop is only as honest as your data pipeline. Before you celebrate model improvement, ask whether training data still represents the users you serve today — not the users you had six months ago.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Why data quality degrades as you scale",
       subtitle: "More users means more edge cases, more adversarial inputs, and more distribution drift",
@@ -59,8 +59,15 @@ export const chapter03FounderDataQualityAtScale = buildChapter({
           body: "A shopping-assistant AI trained on click-through signal learned to recommend sensational products users clicked but did not buy. Conversion fell while engagement rose. The feedback loop optimised the wrong objective. Explicit outcome labels were required.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-scaling-inflection",
+      type: "flow",
+      title: "Scaling Inflection Points",
+      caption:
+        "Cost and architecture choices compound at each order-of-magnitude in usage.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Training data contamination",
       subtitle: "When bad user data enters your training pipeline and silently degrades your model",
@@ -106,6 +113,13 @@ export const chapter03FounderDataQualityAtScale = buildChapter({
           body: "A contaminated batch slipped through automated checks. The team rolled back to dataset v2.3, retrained in 48 hours, and deployed. Without versioning, they would have manually reconstructed six weeks of curation. Versioning is insurance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

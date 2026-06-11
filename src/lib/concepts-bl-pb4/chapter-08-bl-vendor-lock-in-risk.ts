@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter08BlVendorLockInRisk = buildChapter({
   slug: "bl-vendor-lock-in-risk",
@@ -13,7 +13,7 @@ export const chapter08BlVendorLockInRisk = buildChapter({
   pmCallout:
     "As a business leader: vendor lock-in is not a technical risk — it is a strategic risk. A vendor who knows you cannot exit without significant cost behaves differently than a vendor who knows you can switch in 90 days. Portability provisions are not exit planning — they are negotiating leverage instruments that change vendor behaviour throughout the contract term.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "8.1",
       title: "The four levels of AI vendor lock-in",
       subtitle: "Data, model, workflow, and infrastructure lock-in — how each operates and compounds",
@@ -59,8 +59,15 @@ export const chapter08BlVendorLockInRisk = buildChapter({
           body: "A retailer discovered their infrastructure lock-in when evaluating a vendor change after 22 months of AI demand forecasting deployment. Their IT team had built six downstream systems that consumed the AI vendor's specific JSON output format — including field names, confidence score structure, and output hierarchy — that were unique to that vendor's API. Switching vendors would require re-engineering all six downstream systems, estimated at 9 months and $420,000. No alternative vendor's output format was compatible with their existing downstream architecture. The dependency had never been documented; the exit cost was discovered when the exit was needed.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Assessing lock-in risk before contract signature",
       subtitle: "A structured framework for quantifying exit costs before committing to an AI vendor",
@@ -106,6 +113,13 @@ export const chapter08BlVendorLockInRisk = buildChapter({
           body: "A retailer modelled the worst-case scenario for an AI personalisation vendor: the vendor delivers 40% of projected revenue lift (the AI underperforms its pilot benchmark in production) and the retailer needs to exit at month 18. Data lock-in score: 1. Model lock-in: 3 (proprietary recommendation model with no export). Workflow lock-in: 2. Infrastructure lock-in: 2. Exit cost at 18 months: $380,000. 18-month value at 40% performance: $190,000. Worst-case exit at month 18 would cost $190,000 more than the value received. This finding led the retailer to negotiate a model portability clause and a performance-linked termination right before signature — changing the worst-case scenario from a $190,000 net loss to a $40,000 net loss.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "8.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, sectionWithDiagram, s, x } from "../concepts-pb4-helpers";
 
 export const chapter05BlContractTermsAiLeaders = buildChapter({
   slug: "bl-contract-terms-ai-leaders",
@@ -13,7 +13,7 @@ export const chapter05BlContractTermsAiLeaders = buildChapter({
   pmCallout:
     "As a business leader: every AI contract term you accept without reading is a risk you have agreed to absorb. The vendor's standard terms are optimised for the vendor's interests. Your job in contract negotiation is to identify the terms where your interests and the vendor's interests diverge — and close the gap before signature.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Why AI contracts are different from software contracts",
       subtitle: "The five structural differences between software and AI contracts that require new negotiating skills",
@@ -59,8 +59,15 @@ export const chapter05BlContractTermsAiLeaders = buildChapter({
           body: "A law firm deployed AI contract review and a junior associate relied on the AI's identification of 'all change-of-control provisions' in a target company's contracts. The AI missed two provisions — a systematic failure for non-standard clause formats. The client suffered a transaction consequence. The firm reviewed their AI contract: it contained no output liability clause. The vendor's terms disclaimed all liability for AI output accuracy. The firm had no contractual basis for a claim against the vendor. An output liability clause allocating a portion of consequential damages to the vendor — capped at a negotiated amount — would have provided both a claim basis and a vendor incentive to maintain accuracy.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Model performance warranty and accuracy thresholds",
       subtitle: "How to write an AI performance warranty that creates enforceable obligations",
@@ -106,6 +113,13 @@ export const chapter05BlContractTermsAiLeaders = buildChapter({
           body: "A retailer's AI demand forecasting contract included a two-tier remedy. In month 14, MAPE exceeded the threshold for two consecutive months (service credits of 10% applied). In month 19, MAPE exceeded the minimum floor threshold for three consecutive months. The retailer issued a termination notice under the minimum floor clause. The vendor's accelerated remediation addressed the model issue, and the retailer accepted a contractual cure provision — extending the minimum floor cure period to six months with enhanced monitoring. The two-tier structure created a credible threat of termination that produced a remediation commitment the service credit tier alone would not have generated.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

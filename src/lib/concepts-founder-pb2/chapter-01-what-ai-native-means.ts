@@ -1,5 +1,5 @@
 import type { ConceptBodyBlock } from "../concepts";
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 function insertDiagram(
   blocks: ConceptBodyBlock[],
@@ -81,7 +81,7 @@ export const chapter01WhatAiNativeMeans = buildChapter({
   pmCallout:
     "As a founder: before you put 'AI-native' on the website, run the three tests on your actual architecture. Investors will — and the gap between your label and your loop is where down rounds begin.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "1.1",
       title: "AI-native vs AI-powered vs AI-washed",
       subtitle: "Three tiers with completely different valuations, defensibility, and hiring implications",
@@ -127,6 +127,13 @@ export const chapter01WhatAiNativeMeans = buildChapter({
           body: "A seed deck claimed 'proprietary AI orchestration'. Diligence found Zapier triggers plus OpenAI API plus Notion export. Accurate tier: AI-washed automation. The round repriced. Self-assessment before the meeting keeps narrative control.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-ai-native-spectrum",
+      type: "nested",
+      title: "AI-Native vs AI-Powered vs AI-Washed",
+      caption:
+        "Three tiers with different valuations, defensibility, and hiring plans. Honest placement determines your fundraising narrative.",
     }),
     buildSection({
       number: "1.2",

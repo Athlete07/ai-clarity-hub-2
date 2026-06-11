@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlBuildingAiBusinessCase = buildChapter({
   slug: "bl-building-ai-business-case",
@@ -12,7 +12,7 @@ export const chapter05BlBuildingAiBusinessCase = buildChapter({
     "AI business cases fail approval not because the investment is poor, but because the case is incomplete. Every approval decision-maker has a specific question the case must answer. Business leaders who map the questions before writing the case are more likely to get approval on the first submission.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "Structure of a winning AI business case",
       subtitle: "The seven components every AI business case needs — and the order that drives approval",
@@ -58,8 +58,15 @@ export const chapter05BlBuildingAiBusinessCase = buildChapter({
           body: "A hospital system's AI scheduling tool business case was initially 34 pages. The programme lead compressed it to 14 pages by moving the technical architecture description, vendor comparison table, and full data analysis to appendices. The committee chair commented: 'This is the clearest AI business case I have reviewed.' The approval meeting addressed only the three highest-impact risk questions. The document discipline was the advocacy.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "Building the AI Business Case",
+      caption:
+        "Measure before, pilot with gates, attribute after — the CFO's required sequence for AI investment approval.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "Stakeholder mapping for the business case",
       subtitle: "Identifying who will scrutinise which part of the case — and pre-addressing their concerns",
@@ -105,6 +112,13 @@ export const chapter05BlBuildingAiBusinessCase = buildChapter({
           body: "A bank's AI customer risk scoring case was pre-briefed to the CRO who had previously blocked a similar submission. The pre-brief revealed two specific concerns: model explainability for regulatory review and the escalation path for AI-generated decisions that were appealed. Both were addressed in the revised case. The CRO endorsed the case at the committee meeting — citing the explainability framework as 'precisely what the regulator would expect.' The pre-brief converted the most likely blocker into the strongest advocate.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
     buildSection({
       number: "5.3",

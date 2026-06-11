@@ -1,14 +1,4 @@
-import type { ConceptBodyBlock } from "../concepts";
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
-
-function insertDiagram(
-  blocks: ConceptBodyBlock[],
-  diagram: Extract<ConceptBodyBlock, { kind: "diagram" }>,
-): ConceptBodyBlock[] {
-  const exIdx = blocks.findIndex((b) => b.kind === "ex");
-  const idx = exIdx === -1 ? blocks.length : exIdx;
-  return [...blocks.slice(0, idx), diagram, ...blocks.slice(idx)];
-}
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03TrainingVsInference = buildChapter({
   slug: "founder-training-vs-inference",
@@ -23,7 +13,7 @@ export const chapter03TrainingVsInference = buildChapter({
   pmCallout:
     "As a founder: when your CEO or board asks why you are not training your own foundation model, explain that you are buying variable inference to avoid fixed training CapEx — and show the spreadsheet that says when that trade flips.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "Training cost",
       subtitle: "The one-time capital expenditure — and why most startups should never pay it",
@@ -69,6 +59,13 @@ export const chapter03TrainingVsInference = buildChapter({
           body: "Bloomberg trained a domain-specific finance model because their data moat and customer willingness to pay justified eight-figure R&D. That is the exception: vertical monopoly data, enterprise pricing power, and ML engineering at scale. Most startups lack all three.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-training-inference-split",
+      type: "comparison",
+      title: "Training CapEx vs Inference OpEx",
+      caption:
+        "Training manufactures capability once; inference meters it on every user action. Founders who confuse the two misallocate capital and discover margin crisis at scale.",
     }),
     buildSection({
       number: "3.2",
@@ -117,7 +114,7 @@ export const chapter03TrainingVsInference = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.3",
       title: "The unit economics trap",
       subtitle: "Technically impressive and financially catastrophic — at the same time",
@@ -163,8 +160,15 @@ export const chapter03TrainingVsInference = buildChapter({
           body: "Midjourney abandoned unlimited fast generation because image inference COGS scaled linearly with obsessive users. GPU-hour quotas align revenue with cost. Founders in generative media should study their pricing evolution as a survival playbook.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-unit-economics-trap",
+      type: "flow",
+      title: "The Unit Economics Trap",
+      caption:
+        "Flat pricing plus unbounded inference turns viral adoption into a COGS crisis — model this before launch, not after the AWS bill.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.4",
       title: "API dependency vs model ownership",
       subtitle: "The strategic tradeoff you must choose — not stumble into",
@@ -210,6 +214,13 @@ export const chapter03TrainingVsInference = buildChapter({
           body: "Dropbox ships AI summarisation and search via partner models rather than training proprietary foundation models. At their scale, the build-vs-buy calculus favours partnering for capability and competing on distribution and trust — not on owning weights.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-api-vs-own",
+      type: "comparison",
+      title: "API Dependency vs Model Ownership",
+      caption:
+        "APIs trade margin for speed at low volume; self-hosting trades operational burden for wholesale economics at high volume.",
     }),
     buildSection({
       number: "3.5",
@@ -258,7 +269,7 @@ export const chapter03TrainingVsInference = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.6",
       title: "Cost optimisation levers",
       subtitle: "Caching, routing, compression, and smaller models — before you raise a bridge round",
@@ -304,6 +315,13 @@ export const chapter03TrainingVsInference = buildChapter({
           body: "Cohere offers models explicitly positioned for cost-sensitive enterprise workloads — classification, search, RAG — rather than only frontier chat. Founders should match model SKU to task complexity, not default to the flagship name.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-inference-optimisation",
+      type: "flow",
+      title: "Inference Cost Optimisation Levers",
+      caption:
+        "Routing, compression, caching, and distillation can cut COGS 40–80% — invest before crisis, not during a bridge round.",
     }),
     buildSection({
       number: "3.7",

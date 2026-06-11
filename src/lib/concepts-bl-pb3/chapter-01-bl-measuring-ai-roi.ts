@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter01BlMeasuringAiRoi = buildChapter({
   slug: "bl-measuring-ai-roi",
@@ -59,7 +59,7 @@ export const chapter01BlMeasuringAiRoi = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.2",
       title: "The four categories of AI value",
       subtitle: "A taxonomy that forces every AI project to declare its primary value driver before deployment",
@@ -105,8 +105,15 @@ export const chapter01BlMeasuringAiRoi = buildChapter({
           body: "An online retailer attributed personalisation AI to revenue gain by running a clean A/B test: 50% of users received AI-powered recommendations, 50% received rule-based ones. Revenue per session was the single metric. The test ran for eight weeks before deployment approval. Finance accepted the revenue ROI because the attribution chain was clean from day one.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that separates successful transformations from expensive experiments.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "1.3",
       title: "Measurement frameworks: before/after, control groups, and attribution models",
       subtitle: "The three methodological options — when each works, and what each costs to implement",
@@ -152,6 +159,13 @@ export const chapter01BlMeasuringAiRoi = buildChapter({
           body: "A SaaS company could not pause its AI sales assist tool for a clean test. Instead, they ran a difference-in-differences model: reps who had used the tool more than 30 days vs those under 30 days, controlling for tenure, territory, and deal size. The model attributed a $1.8M revenue uplift to AI with a ±$400K confidence interval. Finance accepted the range. The rigour of the attribution model, not a point estimate, earned the credibility.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-roi-business-case",
+      type: "flow",
+      title: "AI ROI Framework",
+      caption:
+        "Baseline → hypothesis → pilot → scale → track. ROI without baseline measurement is fiction.",
     }),
     buildSection({
       number: "1.4",

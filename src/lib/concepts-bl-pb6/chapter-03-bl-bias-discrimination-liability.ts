@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter03BlBiasDiscriminationLiability = buildChapter({
   slug: "bl-bias-discrimination-liability",
@@ -12,7 +12,7 @@ export const chapter03BlBiasDiscriminationLiability = buildChapter({
     "The organisation deploying an AI system owns the discrimination liability for its outputs — 'the algorithm decided' is not a legal defence. Business leaders must mandate bias testing before deployment, establish protected characteristic monitoring in production, and maintain human override authority for consequential decisions affecting protected groups.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "What AI Bias Is — and What It Is Not",
       subtitle: "The difference between statistical bias and discriminatory bias — why both matter to business leaders and only one triggers liability",
@@ -58,8 +58,15 @@ export const chapter03BlBiasDiscriminationLiability = buildChapter({
           body: "The US Consumer Financial Protection Bureau examined AI-based credit underwriting models for compliance with the Equal Credit Opportunity Act and Fair Housing Act. Models using alternative data (social connections, browsing patterns, educational history) were found to proxy for protected characteristics (race, national origin) despite not explicitly processing them. The CFPB issued guidance requiring lenders to conduct disparate impact analysis on AI credit models before deployment and on an ongoing monitoring basis.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "Sources of Bias in AI Systems",
       subtitle: "Where bias enters AI pipelines — training data, feature selection, labels, feedback loops — and who is responsible at each stage",
@@ -105,6 +112,13 @@ export const chapter03BlBiasDiscriminationLiability = buildChapter({
           body: "A financial services firm's AI resume screening tool included 'employment continuity' as a positive scoring feature — penalising candidates with employment gaps. Bias testing identified that employment gaps correlated significantly with disability (periods of health treatment), parenthood (typically women), and military service. The feature disproportionately disadvantaged women, disabled candidates, and veterans. The firm removed employment continuity as a standalone scoring feature and replaced it with a recruiter-flagged context field, reducing discriminatory proxy impact.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

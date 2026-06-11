@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter02BlUpskillingVsHiringAi = buildChapter({
   slug: "bl-upskilling-vs-hiring-ai",
@@ -12,7 +12,7 @@ export const chapter02BlUpskillingVsHiringAi = buildChapter({
     "Upskilling existing employees is typically faster, cheaper, and more culturally sustainable for AI working knowledge and practitioner roles. External hiring is the right answer for net-new specialist skills that do not exist in the organisation and cannot be built within the deployment timeline. Most organisations need a deliberate mix of both — and the mix should be decided by the gap type, not by HR convention.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "2.1",
       title: "The upskill vs hire decision framework",
       subtitle: "A structured approach to the most consequential AI talent decision",
@@ -58,8 +58,15 @@ export const chapter02BlUpskillingVsHiringAi = buildChapter({
           body: "A consulting firm announced a plan to hire 40 AI specialists over 18 months. The announcement was followed by a spike in retention risk flags from senior consultants in a staff survey conducted one month later. The firm responded by launching a parallel AI practitioner programme for 200 existing consultants. Retention risk indicators returned to baseline within three months. The upskilling programme cost £480,000; analyst estimates of the talent attrition avoided — based on average replacement cost of £85,000 per consultant — exceeded £2.5M.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-hiring-sequence",
+      type: "flow",
+      title: "AI Talent Strategy",
+      caption:
+        "Assess gap → upskill or hire → prove pilot → scale team.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "2.2",
       title: "When upskilling is the right answer",
       subtitle: "The five conditions under which investing in existing employees beats external hiring",
@@ -105,6 +112,13 @@ export const chapter02BlUpskillingVsHiringAi = buildChapter({
           body: "A law firm faced a choice: hire AI legal technologists to integrate AI into client work, or upskill senior associates. The firm piloted both approaches in parallel. After 12 months, associates upskilled in AI produced client deliverables rated 22% higher in quality by partners than deliverables produced with AI specialist support — because the associates understood the legal requirements and could evaluate AI outputs against professional standards. The AI specialists consistently produced technically accurate AI outputs that missed client context.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "2.3",

@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x, BL_CALLOUT } from "../concepts-bl-helpers";
+import { buildChapter, buildSection, s, x, BL_CALLOUT, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter05BlAiInOperationsSupplyChain = buildChapter({
   slug: "bl-ai-in-operations-supply-chain",
@@ -12,7 +12,7 @@ export const chapter05BlAiInOperationsSupplyChain = buildChapter({
     "AI in operations creates compounding advantage in three zones: demand and inventory intelligence, predictive asset management, and supply chain resilience. The COO's governance task is ensuring AI-generated operational decisions are actioned with appropriate human oversight — particularly when models encounter conditions outside their training distribution.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "5.1",
       title: "The Operations AI Landscape",
       subtitle: "Where AI delivers measurable operational advantage and where it creates fragility",
@@ -58,8 +58,15 @@ export const chapter05BlAiInOperationsSupplyChain = buildChapter({
           body: "Multiple retail and manufacturing companies had deployed AI demand forecasting trained on pre-2020 consumption patterns. When pandemic conditions shifted demand dramatically — toilet paper hoarding, electronics demand surge, clothing collapse — models continued producing confident forecasts based on historical patterns that no longer applied. Operations leaders without manual override protocols were left with AI forecasts they knew were wrong but lacked the governance structure to override systematically. Override protocols and human escalation pathways are not optional governance.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-function-ai-map",
+      type: "comparison",
+      title: "AI by Function",
+      caption:
+        "Each function has distinct ROI, risk, and adoption patterns.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "5.2",
       title: "AI in Demand Forecasting and Inventory",
       subtitle: "The highest-ROI application in most supply chain operations",
@@ -105,6 +112,13 @@ export const chapter05BlAiInOperationsSupplyChain = buildChapter({
           body: "A fast-fashion retailer deployed demand sensing using social media trend signals, search volume data, and early sales velocity to update in-season demand forecasts daily. For high-velocity trend items, the sensing capability reduced out-of-stock events by 35% and reduced end-of-season markdown volume by 28%. The combined working capital and margin impact was 4x the annual platform cost. Operations leaders in high-velocity consumer categories should evaluate demand sensing as a revenue protection investment, not just a cost reduction.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "5.3",

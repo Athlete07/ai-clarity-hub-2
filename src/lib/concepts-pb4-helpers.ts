@@ -52,6 +52,22 @@ export type ChapterInput = {
   quiz: QuizQuestion[];
 };
 
+export function insertDiagram(
+  blocks: ConceptBodyBlock[],
+  diagram: Extract<ConceptBodyBlock, { kind: "diagram" }>,
+): ConceptBodyBlock[] {
+  const exIdx = blocks.findIndex((b) => b.kind === "ex");
+  const idx = exIdx === -1 ? blocks.length : exIdx;
+  return [...blocks.slice(0, idx), diagram, ...blocks.slice(idx)];
+}
+
+export function sectionWithDiagram(
+  input: SectionInput,
+  diagram: Extract<ConceptBodyBlock, { kind: "diagram" }>,
+): ConceptBodyBlock[] {
+  return insertDiagram(buildSection(input), diagram);
+}
+
 export function buildChapter(input: ChapterInput): Concept {
   return {
     slug: input.slug,

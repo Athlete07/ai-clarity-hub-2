@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter03FounderEvaluatingAiVendors = buildChapter({
   slug: "founder-evaluating-ai-vendors",
@@ -13,7 +13,7 @@ export const chapter03FounderEvaluatingAiVendors = buildChapter({
   pmCallout:
     "As a founder: the demo that wowed you used curated inputs, optimal model settings, and a sales engineer behind the curtain. Your job is to design evaluation that fails vendors who cannot survive your real workload.",
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "3.1",
       title: "The AI vendor landscape — a founder's map",
       subtitle: "Foundation model providers, infrastructure vendors, vertical AI tools — the categories and key players",
@@ -59,8 +59,15 @@ export const chapter03FounderEvaluatingAiVendors = buildChapter({
           body: "Startup signed five infrastructure vendors in three months — vector DB, tracing, labelling, GPU, gateway. No integration owner. Founder mapped vendor landscape layers and consolidated to three with explicit exit plans.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-vendor-evaluation",
+      type: "flow",
+      title: "Vendor Evaluation Process",
+      caption:
+        "Requirements → shortlist → golden-set eval → TCO → contract. Run this process on every AI vendor pitch.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "3.2",
       title: "What a rigorous AI vendor evaluation looks like",
       subtitle: "Beyond the demo — the technical, commercial, and strategic evaluation process",
@@ -106,6 +113,13 @@ export const chapter03FounderEvaluatingAiVendors = buildChapter({
           body: "Reference customer revealed vendor deprecated fine-tune platform with 60-day notice — not in sales deck. Strategic track reference calls are negative screening, not cheerleading.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "3.3",

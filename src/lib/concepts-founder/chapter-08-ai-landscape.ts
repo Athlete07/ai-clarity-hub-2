@@ -1,4 +1,4 @@
-import { buildChapter, buildSection, s, x } from "../concepts-pb4-helpers";
+import { buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-pb4-helpers";
 
 export const chapter08AiLandscape = buildChapter({
   slug: "founder-ai-landscape",
@@ -68,7 +68,7 @@ export const chapter08AiLandscape = buildChapter({
         },
       ],
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.2",
       title: "Foundation model providers",
       subtitle: "OpenAI, Anthropic, Google, Meta — the platform layer everyone builds on",
@@ -122,8 +122,15 @@ export const chapter08AiLandscape = buildChapter({
           body: "A founder integrated Llama 3 self-hosted as a fallback provider. Never switched in production, but used cost comparison in OpenAI enterprise negotiation to secure 20% discount. Model-agnostic architecture paid for itself in contract leverage alone.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "ch8-cost-latency-frontier",
+      type: "comparison",
+      title: "The Cost-Latency-Quality Frontier",
+      caption:
+        "Frontier models sit at one corner; small fast models at another. Mature products route different requests to different points on this curve.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "8.3",
       title: "Inference, hosting, and tooling",
       subtitle: "The picks-and-shovels layer — vector DBs, orchestration, evals, and MLOps",
@@ -177,6 +184,13 @@ export const chapter08AiLandscape = buildChapter({
           body: "W&B embedded in ML team workflows with experiment history, artifact lineage, and team collaboration. Switching cost is organizational, not technical. A tooling founder designed for team habit formation — daily-use dashboards, not one-time setup tools.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-ai-transformation",
+      type: "flow",
+      title: "AI Initiative Execution Path",
+      caption:
+        "Assess → prioritise → pilot → scale → embed. The sequence that turns AI ambition into measurable outcomes.",
     }),
     buildSection({
       number: "8.4",

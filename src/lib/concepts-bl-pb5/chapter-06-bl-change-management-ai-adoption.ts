@@ -1,4 +1,4 @@
-import { BL_CALLOUT, buildChapter, buildSection, s, x } from "../concepts-bl-helpers";
+import { BL_CALLOUT, buildChapter, buildSection, s, x, sectionWithDiagram } from "../concepts-bl-helpers";
 
 export const chapter06BlChangeManagementAiAdoption = buildChapter({
   slug: "bl-change-management-ai-adoption",
@@ -12,7 +12,7 @@ export const chapter06BlChangeManagementAiAdoption = buildChapter({
     "The critical difference between AI change management and standard change management is the fear variable: AI adoption triggers job security anxiety that most change programmes are not designed to address. A change management approach that ignores this fear — treating AI adoption as equivalent to a software upgrade — will achieve partial adoption at best. Addressing job security anxiety directly and early is the single highest-leverage change management action a business leader can take.",
   pmCallout: BL_CALLOUT,
   sections: [
-    buildSection({
+    sectionWithDiagram({
       number: "6.1",
       title: "Why AI change management is different",
       subtitle: "The four ways AI-driven change differs from standard organisational change",
@@ -58,8 +58,15 @@ export const chapter06BlChangeManagementAiAdoption = buildChapter({
           body: "A manufacturer's AI change management programme was designed with a 3-year horizon: launch communications (months 1–2), supervised use and coaching (months 3–6), champion network activation (months 4–12), community of practice (ongoing), bi-annual AI capability reviews (ongoing). At month 24, when the AI toolset was significantly upgraded, the change infrastructure was already in place to manage the second wave of change. The second wave achieved 78% adoption in 8 weeks — compared to 6 months for the first wave — because the change capability had been institutionalised rather than wound down post-launch.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "bl-change-management",
+      type: "flow",
+      title: "AI Change Management",
+      caption:
+        "Sponsor → communicate → train → champions → measure adoption.",
     }),
-    buildSection({
+    sectionWithDiagram({
       number: "6.2",
       title: "The ADKAR model applied to AI adoption",
       subtitle: "How to apply Prosci ADKAR to the specific dynamics of AI-driven change",
@@ -105,6 +112,13 @@ export const chapter06BlChangeManagementAiAdoption = buildChapter({
           body: "A logistics company separated knowledge training (2-hour online module) from ability development (6-week supervised use with weekly 30-minute coaching sessions) in its AI route optimisation change plan. Post-training assessment (knowledge): 84% pass rate. Post-supervised use assessment (ability): 79% of participants demonstrated reliable ability to use and interpret AI routing recommendations under operational conditions. Previous rollouts without a separate ability phase: typical adoption at month 6 was 32%. With the separated knowledge/ability model: adoption was 74% by week 8.",
         },
       ],
+    }, {
+      kind: "diagram",
+      id: "founder-eval-framework",
+      type: "flow",
+      title: "Evaluation Framework",
+      caption:
+        "Define task → golden set → ship gate → monitor drift.",
     }),
     buildSection({
       number: "6.3",
