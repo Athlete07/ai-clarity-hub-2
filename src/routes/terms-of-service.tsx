@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav, Footer } from "@/components/site-nav";
-import { FileText, Globe, Lock, AlertTriangle, Shield, ArrowRight } from "lucide-react";
+import {
+  LegalClosingCta,
+  LegalDocumentLayout,
+  LegalHero,
+  LegalHighlightStrip,
+  LegalProse,
+  LegalSection,
+} from "@/components/legal-document";
 import { CREATOR } from "@/lib/creator";
+import { AlertTriangle, FileText, Globe, Lock, Shield } from "lucide-react";
 
 export const Route = createFileRoute("/terms-of-service")({
   head: () => ({
@@ -15,8 +23,7 @@ export const Route = createFileRoute("/terms-of-service")({
       { property: "og:title", content: "Terms of Service — FactorBeam" },
       {
         property: "og:description",
-        content:
-          "Rules for using FactorBeam's website, Executive KB, and content.",
+        content: "Rules for using FactorBeam's website, Executive KB, and content.",
       },
       { property: "og:url", content: "/terms-of-service" },
       { property: "og:type", content: "website" },
@@ -26,282 +33,265 @@ export const Route = createFileRoute("/terms-of-service")({
   component: TermsOfService,
 });
 
+const TOC = [
+  { id: "overview", title: "Overview" },
+  { id: "eligibility", title: "Eligibility" },
+  { id: "accounts", title: "Accounts & registration" },
+  { id: "content", title: "Content & intellectual property" },
+  { id: "dmca", title: "Copyright & DMCA" },
+  { id: "conduct", title: "Prohibited conduct" },
+  { id: "third-party", title: "Third-party services" },
+  { id: "disclaimers", title: "Disclaimers" },
+  { id: "liability", title: "Limitation of liability" },
+  { id: "indemnification", title: "Indemnification" },
+  { id: "termination", title: "Termination" },
+  { id: "governing-law", title: "Governing law" },
+  { id: "changes", title: "Changes to these terms" },
+] as const;
+
+const HIGHLIGHTS = [
+  { label: "Free to use", detail: "No payment required for the Executive KB." },
+  { label: "Personal study", detail: "Read, bookmark, and quote with attribution." },
+  { label: "No scraping", detail: "Systematic download or mirroring is prohibited." },
+  { label: "England & Wales", detail: "Governing law for disputes and interpretation." },
+];
+
 function TermsOfService() {
   return (
     <>
       <Nav />
       <main className="overflow-x-hidden">
-        {/* ── Hero ───────────────────────────────────────────── */}
-        <section className="relative">
-          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div className="mesh-glow-1 absolute -top-24 left-1/2 h-[460px] w-[460px] -translate-x-1/2 rounded-full bg-purple-light/50 blur-[110px] dark:bg-purple-light/10" />
-          </div>
+        <LegalHero
+          title="Terms of Service"
+          description="The rules for using FactorBeam — our website, Executive KB, quizzes, and all related content."
+          lastUpdated="June 2026"
+        />
 
-          <div className="mx-auto max-w-[820px] px-5 pt-16 pb-10 text-center sm:px-6 sm:pt-28 sm:pb-14">
-            <div className="section-label mb-4 inline-flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-purple" />
-              Legal
-            </div>
-            <h1 className="text-[36px] font-medium leading-[1.08] tracking-[-0.025em] sm:text-[60px] sm:leading-[1.02]">
-              Terms of Service
-            </h1>
-            <p className="mx-auto mt-5 max-w-[540px] text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
-              The rules for using FactorBeam. Last updated: June 2026.
+        <LegalHighlightStrip items={HIGHLIGHTS} />
+
+        <LegalDocumentLayout
+          toc={[...TOC]}
+          related={{
+            label: "Privacy Policy",
+            to: "/privacy-policy",
+            description: "How we handle cookies, analytics, advertising, and your data rights.",
+          }}
+        >
+          <LegalSection id="overview" index={1} icon={FileText} title="Overview">
+            <p>
+              FactorBeam is a free educational website and open Executive KB project,
+              operated by {CREATOR.name}. These Terms of Service (&quot;Terms&quot;) govern
+              your access to and use of FactorBeam — the website, Executive KB, quizzes, and
+              all related content (collectively, the &quot;Service&quot;). By using the
+              Service, you agree to these Terms. If you do not agree, please do not use the
+              Service.
             </p>
-          </div>
-        </section>
+          </LegalSection>
 
-        {/* ── Terms body ─────────────────────────────────────── */}
-        <section className="mx-auto max-w-[800px] px-5 pb-24 sm:px-6 sm:pb-32">
-          <div className="hairline bg-card rounded-2xl p-6 sm:p-10">
-            {/* Overview */}
-            <PolicySection icon={FileText} title="Overview">
-              <p>
-                FactorBeam is a free educational website and open Executive KB project,
-                operated by {CREATOR.name}. These Terms of Service (&quot;Terms&quot;)
-                govern your access to and use of FactorBeam — the website, Executive KB,
-                quizzes, and all related content (collectively, the &quot;Service&quot;).
-                By using the Service, you agree to these Terms. If you do not agree,
-                please do not use the Service.
-              </p>
-            </PolicySection>
+          <LegalSection id="eligibility" index={2} icon={Lock} title="Eligibility">
+            <p>
+              You must be at least 13 years old to use FactorBeam. If you are under the age
+              of majority in your jurisdiction, you must have permission from a parent or
+              guardian. By using the Service, you represent that you meet these requirements.
+            </p>
+          </LegalSection>
 
-            {/* Eligibility */}
-            <PolicySection icon={Lock} title="Eligibility">
-              <p>
-                You must be at least 13 years old to use FactorBeam. If you are
-                under the age of majority in your jurisdiction, you must have
-                permission from a parent or guardian. By using the Service, you
-                represent that you meet these requirements.
-              </p>
-            </PolicySection>
+          <LegalSection id="accounts" index={3} icon={Lock} title="Accounts & registration">
+            <p>
+              FactorBeam does not currently require user accounts. If accounts are introduced
+              in the future, you will be responsible for safeguarding your credentials and
+              for all activity under your account. Notify{" "}
+              <a href="mailto:hello@factorbeam.dev">hello@factorbeam.dev</a> immediately of
+              any unauthorised use.
+            </p>
+          </LegalSection>
 
-            {/* Accounts */}
-            <PolicySection icon={Lock} title="Accounts & registration">
-              <p>
-                FactorBeam does not currently require user accounts. If accounts are
-                introduced in the future, you will be responsible for safeguarding
-                your credentials and for all activity under your account. Notify{" "}
-                <a
-                  href="mailto:hello@factorbeam.dev"
-                  className="text-purple hover:underline"
-                >
-                  hello@factorbeam.dev
-                </a>{" "}
-                immediately of any unauthorised use.
-              </p>
-            </PolicySection>
+          <LegalSection id="content" index={4} icon={FileText} title="Content & intellectual property">
+            <p>
+              All Executive KB content, text, diagrams, quizzes, and code examples on
+              FactorBeam are original work published on the site unless otherwise noted, and
+              are protected by copyright and other intellectual-property laws.
+            </p>
+            <p>
+              <strong>You may:</strong>
+            </p>
+            <ul>
+              <li>Read, bookmark, and share links to FactorBeam content</li>
+              <li>Quote short excerpts with proper attribution</li>
+              <li>Print or save copies for personal, non-commercial study</li>
+            </ul>
+            <p>
+              <strong>You may not:</strong>
+            </p>
+            <ul>
+              <li>
+                Republish, redistribute, or sell FactorBeam content in whole or in
+                substantial part
+              </li>
+              <li>Remove copyright notices or author attribution</li>
+              <li>
+                Use FactorBeam content to train machine-learning models without written
+                permission
+              </li>
+              <li>
+                Create derivative works (e.g., courses, books, paid newsletters) based on the
+                Executive KB without a licence
+              </li>
+              <li>Scrape, mirror, or systematically download the site</li>
+            </ul>
+          </LegalSection>
 
-            {/* Content usage */}
-            <PolicySection icon={FileText} title="Content & intellectual property">
-              <p>
-                All Executive KB content, text, diagrams, quizzes, and code examples on
-                FactorBeam are original work published on the site unless otherwise noted,
-                and are protected by copyright and other intellectual-property laws.
-              </p>
-              <p>
-                <strong>You may:</strong>
-              </p>
-              <ul>
-                <li>Read, bookmark, and share links to FactorBeam content</li>
-                <li>Quote short excerpts with proper attribution</li>
-                <li>Print or save copies for personal, non-commercial study</li>
-              </ul>
-              <p>
-                <strong>You may not:</strong>
-              </p>
-              <ul>
-                <li>Republish, redistribute, or sell FactorBeam content in whole or in substantial part</li>
-                <li>Remove copyright notices or author attribution</li>
-                <li>Use FactorBeam content to train machine-learning models without written permission</li>
-                <li>Create derivative works (e.g., courses, books, paid newsletters) based on the Executive KB without a licence</li>
-                <li>Scrape, mirror, or systematically download the site</li>
-              </ul>
-            </PolicySection>
+          <LegalSection id="dmca" index={5} icon={Shield} title="Copyright & DMCA takedown">
+            <p>
+              FactorBeam respects the intellectual-property rights of others. If you believe
+              that material on the Service infringes your copyright, please notify{" "}
+              {CREATOR.name} in writing with the following information:
+            </p>
+            <ul>
+              <li>
+                A physical or electronic signature of the copyright owner or a person
+                authorised to act on their behalf
+              </li>
+              <li>Identification of the copyrighted work claimed to have been infringed</li>
+              <li>
+                Identification of the infringing material and its location on the Service (URL
+                or specific page)
+              </li>
+              <li>
+                Your contact information, including address, telephone number, and email
+                address
+              </li>
+              <li>
+                A statement that you have a good-faith belief the use is not authorised by
+                the copyright owner, its agent, or the law
+              </li>
+              <li>
+                A statement, under penalty of perjury, that the information in your notice is
+                accurate and that you are the copyright owner or authorised to act on their
+                behalf
+              </li>
+            </ul>
+            <p>
+              Send takedown notices to:{" "}
+              <a href="mailto:dmca@factorbeam.com">dmca@factorbeam.com</a>
+            </p>
+            <p>
+              Notices will be reviewed promptly and infringing material will be removed or
+              disabled where appropriate. Repeat infringers may have access terminated.
+            </p>
+            <p>
+              If you believe your content was removed in error, you may submit a
+              counter-notice to the same email address with the required details under
+              applicable law.
+            </p>
+          </LegalSection>
 
-            {/* DMCA / Copyright takedown */}
-            <PolicySection icon={Shield} title="Copyright & DMCA takedown">
-              <p>
-                FactorBeam respects the intellectual-property rights of others. If you
-                believe that material on the Service infringes your copyright, please
-                notify {CREATOR.name} in writing with the following information:
-              </p>
-              <ul>
-                <li>A physical or electronic signature of the copyright owner or a person authorised to act on their behalf</li>
-                <li>Identification of the copyrighted work claimed to have been infringed</li>
-                <li>Identification of the infringing material and its location on the Service (URL or specific page)</li>
-                <li>Your contact information, including address, telephone number, and email address</li>
-                <li>A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent, or the law</li>
-                <li>A statement, under penalty of perjury, that the information in your notice is accurate and that you are the copyright owner or authorised to act on their behalf</li>
-              </ul>
-              <p>
-                Send takedown notices to:{" "}
-                <a
-                  href="mailto:dmca@factorbeam.com"
-                  className="text-purple hover:underline"
-                >
-                  dmca@factorbeam.com
-                </a>
-              </p>
-              <p>
-                Notices will be reviewed promptly and infringing material will be removed
-                or disabled where appropriate. Repeat infringers may have access terminated.
-              </p>
-              <p>
-                If you believe your content was removed in error, you may submit a
-                counter-notice to the same email address with the required details under
-                applicable law.
-              </p>
-            </PolicySection>
+          <LegalSection id="conduct" index={6} icon={AlertTriangle} title="Prohibited conduct">
+            <p>You agree not to:</p>
+            <ul>
+              <li>Use the Service for any unlawful purpose</li>
+              <li>Attempt to gain unauthorised access to the site&apos;s systems or data</li>
+              <li>
+                Interfere with the proper working of the Service (e.g., DDoS, scraping bots)
+              </li>
+              <li>Upload or transmit viruses, malware, or harmful code</li>
+              <li>Harass, abuse, or harm another person through the Service</li>
+              <li>Circumvent any security or access controls</li>
+            </ul>
+            <p>Access may be suspended or blocked for violations.</p>
+          </LegalSection>
 
-            {/* User conduct */}
-            <PolicySection icon={AlertTriangle} title="Prohibited conduct">
-              <p>You agree not to:</p>
-              <ul>
-                <li>Use the Service for any unlawful purpose</li>
-                <li>Attempt to gain unauthorised access to the site&apos;s systems or data</li>
-                <li>Interfere with the proper working of the Service (e.g., DDoS, scraping bots)</li>
-                <li>Upload or transmit viruses, malware, or harmful code</li>
-                <li>Harass, abuse, or harm another person through the Service</li>
-                <li>Circumvent any security or access controls</li>
-              </ul>
-              <p>
-                Access may be suspended or blocked for violations.
-              </p>
-            </PolicySection>
+          <LegalSection id="third-party" index={7} icon={Globe} title="Third-party services">
+            <p>
+              FactorBeam uses third-party services including Google AdSense for advertising
+              and analytics providers for usage statistics. These services are governed by
+              their own terms and privacy policies. FactorBeam is not responsible for the
+              practices of third-party services.
+            </p>
+          </LegalSection>
 
-            {/* Third-party services */}
-            <PolicySection icon={Globe} title="Third-party services">
-              <p>
-                FactorBeam uses third-party services including Google AdSense for
-                advertising and analytics providers for usage statistics. These
-                services are governed by their own terms and privacy policies. FactorBeam
-                is not responsible for the practices of third-party services.
-              </p>
-            </PolicySection>
+          <LegalSection id="disclaimers" index={8} icon={AlertTriangle} title="Disclaimers">
+            <p>
+              The Service is provided &quot;as is&quot; and &quot;as available&quot; without
+              warranties of any kind, either express or implied. No warranty is given that
+              the Service will be uninterrupted, error-free, secure, or that any defects will
+              be corrected.
+            </p>
+            <p>
+              The Executive KB reflects the author&apos;s best understanding of AI and
+              product-management concepts at the time of writing, but the field evolves
+              rapidly. No guarantee is made that any strategy, technique, or example will
+              produce specific results in your context.
+            </p>
+          </LegalSection>
 
-            {/* Disclaimers */}
-            <PolicySection icon={AlertTriangle} title="Disclaimers">
-              <p>
-                The Service is provided "as is" and "as available" without warranties
-                of any kind, either express or implied. No warranty is given that the
-                Service will be uninterrupted, error-free, secure, or that any defects
-                will be corrected.
-              </p>
-              <p>
-                The Executive KB reflects the author&apos;s best understanding of AI and
-                product-management concepts at the time of writing, but the field evolves
-                rapidly. No guarantee is made that any strategy, technique, or example
-                will produce specific results in your context.
-              </p>
-            </PolicySection>
+          <LegalSection id="liability" index={9} icon={AlertTriangle} title="Limitation of liability">
+            <p>
+              To the fullest extent permitted by law, {CREATOR.name}, as operator of
+              FactorBeam, shall not be liable for any indirect, incidental, special,
+              consequential, or punitive damages arising out of or relating to your use of the
+              Service, even if advised of the possibility of such damages. Total liability
+              for any claim shall not exceed the amount paid to use the Service (which, for
+              the free tier, is zero).
+            </p>
+          </LegalSection>
 
-            {/* Limitation of liability */}
-            <PolicySection icon={AlertTriangle} title="Limitation of liability">
-              <p>
-                To the fullest extent permitted by law, {CREATOR.name}, as operator of
-                FactorBeam, shall not be liable for any indirect, incidental, special,
-                consequential, or punitive damages arising out of or relating to your
-                use of the Service, even if advised of the possibility of such damages.
-                Total liability for any claim shall not exceed the amount paid to use
-                the Service (which, for the free tier, is zero).
-              </p>
-            </PolicySection>
+          <LegalSection id="indemnification" index={10} icon={Lock} title="Indemnification">
+            <p>
+              You agree to indemnify and hold harmless {CREATOR.name}, as operator of
+              FactorBeam, from any claims, damages, losses, or expenses (including
+              reasonable legal fees) arising out of your use of the Service, your violation
+              of these Terms, or your infringement of any third-party rights.
+            </p>
+          </LegalSection>
 
-            {/* Indemnification */}
-            <PolicySection icon={Lock} title="Indemnification">
-              <p>
-                You agree to indemnify and hold harmless {CREATOR.name}, as operator of
-                FactorBeam, from any claims, damages, losses, or expenses (including
-                reasonable legal fees) arising out of your use of the Service, your
-                violation of these Terms, or your infringement of any third-party rights.
-              </p>
-            </PolicySection>
+          <LegalSection id="termination" index={11} icon={FileText} title="Termination">
+            <p>
+              Access to the Service may be suspended or terminated at any time, with or
+              without notice, for any reason, including violation of these Terms. Upon
+              termination, all licences granted to you under these Terms will cease
+              immediately.
+            </p>
+          </LegalSection>
 
-            {/* Termination */}
-            <PolicySection icon={FileText} title="Termination">
-              <p>
-                Access to the Service may be suspended or terminated at any time,
-                with or without notice, for any reason, including violation of these
-                Terms. Upon termination, all licences granted to you under these Terms
-                will cease immediately.
-              </p>
-            </PolicySection>
+          <LegalSection id="governing-law" index={12} icon={Globe} title="Governing law">
+            <p>
+              These Terms shall be governed by and construed in accordance with the laws of
+              England and Wales, without regard to conflict-of-law principles. Any dispute
+              arising under these Terms shall be subject to the exclusive jurisdiction of the
+              courts of England and Wales.
+            </p>
+          </LegalSection>
 
-            {/* Governing law */}
-            <PolicySection icon={Globe} title="Governing law">
-              <p>
-                These Terms shall be governed by and construed in accordance with the
-                laws of England and Wales, without regard to conflict-of-law principles.
-                Any dispute arising under these Terms shall be subject to the exclusive
-                jurisdiction of the courts of England and Wales.
-              </p>
-            </PolicySection>
+          <LegalSection id="changes" index={13} icon={FileText} title="Changes to these terms">
+            <p>
+              These Terms may be updated from time to time. Material changes will be posted
+              on this page with an updated &quot;Last updated&quot; date. Continued use of
+              the Service after changes constitutes acceptance of the revised Terms.
+            </p>
+          </LegalSection>
 
-            {/* Changes */}
-            <PolicySection icon={FileText} title="Changes to these terms">
+          <div className="rounded-2xl border border-border bg-muted/30 px-6 py-5 sm:px-8">
+            <LegalProse>
               <p>
-                These Terms may be updated from time to time. Material changes will be
-                posted on this page with an updated &quot;Last updated&quot; date. Continued use
-                of the Service after changes constitutes acceptance of the revised Terms.
-              </p>
-            </PolicySection>
-
-            {/* Contact */}
-            <div className="mt-8 border-t border-border pt-8">
-              <p className="text-[14px] text-muted-foreground">
                 Questions about these Terms?{" "}
                 <Link to="/contact" className="text-purple hover:underline">
                   Contact us
                 </Link>
                 .
               </p>
-            </div>
+            </LegalProse>
           </div>
-        </section>
+        </LegalDocumentLayout>
 
-        {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="mx-auto max-w-[720px] px-5 pb-32 sm:px-6">
-          <div className="text-center hairline bg-card p-10 sm:p-14 rounded-2xl flex flex-col items-center">
-            <h2 className="text-[26px] sm:text-[32px] font-medium tracking-tight mb-3">
-              Back to Executive KB.
-            </h2>
-            <p className="mb-8 text-[14.5px] text-muted-foreground sm:text-[15.5px]">
-              Free. No signup. Start reading in the next 60 seconds.
-            </p>
-            <Link
-              to="/executive-kb"
-              className="btn-primary gap-2 px-6 py-3 text-[14px]"
-            >
-              Browse Executive KB
-              <ArrowRight size={15} />
-            </Link>
-          </div>
-        </section>
+        <LegalClosingCta
+          title="Back to the Executive KB."
+          subtitle="Free. No signup. Start reading in the next 60 seconds."
+          secondaryLabel="Read Privacy Policy"
+          secondaryTo="/privacy-policy"
+        />
       </main>
       <Footer />
     </>
-  );
-}
-
-function PolicySection({
-  icon: Icon,
-  title,
-  children,
-}: {
-  icon: typeof FileText;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-10 last:mb-0">
-      <div className="flex items-center gap-2.5 mb-3">
-        <Icon size={16} className="text-purple" />
-        <h2 className="text-[18px] font-medium tracking-tight">{title}</h2>
-      </div>
-      <div className="space-y-3 text-[14.5px] leading-[1.7] text-muted-foreground pl-[26px]">
-        {children}
-      </div>
-    </div>
   );
 }
