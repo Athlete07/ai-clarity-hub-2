@@ -1,5 +1,6 @@
 /**
  * Agent Overseer — the single flagship simulation on FactorBeam.
+ * Synced to GitHub.
  */
 
 export const FEATURED_GAME = {
