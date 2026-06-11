@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { Nav, Footer } from "@/components/site-nav";
 import { ShareMenu } from "@/components/share-menu";
 import { useProgress } from "@/lib/storage";
-import { Briefcase, Crown, ArrowRight } from "lucide-react";
+import { Briefcase, Crown, UserCog, ArrowRight } from "lucide-react";
 import {
   EXECUTIVE_KBS,
   formatExecutiveKbLabel,
   type ExecutiveKb,
 } from "@/lib/executive-kb";
 import { FOUNDER_EXECUTIVE_KBS } from "@/lib/executive-kb-founder";
+import { BUSINESS_LEADER_EXECUTIVE_KBS } from "@/lib/executive-kb-business-leader";
 
 export const Route = createFileRoute("/executive-kb/")({
   head: () => ({
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/executive-kb/")({
       {
         name: "description",
         content:
-          "Browse every FactorBeam Executive KB. Plain-English AI chapters sequenced for product managers and founders — pick the KB that matches the gap in your work.",
+          "Browse every FactorBeam Executive KB. Plain-English AI chapters sequenced for product managers, founders, and business leaders — pick the KB that matches the gap in your work.",
       },
       { property: "og:title", content: "Executive KB — AI knowledge for product leaders — FactorBeam" },
       {
@@ -34,7 +35,7 @@ export const Route = createFileRoute("/executive-kb/")({
   component: ExecutiveKbPage,
 });
 
-type RoleId = "pm" | "founder";
+type RoleId = "pm" | "founder" | "business-leader";
 
 type Role = {
   id: RoleId;
@@ -66,6 +67,15 @@ const ROLES: Role[] = [
     iconBg: "#FEF3E2",
     iconColor: "#B45309",
   },
+  {
+    id: "business-leader",
+    title: "Business Leader/Head of Function",
+    description:
+      "Lead AI adoption in your function — vendor selection, ROI, governance, and change management without a technical background.",
+    icon: UserCog,
+    iconBg: "#E8F0FE",
+    iconColor: "#1D4ED8",
+  },
 ];
 
 const THEMES = {
@@ -87,11 +97,21 @@ const THEMES = {
     pillActive: "bg-amber text-white border-amber",
     cardHover: "hover:border-amber/40",
   },
+  "business-leader": {
+    border: "border-blue",
+    glow: "from-blue-bg/30",
+    badge: "bg-blue-bg text-blue border border-blue/10",
+    progress: "bg-blue",
+    textHover: "group-hover/card:text-blue",
+    pillActive: "bg-blue text-white border-blue",
+    cardHover: "hover:border-blue/40",
+  },
 } as const;
 
 const EXECUTIVE_KBS_BY_ROLE: Record<RoleId, ExecutiveKb[]> = {
   pm: EXECUTIVE_KBS,
   founder: FOUNDER_EXECUTIVE_KBS,
+  "business-leader": BUSINESS_LEADER_EXECUTIVE_KBS,
 };
 
 const ROLE_KEY = "factorbeam_selected_role";
@@ -99,6 +119,7 @@ const ROLE_KEY = "factorbeam_selected_role";
 const HOVER_BORDERS: Record<RoleId, string> = {
   pm: "hover:border-purple/50 dark:hover:border-purple-dark/50",
   founder: "hover:border-amber/50 dark:hover:border-amber/50",
+  "business-leader": "hover:border-blue/50 dark:hover:border-blue/50",
 };
 
 function ExecutiveKbPage() {
@@ -149,7 +170,7 @@ function ExecutiveKbPage() {
             </div>
 
             {/* Role Selectors Grid */}
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 relative z-10">
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
               {ROLES.map((r, index) => {
                 const Icon = r.icon;
                 return (
@@ -256,7 +277,7 @@ function ExecutiveKbPage() {
                   <p className="text-[15px] font-medium text-foreground">No Executive KB yet</p>
                   <p className="mx-auto mt-2 max-w-[360px] text-[13px] leading-relaxed text-muted-foreground">
                     {ROLES.find((r) => r.id === role)?.title} Executive KB entries are on the way.
-                    Switch to Product Manager to browse what&apos;s available today.
+                    Switch to Product Manager or Founder/CEO to browse what&apos;s available today.
                   </p>
                 </div>
               ) : (

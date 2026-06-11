@@ -20,7 +20,15 @@ export type ExecutiveKbId =
   | "ai-team-building-org-design"
   | "ai-vendor-build-buy-decisions"
   | "ai-risk-governance-founders"
-  | "scaling-ai-product";
+  | "scaling-ai-product"
+  | "ai-fundamentals-for-business-leaders"
+  | "ai-strategy-for-business-leaders"
+  | "ai-roi-business-case-development"
+  | "ai-vendor-evaluation-procurement"
+  | "ai-team-talent-strategy"
+  | "ai-risk-compliance-governance-leaders"
+  | "ai-transformation-by-function"
+  | "leading-through-ai-change";
 
 export type ExecutiveKbChapter = {
   slug: string;
@@ -538,6 +546,7 @@ export const EXECUTIVE_KBS: ExecutiveKb[] = withTrackOrder(PM_EXECUTIVE_KBS);
 
 import { canonicalChapterSlug } from "./chapter-slug-migrations";
 import { FOUNDER_EXECUTIVE_KBS } from "./executive-kb-founder";
+import { BUSINESS_LEADER_EXECUTIVE_KBS } from "./executive-kb-business-leader";
 
 /** Legacy URL segments → canonical Executive KB id (no pb-N- prefix). */
 export const LEGACY_EXECUTIVE_KB_IDS: Record<string, ExecutiveKbId> = {
@@ -557,7 +566,8 @@ export const executiveKbForSlug = (slug: string): ExecutiveKb | undefined => {
   const canonical = canonicalChapterSlug(slug);
   return (
     EXECUTIVE_KBS.find((p) => p.sequence.some((c) => c.slug === canonical)) ??
-    FOUNDER_EXECUTIVE_KBS.find((p) => p.sequence.some((c) => c.slug === canonical))
+    FOUNDER_EXECUTIVE_KBS.find((p) => p.sequence.some((c) => c.slug === canonical)) ??
+    BUSINESS_LEADER_EXECUTIVE_KBS.find((p) => p.sequence.some((c) => c.slug === canonical))
   );
 };
 
@@ -565,7 +575,8 @@ export const executiveKbById = (id: string): ExecutiveKb | undefined => {
   const canonical = canonicalExecutiveKbId(id);
   return (
     EXECUTIVE_KBS.find((p) => p.id === canonical) ??
-    FOUNDER_EXECUTIVE_KBS.find((p) => p.id === canonical)
+    FOUNDER_EXECUTIVE_KBS.find((p) => p.id === canonical) ??
+    BUSINESS_LEADER_EXECUTIVE_KBS.find((p) => p.id === canonical)
   );
 };
 
