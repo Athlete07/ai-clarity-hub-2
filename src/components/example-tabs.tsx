@@ -27,7 +27,7 @@ export function ExampleTabs({ examples }: { examples: Example[] }) {
               onClick={() => setActiveIndex(idx)}
               className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors \${
                 isActive
-                  ? "bg-purple text-white shadow-sm"
+                  ? "bg-purple text-primary-foreground shadow-sm"
                   : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >

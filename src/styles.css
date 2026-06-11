@@ -173,6 +173,21 @@
     background-color: var(--purple-light);
     color: var(--purple-dark);
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 @layer components {
@@ -194,6 +209,38 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-muted-foreground);
+  }
+
+  /* Brand elevation — uses theme purple, adapts in dark mode */
+  .shadow-brand {
+    box-shadow: 0 12px 40px -12px color-mix(in oklch, var(--color-purple) 18%, transparent);
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 8px 30px color-mix(in oklch, var(--color-foreground) 6%, transparent);
+  }
+
+  /* Primary CTA — WCAG-friendly contrast via primary-foreground in both themes */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    font-weight: 500;
+    transition:
+      background-color 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-purple-dark);
+  }
+
+  .btn-on-accent {
+    color: var(--color-primary-foreground);
   }
 }
 

@@ -48,11 +48,11 @@ export function HUDPanel({ snap }: { snap: UISnapshot }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-[#0D1B2A] bg-[#050A14]/85 px-4 py-3 sm:px-6">
       <Link
-        to="/games"
+        to="/simulations"
         className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-[#4A7FA5] transition-colors hover:text-[#E8F4FD]"
       >
         <ArrowLeft size={13} />
-        Games
+        Simulations
       </Link>
 
       <h1 className="text-[15px] font-bold uppercase tracking-[0.2em] text-[#E8F4FD]">

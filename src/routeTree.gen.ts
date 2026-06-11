@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SimulationsRouteImport } from './routes/simulations'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PlaybooksRouteImport } from './routes/playbooks'
 import { Route as PlaybookRouteImport } from './routes/playbook'
@@ -22,6 +23,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaybooksIndexRouteImport } from './routes/playbooks.index'
 import { Route as ExecutiveKbIndexRouteImport } from './routes/executive-kb.index'
+import { Route as SimulationsAgentOverseerRouteImport } from './routes/simulations_.agent-overseer'
 import { Route as PlaybookSlugRouteImport } from './routes/playbook.$slug'
 import { Route as GamesAgentOverseerRouteImport } from './routes/games_.agent-overseer'
 import { Route as PlaybooksPlaybookIdChapterSlugRouteImport } from './routes/playbooks.$playbookId.$chapterSlug'
@@ -35,6 +37,11 @@ const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulationsRoute = SimulationsRouteImport.update({
+  id: '/simulations',
+  path: '/simulations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -92,6 +99,12 @@ const ExecutiveKbIndexRoute = ExecutiveKbIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ExecutiveKbRoute,
 } as any)
+const SimulationsAgentOverseerRoute =
+  SimulationsAgentOverseerRouteImport.update({
+    id: '/simulations_/agent-overseer',
+    path: '/simulations/agent-overseer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PlaybookSlugRoute = PlaybookSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -125,10 +138,12 @@ export interface FileRoutesByFullPath {
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/simulations': typeof SimulationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/games/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/simulations/agent-overseer': typeof SimulationsAgentOverseerRoute
   '/executive-kb/': typeof ExecutiveKbIndexRoute
   '/playbooks/': typeof PlaybooksIndexRoute
   '/executive-kb/$kbId/$chapterSlug': typeof ExecutiveKbKbIdChapterSlugRoute
@@ -142,10 +157,12 @@ export interface FileRoutesByTo {
   '/games': typeof GamesRoute
   '/playbook': typeof PlaybookRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/simulations': typeof SimulationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/games/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/simulations/agent-overseer': typeof SimulationsAgentOverseerRoute
   '/executive-kb': typeof ExecutiveKbIndexRoute
   '/playbooks': typeof PlaybooksIndexRoute
   '/executive-kb/$kbId/$chapterSlug': typeof ExecutiveKbKbIdChapterSlugRoute
@@ -162,10 +179,12 @@ export interface FileRoutesById {
   '/playbook': typeof PlaybookRouteWithChildren
   '/playbooks': typeof PlaybooksRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/simulations': typeof SimulationsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/games_/agent-overseer': typeof GamesAgentOverseerRoute
   '/playbook/$slug': typeof PlaybookSlugRoute
+  '/simulations_/agent-overseer': typeof SimulationsAgentOverseerRoute
   '/executive-kb/': typeof ExecutiveKbIndexRoute
   '/playbooks/': typeof PlaybooksIndexRoute
   '/executive-kb/$kbId/$chapterSlug': typeof ExecutiveKbKbIdChapterSlugRoute
@@ -183,10 +202,12 @@ export interface FileRouteTypes {
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
+    | '/simulations'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/games/agent-overseer'
     | '/playbook/$slug'
+    | '/simulations/agent-overseer'
     | '/executive-kb/'
     | '/playbooks/'
     | '/executive-kb/$kbId/$chapterSlug'
@@ -200,10 +221,12 @@ export interface FileRouteTypes {
     | '/games'
     | '/playbook'
     | '/privacy-policy'
+    | '/simulations'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/games/agent-overseer'
     | '/playbook/$slug'
+    | '/simulations/agent-overseer'
     | '/executive-kb'
     | '/playbooks'
     | '/executive-kb/$kbId/$chapterSlug'
@@ -219,10 +242,12 @@ export interface FileRouteTypes {
     | '/playbook'
     | '/playbooks'
     | '/privacy-policy'
+    | '/simulations'
     | '/sitemap.xml'
     | '/terms-of-service'
     | '/games_/agent-overseer'
     | '/playbook/$slug'
+    | '/simulations_/agent-overseer'
     | '/executive-kb/'
     | '/playbooks/'
     | '/executive-kb/$kbId/$chapterSlug'
@@ -239,9 +264,11 @@ export interface RootRouteChildren {
   PlaybookRoute: typeof PlaybookRouteWithChildren
   PlaybooksRoute: typeof PlaybooksRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  SimulationsRoute: typeof SimulationsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   GamesAgentOverseerRoute: typeof GamesAgentOverseerRoute
+  SimulationsAgentOverseerRoute: typeof SimulationsAgentOverseerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulations': {
+      id: '/simulations'
+      path: '/simulations'
+      fullPath: '/simulations'
+      preLoaderRoute: typeof SimulationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -336,6 +370,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/executive-kb/'
       preLoaderRoute: typeof ExecutiveKbIndexRouteImport
       parentRoute: typeof ExecutiveKbRoute
+    }
+    '/simulations_/agent-overseer': {
+      id: '/simulations_/agent-overseer'
+      path: '/simulations/agent-overseer'
+      fullPath: '/simulations/agent-overseer'
+      preLoaderRoute: typeof SimulationsAgentOverseerRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/playbook/$slug': {
       id: '/playbook/$slug'
@@ -418,9 +459,11 @@ const rootRouteChildren: RootRouteChildren = {
   PlaybookRoute: PlaybookRouteWithChildren,
   PlaybooksRoute: PlaybooksRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  SimulationsRoute: SimulationsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   GamesAgentOverseerRoute: GamesAgentOverseerRoute,
+  SimulationsAgentOverseerRoute: SimulationsAgentOverseerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

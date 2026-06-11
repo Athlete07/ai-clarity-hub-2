@@ -40,7 +40,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
   return (
     <div className="flex h-64 flex-col items-center justify-center gap-4 text-center">
-      <div className="rounded-full bg-red-100 p-3 text-red-600">
+      <div className="rounded-full bg-error-bg p-3 text-error">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -174,7 +174,7 @@ export const Route = createFileRoute("/executive-kb/$kbId/$chapterSlug")({
               router.invalidate();
               reset();
             }}
-            className="mt-3 rounded-md bg-purple px-4 py-2 text-[13px] text-white"
+            className="mt-3 rounded-md bg-purple px-4 py-2 text-[13px] text-primary-foreground"
           >
             Try again
           </button>
@@ -378,7 +378,7 @@ function ConceptPage() {
                   aria-selected={readMode === "deep"}
                   onClick={() => setReadMode("deep")}
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 transition-colors ${
-                    readMode === "deep" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+                    readMode === "deep" ? "bg-purple text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <BookOpen size={12} /> Full
@@ -388,7 +388,7 @@ function ConceptPage() {
                   aria-selected={readMode === "skim"}
                   onClick={() => setReadMode("skim")}
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 transition-colors ${
-                    readMode === "skim" ? "bg-purple text-white" : "text-muted-foreground hover:text-foreground"
+                    readMode === "skim" ? "bg-purple text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Zap size={12} /> Essentials
@@ -504,7 +504,7 @@ function ConceptPage() {
                     params={{ kbId, chapterSlug: next.slug }}
                     className={`rounded-md px-3 py-2 text-[13px] font-medium inline-block ${
                       progress[concept.slug] === "done"
-                        ? "bg-purple text-white hover:bg-purple-dark"
+                        ? "bg-purple text-primary-foreground hover:bg-purple-dark"
                         : "hairline text-muted-foreground pointer-events-none opacity-60"
                     }`}
                   >
@@ -519,7 +519,7 @@ function ConceptPage() {
               ) : (
                 <Link
                   to="/executive-kb"
-                  className="rounded-md bg-purple px-3 py-2 text-[13px] font-medium text-white hover:bg-purple-dark"
+                  className="rounded-md bg-purple px-3 py-2 text-[13px] font-medium text-primary-foreground hover:bg-purple-dark"
                 >
                   Back to Executive KB
                 </Link>
@@ -845,7 +845,7 @@ function Sidebar({
                     done
                       ? "bg-success-bg text-success"
                       : isCurrent
-                        ? "bg-purple text-white"
+                        ? "bg-purple text-primary-foreground"
                         : "hairline text-muted-foreground"
                   }`}
                   style={{ width: 20, height: 20 }}

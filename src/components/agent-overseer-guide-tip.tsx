@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Info } from "lucide-react";
-import { AGENT_OVERSEER_GUIDE } from "@/lib/games";
+import { AGENT_OVERSEER_GUIDE } from "@/lib/simulations";
 
 export function AgentOverseerGuideTip() {
   const [open, setOpen] = useState(false);

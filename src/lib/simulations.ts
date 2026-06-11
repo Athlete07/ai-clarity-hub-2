@@ -1,6 +1,5 @@
 /**
- * Agent Overseer — the single flagship game on FactorBeam.
- * (Earlier prototype games were retired; only the featured simulation ships.)
+ * Agent Overseer — the single flagship simulation on FactorBeam.
  */
 
 export const FEATURED_GAME = {
@@ -13,7 +12,7 @@ export const FEATURED_GAME = {
   difficulty: "Hard" as const,
   waves: 10,
   agents: 2,
-  route: "/games/agent-overseer" as const,
+  route: "/simulations/agent-overseer" as const,
 };
 
 export const AGENT_OVERSEER_GUIDE = {

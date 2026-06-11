@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Nav, Footer } from "@/components/site-nav";
 import { ShareMenu } from "@/components/share-menu";
 import { useProgress } from "@/lib/storage";
-import { Briefcase, Crown, UserCog, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   EXECUTIVE_KBS,
   formatExecutiveKbLabel,
@@ -11,6 +11,7 @@ import {
 } from "@/lib/executive-kb";
 import { FOUNDER_EXECUTIVE_KBS } from "@/lib/executive-kb-founder";
 import { BUSINESS_LEADER_EXECUTIVE_KBS } from "@/lib/executive-kb-business-leader";
+import { ROLES, ROLE_THEMES, type RoleId } from "@/lib/role-themes";
 
 export const Route = createFileRoute("/executive-kb/")({
   head: () => ({
@@ -35,79 +36,6 @@ export const Route = createFileRoute("/executive-kb/")({
   component: ExecutiveKbPage,
 });
 
-type RoleId = "pm" | "founder" | "business-leader";
-
-type Role = {
-  id: RoleId;
-  title: string;
-  description: string;
-  icon: typeof Briefcase;
-  iconBg: string;
-  iconColor: string;
-  popular?: boolean;
-};
-
-const ROLES: Role[] = [
-  {
-    id: "pm",
-    title: "Product Manager",
-    description:
-      "Understand AI well enough to write better specs, challenge your engineering team, and spot BS in vendor pitches.",
-    icon: Briefcase,
-    iconBg: "#EEEDFE",
-    iconColor: "#534AB7",
-    popular: true,
-  },
-  {
-    id: "founder",
-    title: "Founder/CEO",
-    description:
-      "Make AI strategy, vendor, and roadmap calls with confidence — without needing to become an engineer first.",
-    icon: Crown,
-    iconBg: "#FEF3E2",
-    iconColor: "#B45309",
-  },
-  {
-    id: "business-leader",
-    title: "Business Leader/Head of Function",
-    description:
-      "Lead AI adoption in your function — vendor selection, ROI, governance, and change management without a technical background.",
-    icon: UserCog,
-    iconBg: "#E8F0FE",
-    iconColor: "#1D4ED8",
-  },
-];
-
-const THEMES = {
-  pm: {
-    border: "border-purple",
-    glow: "from-purple-light/20",
-    badge: "bg-purple-light text-purple-dark border border-purple/10",
-    progress: "bg-purple",
-    textHover: "group-hover/card:text-purple",
-    pillActive: "bg-purple text-white border-purple",
-    cardHover: "hover:border-purple/40",
-  },
-  founder: {
-    border: "border-amber",
-    glow: "from-amber-bg/30",
-    badge: "bg-amber-bg text-amber border border-amber/10",
-    progress: "bg-amber",
-    textHover: "group-hover/card:text-amber",
-    pillActive: "bg-amber text-white border-amber",
-    cardHover: "hover:border-amber/40",
-  },
-  "business-leader": {
-    border: "border-blue",
-    glow: "from-blue-bg/30",
-    badge: "bg-blue-bg text-blue border border-blue/10",
-    progress: "bg-blue",
-    textHover: "group-hover/card:text-blue",
-    pillActive: "bg-blue text-white border-blue",
-    cardHover: "hover:border-blue/40",
-  },
-} as const;
-
 const EXECUTIVE_KBS_BY_ROLE: Record<RoleId, ExecutiveKb[]> = {
   pm: EXECUTIVE_KBS,
   founder: FOUNDER_EXECUTIVE_KBS,
@@ -115,12 +43,6 @@ const EXECUTIVE_KBS_BY_ROLE: Record<RoleId, ExecutiveKb[]> = {
 };
 
 const ROLE_KEY = "factorbeam_selected_role";
-
-const HOVER_BORDERS: Record<RoleId, string> = {
-  pm: "hover:border-purple/50 dark:hover:border-purple-dark/50",
-  founder: "hover:border-amber/50 dark:hover:border-amber/50",
-  "business-leader": "hover:border-blue/50 dark:hover:border-blue/50",
-};
 
 function ExecutiveKbPage() {
   const [role, setRole] = useState<RoleId | null>(null);
@@ -173,12 +95,13 @@ function ExecutiveKbPage() {
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 relative z-10">
               {ROLES.map((r, index) => {
                 const Icon = r.icon;
+                const roleTheme = ROLE_THEMES[r.id];
                 return (
                   <button
                     key={r.id}
                     type="button"
                     onClick={() => selectRole(r.id)}
-                    className={`relative rounded-xl p-4 text-left bg-card hairline transition-all hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] cursor-pointer animate-fade-in-up duration-300 ${HOVER_BORDERS[r.id]}`}
+                    className={`relative rounded-xl p-4 text-left bg-card hairline transition-all hover:scale-[1.02] hover:shadow-card-hover cursor-pointer animate-fade-in-up duration-300 ${roleTheme.hoverBorder}`}
                     style={{
                       minHeight: 44,
                       animationDelay: `${index * 100}ms`,
@@ -187,8 +110,7 @@ function ExecutiveKbPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className="flex items-center justify-center rounded-lg shrink-0"
-                        style={{ width: 32, height: 32, background: r.iconBg, color: r.iconColor }}
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${roleTheme.iconBox}`}
                       >
                         <Icon size={16} />
                       </div>
@@ -198,7 +120,7 @@ function ExecutiveKbPage() {
                       {r.description}
                     </p>
                     {r.popular && (
-                      <span className="absolute top-2 right-2 rounded-full px-1.5 py-0.5 text-[9px] font-semibold bg-purple text-white">
+                      <span className="absolute top-2 right-2 rounded-full bg-purple px-1.5 py-0.5 text-[9px] font-semibold text-primary-foreground">
                         Popular
                       </span>
                     )}
@@ -220,7 +142,7 @@ function ExecutiveKbPage() {
                 {ROLES.map((r) => {
                   const Icon = r.icon;
                   const active = r.id === role;
-                  const theme = THEMES[r.id];
+                  const theme = ROLE_THEMES[r.id];
                   return (
                     <button
                       key={r.id}
@@ -234,13 +156,9 @@ function ExecutiveKbPage() {
                       }`}
                     >
                       <span
-                        className="flex items-center justify-center rounded shrink-0"
-                        style={{
-                          width: 14,
-                          height: 14,
-                          background: active ? "transparent" : r.iconBg,
-                          color: active ? "white" : r.iconColor,
-                        }}
+                        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded ${
+                          active ? "text-primary-foreground" : theme.iconBox
+                        }`}
                       >
                         <Icon size={10} />
                       </span>
@@ -287,7 +205,7 @@ function ExecutiveKbPage() {
                 const pPct = p.sequence.length
                   ? Math.round((pDoneCount / p.sequence.length) * 100)
                   : 0;
-                const theme = THEMES[role];
+                const theme = ROLE_THEMES[role];
                 const nextIncompleteSlug =
                   p.sequence.find((s) => progress[s.slug] !== "done")?.slug || p.sequence[0]?.slug;
 
@@ -310,7 +228,7 @@ function ExecutiveKbPage() {
                       <Link
                         to="/executive-kb/$kbId/$chapterSlug"
                         params={{ kbId: p.id, chapterSlug: nextIncompleteSlug as string }}
-                        className={`absolute top-4 right-4 sm:top-5 sm:right-5 py-1.5 px-3.5 text-[11px] font-semibold rounded-lg text-white transition-all inline-flex items-center gap-1.5 justify-center cursor-pointer ${theme.progress} hover:opacity-90`}
+                        className={`absolute top-4 right-4 sm:top-5 sm:right-5 inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-[11px] font-semibold text-primary-foreground transition-all hover:opacity-90 ${theme.progress}`}
                       >
                         {pPct === 0 ? (
                           <>
@@ -324,7 +242,7 @@ function ExecutiveKbPage() {
                       </Link>
                     ) : (
                       <span
-                        className={`absolute top-4 right-4 sm:top-5 sm:right-5 py-1.5 px-3.5 text-[11px] font-semibold rounded-lg text-white/50 bg-muted-foreground/30 transition-all inline-flex items-center gap-1.5 justify-center cursor-not-allowed`}
+                        className="absolute top-4 right-4 inline-flex cursor-not-allowed items-center justify-center gap-1.5 rounded-lg bg-muted px-3.5 py-1.5 text-[11px] font-semibold text-muted-foreground sm:top-5 sm:right-5"
                       >
                         Coming Soon
                       </span>
@@ -337,7 +255,7 @@ function ExecutiveKbPage() {
                           <span
                             className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}
                           >
-                            {formatExecutiveKbLabel(p.order)}
+                            {formatExecutiveKbLabel(role, p.order)}
                           </span>
                           <span
                             className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${theme.badge}`}

@@ -69,7 +69,7 @@ function About() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             {/* Card 1 — Modular Executive KB */}
-            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between sm:col-span-2 transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)]">
+            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between sm:col-span-2 transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand">
               <div className="section-label mb-8">01 // Executive KB structure</div>
               <div>
                 <h3 className="text-[20px] sm:text-[24px] font-medium tracking-tight mb-2">Executive KB, not blog posts.</h3>
@@ -80,7 +80,7 @@ function About() {
             </div>
 
             {/* Card 2 — Three examples rule */}
-            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)]">
+            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand">
               <div className="section-label mb-8">02 // Concepts with context</div>
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Three real examples per concept.</h3>
@@ -91,7 +91,7 @@ function About() {
             </div>
 
             {/* Card 3 — Interactive reading */}
-            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)]">
+            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand">
               <div className="section-label mb-8">03 // Interactive reading</div>
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Highlight anything you don't get.</h3>
@@ -102,7 +102,7 @@ function About() {
             </div>
 
             {/* Card 4 — End-of-chapter quizzes */}
-            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)]">
+            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand">
               <div className="section-label mb-8">04 // Check your understanding</div>
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Short quizzes at the end of every chapter.</h3>
@@ -113,7 +113,7 @@ function About() {
             </div>
 
             {/* Card 5 — Progress tracking */}
-            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)]">
+            <div className="hairline bg-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand">
               <div className="section-label mb-8">05 // Your journey, tracked</div>
               <div>
                 <h3 className="text-[18px] sm:text-[20px] font-medium tracking-tight mb-2">Reading streaks and progress.</h3>
@@ -158,7 +158,7 @@ function About() {
             <p className="text-[14.5px] sm:text-[15.5px] text-muted-foreground mb-8">Free. No signup. Start reading in the next 60 seconds.</p>
             <Link
               to="/executive-kb"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-purple px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-purple-dark"
+              className="btn-primary gap-2 px-6 py-3 text-[14px]"
             >
               Browse Executive KB
               <ArrowRight size={15} />

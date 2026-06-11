@@ -55,9 +55,17 @@ export function withTrackOrder<T extends Omit<ExecutiveKb, "order">>(
   return executiveKbs.map((p, i) => ({ ...p, order: i + 1 }));
 }
 
-/** Display label for an Executive KB within its role track, e.g. "Executive KB 01". */
-export function formatExecutiveKbLabel(order: number): string {
-  return `Executive KB ${String(order).padStart(2, "0")}`;
+export type ExecutiveKbTrack = "pm" | "founder" | "business-leader";
+
+const TRACK_LABEL_PREFIX: Record<ExecutiveKbTrack, string> = {
+  pm: "PM",
+  founder: "Founder",
+  "business-leader": "Leader",
+};
+
+/** Display label for a KB within its role track, e.g. "PM 01", "Founder 03". */
+export function formatExecutiveKbLabel(track: ExecutiveKbTrack, order: number): string {
+  return `${TRACK_LABEL_PREFIX[track]} ${String(order).padStart(2, "0")}`;
 }
 
 const PM_EXECUTIVE_KBS: Omit<ExecutiveKb, "order">[] = [

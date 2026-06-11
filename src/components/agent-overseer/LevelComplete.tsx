@@ -28,8 +28,8 @@ export function LevelComplete({
 
   const shareUrl =
     typeof window !== "undefined"
-      ? `${window.location.origin}/games/agent-overseer`
-      : "/games/agent-overseer";
+      ? `${window.location.origin}/simulations/agent-overseer`
+      : "/simulations/agent-overseer";
 
   return (
     <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#050A14]/80 p-4 backdrop-blur-sm">

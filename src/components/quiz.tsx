@@ -65,7 +65,7 @@ export function Quiz({
             <Link
               to="/executive-kb/$kbId/$chapterSlug"
               params={{ kbId: nextKbId, chapterSlug: nextChapterSlug }}
-              className="mt-6 inline-flex items-center gap-1.5 rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-white hover:bg-purple-dark"
+              className="mt-6 inline-flex items-center gap-1.5 rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-primary-foreground hover:bg-purple-dark"
             >
               Next: {nextTitle} <ArrowRight size={14} />
             </Link>
@@ -156,7 +156,7 @@ export function Quiz({
             </div>
             <button
               onClick={handleNext}
-              className="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-purple px-4 py-2.5 text-[13px] font-medium text-white hover:bg-purple-dark transition-colors"
+              className="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-purple px-4 py-2.5 text-[13px] font-medium text-primary-foreground hover:bg-purple-dark transition-colors"
             >
               {current === questions.length - 1 ? "Complete Concept" : "Next Question"}{" "}
               <ArrowRight size={14} />
@@ -339,7 +339,7 @@ function Categorize({
           <button
             onClick={handleCheck}
             disabled={!allAssigned}
-            className="rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-white hover:bg-purple-dark disabled:opacity-40 disabled:cursor-not-allowed"
+            className="rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-primary-foreground hover:bg-purple-dark disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Check
           </button>
@@ -447,7 +447,7 @@ function Order({
         <div className="flex gap-2">
           <button
             onClick={handleCheck}
-            className="rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-white hover:bg-purple-dark"
+            className="rounded-md bg-purple px-4 py-2 text-[13px] font-medium text-primary-foreground hover:bg-purple-dark"
           >
             Check order
           </button>

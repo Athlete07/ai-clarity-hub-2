@@ -117,7 +117,7 @@ function Home() {
                 <Link
                   to="/executive-kb/$kbId/$chapterSlug"
                   params={resumeParams}
-                  className="inline-flex items-center justify-center gap-2 rounded-md bg-purple px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-purple-dark"
+                  className="btn-primary px-6 py-3 text-[14px]"
                 >
                   {ctaLabel}
                   <ArrowRight size={15} />
@@ -172,11 +172,11 @@ function Home() {
                   key={p.id}
                   to="/executive-kb/$kbId/$chapterSlug"
                   params={nextParams}
-                  className="group hairline relative flex flex-col rounded-2xl bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-[0_12px_40px_-12px_rgba(83,74,183,0.18)] sm:p-6"
+                  className="group hairline relative flex flex-col rounded-2xl bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-purple/40 hover:shadow-brand sm:p-6"
                 >
                   <div className="flex items-center gap-2">
                     <span className="rounded-full bg-purple-light px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-purple-dark">
-                      {formatExecutiveKbLabel(p.order)}
+                      {formatExecutiveKbLabel("pm", p.order)}
                     </span>
                     <span className="text-[11px] text-muted-foreground">
                       {p.difficulty} · ~{p.readingMinutes} min

@@ -271,7 +271,7 @@ function TermsOfService() {
             </p>
             <Link
               to="/executive-kb"
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-purple px-6 py-3 text-[14px] font-medium text-white transition-colors hover:bg-purple-dark"
+              className="btn-primary gap-2 px-6 py-3 text-[14px]"
             >
               Browse Executive KB
               <ArrowRight size={15} />

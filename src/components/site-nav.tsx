@@ -179,7 +179,7 @@ function FooterLink({
   children,
   href,
 }: {
-  to?: "/executive-kb" | "/about" | "/creator" | "/contact" | "/privacy-policy" | "/terms-of-service" | "/games";
+  to?: "/executive-kb" | "/about" | "/creator" | "/contact" | "/privacy-policy" | "/terms-of-service" | "/simulations";
   href?: string;
   children: React.ReactNode;
 }) {
@@ -210,9 +210,9 @@ export function Footer() {
           <FooterColumn title="Product">
             <FooterLink to="/executive-kb">Executive KB</FooterLink>
             <FooterLink to="/about">About</FooterLink>
-            <FooterLink to="/games">
+            <FooterLink to="/simulations">
               <span className="inline-flex items-center gap-2">
-                Games
+                Simulations
                 <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Beta
                 </span>
