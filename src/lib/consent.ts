@@ -3,6 +3,9 @@ import { useEffect, useState, useCallback } from "react";
 const CONSENT_KEY = "factorbeam:consent";
 const CONSENT_VERSION = 1;
 
+/** Fired when the user opens cookie preferences from the footer / privacy page. */
+export const CONSENT_PANEL_OPEN_EVENT = "factorbeam:consent-panel-open";
+
 export type ConsentCategory = "necessary" | "analytics" | "ads";
 
 export type ConsentState = {
@@ -75,13 +78,8 @@ export function useConsent() {
   const acceptAll = useCallback(() => save({ analytics: true, ads: true }), [save]);
   const rejectAll = useCallback(() => save({ analytics: false, ads: false }), [save]);
   const reopen = useCallback(() => {
-    try {
-      localStorage.removeItem(CONSENT_KEY);
-      window.dispatchEvent(new CustomEvent("factorbeam:consent-change"));
-    } catch {
-      /* noop */
-    }
-    setState(null);
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent(CONSENT_PANEL_OPEN_EVENT));
   }, []);
 
   return {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useConsent } from "@/lib/consent";
+import { CONSENT_PANEL_OPEN_EVENT, useConsent } from "@/lib/consent";
 import { Cookie, X } from "lucide-react";
 
 export function CookieConsent() {
@@ -9,6 +9,8 @@ export function CookieConsent() {
   const [analytics, setAnalytics] = useState(false);
   const [ads, setAds] = useState(false);
 
+  const preferencesMode = open && decided;
+
   useEffect(() => {
     if (hydrated && !decided) {
       const t = setTimeout(() => setOpen(true), 400);
@@ -17,15 +19,44 @@ export function CookieConsent() {
   }, [hydrated, decided]);
 
   useEffect(() => {
-    setAnalytics(consent.analytics);
-    setAds(consent.ads);
+    const onReopen = () => {
+      setAnalytics(consent.analytics);
+      setAds(consent.ads);
+      setDetails(true);
+      setOpen(true);
+    };
+    window.addEventListener(CONSENT_PANEL_OPEN_EVENT, onReopen);
+    return () => window.removeEventListener(CONSENT_PANEL_OPEN_EVENT, onReopen);
   }, [consent.analytics, consent.ads]);
 
-  if (!hydrated || !open || decided) return null;
+  useEffect(() => {
+    if (!open) return;
+    setAnalytics(consent.analytics);
+    setAds(consent.ads);
+  }, [open, consent.analytics, consent.ads]);
+
+  const close = () => {
+    setOpen(false);
+    setDetails(false);
+  };
+
+  const dismiss = () => {
+    if (decided) {
+      setAnalytics(consent.analytics);
+      setAds(consent.ads);
+      close();
+      return;
+    }
+    rejectAll();
+    close();
+  };
+
+  if (!hydrated || !open) return null;
 
   return (
     <div
       role="dialog"
+      aria-modal="true"
       aria-live="polite"
       aria-label="Cookie consent"
       className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 sm:px-6 sm:pb-6 animate-fade-in-up"
@@ -37,22 +68,25 @@ export function CookieConsent() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="text-[14px] font-medium text-foreground">Your privacy matters</h2>
+              <h2 className="text-[14px] font-medium text-foreground">
+                {preferencesMode ? "Cookie preferences" : "Your privacy matters"}
+              </h2>
               <button
+                type="button"
                 aria-label="Close"
-                onClick={() => { rejectAll(); setOpen(false); }}
+                onClick={dismiss}
                 className="text-muted-foreground hover:text-foreground"
               >
                 <X size={14} />
               </button>
             </div>
             <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-              This site uses cookies for essential functions, and — only with your permission —
-              for analytics and personalised ads. You can change your choice anytime in the
-              footer.
+              {preferencesMode
+                ? "Update which optional cookies we may use. Strictly necessary cookies stay on so the site works."
+                : "This site uses cookies for essential functions, and — only with your permission — for analytics and personalised ads. You can change your choice anytime in the footer."}
             </p>
 
-            {details && (
+            {(details || preferencesMode) && (
               <div className="mt-4 space-y-2.5 text-[13px]">
                 <Row
                   label="Strictly necessary"
@@ -77,13 +111,18 @@ export function CookieConsent() {
 
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
-                onClick={() => { rejectAll(); setOpen(false); }}
+                type="button"
+                onClick={() => {
+                  rejectAll();
+                  close();
+                }}
                 className="hairline rounded-md px-3 py-1.5 text-[13px] text-foreground hover:bg-muted"
               >
                 Reject all
               </button>
-              {!details ? (
+              {!details && !preferencesMode ? (
                 <button
+                  type="button"
                   onClick={() => setDetails(true)}
                   className="hairline rounded-md px-3 py-1.5 text-[13px] text-foreground hover:bg-muted"
                 >
@@ -91,14 +130,22 @@ export function CookieConsent() {
                 </button>
               ) : (
                 <button
-                  onClick={() => { save({ analytics, ads }); setOpen(false); }}
+                  type="button"
+                  onClick={() => {
+                    save({ analytics, ads });
+                    close();
+                  }}
                   className="hairline rounded-md px-3 py-1.5 text-[13px] text-foreground hover:bg-muted"
                 >
                   Save choices
                 </button>
               )}
               <button
-                onClick={() => { acceptAll(); setOpen(false); }}
+                type="button"
+                onClick={() => {
+                  acceptAll();
+                  close();
+                }}
                 className="ml-auto rounded-md bg-primary px-3.5 py-1.5 text-[13px] font-medium text-primary-foreground hover:opacity-95"
               >
                 Accept all
