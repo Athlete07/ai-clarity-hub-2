@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { verifyStamp } from "@/lib/agent-overseer/stamp-crypto";
 import { securityHeadersInit } from "@/lib/security-headers";
 import { getWorkerBindings } from "@/lib/worker-env";
 
@@ -38,6 +39,10 @@ export const Route = createFileRoute("/api/ao/sync")({
           return new Response("Bad Request", securityHeadersInit({ status: 400 }));
         }
 
+        if (!(await verifyStamp(parsed.data))) {
+          return new Response("Forbidden", securityHeadersInit({ status: 403 }));
+        }
+
         const { HRIS_ENDPOINT, HRIS_TOKEN } = getWorkerBindings();
         if (!HRIS_ENDPOINT) {
           return new Response(null, securityHeadersInit({ status: 204 }));
@@ -64,3 +69,5 @@ export const Route = createFileRoute("/api/ao/sync")({
     },
   },
 });
+
+export { stampSchema };

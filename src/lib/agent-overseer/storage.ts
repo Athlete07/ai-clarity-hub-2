@@ -90,15 +90,23 @@ export function flushTelemetryNow(): TelemetryEvent[] {
 
 const AO_TELEMETRY_API = "/api/ao/telemetry";
 
-export async function flushTelemetry(): Promise<void> {
+export async function flushTelemetry(): Promise<boolean> {
   const all = flushTelemetryNow();
-  if (!all.length) return;
-  await fetch(AO_TELEMETRY_API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(all),
-  });
-  write(TELEMETRY_KEY, []);
+  if (!all.length) return true;
+  try {
+    const res = await fetch(AO_TELEMETRY_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(all),
+    });
+    if (res.ok || res.status === 204) {
+      write(TELEMETRY_KEY, []);
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
 }
 
 export function queueStampForSync(stamp: CredentialStamp): void {

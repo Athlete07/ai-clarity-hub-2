@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
+    "test:ao": "vitest run src/lib/agent-overseer && node scripts/audit-agent-overseer.mjs",
     "test:watch": "vitest"
   },
   "dependencies": {

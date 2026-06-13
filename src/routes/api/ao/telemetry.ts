@@ -4,10 +4,21 @@ import { securityHeadersInit } from "@/lib/security-headers";
 import { getWorkerBindings } from "@/lib/worker-env";
 
 const telemetryEventSchema = z.object({
-  type: z.string().max(64),
-  at: z.string().max(64).optional(),
-  wave: z.number().int().optional(),
-  detail: z.record(z.unknown()).optional(),
+  event_type: z.enum([
+    "mutex_applied",
+    "mutex_released",
+    "node_selected",
+    "dispatch",
+    "livelock_resolved",
+    "wave_complete",
+    "game_over",
+    "wave_failed",
+  ]),
+  wave: z.number().int().min(0).max(999),
+  timestamp: z.string().max(64),
+  node_id: z.string().max(128).optional(),
+  resolution_time_ms: z.number().int().min(0).optional(),
+  score_delta: z.number().int().optional(),
 });
 
 const telemetryBodySchema = z.array(telemetryEventSchema).max(200);
@@ -64,3 +75,6 @@ export const Route = createFileRoute("/api/ao/telemetry")({
     },
   },
 });
+
+// Re-export schema for tests
+export { telemetryBodySchema };

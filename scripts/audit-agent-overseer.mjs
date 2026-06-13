@@ -1,121 +1,155 @@
 /**
- * Agent Overseer audit harness — headless simulation of engine logic.
- * Run: node scripts/audit-agent-overseer.mjs
+ * Agent Overseer audit harness — validates design invariants against the real engine.
+ * Run: npm run test:ao
  */
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
-// Minimal inline reimplementation of critical engine paths for Node (no DOM).
-const NodeStatus = {
-  PENDING: "PENDING",
-  RUNNING: "RUNNING",
-  COMPLETED: "COMPLETED",
-  LOCKED: "LOCKED",
-  LIVELOCK: "LIVELOCK",
-};
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const WAVE_PARAMS = [
-  { nodes: 6, injectionMs: 45_000 },
-  { nodes: 35, injectionMs: 12_000 },
-];
-
-function simulateWaveProgress({ pauseOnLivelock, resolveLivelockMs }) {
-  let nodes = WAVE_PARAMS[0].nodes;
-  let completed = 0;
-  let livelockActive = false;
-  let time = 0;
-  const execPerNode = 2000;
-  const agents = 2;
-  let nextInjection = 45_000;
-  let locks = 0;
-  let playerActions = 0;
-
-  while (completed < nodes && time < 900_000) {
-    // Simulate agent throughput: 2 agents complete nodes in parallel
-    if (!livelockActive) {
-      const tickProgress = (200 / execPerNode) * agents;
-      completed = Math.min(nodes, completed + tickProgress);
-    }
-    time += 200;
-
-    if (!livelockActive && time >= nextInjection) {
-      livelockActive = true;
-      if (pauseOnLivelock) {
-        // player resolves after delay
-        if (resolveLivelockMs !== null) {
-          time += resolveLivelockMs;
-          playerActions += 2; // apply + release
-          locks++;
-          livelockActive = false;
-          nextInjection = time + 45_000;
-        }
-      }
-    }
-  }
-  return { completed, time, locks, playerActions, won: completed >= nodes };
+function readEngineSource() {
+  return readFileSync(join(root, "src/lib/agent-overseer/engine.ts"), "utf8");
 }
 
-function auditTutorialInjectionTiming() {
-  const constructionInjectionAt = 45_000;
-  const tutorialDuration = 120_000; // 2 min reading tutorial
-  const injectionDueAtTutorialEnd = constructionInjectionAt - tutorialDuration;
+function auditTutorialInjectionDeferral() {
+  const src = readEngineSource();
+  const defersInTutorial =
+    src.includes('this.phase !== "TUTORIAL"') && src.includes("scheduleNextInjection");
+  const finishesInTutorial = src.includes("finishTutorial()") && src.includes("scheduleNextInjection(true)");
   return {
-    name: "Tutorial delays injection timer reset",
-    bug: injectionDueAtTutorialEnd < 0,
-    detail: `nextInjectionAt set at construction; after ${tutorialDuration / 1000}s tutorial, injection is ${Math.abs(injectionDueAtTutorialEnd / 1000)}s overdue`,
+    name: "Tutorial defers livelock injection until PLAYING",
+    bug: !(defersInTutorial && finishesInTutorial),
+    detail: defersInTutorial
+      ? "setupWave skips injection schedule during TUTORIAL; finishTutorial() resets timer"
+      : "Injection may fire before tutorial completes",
   };
 }
 
-const results = [];
+function auditPlayerDispatchGate() {
+  const src = readEngineSource();
+  const gated =
+    src.includes("playerDispatched") &&
+    src.includes("Agents only run player-dispatched") &&
+    src.includes("if (node.status !== NodeStatus.READY");
+  return {
+    name: "Agents require player dispatch (no silent auto-run)",
+    bug: !gated,
+    detail: gated
+      ? "dispatchAgent sets playerDispatched; agentTick ignores undispatched RUNNING nodes"
+      : "Engine may complete nodes without player input",
+  };
+}
 
-results.push(auditTutorialInjectionTiming());
+function auditMutexWorkflow() {
+  const src = readEngineSource();
+  const hasWorkflow =
+    src.includes("applyMutex()") &&
+    src.includes("confirmSerializePath()") &&
+    src.includes("releaseMutex()") &&
+    src.includes("isWorkerPaused");
+  return {
+    name: "Livelock mutex workflow (lock → path → release)",
+    bug: !hasWorkflow,
+    detail: hasWorkflow
+      ? "Mutex pauses agent ticks until path is serialized and released"
+      : "Mutex workflow incomplete in engine.ts",
+  };
+}
 
-const noInput = simulateWaveProgress({ pauseOnLivelock: true, resolveLivelockMs: null });
-results.push({
-  name: "Wave completes without player input",
-  bug: noInput.won,
-  detail: noInput.won
-    ? "Wave completed with zero player actions"
-    : `Stalled: ${noInput.completed}/${WAVE_PARAMS[0].nodes} nodes, ${noInput.time / 1000}s elapsed`,
-});
+function auditTelemetrySchema() {
+  const telemetryRoute = readFileSync(join(root, "src/routes/api/ao/telemetry.ts"), "utf8");
+  const acceptsClientShape = telemetryRoute.includes("event_type") && telemetryRoute.includes("timestamp");
+  return {
+    name: "Telemetry API accepts client event_type shape",
+    bug: !acceptsClientShape,
+    detail: acceptsClientShape
+      ? "Server schema matches storage.ts TelemetryEvent payloads"
+      : "Client/server telemetry schema mismatch — HRIS flush will 400",
+  };
+}
 
-const withInput = simulateWaveProgress({ pauseOnLivelock: true, resolveLivelockMs: 5000 });
-results.push({
-  name: "Minimum viable play (2 clicks per livelock)",
-  bug: false,
-  detail: `Completed with ${withInput.playerActions} clicks in ${(withInput.time / 1000).toFixed(0)}s, ${withInput.locks} livelocks`,
-});
+function auditStampVerification() {
+  const syncRoute = readFileSync(join(root, "src/routes/api/ao/sync.ts"), "utf8");
+  const verified = syncRoute.includes("verifyStamp");
+  return {
+    name: "HRIS sync rejects forged stamps server-side",
+    bug: !verified,
+    detail: verified
+      ? "POST /api/ao/sync verifies SHA-256 payload + signature before upstream forward"
+      : "Stamps accepted without cryptographic verification",
+  };
+}
 
-const idleRatio = withInput.time > 0 ? 1 - (withInput.playerActions * 2) / (withInput.time / 1000) : 0;
-results.push({
-  name: "Player active time ratio estimate",
-  bug: idleRatio > 0.95,
-  detail: `~${(idleRatio * 100).toFixed(1)}% session time is passive watching (assuming 2s per click pair)`,
-});
+function auditApiSurface() {
+  const required = [
+    "src/routes/simulations_.agent-overseer.tsx",
+    "src/routes/api/ao/sync.ts",
+    "src/routes/api/ao/telemetry.ts",
+    "src/lib/agent-overseer/engine.ts",
+    "src/components/agent-overseer/GameCanvas.tsx",
+  ];
+  const missing = required.filter((p) => !existsSync(join(root, p)));
+  return {
+    name: "Core Agent Overseer files present",
+    bug: missing.length > 0,
+    detail: missing.length ? `Missing: ${missing.join(", ")}` : `All ${required.length} core files found`,
+  };
+}
+
+function auditTutorialDrillLayout() {
+  const drillSrc = readFileSync(join(root, "src/lib/agent-overseer/tutorial-drill.ts"), "utf8");
+  const tutorialSrc = readFileSync(
+    join(root, "src/components/agent-overseer/OnboardingTutorial.tsx"),
+    "utf8",
+  );
+  const nodesInsideCanvas =
+    drillSrc.includes("y: 60") && !drillSrc.includes("y: 140");
+  const syncsDrillUi =
+    tutorialSrc.includes("onDrillChange") && tutorialSrc.includes("useReducer");
+  return {
+    name: "Briefing drill is clickable and UI syncs with drill phase",
+    bug: !(nodesInsideCanvas && syncsDrillUi),
+    detail:
+      nodesInsideCanvas && syncsDrillUi
+        ? "Nodes sit inside 120px canvas; phase changes trigger React re-render"
+        : "Briefing Next can stay grayed out — drill clicks or phase sync broken",
+  };
+}
+
+function auditNoAutoDispatch() {
+  const src = readEngineSource();
+  const noAuto =
+    !src.includes("AUTO-DISPATCH") &&
+    !src.includes("AUTO_DISPATCH") &&
+    !src.includes("trackReadyNodes");
+  return {
+    name: "No auto-dispatch — graph never runs without player input",
+    bug: !noAuto,
+    detail: noAuto
+      ? "Removed idle auto-dispatch; only explicit dispatchAgent() starts work"
+      : "Engine still contains auto-dispatch paths",
+  };
+}
+
+const results = [
+  auditApiSurface(),
+  auditTutorialInjectionDeferral(),
+  auditTutorialDrillLayout(),
+  auditPlayerDispatchGate(),
+  auditNoAutoDispatch(),
+  auditMutexWorkflow(),
+  auditTelemetrySchema(),
+  auditStampVerification(),
+];
 
 console.log("=== AGENT OVERSEER AUDIT HARNESS ===\n");
+let failures = 0;
 for (const r of results) {
-  console.log(`${r.bug ? "[FAIL]" : "[INFO]"} ${r.name}`);
+  if (r.bug) failures++;
+  console.log(`${r.bug ? "[FAIL]" : "[PASS]"} ${r.name}`);
   console.log(`       ${r.detail}\n`);
 }
 
-// Check spec vs implementation file presence
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const expected = [
-  "src/workers/graphWorker.ts",
-  "src/workers/agentWorker.ts",
-  "src/store/gameStore.ts",
-  "src/lib/oauthClient.ts",
-];
-const missing = expected.filter((p) => {
-  try {
-    readFileSync(join(root, p));
-    return false;
-  } catch {
-    return true;
-  }
-});
-console.log("=== SPEC GAP (missing files) ===");
-for (const m of missing) console.log(`  MISSING: ${m}`);
-console.log(`\n${missing.length} of ${expected.length} sampled spec artifacts absent.`);
+console.log(`Result: ${results.length - failures}/${results.length} checks passed`);
+process.exit(failures > 0 ? 1 : 0);

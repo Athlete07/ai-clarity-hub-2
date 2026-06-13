@@ -51,8 +51,6 @@ const LIVELOCK_ESCALATE_MS = 45_000;
 const LIVELOCK_FAIL_MS = 60_000;
 const TICK_MS = 200;
 const MAX_WAVE = 10;
-const AUTO_DISPATCH_PENALTY = 75;
-const AUTO_DISPATCH_MS = 8_000;
 
 export interface SelectedNodeInfo {
   id: string;
@@ -138,7 +136,6 @@ export class OverseerEngine {
   private timer: ReturnType<typeof setInterval> | null = null;
   private listeners = new Set<() => void>();
   private snapshot!: UISnapshot;
-  private readySince = new Map<string, number>();
   private tickCount = 0;
   private destroyed = false;
 
@@ -247,7 +244,6 @@ export class OverseerEngine {
     this.wave = w;
     this.locksResolvedThisWave = 0;
     this.livelocksInjectedThisWave = 0;
-    this.readySince.clear();
     refreshReadyStates(this.nodes);
     for (const a of this.agents) {
       a.currentNode = null;
@@ -264,7 +260,9 @@ export class OverseerEngine {
     setLivelockFlag(this.buf, false);
     mxRelease(this.buf);
     this.assembleStart = Date.now();
-    this.scheduleNextInjection(true);
+    if (this.phase !== "TUTORIAL") {
+      this.scheduleNextInjection(true);
+    }
     this.log(`WAVE ${w} — dispatch ALPHA/BETA to glowing ready nodes`, "info");
   }
 
@@ -351,7 +349,6 @@ export class OverseerEngine {
     if (this.phase === "PLAYING") {
       this.handleLivelockEscalation(now);
       refreshReadyStates(this.nodes);
-      this.trackReadyNodes(now);
       if (!isWorkerPaused(this.buf)) {
         this.agentTick(now);
       }
@@ -374,23 +371,33 @@ export class OverseerEngine {
     this.rebuild();
   }
 
-  private trackReadyNodes(now: number): void {
-    for (const n of this.nodes.values()) {
-      if (n.status === NodeStatus.READY && !n.playerDispatched) {
-        if (!this.readySince.has(n.id)) this.readySince.set(n.id, now);
-        const waiting = now - (this.readySince.get(n.id) ?? now);
-        if (waiting >= AUTO_DISPATCH_MS) {
-          const idle = this.agents.find((a) => !a.currentNode);
-          if (idle) {
-            this.dispatchAgent(idle.id, n.id, true);
-            this.score = Math.max(0, this.score - AUTO_DISPATCH_PENALTY);
-            this.log(`AUTO-DISPATCH ${idle.id} → ${n.id} (−${AUTO_DISPATCH_PENALTY})`, "warn");
-          }
-        }
-      } else {
-        this.readySince.delete(n.id);
-      }
-    }
+  dispatchAgent(agentId: AgentId, nodeId: string): boolean {
+    if (this.phase !== "PLAYING" || this.livelockActive) return false;
+    const agent = this.agents.find((a) => a.id === agentId);
+    const node = this.nodes.get(nodeId);
+    if (!agent || !node || agent.currentNode) return false;
+    if (node.status !== NodeStatus.READY && node.status !== NodeStatus.DEGRADED) return false;
+    if (!node.deps.every((d) => this.nodes.get(d)?.status === NodeStatus.COMPLETED)) return false;
+
+    const now = Date.now();
+    node.status = NodeStatus.RUNNING;
+    node.assignedAgent = agentId;
+    node.playerDispatched = true;
+    node.runStartedAt = now;
+    agent.prevNode = agent.currentNode ?? agent.prevNode;
+    agent.currentNode = nodeId;
+    agent.moveStart = now;
+    agent.pathHistory.push(nodeId);
+    this.log(`${agentId} → ${nodeId} RUNNING`, "info");
+    logTelemetry({
+      event_type: "dispatch",
+      node_id: nodeId,
+      wave: this.wave,
+      timestamp: new Date().toISOString(),
+    });
+    playSfx("dispatch");
+    this.rebuild();
+    return true;
   }
 
   private handleLivelockEscalation(now: number): void {
@@ -457,7 +464,12 @@ export class OverseerEngine {
     for (const agent of this.agents) {
       const cur = agent.currentNode ? this.nodes.get(agent.currentNode) : null;
 
-      if (cur && cur.status === NodeStatus.RUNNING && cur.assignedAgent === agent.id) {
+      if (
+        cur &&
+        cur.status === NodeStatus.RUNNING &&
+        cur.assignedAgent === agent.id &&
+        cur.playerDispatched
+      ) {
         if (this.isBlockedByLivelock(cur.id)) continue;
         if (now - cur.runStartedAt >= cur.execTimeMs) {
           cur.status = NodeStatus.COMPLETED;
@@ -475,38 +487,6 @@ export class OverseerEngine {
 
       // Agents only run player-dispatched assignments — no random auto-claim.
     }
-  }
-
-  dispatchAgent(agentId: AgentId, nodeId: string, auto = false): boolean {
-    if (this.phase !== "PLAYING" || this.livelockActive) return false;
-    const agent = this.agents.find((a) => a.id === agentId);
-    const node = this.nodes.get(nodeId);
-    if (!agent || !node || agent.currentNode) return false;
-    if (node.status !== NodeStatus.READY && node.status !== NodeStatus.DEGRADED) return false;
-    if (!node.deps.every((d) => this.nodes.get(d)?.status === NodeStatus.COMPLETED)) return false;
-
-    const now = Date.now();
-    node.status = NodeStatus.RUNNING;
-    node.assignedAgent = agentId;
-    node.playerDispatched = true;
-    node.runStartedAt = now;
-    agent.prevNode = agent.currentNode ?? agent.prevNode;
-    agent.currentNode = nodeId;
-    agent.moveStart = now;
-    agent.pathHistory.push(nodeId);
-    this.readySince.delete(nodeId);
-    this.log(`${auto ? "AUTO " : ""}${agentId} → ${nodeId} RUNNING`, "info");
-    if (!auto) {
-      logTelemetry({
-        event_type: "dispatch",
-        node_id: nodeId,
-        wave: this.wave,
-        timestamp: new Date().toISOString(),
-      });
-      playSfx("dispatch");
-    }
-    this.rebuild();
-    return true;
   }
 
   private injectLivelock(now: number): void {
@@ -637,6 +617,14 @@ export class OverseerEngine {
       "success",
     );
     playSfx("release");
+    logTelemetry({
+      event_type: "mutex_released",
+      node_id: node.id,
+      wave: this.wave,
+      timestamp: new Date().toISOString(),
+      resolution_time_ms: resolutionMs,
+      score_delta: delta,
+    });
     logTelemetry({
       event_type: "livelock_resolved",
       node_id: node.id,

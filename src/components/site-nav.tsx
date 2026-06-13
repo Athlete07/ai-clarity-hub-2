@@ -9,8 +9,6 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { cn } from "@/lib/utils";
 import * as React from "react";
 
-const CONTACT_EMAIL = "contact.factorbeam@gmail.com";
-
 const navLinkClass =
   "nav-link text-muted-foreground transition-colors hover:text-foreground";
 
@@ -219,7 +217,6 @@ export function Footer() {
           <FooterColumn title="Connect">
             <FooterLink to="/creator">Curator Box</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
-            <FooterLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</FooterLink>
           </FooterColumn>
           <FooterColumn title="Legal">
             <FooterLink to="/privacy-policy">Privacy</FooterLink>

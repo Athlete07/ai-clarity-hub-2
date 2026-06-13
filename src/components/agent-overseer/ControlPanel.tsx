@@ -49,7 +49,7 @@ export function ControlPanel({
     : snap.livelockActive
       ? `Livelock on ${snap.livelockNodeId}. Select it → Apply Mutex → Serialize Path → Release.`
       : snap.readyNodeIds.length
-        ? `${snap.readyNodeIds.length} node(s) ready — dispatch idle agents (keys 1=ALPHA, 2=BETA).`
+        ? `${snap.readyNodeIds.length} node(s) ready — nothing runs until you dispatch (keys 1=ALPHA, 2=BETA).`
         : "Complete dependencies to unlock ready nodes.";
 
   return (

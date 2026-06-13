@@ -15,9 +15,9 @@ export interface DrillNode {
  */
 export class TutorialDrill {
   nodes: DrillNode[] = [
-    { id: "t1", label: "Ingest", status: NodeStatus.COMPLETED, x: 120, y: 140 },
-    { id: "t2", label: "Infer", status: NodeStatus.RUNNING, x: 280, y: 140 },
-    { id: "t3", label: "Emit", status: NodeStatus.PENDING, x: 440, y: 140 },
+    { id: "t1", label: "Ingest", status: NodeStatus.COMPLETED, x: 120, y: 60 },
+    { id: "t2", label: "Infer", status: NodeStatus.RUNNING, x: 280, y: 60 },
+    { id: "t3", label: "Emit", status: NodeStatus.PENDING, x: 440, y: 60 },
   ];
   phase: DrillPhase = "watch";
   selectedId: string | null = null;
