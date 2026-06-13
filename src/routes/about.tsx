@@ -30,7 +30,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "FactorBeam is an open Executive KB that translates AI complexity into product strategy. Built for PMs, founders, and business leaders who need to ship — not research.",
+          "FactorBeam is an open Executive KB that translates AI complexity into product strategy — for PMs, founders, and business leaders who ship.",
       },
       { property: "og:title", content: "About FactorBeam — AI clarity for product leaders" },
       {

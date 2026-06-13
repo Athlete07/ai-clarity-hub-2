@@ -30,7 +30,7 @@ export const Route = createFileRoute("/executive-kb/")({
       {
         name: "description",
         content:
-          "Browse every FactorBeam Executive KB. Plain-English AI chapters sequenced for product managers, founders, and business leaders — pick the KB that matches the gap in your work.",
+          "Browse FactorBeam's Executive KBs — plain-English AI chapters sequenced for product managers, founders, and business leaders.",
       },
       {
         property: "og:title",

@@ -22,6 +22,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/executive-kb", changefreq: "weekly", priority: "0.9" },
           { path: "/about", changefreq: "monthly", priority: "0.5" },
+          { path: "/contact", changefreq: "monthly", priority: "0.4" },
+          { path: "/creator", changefreq: "monthly", priority: "0.4" },
+          { path: "/games", changefreq: "monthly", priority: "0.5" },
+          { path: "/playbook", changefreq: "monthly", priority: "0.5" },
+          { path: "/privacy-policy", changefreq: "yearly", priority: "0.3" },
+          { path: "/terms-of-service", changefreq: "yearly", priority: "0.3" },
           ...allKbs.flatMap((p) =>
             p.sequence.map((c) => ({
               path: chapterPath(p.id, c.slug),
